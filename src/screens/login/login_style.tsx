@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const LoginScreenStyle = StyleSheet.create({
     container: {
@@ -7,7 +7,7 @@ const LoginScreenStyle = StyleSheet.create({
         alignItems: 'center',
     },
     blank: {
-        flex: 2,
+        flex: 1,
         width: '100%',
         backgroundColor: '#FAF0E6',
     },
@@ -49,7 +49,7 @@ const LoginScreenStyle = StyleSheet.create({
         paddingRight: 12,
         backgroundColor: 'white',
         width: '93%',
-        height: '15%',
+        height: '15 %',
         borderRadius: 20,
         shadowOpacity: 0.05,
         shadowRadius: 5,

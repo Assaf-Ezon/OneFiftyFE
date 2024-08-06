@@ -1,5 +1,6 @@
 import { View, Image } from 'react-native';
 import { useEffect } from 'react';
+import { IMAGES } from '../../iamge_handler';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
@@ -13,7 +14,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
    
     return(
       <View style={{backgroundColor: "#FAF0E6", flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Image source={require('../../../assets/login icons/logo.png')} />
+        <Image source={IMAGES.logo} />
       </View>
     );
 };

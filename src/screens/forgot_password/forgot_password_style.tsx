@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const SignupScreenStyle = StyleSheet.create({
+const forgotPasswordScreenStyle = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
@@ -12,7 +12,7 @@ const SignupScreenStyle = StyleSheet.create({
         backgroundColor: '#FAF0E6',
     },
     signupContainer: {
-        flex: 8,
+        flex: 4,
         width: '100%',
         flexDirection: 'column',
         backgroundColor: '#FAF0E6',
@@ -49,28 +49,13 @@ const SignupScreenStyle = StyleSheet.create({
         paddingRight: 12,
         backgroundColor: 'white',
         width: '93%',
-        height: '10%',
+        height: '15 %',
         borderRadius: 20,
         shadowOpacity: 0.05,
         shadowRadius: 5,
     },
-    checkboxContainer: {
-        flexDirection: 'row',
-        width: '90%',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-    },
-    checkbox: {
-        marginLeft: 10,
-        backgroundColor: 'white',
-        borderWidth: 1,
-    },
-    checkboxText: {
-        fontSize: 18,
-        fontWeight: '500',
-    },
     submitBtnContainer: {
-        flex: 1,
+        flex: 2,
         alignItems: 'center',
     },
     submitBtn: {
@@ -88,6 +73,11 @@ const SignupScreenStyle = StyleSheet.create({
         fontSize: 25,
         fontWeight: '500',
     },
+    backToLogin: {
+        marginTop: 10,
+        color: '#FF7518',
+        fontWeight: '500',
+    },
     alreadySignedContainer: {
         flex: 1,
         flexDirection: 'row',
@@ -101,6 +91,9 @@ const SignupScreenStyle = StyleSheet.create({
         color: '#FF7518',
         fontWeight: '500',
     },
+    bottomBlank: {
+        flex: 1,
+    },
 });
 
-export default SignupScreenStyle;
+export default forgotPasswordScreenStyle;

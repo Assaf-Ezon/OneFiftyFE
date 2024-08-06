@@ -1,11 +1,12 @@
 import { View, Image, Text, Pressable } from 'react-native';
-import StartScreenStyle from './start_style'
+import StartScreenStyle from './start_style';
+import { IMAGES } from '../../iamge_handler';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     return(
       <View style={StartScreenStyle.container}>
         <View style={StartScreenStyle.image}>
-            <Image source={require('../../../assets/login icons/open_screen2.png')} />       
+            <Image source={IMAGES.start_screen} />       
         </View>
         <View style={StartScreenStyle.textContainer}>
             <Text style={StartScreenStyle.title}>

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
 import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox'
 import LoginScreenStyle from './login_style';
+import { IMAGES } from '../../iamge_handler';
 
 const LoginScreen = ({ navigation }: {navigation: any}) => {
     const [isSelected, setSelection] = useState(false);
@@ -12,7 +12,7 @@ const LoginScreen = ({ navigation }: {navigation: any}) => {
         <View style={LoginScreenStyle.blank}></View>
         <View style={LoginScreenStyle.signupContainer}>
             <View style={LoginScreenStyle.title}>
-                <Image style={LoginScreenStyle.logoImage} source={require('../../../assets/login icons/small_logo.png')} />
+                <Image style={LoginScreenStyle.logoImage} source={IMAGES.small_logo} />
                 <View>
                     <Text style={LoginScreenStyle.mainTitle}>התחברות</Text>
                     <Text style={LoginScreenStyle.secondTitle}>מלא את הפרטים מטה על מנת להשתמש בלומדה</Text>
@@ -40,10 +40,10 @@ const LoginScreen = ({ navigation }: {navigation: any}) => {
                 </View>
             </View>
             <View style={LoginScreenStyle.submitBtnContainer}>
-                <Pressable style={LoginScreenStyle.submitBtn}>
+                <Pressable style={LoginScreenStyle.submitBtn} onPress={() => {navigation.replace('home')}}>
                     <Text style={LoginScreenStyle.submitText}>התחבר</Text>
                 </Pressable>
-                <TouchableOpacity><Text style={LoginScreenStyle.forgotPasswordText}>שכחתי סיסמא</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.replace('forgot_password')}}><Text style={LoginScreenStyle.forgotPasswordText}>שכחתי סיסמא</Text></TouchableOpacity>
             </View>
         </View>
         <View style={LoginScreenStyle.alreadySignedContainer}>

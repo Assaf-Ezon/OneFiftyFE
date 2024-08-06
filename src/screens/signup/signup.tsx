@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox'
-
+import { IMAGES } from '../../iamge_handler';
 import SignupScreenStyle from './signup_style';
 
 const SignupScreen = ({ navigation }: {navigation: any}) => {
@@ -13,7 +13,7 @@ const SignupScreen = ({ navigation }: {navigation: any}) => {
         <View style={SignupScreenStyle.blank}></View>
         <View style={SignupScreenStyle.signupContainer}>
             <View style={SignupScreenStyle.title}>
-                <Image style={SignupScreenStyle.logoImage} source={require('../../../assets/login icons/small_logo.png')} />
+                <Image style={SignupScreenStyle.logoImage} source={IMAGES.small_logo} />
                 <View>
                     <Text style={SignupScreenStyle.mainTitle}>יצירת משתמש</Text>
                     <Text style={SignupScreenStyle.secondTitle}>מלא את הפרטים מטה על מנת להשתמש בלומדה</Text>
@@ -60,7 +60,7 @@ const SignupScreen = ({ navigation }: {navigation: any}) => {
             </View>
         </View>
         <View style={SignupScreenStyle.alreadySignedContainer}>
-            <TouchableOpacity onPress={() => {navigation.replace('login')}}><Text style={SignupScreenStyle.goToSignInText}> התחבר</Text></TouchableOpacity >
+            <TouchableOpacity onPress={() => {navigation.replace('login')}}><Text style={SignupScreenStyle.goToSignInText}> התחבר</Text></TouchableOpacity>
             <Text style={SignupScreenStyle.alreadySignedText}>כבר יש משתמש קיים?</Text>
         </View>
       </View>
