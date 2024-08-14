@@ -98,6 +98,10 @@ const SignupScreenStyle = StyleSheet.create({
         fontSize: 25,
         fontWeight: '500',
     },
+    faliedText : {
+        color: 'red',
+        marginTop: 5,
+    },
     alreadySignedContainer: {
         flex: 1,
         flexDirection: 'row',
