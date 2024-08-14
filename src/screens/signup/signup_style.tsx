@@ -54,6 +54,16 @@ const SignupScreenStyle = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 5,
     },
+    dateInputContainer: {
+        flexDirection: 'row',
+        width: '90%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    dateInputText: {
+        fontSize: 18,
+        fontWeight: '500',
+    },
     checkboxContainer: {
         flexDirection: 'row',
         width: '90%',

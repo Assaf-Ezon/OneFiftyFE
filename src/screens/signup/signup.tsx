@@ -7,6 +7,7 @@ import SignupScreenStyle from './signup_style';
 
 const SignupScreen = ({ navigation }: {navigation: any}) => {
     const [isSelected, setSelection] = useState(false);
+    const [date, setDate] = useState(new Date());
 
     return(
       <View style={SignupScreenStyle.container}>
@@ -36,14 +37,22 @@ const SignupScreen = ({ navigation }: {navigation: any}) => {
                     keyboardType='default'
                     secureTextEntry={true} 
                 />
-                <TextInput
-                    style={SignupScreenStyle.inputField}
-                    placeholder= 'תאריך לידה'
-                />
-                <TextInput
-                    style={SignupScreenStyle.inputField}
-                    placeholder= 'תאריך בחינה'
-                />
+                <View style={SignupScreenStyle.dateInputContainer}>
+                    <DateTimePicker
+                        value={date}
+                        mode="date"
+                        display="default"
+                    />
+                    <Text style={SignupScreenStyle.dateInputText}>תאריך לידה:</Text>
+                </View>
+                <View style={SignupScreenStyle.dateInputContainer}>
+                    <DateTimePicker
+                        value={date}
+                        mode="date"
+                        display="default"
+                    />
+                    <Text style={SignupScreenStyle.dateInputText}>תאריך בחינה:</Text>
+                </View>
                 <View style={SignupScreenStyle.checkboxContainer}>
                     <Text style={SignupScreenStyle.checkboxText}>אני מסכים לתנאי השימוש</Text>
                     <CheckBox
