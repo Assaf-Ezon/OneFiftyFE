@@ -1,4 +1,6 @@
 export const IMAGES = {
+    profile_image: require('../assets/testing/profile_picture.jpg'),
+
     small_logo: require('../assets/login icons/small_logo.png'),
     logo: require('../assets/login icons/logo.png'),
     start_screen: require('../assets/login icons/open_screen2.png'),
@@ -12,4 +14,7 @@ export const IMAGES = {
     unused_learning: require('../assets/generic icons/unused_learn_icon.png'),
     unused_leaderboard: require('../assets/generic icons/unused_chart_icon.png'),
     unused_profile: require('../assets/generic icons/unused_profile_icon.png'),
+
+    side_menu: require('../assets/generic icons/side_menu_icon.png'),
+    score_icon: require('../assets/generic icons/score_icon.png'),
 }

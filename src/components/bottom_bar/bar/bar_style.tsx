@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const iconStyle = StyleSheet.create({
+const barStyle = StyleSheet.create({
     container: {
         position: 'absolute',
         top: '86%',
@@ -18,4 +18,4 @@ const iconStyle = StyleSheet.create({
     },
 });
 
-export default iconStyle;
+export default barStyle;
