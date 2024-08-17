@@ -1,9 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const learningPartStyle = StyleSheet.create({
     container: {
         width: '90%',
-        height: '40%',
+        height: height * 0.4,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',

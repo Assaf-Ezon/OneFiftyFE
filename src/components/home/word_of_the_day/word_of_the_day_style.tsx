@@ -1,9 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const wordOfTheDayStyle = StyleSheet.create({
     container: {
         width: '90%',
-        height: '30%',
+        height: height * 0.3,
         justifyContent: 'center',
         alignItems: 'center',
     },
