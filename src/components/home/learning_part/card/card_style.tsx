@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const cardStyle = StyleSheet.create({
     container: {
+        transform: [{ scaleX: -1 }],
         flexDirection: 'column',
         borderColor: 'black',
         borderWidth: 0.2,

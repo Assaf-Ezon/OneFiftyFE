@@ -5,6 +5,7 @@ const HomeScreenStyle = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'flex-start',
         width: '100%',
         height: '100%',
     },

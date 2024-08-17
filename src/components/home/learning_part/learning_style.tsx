@@ -26,6 +26,7 @@ const learningPartStyle = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         height: '100%',
+        transform: [{ scaleX: -1 }],
     },
 });
 
