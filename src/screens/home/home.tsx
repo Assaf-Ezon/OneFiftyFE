@@ -1,6 +1,6 @@
 import { ScrollView, View } from 'react-native';
 import { FC } from 'react';
-import { IMAGES } from '../../iamge_handler'
+import { IMAGES } from '../../image_handler'
 import HomeScreenStyle from './home_style';
 import BottomBar from '../../components/bottom_bar/bar/bar'
 import ProfilePartHome from '../../components/home/profile_part/profile'
