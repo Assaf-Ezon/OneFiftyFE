@@ -4,7 +4,7 @@ import barStyle from './bar_style';
 import BottomBarIcon from '../icon/icon';
 
 interface bottomBarProp {
-    activeScreen: boolean;
+    activeScreen: string;
     homePath: ImageSourcePropType;
     learningPath: ImageSourcePropType;
     leaderboardPath: ImageSourcePropType;
@@ -14,10 +14,10 @@ interface bottomBarProp {
 const BottomBar: FC<bottomBarProp> = ({ homePath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
     return (
         <View style={barStyle.container}>
-            <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={false} />
-            <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={false} />
-            <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={false} />
-            <BottomBarIcon iconPath={homePath} iconText='בית' activeScreen={activeScreen} />
+            <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == "profile" ? true : false} />
+            <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == "leaderboard" ? true : false} />
+            <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == "learning" ? true : false} />
+            <BottomBarIcon iconPath={homePath} iconText='בית' activeScreen={activeScreen == "home" ? true : false} />
         </View>
     );
 };
