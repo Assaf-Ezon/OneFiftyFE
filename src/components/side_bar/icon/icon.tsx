@@ -5,14 +5,17 @@ import iconStyle from './icon_style';
 interface sideBarIconProp {
     iconPath: ImageSourcePropType;
     iconText: string;
-    activeScreen: boolean;
+    isRed: boolean;   
 };
 
-const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, activeScreen }) => {
+const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed }) => {
     return (
-        <View style={iconStyle.container}>
-
-        </View>
+        <>
+            <TouchableOpacity style={[{width: isRed ? 'auto' : '100%'}, iconStyle.container]}>
+                <Text style={[{color: isRed ? 'red' : '#656565'}, iconStyle.text]}>{iconText}</Text>
+                <Image source={iconPath}></Image>
+            </TouchableOpacity>
+        </>
     );
 };
 

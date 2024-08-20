@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ImageSourcePropType, Image } from 'react-native';
+import { View, Text, TouchableOpacity, ImageSourcePropType, Image } from 'react-native';
 import { FC } from 'react';
 import cardStyle from './card_style';
 
@@ -15,9 +15,9 @@ const LearningCard: FC<LearningCardProp> = ({ image, title, description }) => {
             <View style={cardStyle.textContainer}>
                 <Text style={cardStyle.titleText}>{title}</Text>
                 <Text style={cardStyle.descriptionText}>{description}</Text>
-                <Pressable style={cardStyle.btn}>
+                <TouchableOpacity style={cardStyle.btn}>
                     <Text style={cardStyle.btnText}>התחל משחק</Text>
-                </Pressable>
+                </TouchableOpacity>
             </View>
         </View>
     );

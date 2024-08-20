@@ -1,4 +1,4 @@
-import { View, Image, Text, ImageSourcePropType, Pressable } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
 import { IMAGES } from '../../../image_handler';
 
@@ -11,7 +11,7 @@ const LeaderboardPart: FC = () => {
     return (
         <View style={leaderboardPartStyle.container}>
             <View style={leaderboardPartStyle.titleContainer}>
-                <Pressable><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></Pressable>
+                <TouchableOpacity><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={leaderboardPartStyle.title}>מובילים</Text>   
             </View>
             <View style={leaderboardPartStyle.selfScore}>

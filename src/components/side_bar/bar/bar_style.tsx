@@ -6,6 +6,7 @@ const barStyle = StyleSheet.create({
         position: 'absolute',
         right: '0%',
         flexDirection: 'column',
+        alignItems: 'center',
         width: '75%',
         height: '100%',
         backgroundColor: 'white',
@@ -16,6 +17,7 @@ const barStyle = StyleSheet.create({
     },
     upperPart: {
         flex: 1,
+        width: '100%',
         backgroundColor: '#FAF0E6',
         borderRadius: 40,
     },
@@ -57,13 +59,17 @@ const barStyle = StyleSheet.create({
     },
     middlePart: {
         flex: 4,
+        width: '80%',
         flexDirection: 'column',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'flex-end',
-        borderWidth: 1,
     },
     lowerPart: {
         flex: 1,
+    },
+    versionText: {
+        paddingBottom: 5,
+        color: '#656565',
     },
 });
 

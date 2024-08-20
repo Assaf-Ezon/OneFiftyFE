@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { FC, useState } from 'react';
 import barStyle from './bar_style';
 import SideBarIcon from '../icon/icon';
@@ -19,9 +19,9 @@ const SideBar: FC = ({  }) => {
             <View style={barStyle.upperPart}>
                 <View style={barStyle.userBlank}></View>
                 <View style={barStyle.upperPartContent}>
-                    <Pressable style={barStyle.exitBtn} onPress={() => {closeSideBar()}}>
+                    <TouchableOpacity style={barStyle.exitBtn} onPress={() => {closeSideBar()}}>
                         <Image source={IMAGES.side_menu} />
-                    </Pressable>
+                    </TouchableOpacity>
                     <View style={barStyle.userContent}>
                         <View style={barStyle.profileDetailsContainer}>
                             <Text style={barStyle.profileNameText}>{profile?.name}</Text>
@@ -32,11 +32,18 @@ const SideBar: FC = ({  }) => {
                 </View>
             </View>
             <View style={barStyle.middlePart}>
-                
+                <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} />
+                <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} />
+                <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} />
+                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} />
+                <SideBarIcon iconPath={IMAGES.settings} iconText='הגדרות' isRed={false} />
+                <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} />
+                <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} />
             </View>
             <View style={barStyle.lowerPart}>
-                
-                </View>
+                <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} />
+                <Text style={barStyle.versionText}>Version 1.0.0</Text>
+            </View>
         </View>
     );
 };

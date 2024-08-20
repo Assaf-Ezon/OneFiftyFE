@@ -1,5 +1,4 @@
 import { ScrollView, View } from 'react-native';
-import { FC } from 'react';
 import { IMAGES } from '../../image_handler';
 
 import HomeScreenStyle from './home_style';
@@ -14,12 +13,12 @@ import LeaderboardPart from '../../components/home/leaderboard_part/leaderboard'
 import { ProfileProvider } from '../../context/general_context/profile_context';
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
 
-const HomePage: FC = () => {
+const HomePage = ({ navigation }: {navigation: any}) => {
     return (
         <ProfileProvider>
             <SidebarProvider>
                 <ScrollView contentContainerStyle={HomeScreenStyle.container}>
-                    <ProfilePartHome/>
+                    <ProfilePartHome />
                     <WordOfTheDay />
                     <LearningPartHome />
                     <LeaderboardPart/>

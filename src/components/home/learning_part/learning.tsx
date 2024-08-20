@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { FC } from 'react';
 import learningPartStyle from './learning_style';
 import LearningCard from './card/card';
@@ -8,7 +8,7 @@ const LearningPartHome: FC = () => {
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
-                <Pressable><Text style={learningPartStyle.seeEverything}>ראה הכל</Text></Pressable>
+                <TouchableOpacity><Text style={learningPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={learningPartStyle.title}>לומדות מילים</Text>   
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
