@@ -2,7 +2,7 @@ import { View, Text, Pressable, ScrollView } from 'react-native';
 import { FC } from 'react';
 import learningPartStyle from './learning_style';
 import LearningCard from './card/card';
-import { IMAGES } from '../../../iamge_handler';
+import { IMAGES } from '../../../image_handler';
 
 const LearningPartHome: FC = () => {
     return (

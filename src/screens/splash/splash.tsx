@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native';
 import { useEffect } from 'react';
-import { IMAGES } from '../../iamge_handler';
+import { IMAGES } from '../../image_handler';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
     useEffect(() => {

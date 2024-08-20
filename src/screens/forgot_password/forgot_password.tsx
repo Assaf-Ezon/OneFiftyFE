@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react-native';
 import forgotPasswordScreenStyle from './forgot_password_style';
+import { IMAGES } from '../../image_handler';
 
 const ForgotPasswordScreen = ({ navigation }: {navigation: any}) => {
     const [isSelected, setSelection] = useState(false);
@@ -10,7 +11,7 @@ const ForgotPasswordScreen = ({ navigation }: {navigation: any}) => {
         <View style={forgotPasswordScreenStyle.blank}></View>
         <View style={forgotPasswordScreenStyle.signupContainer}>
             <View style={forgotPasswordScreenStyle.title}>
-                <Image style={forgotPasswordScreenStyle.logoImage} source={require('../../../assets/login icons/small_logo.png')} />
+                <Image style={forgotPasswordScreenStyle.logoImage} source={IMAGES.small_logo} />
                 <View>
                     <Text style={forgotPasswordScreenStyle.mainTitle}>שכחתי סיסמא</Text>
                     <Text style={forgotPasswordScreenStyle.secondTitle}>איפוס סיסמא למשתמש</Text>

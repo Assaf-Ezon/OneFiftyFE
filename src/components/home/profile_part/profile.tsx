@@ -1,15 +1,13 @@
-import { View, Image, Text, ImageSourcePropType, Pressable } from 'react-native';
+import { View, Image, Text, Pressable } from 'react-native';
 import { FC } from 'react';
 import profilePartStyle from './profile_style';
-import { IMAGES } from '../../../iamge_handler';
+import { IMAGES } from '../../../image_handler';
+import { useProfile } from '../../../context/general_context/profile_context';
 
-interface profilePartHomeProp {
-    profileImage: ImageSourcePropType;
-    profileName: string;
-    profileEmail: string;
-};
 
-const ProfilePartHome: FC<profilePartHomeProp> = ({ profileImage, profileName, profileEmail }) => {
+const ProfilePartHome: FC = () => {
+    const {profile, setProfile} = useProfile();
+
     return (
         <View style={profilePartStyle.container}>
             <Pressable>
@@ -17,10 +15,10 @@ const ProfilePartHome: FC<profilePartHomeProp> = ({ profileImage, profileName, p
             </Pressable>
             <View style={profilePartStyle.profileContainer}>
                 <View style={profilePartStyle.profileDetailsContainer}>
-                    <Text style={profilePartStyle.profileNameText}>{profileName}</Text>
-                    <Text style={profilePartStyle.profileEmailText}>{profileEmail}</Text>
+                    <Text style={profilePartStyle.profileNameText}>{profile?.name}</Text>
+                    <Text style={profilePartStyle.profileEmailText}>{profile?.email}</Text>
                 </View>
-                <Image style={profilePartStyle.profileImage} source={profileImage} />
+                <Image style={profilePartStyle.profileImage} source={IMAGES.profile_image} />
             </View>
         </View>
     );

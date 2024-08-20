@@ -1,28 +1,25 @@
 import { ScrollView, View } from 'react-native';
 import { FC } from 'react';
-import { IMAGES } from '../../image_handler'
+import { IMAGES } from '../../image_handler';
+
 import HomeScreenStyle from './home_style';
-import BottomBar from '../../components/bottom_bar/bar/bar'
-import ProfilePartHome from '../../components/home/profile_part/profile'
-import WordOfTheDay from '../../components/home/word_of_the_day/word_of_the_day'
-import LearningPartHome from '../../components/home/learning_part/learning'
-import LeaderboardPart from '../../components/home/leaderboard_part/leaderboard'
+
+import BottomBar from '../../components/bottom_bar/bar/bar';
+import ProfilePartHome from '../../components/home/profile_part/profile';
+import WordOfTheDay from '../../components/home/word_of_the_day/word_of_the_day';
+import LearningPartHome from '../../components/home/learning_part/learning';
+import LeaderboardPart from '../../components/home/leaderboard_part/leaderboard';
+
+import { ProfileProvider } from '../../context/general_context/profile_context';
 
 const HomePage: FC = () => {
     return (
-        <>
+        <ProfileProvider>
             <ScrollView contentContainerStyle={HomeScreenStyle.container}>
-                <ProfilePartHome profileImage={IMAGES.profile_image}
-                                profileName='אסף איזון' 
-                            profileEmail='assafezon@gmail.com'
-                />
+                <ProfilePartHome/>
                 <WordOfTheDay />
                 <LearningPartHome />
-                <LeaderboardPart profileImage={IMAGES.profile_image} 
-                                profileName='אסף איזון' 
-                                rank={1} 
-                                score={100} 
-                />
+                <LeaderboardPart/>
                 <View style={HomeScreenStyle.blankSpace}></View>
             </ScrollView>
             <BottomBar 
@@ -32,7 +29,7 @@ const HomePage: FC = () => {
                 leaderboardPath={IMAGES.unused_leaderboard}
                 profilePath={IMAGES.unused_profile}
             />
-        </>
+        </ProfileProvider>
     );
 };
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox'
-import { IMAGES } from '../../iamge_handler';
+import { IMAGES } from '../../image_handler';
 import SignupScreenStyle from './signup_style';
 import signup_request from './signup_request'
 
