@@ -32,4 +32,4 @@ export const useProfile = () => {
       throw new Error('user information is empty!');
     }
     return context;
-  };
+};
