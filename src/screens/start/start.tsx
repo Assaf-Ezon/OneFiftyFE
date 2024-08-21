@@ -1,6 +1,6 @@
 import { View, Image, Text, Pressable } from 'react-native';
 import StartScreenStyle from './start_style';
-import { IMAGES } from '../../iamge_handler';
+import { IMAGES } from '../../image_handler';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     return(
