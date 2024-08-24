@@ -4,19 +4,15 @@ import profilePartStyle from './profile_style';
 import { IMAGES } from '../../../../image_handler';
 import { useProfile } from '../../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../../context/general_context/sidebar_context';
-import { useNavigation } from '@react-navigation/native';
+
 
 const ProfilePartHome: FC = () => {
     const {profile, setProfile} = useProfile();
-    const {isOpen, setIsOpen} = useSidebarContext();
-    
-    const openSideBar = () => {
-        setIsOpen(true);
-      };
+    const {toggleMenu} = useSidebarContext();
 
     return (
         <View style={profilePartStyle.container}>
-            <TouchableOpacity onPress={() => {openSideBar()}}>
+            <TouchableOpacity onPress={() => {toggleMenu()}}>
                 <Image source={IMAGES.side_menu} />
             </TouchableOpacity>
             <View style={profilePartStyle.profileContainer}>

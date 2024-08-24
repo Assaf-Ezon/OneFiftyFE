@@ -4,7 +4,7 @@ const barStyle = StyleSheet.create({
     container: {
         flex: 1,
         position: 'absolute',
-        right: '0%',
+        left: '0%',
         flexDirection: 'column',
         alignItems: 'center',
         width: '75%',

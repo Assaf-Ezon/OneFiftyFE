@@ -1,25 +1,42 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { FC, useState } from 'react';
+import { View, Text, Image, TouchableOpacity, Animated, Dimensions  } from 'react-native';
+import { useRef, useEffect } from 'react';
 import barStyle from './bar_style';
 import SideBarIcon from '../icon/icon';
 import { IMAGES } from '../../../image_handler';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 
-const SideBar: FC = ({  }) => {
-    const {profile, setProfile} = useProfile();
-    const {isOpen, setIsOpen} = useSidebarContext();
+const { width } = Dimensions.get('window');
 
-    const closeSideBar = () => {
-        setIsOpen(false);
-    };
+const SideBar = () => {
+    const {profile} = useProfile();
+    const {isOpen, toggleMenu} = useSidebarContext();
+
+    const menuWidth = width * 0.75;
+    const slideAnim = useRef(new Animated.Value(width)).current;
+
+    useEffect(() => {
+        if (isOpen) {
+            Animated.timing(slideAnim, {
+                toValue: width - menuWidth,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(slideAnim, {
+                toValue: width,
+                duration: 200,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [isOpen]);
 
     return (
-        <View style={[barStyle.container, {display: isOpen ? 'flex' : 'none'}]}>
+        <Animated.View style={[barStyle.container, { transform: [{ translateX: slideAnim }] }]}>
             <View style={barStyle.upperPart}>
                 <View style={barStyle.userBlank}></View>
                 <View style={barStyle.upperPartContent}>
-                    <TouchableOpacity style={barStyle.exitBtn} onPress={() => {closeSideBar()}}>
+                    <TouchableOpacity style={barStyle.exitBtn} onPress={() => {toggleMenu()}}>
                         <Image source={IMAGES.side_menu} />
                     </TouchableOpacity>
                     <View style={barStyle.userContent}>
@@ -44,7 +61,7 @@ const SideBar: FC = ({  }) => {
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} />
                 <Text style={barStyle.versionText}>Version 1.0.0</Text>
             </View>
-        </View>
+        </Animated.View>
     );
 };
 
