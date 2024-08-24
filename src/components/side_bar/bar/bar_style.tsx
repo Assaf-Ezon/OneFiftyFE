@@ -11,9 +11,8 @@ const barStyle = StyleSheet.create({
         height: '100%',
         backgroundColor: 'white',
         borderRadius: 40,
-        shadowOpacity: 0.02,
-        shadowRadius: 1,
-        borderWidth: 1,
+        shadowOpacity: 0.3,
+        shadowRadius: 20,
     },
     upperPart: {
         flex: 1,

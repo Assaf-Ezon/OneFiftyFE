@@ -9,21 +9,21 @@ import { useSidebarContext } from '../../context/general_context/sidebar_context
 
 
 const HomeScrollView = () => {
-    const {isOpen, setIsOpen} = useSidebarContext();
+    const {isOpen} = useSidebarContext();
     return (
         <ScrollView pointerEvents={isOpen ? 'none' : 'auto'} 
-                    contentContainerStyle={[HomeScreenStyle.container, { opacity: isOpen ? 0.5 : 1 }]}>
+                    contentContainerStyle={[HomeScrollViewStyle.container, { opacity: isOpen ? 0.2 : 1 }]}>
             <ProfilePartHome />
             <WordOfTheDay />
             <LearningPartHome />
             <LeaderboardPart/>
 
-            <View style={HomeScreenStyle.blankSpace}></View>
+            <View style={HomeScrollViewStyle.blankSpace}></View>
         </ScrollView>
     )
 };
 
-const HomeScreenStyle = StyleSheet.create({
+const HomeScrollViewStyle = StyleSheet.create({
     container: {
         flexGrow: 1,
         flexDirection: 'column',

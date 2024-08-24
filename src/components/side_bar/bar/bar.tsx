@@ -49,16 +49,16 @@ const SideBar = () => {
                 </View>
             </View>
             <View style={barStyle.middlePart}>
-                <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} />
-                <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} />
-                <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} />
-                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} />
-                <SideBarIcon iconPath={IMAGES.settings} iconText='הגדרות' isRed={false} />
-                <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} />
-                <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} />
+                <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} screenName={'home'} />
+                <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.settings} iconText='הגדרות' isRed={false} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} screenName={''} />
             </View>
             <View style={barStyle.lowerPart}>
-                <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} />
+                <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} screenName={''} />
                 <Text style={barStyle.versionText}>Version 1.0.0</Text>
             </View>
         </Animated.View>
