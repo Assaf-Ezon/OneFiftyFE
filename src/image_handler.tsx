@@ -15,6 +15,11 @@ export const IMAGES = {
     unused_leaderboard: require('../assets/generic icons/unused_chart_icon.png'),
     unused_profile: require('../assets/generic icons/unused_profile_icon.png'),
 
+    settings: require('../assets/generic icons/settings_icon.png'),
+    notification: require('../assets/generic icons/notification_icon.png'),
+    problem: require('../assets/generic icons/report_problem_icon.png'),
+    logout: require('../assets/generic icons/logout_icon.png'),
+
     side_menu: require('../assets/generic icons/side_menu_icon.png'),
     score_icon: require('../assets/generic icons/score_icon.png'),
 }

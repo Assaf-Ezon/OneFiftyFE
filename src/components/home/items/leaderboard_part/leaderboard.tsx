@@ -1,9 +1,9 @@
-import { View, Image, Text, ImageSourcePropType, Pressable } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
-import { IMAGES } from '../../../image_handler';
+import { IMAGES } from '../../../../image_handler';
 
 import leaderboardPartStyle from './leaderboard_style';
-import { useProfile } from '../../../context/general_context/profile_context';
+import { useProfile } from '../../../../context/general_context/profile_context';
 
 const LeaderboardPart: FC = () => {
     const {profile, setProfile} = useProfile();
@@ -11,7 +11,7 @@ const LeaderboardPart: FC = () => {
     return (
         <View style={leaderboardPartStyle.container}>
             <View style={leaderboardPartStyle.titleContainer}>
-                <Pressable><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></Pressable>
+                <TouchableOpacity><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={leaderboardPartStyle.title}>מובילים</Text>   
             </View>
             <View style={leaderboardPartStyle.selfScore}>
