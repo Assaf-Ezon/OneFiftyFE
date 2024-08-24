@@ -1,9 +1,9 @@
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
 import profilePartStyle from './profile_style';
-import { IMAGES } from '../../../image_handler';
-import { useProfile } from '../../../context/general_context/profile_context';
-import { useSidebarContext } from '../../../context/general_context/sidebar_context';
+import { IMAGES } from '../../../../image_handler';
+import { useProfile } from '../../../../context/general_context/profile_context';
+import { useSidebarContext } from '../../../../context/general_context/sidebar_context';
 import { useNavigation } from '@react-navigation/native';
 
 const ProfilePartHome: FC = () => {
