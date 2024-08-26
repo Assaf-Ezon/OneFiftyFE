@@ -1,5 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
+const { width, height } = Dimensions.get('window');
+
 const forgotPasswordScreenStyle = StyleSheet.create({
     container: {
         flex: 1,
@@ -17,6 +19,9 @@ const forgotPasswordScreenStyle = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#FAF0E6',
         borderRadius: 30,
+        shadowOffset: { width: 0, height: 20 },
+        shadowOpacity: 0.02,
+        shadowRadius: 10,
     },
     title: {
         flex: 1,

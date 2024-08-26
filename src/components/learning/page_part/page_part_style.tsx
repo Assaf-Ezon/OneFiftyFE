@@ -18,7 +18,8 @@ const PagePartStyle = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#FAF0E6',
         borderRadius: 30,
-        borderWidth: 1,
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
     },
     topPartText: {
         width: '90%',
