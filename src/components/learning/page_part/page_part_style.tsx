@@ -1,16 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const PagePartStyle = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         width: '100%',
+        height: '120%',
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
     topPart: {
-        flex: 1,
         width: '100%',
+        height: height * 0.18,
         justifyContent: 'flex-end',
         alignItems: 'center',
         backgroundColor: '#FAF0E6',
@@ -29,8 +32,6 @@ const PagePartStyle = StyleSheet.create({
         fontWeight: 'bold',
     },
     mainPart: {
-        marginTop: 20,
-        flex: 5,
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',

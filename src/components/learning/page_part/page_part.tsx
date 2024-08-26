@@ -1,18 +1,24 @@
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 
 import PagePartStyle from './page_part_style';
+
 import LearningPartLearning from '../../learning/learning_part/learning';
+import AllGames from '../all_games/all_games';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
+
 
 const PagePart = () => {
     const {profile} = useProfile();
     const {isOpen, toggleMenu} = useSidebarContext();
 
     return (
-        <View style={PagePartStyle.container}>
+        <ScrollView pointerEvents={ isOpen ? 'none' : 'auto' } 
+                    contentContainerStyle={[{opacity: isOpen ? 0.2 : 1}, PagePartStyle.container]}
+                    showsVerticalScrollIndicator={false}
+                    bounces={false}>
             <View style={PagePartStyle.topPart}>
                 <View style={PagePartStyle.topPartText}>
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
@@ -23,8 +29,9 @@ const PagePart = () => {
             </View>
             <View style={PagePartStyle.mainPart}>
                 <LearningPartLearning />
+                <AllGames />
             </View>
-        </View>
+        </ScrollView>
     );
 };  
 
