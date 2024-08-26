@@ -1,8 +1,10 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { FC } from 'react';
+import { IMAGES } from '../../../image_handler';
+
 import learningPartStyle from './learning_style';
 import LearningCard from './card/card';
-import { IMAGES } from '../../../image_handler';
+
 
 const LearningPartLearning: FC = () => {
     return (

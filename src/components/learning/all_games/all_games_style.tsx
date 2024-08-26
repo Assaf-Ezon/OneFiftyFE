@@ -7,13 +7,16 @@ const allGamesStyle = StyleSheet.create({
         marginTop: 30,
         width: '90%',
         height: height * 0.4,
-        backgroundColor: 'red',
     },
     title: {
         fontSize: 22, 
         fontWeight: 'bold',
         textAlign: 'right',
-        backgroundColor: 'yellow',
+    },
+    cards: {
+        marginTop: 10,
+        width: '100%',
+        height: '100%',
     },
 });
 
