@@ -2,11 +2,11 @@ import { View, Text, ScrollView } from 'react-native';
 import { FC } from 'react';
 import { IMAGES } from '../../../image_handler';
 
-import learningPartStyle from './learning_style';
-import LearningCard from './card/card';
+import learningPartStyle from './continue_learning_style';
+import LearningCard from '../card/card';
 
 
-const LearningPartLearning: FC = () => {
+const ContinueLearningPart: FC = () => {
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
@@ -24,4 +24,4 @@ const LearningPartLearning: FC = () => {
     );
 };
 
-export default LearningPartLearning;
+export default ContinueLearningPart;

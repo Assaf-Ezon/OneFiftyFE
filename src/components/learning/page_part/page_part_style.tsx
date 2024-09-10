@@ -6,7 +6,7 @@ const PagePartStyle = StyleSheet.create({
     container: {
         flexGrow: 1,
         width: '100%',
-        height: '120%',
+        height: '110%',
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',

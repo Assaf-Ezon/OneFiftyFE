@@ -1,21 +1,30 @@
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
+import { FC } from 'react';
 import { IMAGES } from '../../../image_handler';
 
 import allGamesStyle from './all_games_style';
 
-import AllGamesCard from './card/card';
+import LearningCard from '../card/card';
 
-const AllGames = () => {
+const AllGamesPart: FC = () => {
     return (
         <View style={allGamesStyle.container}>
-            <Text style={allGamesStyle.title}>כל הלומדות</Text>
-            <View style={allGamesStyle.cards}>
-                <AllGamesCard image={IMAGES.profile_image} title={'ידעתי/לא ידעתי'} />
-                <AllGamesCard image={IMAGES.profile_image} title={'שאלון אמריקאי'} /> 
-                <AllGamesCard image={IMAGES.profile_image} title={'מתח את הקו'} />  
+            <View style={allGamesStyle.titleContainer}>
+                <Text style={allGamesStyle.title}>כל הלומדות</Text>   
             </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
+                <LearningCard image={IMAGES.profile_image} 
+                            title='ידעתי/לא ידעתי' 
+                />
+                <LearningCard image={IMAGES.profile_image} 
+                            title='שאלון אמריקאי' 
+                />
+                <LearningCard image={IMAGES.profile_image} 
+                            title='מתח את הקו' 
+                />
+            </ScrollView>
         </View>
     );
-};  
+};
 
-export default AllGames;
+export default AllGamesPart;

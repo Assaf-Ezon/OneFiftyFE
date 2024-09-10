@@ -3,8 +3,8 @@ import { IMAGES } from '../../../image_handler';
 
 import PagePartStyle from './page_part_style';
 
-import LearningPartLearning from '../../learning/learning_part/learning';
-import AllGames from '../all_games/all_games';
+import ContinueLearningPart from '../continue_learning/continue_learning';
+import AllGamesPart from '../all_games/all_games';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
@@ -28,8 +28,8 @@ const PagePart = () => {
                 </View>
             </View>
             <View style={PagePartStyle.mainPart}>
-                <LearningPartLearning />
-                <AllGames />
+                <ContinueLearningPart />
+                <AllGamesPart />
             </View>
         </ScrollView>
     );
