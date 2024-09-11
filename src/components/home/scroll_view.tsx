@@ -11,8 +11,9 @@ import { useSidebarContext } from '../../context/general_context/sidebar_context
 const HomeScrollView = () => {
     const {isOpen} = useSidebarContext();
     return (
-        <ScrollView pointerEvents={isOpen ? 'none' : 'auto'} 
-                    contentContainerStyle={[HomeScrollViewStyle.container, { opacity: isOpen ? 0.2 : 1 }]}>
+        <ScrollView pointerEvents={ isOpen ? 'none' : 'auto' } 
+                    contentContainerStyle={[HomeScrollViewStyle.container, { opacity: isOpen ? 0.2 : 1 }]}
+                    showsVerticalScrollIndicator={false}>
             <ProfilePartHome />
             <WordOfTheDay />
             <LearningPartHome />

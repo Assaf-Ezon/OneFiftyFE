@@ -17,6 +17,9 @@ const SignupScreenStyle = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#FAF0E6',
         borderRadius: 30,
+        shadowOffset: { width: 0, height: 20 },
+        shadowOpacity: 0.03,
+        shadowRadius: 10,
     },
     title: {
         flex: 1,

@@ -7,7 +7,7 @@ import { useSidebarContext } from '../../../../context/general_context/sidebar_c
 
 
 const ProfilePartHome: FC = () => {
-    const {profile, setProfile} = useProfile();
+    const {profile} = useProfile();
     const {toggleMenu} = useSidebarContext();
 
     return (
