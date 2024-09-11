@@ -1,5 +1,6 @@
 import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { IMAGES } from '../../../../image_handler';
 
 import leaderboardPartStyle from './leaderboard_style';
@@ -7,11 +8,12 @@ import { useProfile } from '../../../../context/general_context/profile_context'
 
 const LeaderboardPart: FC = () => {
     const {profile, setProfile} = useProfile();
+    const navigation = useNavigation();
 
     return (
         <View style={leaderboardPartStyle.container}>
             <View style={leaderboardPartStyle.titleContainer}>
-                <TouchableOpacity><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.navigate('leaderboard')}}><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={leaderboardPartStyle.title}>מובילים</Text>   
             </View>
             <View style={leaderboardPartStyle.selfScore}>

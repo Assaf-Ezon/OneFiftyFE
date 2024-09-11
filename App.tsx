@@ -8,6 +8,7 @@ import LoginScreen from './src/screens/login/login';
 import ForgotPasswordScreen from './src/screens/forgot_password/forgot_password';
 import HomePage from './src/screens/home/home';
 import LearningPage from './src/screens/learning/learning';
+import LeaderboardPage from './src/screens/leaderboard/leaderboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export default function App() {
 
         <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
         <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
+        <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
