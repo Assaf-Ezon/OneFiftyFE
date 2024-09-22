@@ -12,7 +12,15 @@ const TopRated = () => {
 
     return (
         <View style={TopRatedStyle.container}>
-            <LeaderboardCard name= {profile?.name} score={profile?.score} rank={profile?.rank} image={IMAGES.profile_image} />
+            <View style={TopRatedStyle.self}>
+                <Image source={IMAGES.profile_image} style={TopRatedStyle.profileImage} />
+                <Text style={TopRatedStyle.textName}>{profile?.name}</Text>
+                <Text style={TopRatedStyle.rankText}>מקום: {profile?.rank}</Text>
+                <View style={TopRatedStyle.selfScore}>
+                    <Text style={TopRatedStyle.scoreText}>{profile?.score}</Text>
+                    <Image source={IMAGES.score_icon} />
+                </View>
+            </View>
             <View style={TopRatedStyle.line} />
 
             <LeaderboardCard name= {'אסף איזון'} score={1000} rank={1} image={IMAGES.profile_image} />

@@ -9,10 +9,11 @@ const LeaderboardCardStyle = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 0.2,
         borderColor: 'black',
-        borderRadius: 20,
+        borderRadius: 30,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        marginTop: 5,
     },
     profileContainer: {
         flex: 1,
