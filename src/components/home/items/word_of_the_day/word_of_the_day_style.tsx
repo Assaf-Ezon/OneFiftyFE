@@ -54,7 +54,7 @@ const wordOfTheDayStyle = StyleSheet.create({
     },
     blankSpace: {
         flex: 1,
-    }
+    },
 });
 
 export default wordOfTheDayStyle;

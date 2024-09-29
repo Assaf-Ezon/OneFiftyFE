@@ -1,7 +1,9 @@
 import { View, Image, Text, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
-import { useNavigation } from '@react-navigation/native';
+
 import iconStyle from './icon_style';
+
+import { useNavigation } from '@react-navigation/native';
 
 interface bottomBarIconProp {
     iconPath: ImageSourcePropType;
