@@ -11,7 +11,7 @@ const OptionListStyle = StyleSheet.create({
     },
     line: {
         height: 1,
-        backgroundColor: 'black',
+        backgroundColor: '#C0C0C0',
         width: width * 0.9,
     },
 });

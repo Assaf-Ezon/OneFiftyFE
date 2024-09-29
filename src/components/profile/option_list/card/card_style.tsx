@@ -16,9 +16,9 @@ const cardStyle = StyleSheet.create({
         color: '#656565',
     },
     line: {
-        height: 1,
-        backgroundColor: 'black',
         width: width * 0.9,
+        height: 1,
+        backgroundColor: '#C0C0C0', 
     },
 });
 
