@@ -52,7 +52,7 @@ const SideBar = () => {
                 <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} screenName={'home'} />
                 <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} screenName={'learning'} />
                 <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} screenName={'leaderboard'} />
-                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} screenName={'profile'} />
                 <SideBarIcon iconPath={IMAGES.settings} iconText='הגדרות' isRed={false} screenName={''} />
                 <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} screenName={''} />
                 <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} screenName={''} />
