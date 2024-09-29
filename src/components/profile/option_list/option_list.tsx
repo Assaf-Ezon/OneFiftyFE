@@ -15,6 +15,7 @@ const OptionList = () => {
             <OptionCard title='צורת תשלום' image={IMAGES.payment} />
             <OptionCard title='הודעות' image={IMAGES.notification} />
             <OptionCard title='דווח על בעיה' image={IMAGES.report_problem} />
+            <View style={OptionListStyle.line} />
         </View>
     );
 };  

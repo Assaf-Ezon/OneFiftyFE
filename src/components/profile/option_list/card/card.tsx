@@ -9,10 +9,14 @@ interface LearningCardProp {
 
 const OptionCard: FC<LearningCardProp> = ({ image, title }) => {
     return (
-        <TouchableOpacity style={cardStyle.container} onPress={() => {}}>
-            <Text style={cardStyle.text}>{title}</Text>
-            <Image source={image} />
-        </TouchableOpacity>
+        <>        
+            <View style={cardStyle.line} />
+            <TouchableOpacity style={cardStyle.container} onPress={() => {}}>
+                <Text style={cardStyle.text}>{title}</Text>
+                <Image source={image} />
+            </TouchableOpacity>
+        </>
+
     );
 };
 
