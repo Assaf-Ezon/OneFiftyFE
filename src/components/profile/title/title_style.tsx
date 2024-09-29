@@ -4,7 +4,7 @@ const { width, height } = Dimensions.get('window');
 
 const TitleStyle = StyleSheet.create({
     container: {
-        width: '100%',
+        width: width,
         height: height * 0.2,
         justifyContent: 'flex-end',
         alignItems: 'center',
