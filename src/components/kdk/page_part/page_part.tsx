@@ -9,7 +9,31 @@ import { useState } from 'react';
 
 const PagePart = () => {
     const navigation = useNavigation();
-    const [answer, setAnswer] = useState(true);
+    const [answer, setAnswer] = useState<boolean>(false);
+
+    const words = JSON.parse('{"איסטניס": "מעודן, אנין טעם", "תמימות דעים": "הסכמה כוללת", "אָסוּתָא": "לבריאות"}');
+    const len = Object.keys(words).length;
+
+    const [count, setCount] = useState<number>(1);
+    const [word, setWord] = useState<string>(Object.entries(words)[0][0]);
+    const [pirush, setPirush] = useState<any>(Object.entries(words)[0][1]); 
+
+    const changeWord = () => {
+        if (len == count) {
+            navigation.goBack();
+        }
+        else {
+            setCount(count => count + 1);
+            setWord(Object.entries(words)[count][0]);
+            setPirush(Object.entries(words)[count][1]);
+            setAnswer(false);
+        };
+    };
+
+    const setIfAnswerCorrect = (isCorrect: boolean) => {
+        /* is correct logic here */
+        setAnswer(true);
+    };
 
     return (
         <View style={PagePartStyle.container}>
@@ -23,8 +47,8 @@ const PagePart = () => {
             </View>
             <View style={PagePartStyle.question}>
                 <View style={PagePartStyle.wordSection}>
-                    <Text style={PagePartStyle.wordCounter}>01/40</Text>
-                    <Text style={PagePartStyle.word}>איסטניס</Text>
+                    <Text style={PagePartStyle.wordCounter}>{count}/{len}</Text>
+                    <Text style={PagePartStyle.word}>{word}</Text>
                 </View>
                 <View style={PagePartStyle.interpretation}>
                     <LinearGradient colors={['#F27155', '#EA7B30']}
@@ -34,7 +58,7 @@ const PagePart = () => {
 
                         <View style={PagePartStyle.meaningContainer}>
                             {answer && (
-                                <Text style={PagePartStyle.meaning}>מעודן, אנין טעם</Text>
+                                <Text style={PagePartStyle.meaning}>{pirush}</Text>
                             )}
                         </View>
                     </LinearGradient>
@@ -42,16 +66,16 @@ const PagePart = () => {
 
                 {!answer && (
                 <View style={PagePartStyle.btns}>
-                    <TouchableOpacity style={PagePartStyle.btn} onPress={() => {setAnswer(true)}}>
+                    <TouchableOpacity style={PagePartStyle.btn} onPress={() => {setIfAnswerCorrect(false)}}>
                         <Text style={PagePartStyle.btnText}>לא ידעתי</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={PagePartStyle.btn} onPress={() => {setAnswer(true)}}>
+                    <TouchableOpacity style={PagePartStyle.btn} onPress={() => {setIfAnswerCorrect(true)}}>
                         <Text style={PagePartStyle.btnText}>ידעתי</Text>
                     </TouchableOpacity>
                 </View>
                 )}
                 {answer && (
-                    <TouchableOpacity style={PagePartStyle.nextBtn} onPress={() => {setAnswer(false)}}>
+                    <TouchableOpacity style={PagePartStyle.nextBtn} onPress={() => {changeWord()}}>
                         <Text style={PagePartStyle.btnText}>המשך</Text>
                     </TouchableOpacity>
                 )}
