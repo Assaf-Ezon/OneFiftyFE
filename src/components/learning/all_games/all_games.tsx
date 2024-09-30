@@ -19,7 +19,7 @@ const AllGamesPart: FC = () => {
                 />
                 <LearningCard image={IMAGES.profile_image} 
                             title='שאלון אמריקאי' 
-                            gameName=''
+                            gameName='mc'
                 />
                 <LearningCard image={IMAGES.profile_image} 
                             title='מתח את הקו' 

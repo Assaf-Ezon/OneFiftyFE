@@ -19,7 +19,7 @@ const ContinueLearningPart: FC = () => {
                 />
                 <LearningCard image={IMAGES.profile_image} 
                             title='שאלון אמריקאי' 
-                            gameName=''
+                            gameName='mc'
                 />
             </ScrollView>
         </View>
