@@ -1,10 +1,10 @@
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Animated } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 
 import PagePartStyle from './page_part_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const PagePart = () => {
     const navigation = useNavigation();
@@ -38,6 +38,17 @@ const PagePart = () => {
         setAnswer(true);
     };
 
+    const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
+
+    useEffect(() => {
+        fadeAnim.setValue(0);
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 100,
+            useNativeDriver: true,
+      }).start();
+    }, [answer, fadeAnim]);
+
     return (
         <View style={PagePartStyle.container}>
             <View style={PagePartStyle.topPart}>
@@ -45,10 +56,10 @@ const PagePart = () => {
                     <TouchableOpacity onPress={() => {navigation.goBack()}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
-                    <Text style={PagePartStyle.pageTitle}>ידעתי / לא ידעתי</Text>
+                    <Text style={PagePartStyle.pageTitle}>שאלון אמריקאי</Text>
                 </View>
             </View>
-            <View style={PagePartStyle.question}>
+            <Animated.View style={[PagePartStyle.question, {opacity: fadeAnim}]}>
                 <View style={PagePartStyle.wordSection}>
                     <Text style={PagePartStyle.wordCounter}>{count}/{len}</Text>
                     <Text style={PagePartStyle.word}>{word}</Text>
@@ -58,7 +69,7 @@ const PagePart = () => {
                         pirushim.slice(1).map((pirush) => {
                             return (
                                 <TouchableOpacity 
-                                style={[PagePartStyle.option, answer ? pirushim[0] == pirush ? {backgroundColor: 'lime'} : {backgroundColor: 'orangered'} : {backgroundColor: 'white'}]} 
+                                style={[PagePartStyle.option, answer ? pirushim[0] == pirush ? {backgroundColor: '#7efd2c'} : {backgroundColor: '#FF7518'} : {backgroundColor: 'white'}]} 
                                 onPress={pirushim[0] == pirush ? () => {setIfAnswerCorrect(true)} : () => {setIfAnswerCorrect(false)}}>
                                     <Text style={PagePartStyle.optionText}>{pirush}</Text>
                                 </TouchableOpacity>
@@ -66,7 +77,7 @@ const PagePart = () => {
                         })
                     }
                 </View>
-            </View>
+            </Animated.View>
             {answer && (
                 <TouchableOpacity style={PagePartStyle.nextBtn} onPress={() => {changeWord()}}>
                     <Text style={PagePartStyle.btnText}>המשך</Text>

@@ -50,7 +50,7 @@ const PagePartStyle = StyleSheet.create({
     word: {
         fontSize: 25,
         fontWeight: '600',
-        shadowOpacity: 0.1,
+        shadowOpacity: 0.05,
         shadowRadius: 1,
     },
     pirushim: {
