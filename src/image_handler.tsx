@@ -28,4 +28,7 @@ export const IMAGES = {
     subscription: require('../assets/profile page icons/subscription_icon.png'),
     payment: require('../assets/profile page icons/payment_icon.png'),
     report_problem: require('../assets/profile page icons/report_problem_icon.png'),
+
+    option: require('../assets/game icons/option.png'),
+    chosen_option: require('../assets/game icons/chosen_option.png'),
 }

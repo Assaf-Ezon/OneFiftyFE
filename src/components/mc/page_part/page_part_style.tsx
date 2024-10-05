@@ -63,13 +63,20 @@ const PagePartStyle = StyleSheet.create({
         height: height * 0.07,
         borderRadius: 20,
         borderWidth: 0.2,
-        justifyContent: 'center',
+        borderColor: '#5F5F5F',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         backgroundColor: 'white',
     },
     optionText: {
-        textAlign: 'center',
+        width: '80%',
+        textAlign: 'right',
         fontSize: 12,
+        marginRight: 10,
+    },
+    option_image: {
+        marginRight: 10,
     },
     btnText: {
         textAlign: 'center',

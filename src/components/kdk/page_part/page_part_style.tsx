@@ -85,7 +85,7 @@ const PagePartStyle = StyleSheet.create({
     meaning: {
         margin: 10,
         color: 'white',
-        textAlign: 'right',
+        textAlign: 'center',
     },
     btns: {
         flexDirection: 'row',

@@ -1,11 +1,12 @@
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Animated } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 import {LinearGradient} from 'expo-linear-gradient';
 
 import PagePartStyle from './page_part_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fadeIn } from '../../../animations/fade_animations';
 
 const PagePart = () => {
     const navigation = useNavigation();
@@ -35,6 +36,12 @@ const PagePart = () => {
         setAnswer(true);
     };
 
+    const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
+
+    useEffect(() => {
+        fadeIn(fadeAnim).start();
+    }, [count, fadeAnim]);
+
     return (
         <View style={PagePartStyle.container}>
             <View style={PagePartStyle.topPart}>
@@ -45,7 +52,7 @@ const PagePart = () => {
                     <Text style={PagePartStyle.pageTitle}>ידעתי / לא ידעתי</Text>
                 </View>
             </View>
-            <View style={PagePartStyle.question}>
+            <Animated.View style={[PagePartStyle.question, {opacity: fadeAnim}]}>
                 <View style={PagePartStyle.wordSection}>
                     <Text style={PagePartStyle.wordCounter}>{count}/{len}</Text>
                     <Text style={PagePartStyle.word}>{word}</Text>
@@ -79,7 +86,7 @@ const PagePart = () => {
                         <Text style={PagePartStyle.btnText}>המשך</Text>
                     </TouchableOpacity>
                 )}
-            </View>
+            </Animated.View>
         </View>
     );
 };  
