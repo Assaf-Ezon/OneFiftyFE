@@ -26,7 +26,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, screenNam
             <TouchableOpacity style={[{width: isRed ? 'auto' : '100%'}, iconStyle.container]} onPress={() => navigateToPage()}>
                 <Text style={[{color: isRed ? 'red' : '#656565'}, iconStyle.text]}>{iconText}</Text>
                 <Image source={iconPath}></Image>
-            </TouchableOpacity>
+            </TouchableOpacity>   
         </>
     );
 };

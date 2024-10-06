@@ -10,10 +10,8 @@ const StartScreenStyle = StyleSheet.create({
         flex: 3,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    bgImage: {
-        width: '80%',
-        backgroundColor: 'red',
+        shadowOpacity: 0.05,
+        shadowRadius: 5,
     },
     textContainer: {
         flex: 2,

@@ -91,9 +91,9 @@ const SignupScreen = ({ navigation }: {navigation: any}) => {
                 <Pressable style={SignupScreenStyle.submitBtn} onPress={() => signup_request(navigation, setSignupFailed, email, password, name)}>
                     <Text style={SignupScreenStyle.submitText}>הירשם</Text>
                 </Pressable>
-                {signupFailed && (
+                {signupFailed ? (
                     <Text style={SignupScreenStyle.faliedText}>הרשמה נכשלה</Text>
-                )}
+                ) : null}
             </View>
         </View>
         <View style={SignupScreenStyle.alreadySignedContainer}>

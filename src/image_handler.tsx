@@ -30,5 +30,7 @@ export const IMAGES = {
     report_problem: require('../assets/profile page icons/report_problem_icon.png'),
 
     option: require('../assets/game icons/option.png'),
-    chosen_option: require('../assets/game icons/chosen_option.png'),
+    chosen_option: require('../assets/game icons/chosen.png'),
+    wrong: require('../assets/game icons/wrong.png'),
+    correct: require('../assets/game icons/correct.png'),
 }
