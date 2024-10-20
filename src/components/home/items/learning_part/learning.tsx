@@ -19,10 +19,12 @@ const LearningPartHome: FC = () => {
                 <LearningCard image={IMAGES.profile_image} 
                             title='ידעתי/לא ידעתי' 
                             description='משחקונים קצרים שבודקים האם הינך יודע את המילים.'
+                            gameName='kdk'
                 />
                 <LearningCard image={IMAGES.profile_image} 
                             title='שאלון אמריקאי' 
                             description='בחר את הפירוש הנכון מבין ארבעת הפירושים.'
+                            gameName='mc'
                 />
             </ScrollView>
         </View>

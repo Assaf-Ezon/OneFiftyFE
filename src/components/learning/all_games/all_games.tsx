@@ -15,12 +15,15 @@ const AllGamesPart: FC = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
                 <LearningCard image={IMAGES.profile_image} 
                             title='ידעתי/לא ידעתי' 
+                            gameName='kdk'
                 />
                 <LearningCard image={IMAGES.profile_image} 
                             title='שאלון אמריקאי' 
+                            gameName='mc'
                 />
                 <LearningCard image={IMAGES.profile_image} 
                             title='מתח את הקו' 
+                            gameName=''
                 />
             </ScrollView>
         </View>

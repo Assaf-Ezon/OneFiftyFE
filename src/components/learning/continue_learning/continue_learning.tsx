@@ -15,9 +15,11 @@ const ContinueLearningPart: FC = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
                 <LearningCard image={IMAGES.profile_image} 
                             title='ידעתי/לא ידעתי' 
+                            gameName='kdk'
                 />
                 <LearningCard image={IMAGES.profile_image} 
                             title='שאלון אמריקאי' 
+                            gameName='mc'
                 />
             </ScrollView>
         </View>

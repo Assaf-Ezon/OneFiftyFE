@@ -22,9 +22,15 @@ export const IMAGES = {
 
     side_menu: require('../assets/generic icons/side_menu_icon.png'),
     score_icon: require('../assets/generic icons/score_icon.png'),
+    back_icon: require('../assets/generic icons/back_icon.png'),
 
     reset_password: require('../assets/profile page icons/reset_password_icon.png'),
     subscription: require('../assets/profile page icons/subscription_icon.png'),
     payment: require('../assets/profile page icons/payment_icon.png'),
     report_problem: require('../assets/profile page icons/report_problem_icon.png'),
+
+    option: require('../assets/game icons/option.png'),
+    chosen_option: require('../assets/game icons/chosen.png'),
+    wrong: require('../assets/game icons/wrong.png'),
+    correct: require('../assets/game icons/correct.png'),
 }

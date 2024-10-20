@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const barStyle = StyleSheet.create({
     container: {
@@ -61,7 +63,7 @@ const barStyle = StyleSheet.create({
         width: '80%',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'flex-end',
+        alignItems: 'center',
     },
     lowerPart: {
         flex: 1,
@@ -69,6 +71,11 @@ const barStyle = StyleSheet.create({
     versionText: {
         paddingBottom: 5,
         color: '#656565',
+    },
+    line: {
+        height: 1,
+        backgroundColor: '#C0C0C0',
+        width: width * 0.65,
     },
 });
 
