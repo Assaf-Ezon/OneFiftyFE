@@ -18,6 +18,7 @@ const LearningPage = ({ navigation }: {navigation: any}) => {
                 <BottomBar 
                     activeScreen={"learning"}
                     homePath={IMAGES.unused_home}
+                    dictionaryPath={IMAGES.unused_dictionary}
                     learningPath={IMAGES.used_learning}
                     leaderboardPath={IMAGES.unused_leaderboard}
                     profilePath={IMAGES.unused_profile}

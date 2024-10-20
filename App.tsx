@@ -9,6 +9,7 @@ import LoginScreen from './src/screens/login/login';
 import ForgotPasswordScreen from './src/screens/forgot_password/forgot_password';
 
 import HomePage from './src/screens/home/home';
+import DictionaryPage from './src/screens/dictionary/dictionary';
 import LearningPage from './src/screens/learning/learning';
 import LeaderboardPage from './src/screens/leaderboard/leaderboard';
 import ProfilePage from './src/screens/profile/profile';
@@ -30,6 +31,7 @@ export default function App() {
         <Stack.Screen name='forgot_password' component={ForgotPasswordScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
+        <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
         <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
         <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
         <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
