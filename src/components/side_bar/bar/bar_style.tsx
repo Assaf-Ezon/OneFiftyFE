@@ -17,7 +17,7 @@ const barStyle = StyleSheet.create({
         shadowRadius: 20,
     },
     upperPart: {
-        flex: 1,
+        flex: 2,
         width: '100%',
         backgroundColor: '#FAF0E6',
         borderRadius: 40,
@@ -59,14 +59,17 @@ const barStyle = StyleSheet.create({
         overflow: "hidden",
     },
     middlePart: {
-        flex: 4,
+        flex: 8,
         width: '80%',
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     lowerPart: {
-        flex: 1,
+        flex: 1.5,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     versionText: {
         paddingBottom: 5,

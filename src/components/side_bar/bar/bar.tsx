@@ -51,6 +51,8 @@ const SideBar = () => {
             <View style={barStyle.middlePart}>
                 <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} screenName={'home'} />
                 <View style={barStyle.line} />
+                <SideBarIcon iconPath={IMAGES.unused_dictionary} iconText='מילון' isRed={false} screenName={'dictionary'} />
+                <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} screenName={'learning'} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} screenName={'leaderboard'} />
