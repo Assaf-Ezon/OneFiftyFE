@@ -35,4 +35,7 @@ export const IMAGES = {
     chosen_option: require('../assets/game icons/chosen.png'),
     wrong: require('../assets/game icons/wrong.png'),
     correct: require('../assets/game icons/correct.png'),
+
+    open_dictionary: require('../assets/dictionary icons/open.png'),
+    close_dictionary: require('../assets/dictionary icons/close.png'),
 }

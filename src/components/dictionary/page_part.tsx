@@ -22,8 +22,12 @@ const PagePart = () => {
                         <Text style={PagePartStyle.pageTitle}>מילון</Text>
                     </View>
                 </View>
-                <Settings />
-                <Words />
+                <View style={{zIndex: 2}}>
+                    <Settings />
+                </View>
+                <View style={{zIndex:1}}>
+                    <Words />
+                </View>
             </View>
         </SettingsProvider>
     );

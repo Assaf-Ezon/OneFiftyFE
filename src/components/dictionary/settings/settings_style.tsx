@@ -5,7 +5,7 @@ const { width, height } = Dimensions.get('window');
 const SettingsStyle = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         alignItems: 'center',
         width: '90%',
         marginTop: 15,
