@@ -10,12 +10,13 @@ import { useSidebarContext } from '../../../context/general_context/sidebar_cont
 interface bottomBarProp {
     activeScreen: string;
     homePath: ImageSourcePropType;
+    dictionaryPath: ImageSourcePropType;
     learningPath: ImageSourcePropType;
     leaderboardPath: ImageSourcePropType;
     profilePath: ImageSourcePropType;
 };
 
-const BottomBar: FC<bottomBarProp> = ({ homePath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
+const BottomBar: FC<bottomBarProp> = ({ homePath, dictionaryPath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
     const {isOpen} = useSidebarContext();
     
     return (
@@ -23,6 +24,7 @@ const BottomBar: FC<bottomBarProp> = ({ homePath, learningPath, leaderboardPath,
             <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == "profile" ? true : false} screenName='profile' />
             <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == "leaderboard" ? true : false} screenName='leaderboard' />
             <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == "learning" ? true : false} screenName='learning' />
+            <BottomBarIcon iconPath={dictionaryPath} iconText='מילון' activeScreen={activeScreen == "dictionary" ? true : false} screenName='dictionary' />
             <BottomBarIcon iconPath={homePath} iconText='בית' activeScreen={activeScreen == "home" ? true : false} screenName='home' />
         </View>
     );
