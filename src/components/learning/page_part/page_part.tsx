@@ -28,6 +28,14 @@ const PagePart = () => {
                 <ScrollView pointerEvents={ isOpen ? 'none' : 'auto' } 
                         contentContainerStyle={[{opacity: isOpen ? 0.2 : 1}, PagePartStyle.mainPart]}
                         showsVerticalScrollIndicator={false}>
+
+                    <View style={PagePartStyle.settingBtnContainer}>
+                        <TouchableOpacity style={PagePartStyle.settingsBtn} onPress={() => {}}>
+                            <Text style={PagePartStyle.settingsBtnText}>הגדרות</Text>
+                            <Image source={IMAGES.settings} />
+                        </TouchableOpacity>
+                    </View>
+
                     <ContinueLearningPart />
                     <AllGamesPart />
                     <View style={PagePartStyle.blank}></View>
