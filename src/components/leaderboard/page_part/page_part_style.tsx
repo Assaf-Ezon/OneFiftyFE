@@ -3,14 +3,6 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 const PagePartStyle = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        width: '100%',
-        height: '125%',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
     topPart: {
         width: '100%',
         height: height * 0.18,
@@ -32,12 +24,20 @@ const PagePartStyle = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
+    ScrollviewContainer: {
+        width: '100%',
+        height: height * 0.82,
+    },
     mainPart: {
+        flexGrow: 1,
         flexDirection: 'column',
-        justifyContent: 'space-evenly',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
         marginTop: 20,
+    },
+    blank: {
+        height: height * 0.15,
     },
 });
 

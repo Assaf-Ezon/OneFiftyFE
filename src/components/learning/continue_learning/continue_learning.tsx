@@ -12,16 +12,18 @@ const ContinueLearningPart: FC = () => {
             <View style={learningPartStyle.titleContainer}>
                 <Text style={learningPartStyle.title}>המשך לומדות</Text>   
             </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
-                <LearningCard image={IMAGES.profile_image} 
-                            title='ידעתי/לא ידעתי' 
-                            gameName='kdk'
-                />
-                <LearningCard image={IMAGES.profile_image} 
-                            title='שאלון אמריקאי' 
-                            gameName='mc'
-                />
-            </ScrollView>
+            <View style={learningPartStyle.cardsContainerContainer}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
+                    <LearningCard image={IMAGES.profile_image} 
+                                title='ידעתי/לא ידעתי' 
+                                gameName='kdk'
+                    />
+                    <LearningCard image={IMAGES.profile_image} 
+                                title='שאלון אמריקאי' 
+                                gameName='mc'
+                    />
+                </ScrollView>
+            </View>
         </View>
     );
 };

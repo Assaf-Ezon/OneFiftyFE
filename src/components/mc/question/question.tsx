@@ -70,7 +70,7 @@ const Question = () => {
                                 key={pirush}>
                                     <Text style={[
                                     QuestionStyle.optionText, 
-                                    {fontWeight: next && pirush === pirushim[0] ? '600' : '200', 
+                                    {fontWeight: next && pirush === pirushim[0] ? '600' : '300', 
                                     textDecorationLine: next && pirush === selectedPirush ? 'underline' : 'none'}]}>
                                         {pirush}
                                     </Text>

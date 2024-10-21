@@ -13,10 +13,7 @@ const PagePart = () => {
     const {isOpen, toggleMenu} = useSidebarContext();
 
     return (
-        <ScrollView pointerEvents={ isOpen ? 'none' : 'auto' } 
-                    contentContainerStyle={[{opacity: isOpen ? 0.2 : 1}, PagePartStyle.container]}
-                    showsVerticalScrollIndicator={false}
-                    bounces={false}>
+        <View>
             <View style={PagePartStyle.topPart}>
                 <View style={PagePartStyle.topPartText}>
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
@@ -25,10 +22,15 @@ const PagePart = () => {
                     <Text style={PagePartStyle.pageTitle}>מובילים</Text>
                 </View>
             </View>
-            <View style={PagePartStyle.mainPart}>
-                <TopRated />
+            <View style={PagePartStyle.ScrollviewContainer}>
+                <ScrollView pointerEvents={ isOpen ? 'none' : 'auto' } 
+                        contentContainerStyle={[{opacity: isOpen ? 0.2 : 1}, PagePartStyle.mainPart]}
+                        showsVerticalScrollIndicator={false}>
+                    <TopRated />
+                    <View style={PagePartStyle.blank}></View>
+                </ScrollView>
             </View>
-        </ScrollView>
+        </View>
     );
 };  
 

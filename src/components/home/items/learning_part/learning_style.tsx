@@ -4,14 +4,14 @@ const { width, height } = Dimensions.get('window');
 
 const learningPartStyle = StyleSheet.create({
     container: {
-        width: '90%',
+        width: '100%',
         height: height * 0.4,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
     titleContainer: {
-        width: '100%',
+        width: '90%',
         height: '15%',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -24,10 +24,13 @@ const learningPartStyle = StyleSheet.create({
         fontSize: 22, 
         fontWeight: 'bold',
     },
+    cardsContainerContainer: {
+        width: '100%',
+    },
     cardsContainer: {
         flexDirection: 'row',
-        width: '100%',
-        height: '100%',
+        width: '95%',
+        height: '85%',
         transform: [{ scaleX: -1 }],
     },
 });

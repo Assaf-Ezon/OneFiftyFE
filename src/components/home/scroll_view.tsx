@@ -18,7 +18,6 @@ const HomeScrollView = () => {
             <WordOfTheDay />
             <LearningPartHome />
             <LeaderboardPart/>
-
             <View style={HomeScrollViewStyle.blankSpace}></View>
         </ScrollView>
     )
