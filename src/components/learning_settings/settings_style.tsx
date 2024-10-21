@@ -18,7 +18,6 @@ const SettingsStyle = StyleSheet.create({
         shadowRadius: 5,
     },
     upperPart: {
-        backgroundColor: 'red',
         width: '90%',
         height: '10%',
         flexDirection: 'row',
@@ -34,18 +33,45 @@ const SettingsStyle = StyleSheet.create({
 
     },
     SettingsPart: {
-        backgroundColor: 'blue',
         width: '90%',
         height: '55%',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'flex-end',
     },
-    selectLevels: {
+    SmartStudyDescription: {
+        textAlign: 'right',
+        marginBottom: 10,
+    },
+    SmartStudy: {
         flexDirection: 'row',
+        alignItems: 'center',
+    },
+    SmartStudyText: {
+        marginRight: 8,
+        fontSize: 18,
+        fontWeight: '500',
+    },
+    PickLevel: {
+        width: '100%',
+        height: '25%',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+
+    },
+    ChooseLevelText: {
+        textAlign: 'right',
+        fontSize: 18,
+    },
+    selectLevels: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    checkboxContainer: {
+        alignItems: 'center',
     },
     LowerPart: {
-        backgroundColor: 'green',
         width: '90%',
         height: '20%',
         justifyContent: 'center',
