@@ -1,6 +1,7 @@
 import { Text, View, ScrollView } from 'react-native';
 import { FC } from 'react';
 import { IMAGES } from '../../../image_handler';
+import { GAMES } from '../../../game_objects';
 
 import allGamesStyle from './all_games_style';
 
@@ -14,18 +15,17 @@ const AllGamesPart: FC = () => {
             </View>
             <View style={allGamesStyle.cardsContainerConatiner}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
-                    <LearningCard image={IMAGES.profile_image} 
-                                title='ידעתי/לא ידעתי' 
-                                gameName='kdk'
-                    />
-                    <LearningCard image={IMAGES.profile_image} 
-                                title='שאלון אמריקאי' 
-                                gameName='mc'
-                    />
-                    <LearningCard image={IMAGES.profile_image} 
-                                title='מתח את הקו' 
-                                gameName=''
-                    />
+                {
+                    GAMES.map(game => {
+                        return (
+                            <LearningCard image={IMAGES.profile_image} 
+                                title={game.name} 
+                                gameName={game.page_name}
+                                key={game.id}
+                            />
+                        );
+                    })
+                }
                 </ScrollView>
             </View>
         </View>
