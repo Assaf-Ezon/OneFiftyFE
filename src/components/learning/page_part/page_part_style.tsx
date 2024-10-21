@@ -45,7 +45,7 @@ const PagePartStyle = StyleSheet.create({
     },
     settingsBtn: {
         backgroundColor: '#FF7518',
-        width: '40%',
+        width: '100%',
         height: height * 0.05,
         flexDirection: 'row',
         justifyContent: 'center',

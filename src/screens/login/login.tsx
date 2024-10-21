@@ -1,6 +1,6 @@
 import React, { useState, FC } from 'react';
 import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react-native';
-import CheckBox from 'expo-checkbox'
+import CheckBox from 'expo-checkbox';
 import LoginScreenStyle from './login_style';
 import { IMAGES } from '../../image_handler';
 

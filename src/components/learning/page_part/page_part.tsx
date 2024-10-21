@@ -8,14 +8,16 @@ import AllGamesPart from '../all_games/all_games';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
+import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 
 
 const PagePart = () => {
     const {profile} = useProfile();
     const {isOpen, toggleMenu} = useSidebarContext();
+    const {isLearningSettingOpen, toggleLearningSettings} = useLearningSettingsContext();
 
     return (
-        <View>
+        <View style={{ opacity: isLearningSettingOpen ? 0.2 : 1 }}>
             <View style={PagePartStyle.topPart}>
                 <View style={PagePartStyle.topPartText}>
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
@@ -30,7 +32,7 @@ const PagePart = () => {
                         showsVerticalScrollIndicator={false}>
 
                     <View style={PagePartStyle.settingBtnContainer}>
-                        <TouchableOpacity style={PagePartStyle.settingsBtn} onPress={() => {}}>
+                        <TouchableOpacity style={PagePartStyle.settingsBtn} onPress={() => {toggleLearningSettings()}}>
                             <Text style={PagePartStyle.settingsBtnText}>הגדרות</Text>
                             <Image source={IMAGES.settings} />
                         </TouchableOpacity>
