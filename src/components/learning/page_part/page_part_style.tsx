@@ -32,10 +32,19 @@ const PagePartStyle = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
+    ScrollviewContainer: {
+        width: '100%',
+        height: height * 0.82,
+    },
     mainPart: {
+        flexGrow: 1,
         flexDirection: 'column',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
+    },
+    blank: {
+        height: height * 0.2,
     },
 });
 
