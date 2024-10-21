@@ -12,20 +12,22 @@ const AllGamesPart: FC = () => {
             <View style={allGamesStyle.titleContainer}>
                 <Text style={allGamesStyle.title}>כל הלומדות</Text>   
             </View>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
-                <LearningCard image={IMAGES.profile_image} 
-                            title='ידעתי/לא ידעתי' 
-                            gameName='kdk'
-                />
-                <LearningCard image={IMAGES.profile_image} 
-                            title='שאלון אמריקאי' 
-                            gameName='mc'
-                />
-                <LearningCard image={IMAGES.profile_image} 
-                            title='מתח את הקו' 
-                            gameName=''
-                />
-            </ScrollView>
+            <View style={allGamesStyle.cardsContainerConatiner}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
+                    <LearningCard image={IMAGES.profile_image} 
+                                title='ידעתי/לא ידעתי' 
+                                gameName='kdk'
+                    />
+                    <LearningCard image={IMAGES.profile_image} 
+                                title='שאלון אמריקאי' 
+                                gameName='mc'
+                    />
+                    <LearningCard image={IMAGES.profile_image} 
+                                title='מתח את הקו' 
+                                gameName=''
+                    />
+                </ScrollView>
+            </View>
         </View>
     );
 };
