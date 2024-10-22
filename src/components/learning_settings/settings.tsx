@@ -10,7 +10,7 @@ import SettingsStyle from './settings_style';
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 
 const LearningSettings = () => {
-    const {isLearningSettingOpen, toggleLearningSettings} = useLearningSettingsContext();
+    const {isLearningSettingOpen, toggleLearningSettings, settings, setSettings} = useLearningSettingsContext();
 
     const [smartStudy, setSmartStudy] = useState<boolean>(true);
 
@@ -23,8 +23,8 @@ const LearningSettings = () => {
     };
 
     const [langItems, setLangItems] = useState<LangItemsType[]>([
-        {label: 'עברית', value: 'Hebrew'},
         {label: 'אנגלית', value: 'English'},
+        {label: 'עברית', value: 'Hebrew'},
     ]);
 
     const [levels, setLevels] = useState<[number, boolean][]>([
@@ -80,7 +80,7 @@ const LearningSettings = () => {
                         {
                             levels.map(level => {
                                 return (
-                                    <View style={SettingsStyle.checkboxContainer}>
+                                    <View style={SettingsStyle.checkboxContainer} key={level[0]}>
                                         <CheckBox value={level[1]} onValueChange={() => {toggleSpecificLevel(level[0])}} />
                                         <Text>{level[0]}</Text>
                                     </View>

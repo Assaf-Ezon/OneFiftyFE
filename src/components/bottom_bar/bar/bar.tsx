@@ -22,7 +22,7 @@ const BottomBar: FC<bottomBarProp> = ({ homePath, dictionaryPath, learningPath, 
     const {isLearningSettingOpen} = useLearningSettingsContext();
 
     return (
-        <View pointerEvents={ isOpen ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen ? 0.2 : 1}, barStyle.container]}>
+        <View pointerEvents={ isOpen || isLearningSettingOpen ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen ? 0.2 : 1}, barStyle.container]}>
             <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == "profile" ? true : false} screenName='profile' />
             <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == "leaderboard" ? true : false} screenName='leaderboard' />
             <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == "learning" ? true : false} screenName='learning' />

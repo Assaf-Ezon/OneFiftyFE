@@ -27,7 +27,7 @@ const PagePart = () => {
                 </View>
             </View>
             <View style={PagePartStyle.ScrollviewContainer}>
-                <ScrollView pointerEvents={ isOpen ? 'none' : 'auto' } 
+                <ScrollView pointerEvents={ isOpen || isLearningSettingOpen ? 'none' : 'auto' } 
                         contentContainerStyle={[{opacity: isOpen ? 0.2 : 1}, PagePartStyle.mainPart]}
                         showsVerticalScrollIndicator={false}>
 
