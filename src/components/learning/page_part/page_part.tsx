@@ -12,8 +12,7 @@ import { useLearningSettingsContext } from '../../../context/settings_context/le
 
 const PagePart = () => {
     const {isOpen, toggleMenu} = useSidebarContext();
-    const {isLearningSettingOpen, toggleLearningSettings, settings} = useLearningSettingsContext();
-    console.log(settings);
+    const {isLearningSettingOpen, toggleLearningSettings} = useLearningSettingsContext();
 
     return (
         <View style={{ opacity: isLearningSettingOpen ? 0.2 : 1 }}>

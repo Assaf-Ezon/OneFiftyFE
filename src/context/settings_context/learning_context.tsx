@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface Settings {
-    smartStudy: boolean | null;
+    smartStudy: boolean;
     language: string | null;
     levels: [number, boolean][];
 }
@@ -22,7 +22,7 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         setIsLearningSettingOpen(prev => !prev);
     };
 
-    const [settings, setSettings] = useState<Settings>({smartStudy: null, language: null, 
+    const [settings, setSettings] = useState<Settings>({smartStudy: true, language: null, 
         levels: [
             [1, false],
             [2, false],

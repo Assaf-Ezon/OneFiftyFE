@@ -73,7 +73,6 @@ const LearningSettings = () => {
                 language: langValue,
                 levels: levels
             });
-            console.log(settings);
             setIsFilledCorrectly(true);
             toggleLearningSettings();
         } else {

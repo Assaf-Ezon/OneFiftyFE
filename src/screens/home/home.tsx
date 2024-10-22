@@ -1,4 +1,3 @@
-import { ScrollView, View } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
 import HomeScreenStyle from './home_style';
