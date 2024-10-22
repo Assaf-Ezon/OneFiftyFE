@@ -71,6 +71,10 @@ const SettingsStyle = StyleSheet.create({
     checkboxContainer: {
         alignItems: 'center',
     },
+    popupMsg: {
+        color: 'red',
+        fontWeight: '600',
+    },
     LowerPart: {
         width: '90%',
         height: '20%',

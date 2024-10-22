@@ -10,23 +10,32 @@ import SettingsStyle from './settings_style';
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 
 const LearningSettings = () => {
+    // settings context
     const {isLearningSettingOpen, toggleLearningSettings, settings, setSettings} = useLearningSettingsContext();
 
+    // flag for if filled correctly
+    const [isfilledCorrectly, setIsFilledCorrectly] = useState<boolean>(true);
+
+    // state handling for smart study checkbox
     const [smartStudy, setSmartStudy] = useState<boolean>(true);
 
+    // state handling for language dropdown menu - 1. for open and close menu. 2. for choosing the value.
     const [langOpen, setLangOpen] = useState<boolean>(false);
-    const [langValue, setLangValue] = useState<string | null>(null);
+    const [langValue, setLangValue] = useState<string | null>(null); 
 
+    // type of the items for the dropdown menu
     type LangItemsType = {
         label: string;
         value: string;
     };
 
+    // the options for the dropdown menu
     const [langItems, setLangItems] = useState<LangItemsType[]>([
         {label: 'אנגלית', value: 'English'},
         {label: 'עברית', value: 'Hebrew'},
     ]);
 
+    // the checkbox options
     const [levels, setLevels] = useState<[number, boolean][]>([
         [10, false],
         [9, false],
@@ -40,6 +49,7 @@ const LearningSettings = () => {
         [1, false],
     ]);
 
+    // updates the levels list state
     const toggleSpecificLevel = (level: number) => { 
         setLevels(prev => 
             prev.map(prevLevel => 
@@ -48,6 +58,27 @@ const LearningSettings = () => {
                 : prevLevel
             )
         );
+    };
+
+    // checks if the form is filled correctly
+    const checkForm = () => {
+        return (smartStudy) || (langValue && levels.some(level => level[1] === true));
+    };
+
+    // updates the settings context with the choosen settings
+    const updateSettings = () => {
+        if (checkForm()) {
+            setSettings({
+                smartStudy: smartStudy,
+                language: langValue,
+                levels: levels
+            });
+            console.log(settings);
+            setIsFilledCorrectly(true);
+            toggleLearningSettings();
+        } else {
+            setIsFilledCorrectly(false);
+        }
     };
 
     return (
@@ -89,9 +120,13 @@ const LearningSettings = () => {
                         }
                     </View>
                 </View>
+                {
+                    isfilledCorrectly ? null :
+                    <Text style={SettingsStyle.popupMsg}>אנא בחר שפה + רמות / תרגול חכם</Text>
+                }
             </View>
             <View style={SettingsStyle.LowerPart}>
-                <TouchableOpacity style={SettingsStyle.submitBtn} onPress={() => {toggleLearningSettings()}}>
+                <TouchableOpacity style={SettingsStyle.submitBtn} onPress={() => {updateSettings()}}>
                     <Text style={SettingsStyle.submitBtnText}>אישור</Text>
                 </TouchableOpacity>
             </View>
