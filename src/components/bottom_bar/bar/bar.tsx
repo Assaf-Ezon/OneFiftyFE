@@ -6,6 +6,7 @@ import barStyle from './bar_style';
 import BottomBarIcon from '../icon/icon';
 
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
+import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 
 interface bottomBarProp {
     activeScreen: string;
@@ -18,9 +19,10 @@ interface bottomBarProp {
 
 const BottomBar: FC<bottomBarProp> = ({ homePath, dictionaryPath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
     const {isOpen} = useSidebarContext();
-    
+    const {isLearningSettingOpen} = useLearningSettingsContext();
+
     return (
-        <View pointerEvents={ isOpen ? 'none' : 'auto' } style={[{opacity: isOpen ? 0.2 : 1}, barStyle.container]}>
+        <View pointerEvents={ isOpen || isLearningSettingOpen ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen ? 0.2 : 1}, barStyle.container]}>
             <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == "profile" ? true : false} screenName='profile' />
             <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == "leaderboard" ? true : false} screenName='leaderboard' />
             <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == "learning" ? true : false} screenName='learning' />

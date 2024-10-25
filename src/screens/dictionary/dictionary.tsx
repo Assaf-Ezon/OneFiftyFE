@@ -8,21 +8,24 @@ import PagePart from '../../components/dictionary/page_part';
 
 import { ProfileProvider } from '../../context/general_context/profile_context';
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
+import { LearningSettingsProvider } from '../../context/settings_context/learning_context';
 
 const DictionaryPage = ({ navigation }: {navigation: any}) => {
     return (
         <ProfileProvider>
             <SidebarProvider>
-                <PagePart />
-                <BottomBar 
-                    activeScreen={"dictionary"}
-                    homePath={IMAGES.unused_home}
-                    dictionaryPath={IMAGES.used_dictionary}
-                    learningPath={IMAGES.unused_learning}
-                    leaderboardPath={IMAGES.unused_leaderboard}
-                    profilePath={IMAGES.unused_profile}
-                />
-                <SideBar/>
+                <LearningSettingsProvider>
+                    <PagePart />
+                    <BottomBar 
+                        activeScreen={"dictionary"}
+                        homePath={IMAGES.unused_home}
+                        dictionaryPath={IMAGES.used_dictionary}
+                        learningPath={IMAGES.unused_learning}
+                        leaderboardPath={IMAGES.unused_leaderboard}
+                        profilePath={IMAGES.unused_profile}
+                    />
+                    <SideBar/>
+                </LearningSettingsProvider>
             </SidebarProvider>
         </ProfileProvider>
     );

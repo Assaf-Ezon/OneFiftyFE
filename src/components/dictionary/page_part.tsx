@@ -13,7 +13,7 @@ const PagePart = () => {
 
     return (
         <SettingsProvider>
-            <View style={[PagePartStyle.container, {opacity: isOpen ? 0.2 : 1}]}>
+            <View style={[PagePartStyle.container, {opacity: isOpen ? 0.2 : 1}]} pointerEvents={ isOpen ? 'none' : 'auto' }>
                 <View style={PagePartStyle.topPart}>
                     <View style={PagePartStyle.topPartText}>
                         <TouchableOpacity onPress={() => {toggleMenu()}}>

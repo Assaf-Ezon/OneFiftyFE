@@ -12,8 +12,8 @@ const barStyle = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         borderRadius: 80,
-        shadowOpacity: 0.02,
-        shadowRadius: 1,
+        shadowOpacity: 0.05,
+        shadowRadius: 2,
         backgroundColor: 'white',
     },
 });

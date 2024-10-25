@@ -35,6 +35,30 @@ const PagePartStyle = StyleSheet.create({
     ScrollviewContainer: {
         width: '100%',
         height: height * 0.82,
+        flexDirection: 'column',
+    },
+    settingBtnContainer: {
+        width: '90%',
+        height: '8%',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+    },
+    settingsBtn: {
+        backgroundColor: '#FF7518',
+        width: '100%',
+        height: height * 0.05,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 20,
+        shadowOpacity: 0.1,
+        shadowRadius: 1,
+    },
+    settingsBtnText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: '600',
+        marginRight: 5,
     },
     mainPart: {
         flexGrow: 1,
