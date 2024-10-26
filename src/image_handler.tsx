@@ -37,6 +37,8 @@ export const IMAGES = {
     score_icon: require('../assets/generic icons/score_icon.png'),
     back_icon: require('../assets/generic icons/back_icon.png'),
 
+    change_profile_image: require('../assets/profile page icons/change_profile_image.png'),
+
     reset_password: require('../assets/profile page icons/reset_password_icon.png'),
     subscription: require('../assets/profile page icons/subscription_icon.png'),
     payment: require('../assets/profile page icons/payment_icon.png'),

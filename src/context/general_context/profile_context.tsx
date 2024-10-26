@@ -20,7 +20,7 @@ interface ProfileContextProps {
 export const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
 
 export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [profile, setProfile] = useState<Profile>({name: 'אסף איזון', email: 'assafezon@gmail.com', rank: 1, score: 100, dateJoined: new Date('2024-08-20'), expirationDate: new Date('2025-08-20'), profileImage: IMAGES[10]});
+    const [profile, setProfile] = useState<Profile>({name: 'אסף איזון', email: 'assafezon@gmail.com', rank: 1, score: 100, dateJoined: new Date('2024-08-20'), expirationDate: new Date('2025-08-20'), profileImage: IMAGES[0]});
 
     return (
         <ProfileContext.Provider value={{ profile, setProfile }}>

@@ -24,13 +24,26 @@ const TitleStyle = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
-    profileImage: {
-        width: width * 0.3,
-        height: width * 0.3,
+    profileImageContainer: {
         position: 'absolute',
         left: width * 0.35,
         top: height * 0.12,
+    },
+    profileImage: {
+        width: width * 0.3,
+        height: width * 0.3,
         borderRadius: 100,
+    },
+    changeImageIconContainer: {
+        width: width * 0.08,
+        height: width * 0.08,
+        position: 'absolute',
+        left: width * 0.22,
+        top: height * 0.1,
+    },
+    changeImageIcon: {
+        width: '100%',
+        height: '100%',
     },
     profileTitle: {
         width: width * 0.8,

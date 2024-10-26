@@ -18,10 +18,15 @@ const Title = () => {
                     <Image source={IMAGES.side_menu} />
                 </TouchableOpacity>  
             </View>
-            <Image style={TitleStyle.profileImage} source={IMAGES.profile_image} />
+            <View style={TitleStyle.profileImageContainer}>
+                <Image style={TitleStyle.profileImage} source={profile.profileImage} />
+                <TouchableOpacity style={TitleStyle.changeImageIconContainer}>
+                    <Image style={TitleStyle.changeImageIcon} source={IMAGES.change_profile_image} />
+                </TouchableOpacity>
+            </View>
             <View style={TitleStyle.profileTitle}>
-                <Text style={TitleStyle.name}>{profile?.name}</Text>
-                <Text style={TitleStyle.email}>{profile?.email}</Text>
+                <Text style={TitleStyle.name}>{profile.name}</Text>
+                <Text style={TitleStyle.email}>{profile.email}</Text>
             </View>
         </View>
     );
