@@ -29,7 +29,7 @@ export const ProfileImageProvider: FC<{ children: ReactNode }> = ({ children }) 
 export const useProfileImageMenuContext = () => {
     const context = useContext(ProfileImageContext);
     if (context === undefined) {
-        throw new Error('not initialized profile image menu toggle');
+        throw new Error('Trying to reach profile image popup context outside of provider');
     }
     return context;
 };

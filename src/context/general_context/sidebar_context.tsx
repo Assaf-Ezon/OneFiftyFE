@@ -24,7 +24,7 @@ export const SidebarProvider: FC<{ children: ReactNode }> = ({ children }) => {
 export const useSidebarContext = () => {
     const context = useContext(SidebarContext);
     if (context === undefined) {
-        throw new Error('not initialized sidebar toggle');
+        throw new Error('Trying to reach sidebar context outside of provider');
     }
     return context;
 };
