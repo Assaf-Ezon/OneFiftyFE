@@ -17,10 +17,10 @@ const ProfilePartHome: FC = () => {
             </TouchableOpacity>
             <View style={profilePartStyle.profileContainer}>
                 <View style={profilePartStyle.profileDetailsContainer}>
-                    <Text style={profilePartStyle.profileNameText}>{profile?.name}</Text>
-                    <Text style={profilePartStyle.profileEmailText}>{profile?.email}</Text>
+                    <Text style={profilePartStyle.profileNameText}>{profile.name}</Text>
+                    <Text style={profilePartStyle.profileEmailText}>{profile.email}</Text>
                 </View>
-                <Image style={profilePartStyle.profileImage} source={IMAGES.profile_image} />
+                <Image style={profilePartStyle.profileImage} source={profile.profileImage} />
             </View>
         </View>
     );

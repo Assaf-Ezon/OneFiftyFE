@@ -41,10 +41,10 @@ const SideBar = () => {
                     </TouchableOpacity>
                     <View style={barStyle.userContent}>
                         <View style={barStyle.profileDetailsContainer}>
-                            <Text style={barStyle.profileNameText}>{profile?.name}</Text>
-                            <Text style={barStyle.profileEmailText}>{profile?.email}</Text>
+                            <Text style={barStyle.profileNameText}>{profile.name}</Text>
+                            <Text style={barStyle.profileEmailText}>{profile.email}</Text>
                         </View>
-                        <Image style={barStyle.profileImage} source={IMAGES.profile_image} />
+                        <Image style={barStyle.profileImage} source={profile.profileImage} />
                     </View>
                 </View>
             </View>

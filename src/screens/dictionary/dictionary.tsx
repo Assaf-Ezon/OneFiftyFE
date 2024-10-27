@@ -12,22 +12,20 @@ import { LearningSettingsProvider } from '../../context/settings_context/learnin
 
 const DictionaryPage = ({ navigation }: {navigation: any}) => {
     return (
-        <ProfileProvider>
-            <SidebarProvider>
-                <LearningSettingsProvider>
-                    <PagePart />
-                    <BottomBar 
-                        activeScreen={"dictionary"}
-                        homePath={IMAGES.unused_home}
-                        dictionaryPath={IMAGES.used_dictionary}
-                        learningPath={IMAGES.unused_learning}
-                        leaderboardPath={IMAGES.unused_leaderboard}
-                        profilePath={IMAGES.unused_profile}
-                    />
-                    <SideBar/>
-                </LearningSettingsProvider>
-            </SidebarProvider>
-        </ProfileProvider>
+        <SidebarProvider>
+            <LearningSettingsProvider>
+                <PagePart />
+                <BottomBar 
+                    activeScreen={"dictionary"}
+                    homePath={IMAGES.unused_home}
+                    dictionaryPath={IMAGES.used_dictionary}
+                    learningPath={IMAGES.unused_learning}
+                    leaderboardPath={IMAGES.unused_leaderboard}
+                    profilePath={IMAGES.unused_profile}
+                />
+                <SideBar/>
+            </LearningSettingsProvider>
+        </SidebarProvider>
     );
 };
 

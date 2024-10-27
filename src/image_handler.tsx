@@ -1,5 +1,19 @@
 export const IMAGES = {
-    profile_image: require('../assets/testing/profile_picture.jpg'),
+    profile_image: require('../assets/profile image icons/profile_picture.jpg'),
+    profile_images: {
+        0: require('../assets/profile image icons/default.png'),
+        1: require('../assets/profile image icons/1.png'),
+        2: require('../assets/profile image icons/2.png'),
+        3: require('../assets/profile image icons/3.png'),
+        4: require('../assets/profile image icons/4.png'),
+        5: require('../assets/profile image icons/5.png'),
+        6: require('../assets/profile image icons/6.png'),
+        7: require('../assets/profile image icons/7.png'),
+        8: require('../assets/profile image icons/8.png'),
+        9: require('../assets/profile image icons/9.png'),
+        10: require('../assets/profile image icons/10.png'),
+        11: require('../assets/profile image icons/11.png'),
+    },
 
     small_logo: require('../assets/login icons/small_logo.png'),
     logo: require('../assets/login icons/logo.png'),
@@ -25,6 +39,8 @@ export const IMAGES = {
     side_menu: require('../assets/generic icons/side_menu_icon.png'),
     score_icon: require('../assets/generic icons/score_icon.png'),
     back_icon: require('../assets/generic icons/back_icon.png'),
+
+    change_profile_image: require('../assets/profile page icons/change_profile_image.png'),
 
     reset_password: require('../assets/profile page icons/reset_password_icon.png'),
     subscription: require('../assets/profile page icons/subscription_icon.png'),

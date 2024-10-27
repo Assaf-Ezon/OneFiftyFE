@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { useState } from 'react';
 
 import SplashScreen from './src/screens/splash/splash'
 import StartScreen from './src/screens/start/start';
@@ -17,28 +18,47 @@ import ProfilePage from './src/screens/profile/profile';
 import KdkPage from './src/screens/kdk/kdk';
 import McPage from './src/screens/mc/mc';
 
+import { ProfileProvider } from './src/context/general_context/profile_context';
+
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+const AuthStack = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='splash'>
-        <Stack.Screen name='splash' component={SplashScreen} options={{ headerShown: false }} />
+    <Stack.Navigator initialRouteName="splash">
+      <Stack.Screen name='splash' component={SplashScreen} options={{ headerShown: false }} />
         <Stack.Screen name='start' component={StartScreen} options={{ headerShown: false }} />
 
         <Stack.Screen name='signup' component={SignupScreen} options={{ headerShown: false }} />
         <Stack.Screen name='login' component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name='forgot_password' component={ForgotPasswordScreen} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  );
+};
 
-        <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
-        <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
-        <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
-        <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
-        <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
+const MainAppStack = () => {
+  return (
+    <ProfileProvider>
+      <Stack.Navigator initialRouteName="home">
+          <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
+          <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
+          <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
+          <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
+          <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
 
-        <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
-        <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
+          <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
+          <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
       </Stack.Navigator>
+    </ProfileProvider>
+
+  );
+};
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  
+  return (
+    <NavigationContainer>
+      {isLoggedIn ? <MainAppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };

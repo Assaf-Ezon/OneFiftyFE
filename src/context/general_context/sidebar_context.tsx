@@ -8,7 +8,7 @@ interface SidebarContextProps {
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
 export const SidebarProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const toggleMenu = () => {
         setIsOpen(prev => !prev);

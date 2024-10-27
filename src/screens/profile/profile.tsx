@@ -5,16 +5,18 @@ import ProfileScreenStyle from './profile_style';
 import BottomBar from '../../components/bottom_bar/bar/bar';
 import SideBar from '../../components/side_bar/bar/bar';
 import PagePart from '../../components/profile/page_part/page_part';
+import ChangeProfileImagePopup from '../../components/profile/change_profile_image/change_profile_image';
 
 import { ProfileProvider } from '../../context/general_context/profile_context';
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
 import { LearningSettingsProvider } from '../../context/settings_context/learning_context';
+import { ProfileImageProvider } from '../../context/settings_context/profile_image_context';
 
 const ProfilePage = ({ navigation }: {navigation: any}) => {
     return (
-        <ProfileProvider>
-            <SidebarProvider>
-                <LearningSettingsProvider>
+        <SidebarProvider>
+            <LearningSettingsProvider>
+                <ProfileImageProvider>
                     <PagePart />
                     <BottomBar 
                         activeScreen={"profile"}
@@ -25,9 +27,10 @@ const ProfilePage = ({ navigation }: {navigation: any}) => {
                         profilePath={IMAGES.used_profile}
                     />
                     <SideBar/>
-                </LearningSettingsProvider>
-            </SidebarProvider>
-        </ProfileProvider>
+                    <ChangeProfileImagePopup />
+                </ProfileImageProvider>
+            </LearningSettingsProvider>
+        </SidebarProvider>
     );
 };
 
