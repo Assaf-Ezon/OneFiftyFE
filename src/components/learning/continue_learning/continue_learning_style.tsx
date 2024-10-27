@@ -32,6 +32,33 @@ const learningPartStyle = StyleSheet.create({
         height: '100%',
         transform: [{ scaleX: -1 }],
     },
+    playSomethingContainer: {
+        transform: [{ scaleX: -1 }],
+        width: width * 0.6,
+        borderWidth: 0.2,
+        borderRadius: 20,
+    },
+    cardImage: {
+        width: '100%',
+        flex: 1,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        overflow: 'hidden',
+    },
+    textContainer: {
+        width: '100%',
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+    },
+    titleText: {
+        width: '90%',
+        textAlign: 'center',
+        margin: 5,
+        fontSize: 20,
+        fontWeight: '600',
+    },
 });
 
 export default learningPartStyle;

@@ -18,7 +18,8 @@ const AllGamesPart: FC = () => {
                 {
                     GAMES.map(game => {
                         return (
-                            <LearningCard image={IMAGES.profile_image} 
+                            <LearningCard id={game.id}
+                                image={IMAGES.profile_image} 
                                 title={game.name} 
                                 gameName={game.page_name}
                                 key={game.id}

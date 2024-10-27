@@ -1,25 +1,41 @@
 import { View, Text, TouchableOpacity, ImageSourcePropType, Image } from 'react-native';
 import { FC } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
 
 interface LearningCardProp {
+    id: number;
     image: ImageSourcePropType;
     title: string;
     gameName: string;
 }
 
-const LearningCard: FC<LearningCardProp> = ({ image, title, gameName }) => {
+const LearningCard: FC<LearningCardProp> = ({ id, image, title, gameName }) => {
     const navigation = useNavigation();
+
+    const handlePress = async () => {
+        try {
+            const games = await AsyncStorage.getItem('games');
+            const parsedGames = games ? JSON.parse(games) : {};
+
+            const updatedGames = [...parsedGames, id];
+            await AsyncStorage.setItem('games',  JSON.stringify(updatedGames));
+        } catch (error) {
+            console.error('Error adding game: ', error);
+        }
+
+        navigation.navigate(gameName);
+    };
 
     return (
         <View style={cardStyle.container}>
             <Image source={image} style={cardStyle.cardImage} />
             <View style={cardStyle.textContainer}>
                 <Text style={cardStyle.titleText}>{title}</Text>
-                <TouchableOpacity style={cardStyle.btn} onPress={() => {navigation.navigate(gameName)}}>
+                <TouchableOpacity style={cardStyle.btn} onPress={() => {handlePress()}}>
                     <Text style={cardStyle.btnText}>התחל משחק</Text>
                 </TouchableOpacity>
             </View>
