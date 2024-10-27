@@ -19,11 +19,10 @@ const ChangeProfileImageStyle = StyleSheet.create({
     },
     titleContainer: {
         width: '90%',
-        height: '10%',
+        height: '20%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'red',
     },
     title: {
         fontSize: 25,
@@ -31,13 +30,27 @@ const ChangeProfileImageStyle = StyleSheet.create({
     },
     imagesContainer: {
         width: '90%',
-        height: '55%',
-        backgroundColor: 'blue',
+        height: '58%',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
     },
     submitContainer: {
         width: '90%',
         height: '25%',
-        backgroundColor: 'green',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    submitBtn: {
+        backgroundColor: '#7F5CA6',
+        width: '50%',
+        height: '40%',
+        borderRadius: 60,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    submitBtnText: {
+        color: 'white',
     },
 });
 

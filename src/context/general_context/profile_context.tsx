@@ -15,15 +15,30 @@ interface Profile {
 interface ProfileContextProps {
     profile: Profile;
     setProfile: (profile: Profile) => void;
+    updateProfileImage: (newImage: ImageSourcePropType) => void;
 };
 
 export const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
 
 export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [profile, setProfile] = useState<Profile>({name: 'אסף איזון', email: 'assafezon@gmail.com', rank: 1, score: 100, dateJoined: new Date('2024-08-20'), expirationDate: new Date('2025-08-20'), profileImage: IMAGES.profile_images[0]});
+    const [profile, setProfile] = useState<Profile>({
+        name: 'אסף איזון', 
+        email: 'assafezon@gmail.com', 
+        rank: 1, 
+        score: 100, 
+        dateJoined: new Date('2024-08-20'), 
+        expirationDate: new Date('2025-08-20'), 
+        profileImage: IMAGES.profile_images[0]});
+
+    const updateProfileImage = (newImage: ImageSourcePropType) => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            profileImage: newImage,
+        }));
+    };
 
     return (
-        <ProfileContext.Provider value={{ profile, setProfile }}>
+        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage }}>
             {children}
         </ProfileContext.Provider>
     );

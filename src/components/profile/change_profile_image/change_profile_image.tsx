@@ -9,8 +9,13 @@ import { useProfileImageMenuContext } from '../../../context/settings_context/pr
 
 
 const ChangeProfileImagePopup = () => {
-    const {profile, setProfile} = useProfile();
-    const {isProfileImageMenuOpen, toggleProfileImageMenu} = useProfileImageMenuContext();
+    const {updateProfileImage} = useProfile();
+    const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex} = useProfileImageMenuContext();
+
+    const update = () => {
+        updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
+        toggleProfileImageMenu();
+    }   
 
     return (
         <View style={[{display: isProfileImageMenuOpen ? 'flex' : 'none'}, ChangeProfileImageStyle.container]}>
@@ -21,11 +26,17 @@ const ChangeProfileImagePopup = () => {
                 <Text style={ChangeProfileImageStyle.title}>בחר תמונת פרופיל: </Text>
             </View>
             <View style={ChangeProfileImageStyle.imagesContainer}>
-                <ProfileImageOption image={IMAGES.profile_images[1]} />
+                {
+                    Object.entries(IMAGES.profile_images).map(([key, image]) => {
+                        return (
+                            <ProfileImageOption id={Number(key)} image={image} />
+                        )   
+                    })
+                }
             </View>
             <View style={ChangeProfileImageStyle.submitContainer}>
-                <TouchableOpacity>
-                    <Text>בחר</Text>
+                <TouchableOpacity style={ChangeProfileImageStyle.submitBtn} onPress={update}>
+                    <Text style={ChangeProfileImageStyle.submitBtnText}>אישור</Text>
                 </TouchableOpacity>
             </View>
         </View>
