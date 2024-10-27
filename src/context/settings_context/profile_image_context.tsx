@@ -4,7 +4,7 @@ import { ImageSourcePropType } from 'react-native';
 interface ProfileImageContextProps {
     isProfileImageMenuOpen: boolean;
     toggleProfileImageMenu: () => void;
-    imageIndex: number;
+    imageIndex: number | null;
     setImageIndex: (image: number) => void;
 }
 
@@ -17,7 +17,7 @@ export const ProfileImageProvider: FC<{ children: ReactNode }> = ({ children }) 
         setIsProfileImageMenuOpen(prev => !prev);
     };
 
-    const [imageIndex, setImageIndex] = useState<number>(0);
+    const [imageIndex, setImageIndex] = useState<number | null>(null);
 
     return (
         <ProfileImageContext.Provider value={{ isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex, setImageIndex }}>

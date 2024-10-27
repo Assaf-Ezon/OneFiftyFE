@@ -12,22 +12,20 @@ import { LearningSettingsProvider } from '../../context/settings_context/learnin
 
 const HomePage = ({ navigation }: {navigation: any}) => {
     return (
-        <ProfileProvider>
-            <SidebarProvider>
-                <LearningSettingsProvider>
-                    <HomeScrollView />
-                    <BottomBar 
-                        activeScreen={"home"}
-                        homePath={IMAGES.used_home}
-                        dictionaryPath={IMAGES.unused_dictionary}
-                        learningPath={IMAGES.unused_learning}
-                        leaderboardPath={IMAGES.unused_leaderboard}
-                        profilePath={IMAGES.unused_profile}
-                    />
-                    <SideBar/>
-                </LearningSettingsProvider>
-            </SidebarProvider>
-        </ProfileProvider>
+        <SidebarProvider>
+            <LearningSettingsProvider>
+                <HomeScrollView />
+                <BottomBar 
+                    activeScreen={"home"}
+                    homePath={IMAGES.used_home}
+                    dictionaryPath={IMAGES.unused_dictionary}
+                    learningPath={IMAGES.unused_learning}
+                    leaderboardPath={IMAGES.unused_leaderboard}
+                    profilePath={IMAGES.unused_profile}
+                />
+                <SideBar/>
+            </LearningSettingsProvider>
+        </SidebarProvider>
     );
 };
 

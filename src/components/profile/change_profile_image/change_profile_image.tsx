@@ -9,8 +9,8 @@ import { useProfileImageMenuContext } from '../../../context/settings_context/pr
 
 
 const ChangeProfileImagePopup = () => {
-    const {updateProfileImage} = useProfile();
-    const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex} = useProfileImageMenuContext();
+    const {profile, updateProfileImage} = useProfile();
+    const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex, setImageIndex} = useProfileImageMenuContext();
 
     const update = () => {
         updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
@@ -29,7 +29,7 @@ const ChangeProfileImagePopup = () => {
                 {
                     Object.entries(IMAGES.profile_images).map(([key, image]) => {
                         return (
-                            <ProfileImageOption id={Number(key)} image={image} />
+                            <ProfileImageOption key={key} id={Number(key)} image={image} />
                         )   
                     })
                 }

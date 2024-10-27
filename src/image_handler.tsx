@@ -12,6 +12,7 @@ export const IMAGES = {
         8: require('../assets/profile image icons/8.png'),
         9: require('../assets/profile image icons/9.png'),
         10: require('../assets/profile image icons/10.png'),
+        11: require('../assets/profile image icons/11.png'),
     },
 
     small_logo: require('../assets/login icons/small_logo.png'),

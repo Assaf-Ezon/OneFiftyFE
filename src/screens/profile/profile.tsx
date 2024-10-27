@@ -14,25 +14,23 @@ import { ProfileImageProvider } from '../../context/settings_context/profile_ima
 
 const ProfilePage = ({ navigation }: {navigation: any}) => {
     return (
-        <ProfileProvider>
-            <SidebarProvider>
-                <LearningSettingsProvider>
-                    <ProfileImageProvider>
-                        <PagePart />
-                        <BottomBar 
-                            activeScreen={"profile"}
-                            homePath={IMAGES.unused_home}
-                            dictionaryPath={IMAGES.unused_dictionary}
-                            learningPath={IMAGES.unused_learning}
-                            leaderboardPath={IMAGES.unused_leaderboard}
-                            profilePath={IMAGES.used_profile}
-                        />
-                        <SideBar/>
-                        <ChangeProfileImagePopup />
-                    </ProfileImageProvider>
-                </LearningSettingsProvider>
-            </SidebarProvider>
-        </ProfileProvider>
+        <SidebarProvider>
+            <LearningSettingsProvider>
+                <ProfileImageProvider>
+                    <PagePart />
+                    <BottomBar 
+                        activeScreen={"profile"}
+                        homePath={IMAGES.unused_home}
+                        dictionaryPath={IMAGES.unused_dictionary}
+                        learningPath={IMAGES.unused_learning}
+                        leaderboardPath={IMAGES.unused_leaderboard}
+                        profilePath={IMAGES.used_profile}
+                    />
+                    <SideBar/>
+                    <ChangeProfileImagePopup />
+                </ProfileImageProvider>
+            </LearningSettingsProvider>
+        </SidebarProvider>
     );
 };
 
