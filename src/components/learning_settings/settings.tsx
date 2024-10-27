@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 import CheckBox from 'expo-checkbox';
-import { IMAGES } from '../../image_handler';
-
 import DropDownPicker from 'react-native-dropdown-picker';
+
+import { IMAGES } from '../../image_handler';
 
 import SettingsStyle from './settings_style';
 
@@ -17,11 +17,11 @@ const LearningSettings = () => {
     const [isfilledCorrectly, setIsFilledCorrectly] = useState<boolean>(true);
 
     // state handling for smart study checkbox
-    const [smartStudy, setSmartStudy] = useState<boolean>(true);
+    const [smartStudy, setSmartStudy] = useState<boolean>(settings.smartStudy);
 
     // state handling for language dropdown menu - 1. for open and close menu. 2. for choosing the value.
     const [langOpen, setLangOpen] = useState<boolean>(false);
-    const [langValue, setLangValue] = useState<string | null>(null); 
+    const [langValue, setLangValue] = useState<string | null>(settings.language); 
 
     // type of the items for the dropdown menu
     type LangItemsType = {
@@ -36,18 +36,7 @@ const LearningSettings = () => {
     ]);
 
     // the checkbox options
-    const [levels, setLevels] = useState<[number, boolean][]>([
-        [10, false],
-        [9, false],
-        [8, false],
-        [7, false],
-        [6, false],
-        [5, false],
-        [4, false],
-        [3, false],
-        [2, false],
-        [1, false],
-    ]);
+    const [levels, setLevels] = useState<[number, boolean][]>(settings.levels);
 
     // updates the levels list state
     const toggleSpecificLevel = (level: number) => { 

@@ -46,7 +46,7 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
 export const useLearningSettingsContext = () => {
     const context = useContext(LearningSettingsContext);
     if (context === undefined) {
-        throw new Error('not initialized learning settings toggle');
+        throw new Error('Trying to reach learning settings outside of provider');
     }
     return context;
 };

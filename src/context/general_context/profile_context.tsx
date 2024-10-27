@@ -47,7 +47,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
 export const useProfile = () => {
     const context = useContext(ProfileContext);
     if (!context) {
-      throw new Error('user information is empty!');
+      throw new Error('Trying to reach profile context outside of profile provider');
     }
     return context;
 };

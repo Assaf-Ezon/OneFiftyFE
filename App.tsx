@@ -19,6 +19,7 @@ import KdkPage from './src/screens/kdk/kdk';
 import McPage from './src/screens/mc/mc';
 
 import { ProfileProvider } from './src/context/general_context/profile_context';
+import { LearningSettingsProvider } from './src/context/settings_context/learning_context';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,16 +39,18 @@ const AuthStack = () => {
 const MainAppStack = () => {
   return (
     <ProfileProvider>
-      <Stack.Navigator initialRouteName="home">
-          <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
-          <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
-          <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
-          <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
-          <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
+      <LearningSettingsProvider>
+        <Stack.Navigator initialRouteName="home">
+            <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
+            <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
+            <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
+            <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
+            <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
 
-          <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
-          <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
-      </Stack.Navigator>
+            <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
+            <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </LearningSettingsProvider>
     </ProfileProvider>
 
   );

@@ -6,14 +6,13 @@ import BottomBar from '../../components/bottom_bar/bar/bar';
 import SideBar from '../../components/side_bar/bar/bar';
 import PagePart from '../../components/dictionary/page_part';
 
-import { ProfileProvider } from '../../context/general_context/profile_context';
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
-import { LearningSettingsProvider } from '../../context/settings_context/learning_context';
+import { ProfileImageProvider } from '../../context/settings_context/profile_image_context';
 
 const DictionaryPage = ({ navigation }: {navigation: any}) => {
     return (
         <SidebarProvider>
-            <LearningSettingsProvider>
+            <ProfileImageProvider>
                 <PagePart />
                 <BottomBar 
                     activeScreen={"dictionary"}
@@ -24,7 +23,7 @@ const DictionaryPage = ({ navigation }: {navigation: any}) => {
                     profilePath={IMAGES.unused_profile}
                 />
                 <SideBar/>
-            </LearningSettingsProvider>
+                </ProfileImageProvider>
         </SidebarProvider>
     );
 };

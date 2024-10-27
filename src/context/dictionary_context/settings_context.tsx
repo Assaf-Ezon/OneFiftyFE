@@ -25,7 +25,7 @@ export const SettingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
 export const useSettings = () => {
     const context = useContext(SettingsContext);
     if (!context) {
-      throw new Error("Settings aren't set");
+      throw new Error('Trying to reach dictionary settings context outside of provider');
     }
     return context;
 };

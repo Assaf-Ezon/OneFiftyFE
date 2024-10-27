@@ -7,6 +7,7 @@ import BottomBarIcon from '../icon/icon';
 
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 
 interface bottomBarProp {
     activeScreen: string;
@@ -20,9 +21,10 @@ interface bottomBarProp {
 const BottomBar: FC<bottomBarProp> = ({ homePath, dictionaryPath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
     const {isOpen} = useSidebarContext();
     const {isLearningSettingOpen} = useLearningSettingsContext();
+    const {isProfileImageMenuOpen} = useProfileImageMenuContext();
 
     return (
-        <View pointerEvents={ isOpen || isLearningSettingOpen ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen ? 0.2 : 1}, barStyle.container]}>
+        <View pointerEvents={ isOpen || isLearningSettingOpen || isProfileImageMenuOpen ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen || isProfileImageMenuOpen ? 0.2 : 1}, barStyle.container]}>
             <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == "profile" ? true : false} screenName='profile' />
             <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == "leaderboard" ? true : false} screenName='leaderboard' />
             <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == "learning" ? true : false} screenName='learning' />
