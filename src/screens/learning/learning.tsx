@@ -26,7 +26,7 @@ const LearningPage = ({ navigation }: {navigation: any}) => {
                         leaderboardPath={IMAGES.unused_leaderboard}
                         profilePath={IMAGES.unused_profile}
                     />
-                    <SideBar/>
+                    <SideBar />
                     <LearningSettings />
                 </LearningSettingsProvider>
             </SidebarProvider>

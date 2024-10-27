@@ -13,11 +13,11 @@ const TopRated = () => {
     return (
         <View style={TopRatedStyle.container}>
             <View style={TopRatedStyle.self}>
-                <Image source={IMAGES.profile_image} style={TopRatedStyle.profileImage} />
-                <Text style={TopRatedStyle.textName}>{profile?.name}</Text>
-                <Text style={TopRatedStyle.rankText}>מקום: {profile?.rank}</Text>
+                <Image source={profile.profileImage} style={TopRatedStyle.profileImage} />
+                <Text style={TopRatedStyle.textName}>{profile.name}</Text>
+                <Text style={TopRatedStyle.rankText}>מקום: {profile.rank}</Text>
                 <View style={TopRatedStyle.selfScore}>
-                    <Text style={TopRatedStyle.scoreText}>{profile?.score}</Text>
+                    <Text style={TopRatedStyle.scoreText}>{profile.score}</Text>
                     <Image source={IMAGES.score_icon} />
                 </View>
             </View>
