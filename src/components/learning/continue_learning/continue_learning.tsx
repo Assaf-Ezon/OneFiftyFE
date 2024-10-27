@@ -50,6 +50,7 @@ const ContinueLearningPart: FC = () => {
                                         image={game.image_route} 
                                         title={game.name}
                                         gameName={game.page_name}
+                                        key={game.id}
                                     />  
                                 )
                             })
