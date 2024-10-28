@@ -59,11 +59,11 @@ const SideBar = () => {
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} screenName={'profile'} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.settings} iconText='הגדרות' isRed={false} screenName={''} />
-                <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} screenName={''} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} screenName={''} />
+                <View style={barStyle.line} />
+                <SideBarIcon iconPath={IMAGES.information} iconText='תנאי שימוש' isRed={false} screenName={'terms'} />
             </View>
             <View style={barStyle.lowerPart}>
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} screenName={''} />

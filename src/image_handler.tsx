@@ -34,6 +34,7 @@ export const IMAGES = {
     settings: require('../assets/generic icons/settings_icon.png'),
     notification: require('../assets/generic icons/notification_icon.png'),
     problem: require('../assets/generic icons/report_problem_icon.png'),
+    information: require('../assets/generic icons/info_icon.png'),
     logout: require('../assets/generic icons/logout_icon.png'),
 
     side_menu: require('../assets/generic icons/side_menu_icon.png'),
