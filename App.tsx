@@ -15,6 +15,8 @@ import LearningPage from './src/screens/learning/learning';
 import LeaderboardPage from './src/screens/leaderboard/leaderboard';
 import ProfilePage from './src/screens/profile/profile';
 
+import TermsOfServicePage from './src/screens/terms_of_service/terms_of_service';
+
 import KdkPage from './src/screens/kdk/kdk';
 import McPage from './src/screens/mc/mc';
 
@@ -46,6 +48,8 @@ const MainAppStack = () => {
             <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
             <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
             <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
+
+            <Stack.Screen name='terms' component={TermsOfServicePage} options={{ headerShown: false }} />
 
             <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
             <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
