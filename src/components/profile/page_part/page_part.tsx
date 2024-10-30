@@ -9,15 +9,17 @@ import OptionList from '../option_list/option_list';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
-import ChangeProfileImagePopup from '../change_profile_image/change_profile_image';
+import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
 
 const PagePart = () => {
     const {profile} = useProfile();
     const {isOpen} = useSidebarContext();
     const {isProfileImageMenuOpen} = useProfileImageMenuContext();
+    const {isContactFormOpen} = useContactUsFormContext();
 
     return (
-        <View pointerEvents={ isOpen || isProfileImageMenuOpen ? 'none' : 'auto' } style={[{opacity: isOpen || isProfileImageMenuOpen ? 0.2 : 1}, PagePartStyle.container]}>
+        <View pointerEvents={ isOpen || isProfileImageMenuOpen || isContactFormOpen ? 'none' : 'auto' } 
+            style={[{opacity: isOpen || isProfileImageMenuOpen || isContactFormOpen ? 0.2 : 1}, PagePartStyle.container]}>
             <View style={PagePartStyle.title}>
                 <Title />
             </View>

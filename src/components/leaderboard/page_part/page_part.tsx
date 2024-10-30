@@ -3,17 +3,20 @@ import { IMAGES } from '../../../image_handler';
 
 import PagePartStyle from './page_part_style';
 
+import TopRated from '../top_rated/top_rated';
+
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
-import TopRated from '../top_rated/top_rated';
+import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
 
 
 const PagePart = () => {
     const {profile} = useProfile();
     const {isOpen, toggleMenu} = useSidebarContext();
+    const {isContactFormOpen} = useContactUsFormContext();
 
     return (
-        <View>
+        <View pointerEvents={ isOpen || isContactFormOpen ? 'none' : 'auto' } style={{opacity: isOpen || isContactFormOpen ? 0.2 : 1}}>
             <View style={PagePartStyle.topPart}>
                 <View style={PagePartStyle.topPartText}>
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
@@ -23,9 +26,8 @@ const PagePart = () => {
                 </View>
             </View>
             <View style={PagePartStyle.ScrollviewContainer}>
-                <ScrollView pointerEvents={ isOpen ? 'none' : 'auto' } 
-                        contentContainerStyle={[{opacity: isOpen ? 0.2 : 1}, PagePartStyle.mainPart]}
-                        showsVerticalScrollIndicator={false}>
+                <ScrollView contentContainerStyle={PagePartStyle.mainPart}
+                            showsVerticalScrollIndicator={false}>
                     <TopRated />
                     <View style={PagePartStyle.blank}></View>
                 </ScrollView>
