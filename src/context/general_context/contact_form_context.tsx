@@ -8,7 +8,7 @@ interface ContactUsFormContextProps {
 const ContactUsFormContext = createContext<ContactUsFormContextProps | undefined>(undefined);
 
 export const ContactUsFormProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [isContactFormOpen, setIsContactFormOpen] = useState<boolean>(false);
+    const [isContactFormOpen, setIsContactFormOpen] = useState<boolean>(true);
 
     const toggleOpenContactUsForm = () => {
         setIsContactFormOpen(prev => !prev);
