@@ -5,13 +5,16 @@ import LeaderboardScreenStyle from './leaderboard_style';
 import BottomBar from '../../components/bottom_bar/bar/bar';
 import SideBar from '../../components/side_bar/bar/bar';
 import PagePart from '../../components/leaderboard/page_part/page_part';
+import ContactForm from '../../components/contact_form/contact_form';
 
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
 import { ProfileImageProvider } from '../../context/settings_context/profile_image_context';
+import { ContactUsFormProvider } from '../../context/general_context/contact_form_context';
 
 const LeaderboardPage = ({ navigation }: {navigation: any}) => {
     return (
         <SidebarProvider>
+            <ContactUsFormProvider>
                 <ProfileImageProvider>
                     <PagePart />
                     <BottomBar 
@@ -23,7 +26,9 @@ const LeaderboardPage = ({ navigation }: {navigation: any}) => {
                         profilePath={IMAGES.unused_profile}
                     />
                     <SideBar/>
+                    <ContactForm />
                 </ProfileImageProvider>
+            </ContactUsFormProvider>
         </SidebarProvider>
     );
 };
