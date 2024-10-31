@@ -15,7 +15,7 @@ const ContinueLearningPart: FC = () => {
     useEffect(() => {
         const fetchGames = async () => {
             const gamesString = await AsyncStorage.getItem('games');
-            setGames(gamesString ? JSON.parse(gamesString) : {});
+            setGames(gamesString ? JSON.parse(gamesString) : []);
         };
 
         fetchGames();

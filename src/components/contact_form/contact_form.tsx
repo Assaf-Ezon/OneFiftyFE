@@ -1,30 +1,41 @@
-import { View, Text, TouchableOpacity, Image, TextInput, Animated } from "react-native";
-import { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, Image, TextInput, Animated, Dimensions } from "react-native";
+import { useEffect, useRef, useState } from "react";
 
 import { IMAGES } from "../../image_handler";
-import { fadeIn } from "../../animations/fade_animations";
 
 import ContactFormStyle from './contact_form_style';
 
 import { useContactUsFormContext } from "../../context/general_context/contact_form_context";
 import { useNavigation } from "@react-navigation/native";
 
+const { height } = Dimensions.get('window');
+
 const ContactForm = () => {
     const navigation = useNavigation();
-    
+
     const {isContactFormOpen, toggleOpenContactUsForm} = useContactUsFormContext();
 
     const [problemTitle, setProblemTitle] = useState<string>('');
     const [problemBody, setProblemBody] = useState<string>('');
     
     // animation
-    const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
+    const slideUpAnim = useRef(new Animated.Value(height)).current;
 
     useEffect(() => {
         if (isContactFormOpen) {
-            fadeIn(fadeAnim, 1, 100, true).start();
+            Animated.timing(slideUpAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(slideUpAnim, {
+                toValue: height * 0.6,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
         }
-    }, [isContactFormOpen, fadeAnim]);
+    }, [isContactFormOpen]);
 
     // sets swipe right to go back disabled when popup is open
     useEffect(() => {
@@ -41,7 +52,8 @@ const ContactForm = () => {
       };
 
     return (
-        <Animated.View style={[{display: isContactFormOpen ? 'flex' : 'none', opacity: fadeAnim}, ContactFormStyle.container]}>
+        <Animated.View style={[{transform: [{ translateY: slideUpAnim }]}, 
+                    ContactFormStyle.container]}>
             <View style={ContactFormStyle.titleContainer}>
                 <TouchableOpacity onPress={() => {toggleOpenContactUsForm()}}>
                     <Image source={IMAGES.back_icon} />

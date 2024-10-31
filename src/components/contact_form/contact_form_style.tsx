@@ -62,7 +62,7 @@ const ContactFormStyle = StyleSheet.create({
     },
     submitBtn: {
         backgroundColor: '#7F5CA6',
-        width: '60%',
+        width: '70%',
         height: '50%',
         borderRadius: 60,
         justifyContent: 'center',
@@ -70,6 +70,7 @@ const ContactFormStyle = StyleSheet.create({
     },
     submitBtnText: {
         color: 'white',
+        fontSize: 18,
     },
 });
 
