@@ -8,14 +8,17 @@ import AllGamesPart from '../all_games/all_games';
 
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
 
 
 const PagePart = () => {
     const {isOpen, toggleMenu} = useSidebarContext();
     const {isLearningSettingOpen, toggleLearningSettings} = useLearningSettingsContext();
+    const {isContactFormOpen} = useContactUsFormContext()
 
     return (
-        <View style={{ opacity: isLearningSettingOpen ? 0.2 : 1 }}>
+        <View style={{ opacity: isOpen || isLearningSettingOpen || isContactFormOpen ? 0.2 : 1 }}
+            pointerEvents={ isOpen || isLearningSettingOpen || isContactFormOpen ? 'none' : 'auto' }>
             <View style={PagePartStyle.topPart}>
                 <View style={PagePartStyle.topPartText}>
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
@@ -25,10 +28,8 @@ const PagePart = () => {
                 </View>
             </View>
             <View style={PagePartStyle.ScrollviewContainer}>
-                <ScrollView pointerEvents={ isOpen || isLearningSettingOpen ? 'none' : 'auto' } 
-                        contentContainerStyle={[{opacity: isOpen ? 0.2 : 1}, PagePartStyle.mainPart]}
+                <ScrollView contentContainerStyle={PagePartStyle.mainPart}
                         showsVerticalScrollIndicator={false}>
-
                     <View style={PagePartStyle.settingBtnContainer}>
                         <TouchableOpacity style={PagePartStyle.settingsBtn} onPress={() => {toggleLearningSettings()}}>
                             <Text style={PagePartStyle.settingsBtnText}>הגדרות</Text>

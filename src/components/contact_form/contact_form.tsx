@@ -1,0 +1,91 @@
+import { View, Text, TouchableOpacity, Image, TextInput, Animated, Dimensions } from "react-native";
+import { useEffect, useRef, useState } from "react";
+
+import { IMAGES } from "../../image_handler";
+
+import ContactFormStyle from './contact_form_style';
+
+import { useContactUsFormContext } from "../../context/general_context/contact_form_context";
+import { useNavigation } from "@react-navigation/native";
+
+const { height } = Dimensions.get('window');
+
+const ContactForm = () => {
+    const navigation = useNavigation();
+
+    const {isContactFormOpen, toggleOpenContactUsForm} = useContactUsFormContext();
+
+    const [problemTitle, setProblemTitle] = useState<string>('');
+    const [problemBody, setProblemBody] = useState<string>('');
+    
+    // animation
+    const slideUpAnim = useRef(new Animated.Value(height)).current;
+
+    useEffect(() => {
+        if (isContactFormOpen) {
+            Animated.timing(slideUpAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+        } else {
+            Animated.timing(slideUpAnim, {
+                toValue: height * 0.6,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+        }
+    }, [isContactFormOpen]);
+
+    // sets swipe right to go back disabled when popup is open
+    useEffect(() => {
+        setProblemTitle('');
+        setProblemBody('');
+        navigation.setOptions({
+          gestureEnabled: !isContactFormOpen,
+        });
+      }, [isContactFormOpen]);
+
+      const sendEmail = () => {
+        // send email logic here
+        toggleOpenContactUsForm();
+      };
+
+    return (
+        <Animated.View style={[{transform: [{ translateY: slideUpAnim }]}, 
+                    ContactFormStyle.container]}>
+            <View style={ContactFormStyle.titleContainer}>
+                <TouchableOpacity onPress={() => {toggleOpenContactUsForm()}}>
+                    <Image source={IMAGES.back_icon} />
+                </TouchableOpacity>
+                <Text style={ContactFormStyle.title}>דווח על בעיה</Text>
+            </View>
+            <View style={ContactFormStyle.inputFieldsContainer}>
+            <TextInput
+                style={ContactFormStyle.titleInputField}
+                placeholder='כותרת הבעיה'
+                keyboardType='default'
+                value={problemTitle}
+                onChangeText={setProblemTitle}
+                blurOnSubmit={true} 
+            />
+            <TextInput
+                style={ContactFormStyle.bodyInputField}
+                placeholder='פירוט הבעיה'
+                keyboardType='default'
+                multiline={true}
+                value={problemBody}
+                onChangeText={setProblemBody}
+                blurOnSubmit={true} 
+            />
+            </View>
+            <View style={ContactFormStyle.submitBtnContainer}>
+                <TouchableOpacity style={ContactFormStyle.submitBtn} onPress={() => {sendEmail()}}>
+                        <Text style={ContactFormStyle.submitBtnText}>אישור</Text>
+                </TouchableOpacity>
+            </View>
+        </Animated.View>
+    );
+};
+
+export default ContactForm;
