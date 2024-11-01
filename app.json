@@ -14,7 +14,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.OneFifty.App"
+      "bundleIdentifier": "com.OneFifty.App",
+      "associatedDomains": ["applinks:onefiftyapp.b2clogin.com"]
     },
     "android": {
       "adaptiveIcon": {
