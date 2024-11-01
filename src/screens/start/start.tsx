@@ -11,8 +11,8 @@ const tenantName = 'OneFiftyApp';
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
 const redirectUri = AuthSession.makeRedirectUri({
-    scheme: 'com.OneFifty.App', // Matches the scheme in app.json
-    path: 'auth',
+    scheme: 'com.OneFifty.App/auth', // Matches the scheme in app.json
+    // path: 'auth',
 });
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
@@ -27,13 +27,13 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         responseType: "id_token",
     });
 
-    // const discovery = {
-    //     authorizationEndpoint: `https://onefiftyapp.b2clogin.com/OneFiftyApp.onmicrosoft.com/B2C_1_OneFiftyApp/oauth2/v2.0/authorize?p=B2C_1_OneFiftyApp&nonce=defaultNonce&scope=openid&response_type=id_token&response_mode=form_post`,
-    //     //tokenEndpoint: `https://onefiftyapp.b2clogin.com/OneFiftyApp.onmicrosoft.com/B2C_1_OneFiftyApp/oauth2/v2.0/authorize?p=B2C_1_OneFiftyApp&nonce=defaultNonce&scope=openid&response_type=id_token&response_mode=form_post`,
-    // };
-    const discovery = useAutoDiscovery(
-        `https://login.microsoftonline.com/41281c6b-2583-4939-bd13-866929430e96/v2.0`,
-    );
+    const discovery = {
+        authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
+        tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
+    };
+    // const discovery = useAutoDiscovery(
+    //     `https://login.microsoftonline.com/41281c6b-2583-4939-bd13-866929430e96/v2.0`,
+    // );
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
         {
