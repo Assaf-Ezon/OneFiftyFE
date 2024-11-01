@@ -61,7 +61,7 @@ const MainAppStack = () => {
 };
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   
   return (
     <NavigationContainer>
