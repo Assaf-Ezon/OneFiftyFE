@@ -1,26 +1,26 @@
 import { View, Image, Text, Pressable } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import StartScreenStyle from './start_style';
 import { IMAGES } from '../../image_handler';
+import { useProfile } from '../../context/general_context/profile_context';
 
-import { Buffer } from 'buffer';
 import * as SecureStore from 'expo-secure-store'
 import * as AuthSession from "expo-auth-session";
+import getProfileData from './get_profile_data';
 
 const tenantName = 'OneFiftyApp'; 
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
 const redirectUri = "com.OneFifty.App://auth"
 
-const StartScreen = ({ navigation }: {navigation: any}) => {
-    const [userInfo, setUserInfo] = useState(null);
+const StartScreen = ({ navigation, onLogin }: {navigation: any, onLogin: () => void}) => {
+    const {setProfile} = useProfile();
 
     const discovery = {
         authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
         tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
     };
 
-    
 
     const [request, response, promptAsync] = AuthSession.useAuthRequest(
         {
@@ -37,28 +37,54 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     );
 
     useEffect(() => { 
-        // This will enable you to keep on working and intergrating with the BE. keep on building. 
-        // I will send you the base URL for our BE server - the other endpoints are elaborated in our drive in the data or BE folder.
         // I will try and find a solution for the pop-up issue + will start relying on the token as well to get the Display name and will update the Endpoints later.
-        console.log(response);
-        saveInfo();
+        const processResponse = async () => {
+            console.log(response);
+            if (response && response.type == 'success') {
+                await saveInfo();
+                await setUserData();
+                onLogin();
+            }
+        };
+        processResponse();
     }, [response]); 
 
+    // gets the displayName from the token
     const getNameFromDecodedJWT = (token: string) => {
         const [header, payload, signature] = token.split(".");
       
-        // Decode Base64 URL-safe header and payload
         const decodedHeader = JSON.parse(atob(header.replace(/-/g, "+").replace(/_/g, "/")));
         const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
         
         return decodedPayload.name;
     };
 
+    // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
             await SecureStore.setItemAsync('token', response.params.id_token);
             await SecureStore.setItemAsync('name', getNameFromDecodedJWT(response.params.id_token));
         }  
+    };
+
+    // sets profile context with fetched data
+    const setUserData = async () => {
+        const data = await getProfileData();
+
+        type ProfilePictureIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+
+        if (data && 'UserData' in data) { 
+            console.log(data.UserData.RowKey);
+            setProfile({
+                name: data.UserData.RowKey,
+                email: data.UserData.Email,
+                rank: 1,
+                score: data.UserData.Score,
+                dateJoined: new Date(data.UserData.DateJoined), 
+                expirationDate: new Date(data.UserData.ExpirationDate), 
+                profileImage: IMAGES.profile_images[data.UserData.ProfilePicture as ProfilePictureIndex]
+            });
+        };
     };
 
     return(

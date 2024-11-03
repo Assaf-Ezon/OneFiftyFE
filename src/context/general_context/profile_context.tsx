@@ -28,7 +28,8 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         score: 100, 
         dateJoined: new Date('2024-08-20'), 
         expirationDate: new Date('2025-08-20'), 
-        profileImage: IMAGES.profile_images[0]});
+        profileImage: IMAGES.profile_images[0]}
+    );
 
     const updateProfileImage = (newImage: ImageSourcePropType) => {
         setProfile((prevProfile) => ({
