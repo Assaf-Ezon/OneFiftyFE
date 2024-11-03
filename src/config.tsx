@@ -1,4 +1,7 @@
 export const CONFIG = {
+    endpoints: {
+        signup: 'https://my_project/singup',
+    },
     privacy_policy: `
 מדיניות פרטיות זו נועדה לעזור לך להבין אילו נתונים אנו אוספים, כיצד אנו משתמשים בהם ומגנים על פרטיותך בעת השימוש באפליקציה.
 
