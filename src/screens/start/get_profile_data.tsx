@@ -29,7 +29,7 @@ interface UserData {
     IsActive: boolean;
     OrderId: string;
     PartitionKey: string;
-    ProfilePicture: number;
+    ProfilePicture: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
     RowKey: string;
     Score: number;
     Timestamp: string;
@@ -60,14 +60,15 @@ interface ApiResponse {
     Version: string;
 }
 
-const getProfileData = async (): Promise<ApiResponse | void> => {
+const getProfileData = async (): Promise<ApiResponse | number> => {
     try {
         const token = await SecureStore.getItemAsync('token');
+        // const token = '12345';
         const name = await SecureStore.getItemAsync('name');
 
         if (!token) {
             console.error('Token is missing');
-            return;
+            return 1;
         }
 
         const response = await axios.post(CONFIG.endpoints.login, {
@@ -83,6 +84,12 @@ const getProfileData = async (): Promise<ApiResponse | void> => {
 
     } catch (error) {
         console.error('Error fetching profile data: ', error);
+        switch (error) {
+            case '[AxiosError: Request failed with status code 401]':
+                return -1;
+            default:
+                return 0;
+        }
     }
 };
 

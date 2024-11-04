@@ -13,6 +13,14 @@ const StartScreenStyle = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 5,
     },
+    loading: {
+        position: 'absolute',
+        top: '50%', 
+        left: '50%', 
+        width: 40,
+        height: 40,
+        transform: [{ translateX: -20 }, { translateY: -20 }],
+    },
     textContainer: {
         flex: 2,
         flexDirection: 'column',

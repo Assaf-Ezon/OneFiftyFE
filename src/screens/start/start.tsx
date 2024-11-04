@@ -1,5 +1,5 @@
-import { View, Image, Text, Pressable } from 'react-native';
-import { useEffect } from 'react';
+import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
+import { useEffect, useState } from 'react';
 import StartScreenStyle from './start_style';
 import { IMAGES } from '../../image_handler';
 import { useProfile } from '../../context/general_context/profile_context';
@@ -15,6 +15,7 @@ const redirectUri = "com.OneFifty.App://auth";
 
 const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLoginPage: () => void}) => {
     const {setProfile} = useProfile();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const discovery = {
         authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
@@ -40,9 +41,9 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
         // I will try and find a solution for the pop-up issue + will start relying on the token as well to get the Display name and will update the Endpoints later.
         const processResponse = async () => {
             if (response && response.type == 'success') {
+                setLoading(true);
                 await saveInfo();
-                await setUserData();
-                toggleLoginPage();
+                await handleUserData();
             }
         };
         processResponse();
@@ -66,12 +67,10 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
     };
 
     // sets profile context with fetched data
-    const setUserData = async () => {
+    const handleUserData = async () => {
         const data = await getProfileData();
 
-        type ProfilePictureIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
-
-        if (data && 'UserData' in data) { 
+        if (data && typeof data !== 'number' && 'UserData' in data) { 
             setProfile({
                 name: data.UserData.DisplayName,
                 email: data.UserData.Email,
@@ -79,19 +78,24 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
                 score: data.UserData.Score,
                 dateJoined: new Date(data.UserData.DateJoined), 
                 expirationDate: new Date(data.UserData.ExpirationDate), 
-                profileImage: IMAGES.profile_images[data.UserData.ProfilePicture as ProfilePictureIndex],
+                profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
                 hebrewWords: data.HebrewWordsDictionary.Words,
                 englishWords: data.EnglishWordsDictionary.Words,
             });
-        };
+            toggleLoginPage();
+            setLoading(false);
+        } else if (typeof data === 'number') {
+            setLoading(true);
+        }
     };
 
     return(
       <View style={StartScreenStyle.container}>
-        <View style={StartScreenStyle.image}>
+        <View style={[{opacity: loading ? 0.2 : 1}, StartScreenStyle.image]} pointerEvents={ loading ? 'none' : 'auto' }>
             <Image source={IMAGES.start_screen} />       
         </View>
-        <View style={StartScreenStyle.textContainer}>
+        {loading ? <ActivityIndicator size="large" color="#0000ff" style={StartScreenStyle.loading} /> : null}
+        <View style={[{opacity: loading ? 0.2 : 1}, StartScreenStyle.textContainer]} pointerEvents={ loading ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title}>
                 150 - לומדת פסיכומטרי{'\n'}
                 למד מילים בכל מקום
