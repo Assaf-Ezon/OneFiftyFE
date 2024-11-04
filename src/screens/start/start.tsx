@@ -73,13 +73,15 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
 
         if (data && 'UserData' in data) { 
             setProfile({
-                name: data.UserData.RowKey,
+                name: data.UserData.DisplayName,
                 email: data.UserData.Email,
                 rank: 1,
                 score: data.UserData.Score,
                 dateJoined: new Date(data.UserData.DateJoined), 
                 expirationDate: new Date(data.UserData.ExpirationDate), 
-                profileImage: IMAGES.profile_images[data.UserData.ProfilePicture as ProfilePictureIndex]
+                profileImage: IMAGES.profile_images[data.UserData.ProfilePicture as ProfilePictureIndex],
+                hebrewWords: {},
+                englishWords: {},
             });
         };
     };

@@ -2,13 +2,31 @@ import axios from 'axios';
 import { CONFIG } from '../../config';
 import * as SecureStore from 'expo-secure-store';
 
+interface WordMeaning {
+    Meaning: string;
+    Source: string;
+}
+
+interface HebrewWord {
+    FullWord: string;
+    Meanings: WordMeaning[];
+    Group: number;
+}
+
+interface WordsDictionary {
+    WordCount: number;                   
+    Words: { [key: string]: HebrewWord };  
+}
+
 interface UserData {
-    RowKey: string;
+    DisplayName: string;
     Email: string;
     Score: number;
-    DateJoined: string; // Assuming this is a string, you can change it to Date if needed
-    ExpirationDate: string; // Adjust as necessary
-    ProfilePicture: number; // Assuming this is an index for your images
+    DateJoined: string;
+    ExpirationDate: string;
+    ProfilePicture: number; 
+    HebrewWordsDictionary: WordsDictionary;
+    EnglishWordsDictionary: WordsDictionary;
 }
 
 interface ApiResponse {
@@ -18,8 +36,8 @@ interface ApiResponse {
 const getProfileData = async (): Promise<ApiResponse | void> => {
     try {
         const token = await SecureStore.getItemAsync('token');
-        const name = await SecureStore.getItemAsync('name');
-        // const name = 'goatie';
+        // const name = await SecureStore.getItemAsync('name');
+        const name = 'Goatie';
 
         if (!token) {
             console.error('Token is missing');
@@ -34,8 +52,7 @@ const getProfileData = async (): Promise<ApiResponse | void> => {
                 'Content-Type': 'application/json',
             }
         });
-
-        console.log(response.data);
+        console.log(response.data.HebrewWordsDictionary.Words);
         return response.data;
 
     } catch (error) {

@@ -9,7 +9,7 @@ import { useSidebarContext } from '../../../../context/general_context/sidebar_c
 const ProfilePartHome: FC = () => {
     const {profile} = useProfile();
     const {toggleMenu} = useSidebarContext();
-
+    console.log(profile);
     return (
         <View style={profilePartStyle.container}>
             <TouchableOpacity onPress={() => {toggleMenu()}}>
