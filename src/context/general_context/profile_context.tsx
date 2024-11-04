@@ -5,17 +5,19 @@ import { IMAGES } from '../../image_handler';
 interface Meaning {
     Meaning: string;
     Source: string;
-  }
-  
-  interface Word {
+}
+
+interface WordDetails {
     FullWord: string;
     Meanings: Meaning[];
     Group: number;
-  }
-  
-  interface WordsDictionary {
-    [key: string]: Word;
-  }
+}
+
+interface WordsDictionary {
+    [key: string]: {
+        [word: string]: WordDetails;
+    };
+}
 
 interface Profile {
     name: string,

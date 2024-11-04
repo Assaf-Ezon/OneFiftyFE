@@ -80,8 +80,8 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
                 dateJoined: new Date(data.UserData.DateJoined), 
                 expirationDate: new Date(data.UserData.ExpirationDate), 
                 profileImage: IMAGES.profile_images[data.UserData.ProfilePicture as ProfilePictureIndex],
-                hebrewWords: {},
-                englishWords: {},
+                hebrewWords: data.HebrewWordsDictionary.Words,
+                englishWords: data.EnglishWordsDictionary.Words,
             });
         };
     };

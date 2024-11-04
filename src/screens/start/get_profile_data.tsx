@@ -2,42 +2,68 @@ import axios from 'axios';
 import { CONFIG } from '../../config';
 import * as SecureStore from 'expo-secure-store';
 
-interface WordMeaning {
+interface Meaning {
     Meaning: string;
     Source: string;
 }
 
-interface HebrewWord {
+interface WordDetails {
     FullWord: string;
-    Meanings: WordMeaning[];
+    Meanings: Meaning[];
     Group: number;
 }
 
 interface WordsDictionary {
-    WordCount: number;                   
-    Words: { [key: string]: HebrewWord };  
+    [key: string]: {
+        [word: string]: WordDetails;
+    };
 }
 
 interface UserData {
-    DisplayName: string;
-    Email: string;
-    Score: number;
+    AuthProvider: number;
     DateJoined: string;
+    DisplayName: string;
+    ETag: string;
+    Email: string;
     ExpirationDate: string;
-    ProfilePicture: number; 
-    HebrewWordsDictionary: WordsDictionary;
-    EnglishWordsDictionary: WordsDictionary;
+    IsActive: boolean;
+    OrderId: string;
+    PartitionKey: string;
+    ProfilePicture: number;
+    RowKey: string;
+    Score: number;
+    Timestamp: string;
 }
 
 interface ApiResponse {
+    EnglishUserStatistics: {
+        WordsStatistics: {
+            WordCount: number;
+            Words: WordsDictionary;
+        };
+    };
+    EnglishWordsDictionary: {
+        WordCount: number;
+        Words: WordsDictionary;
+    };
+    HebrewUserStatistics: {
+        WordsStatistics: {
+            WordCount: number;
+            Words: WordsDictionary;
+        };
+    };
+    HebrewWordsDictionary: {
+        WordCount: number;
+        Words: WordsDictionary;
+    };
     UserData: UserData;
+    Version: string;
 }
 
 const getProfileData = async (): Promise<ApiResponse | void> => {
     try {
         const token = await SecureStore.getItemAsync('token');
-        // const name = await SecureStore.getItemAsync('name');
-        const name = 'Goatie';
+        const name = await SecureStore.getItemAsync('name');
 
         if (!token) {
             console.error('Token is missing');
@@ -52,7 +78,7 @@ const getProfileData = async (): Promise<ApiResponse | void> => {
                 'Content-Type': 'application/json',
             }
         });
-        console.log(response.data.HebrewWordsDictionary.Words);
+
         return response.data;
 
     } catch (error) {
