@@ -25,11 +25,11 @@ import { LearningSettingsProvider } from './src/context/settings_context/learnin
 
 const Stack = createNativeStackNavigator();
 
-const AuthStack = ({ onLogin }: {onLogin: () => void}) => {
+const AuthStack = ({ toggleLoginPage }: {toggleLoginPage: () => void}) => {
   return (
     <Stack.Navigator initialRouteName="splash">
       <Stack.Screen name='splash' component={SplashScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="start" children={(props) => <StartScreen {...props} onLogin={onLogin} />} options={{ headerShown: false }} />
+      <Stack.Screen name="start" children={(props) => <StartScreen {...props} toggleLoginPage={toggleLoginPage} />} options={{ headerShown: false }} />
 
         <Stack.Screen name='signup' component={SignupScreen} options={{ headerShown: false }} />
         <Stack.Screen name='login' component={LoginScreen} options={{ headerShown: false }} />
@@ -63,7 +63,7 @@ export default function App() {
   return (
     <ProfileProvider>
       <NavigationContainer>
-        {isLoggedIn ? <MainAppStack /> : <AuthStack onLogin={() => setIsLoggedIn(true)} />}
+        {isLoggedIn ? <MainAppStack /> : <AuthStack toggleLoginPage={() => setIsLoggedIn(true)} />}
       </NavigationContainer>
     </ProfileProvider>
 

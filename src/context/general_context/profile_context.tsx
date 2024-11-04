@@ -22,12 +22,12 @@ export const ProfileContext = createContext<ProfileContextProps | undefined>(und
 
 export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [profile, setProfile] = useState<Profile>({
-        name: 'אסף איזון', 
-        email: 'assafezon@gmail.com', 
-        rank: 1, 
-        score: 100, 
-        dateJoined: new Date('2024-08-20'), 
-        expirationDate: new Date('2025-08-20'), 
+        name: '', 
+        email: '', 
+        rank: 0, 
+        score: 0, 
+        dateJoined: new Date('1900-01-01'), 
+        expirationDate: new Date('1900-01-01'), 
         profileImage: IMAGES.profile_images[0]}
     );
 

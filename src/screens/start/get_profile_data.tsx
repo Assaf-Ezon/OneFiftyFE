@@ -19,6 +19,7 @@ const getProfileData = async (): Promise<ApiResponse | void> => {
     try {
         const token = await SecureStore.getItemAsync('token');
         const name = await SecureStore.getItemAsync('name');
+        // const name = 'goatie';
 
         if (!token) {
             console.error('Token is missing');
