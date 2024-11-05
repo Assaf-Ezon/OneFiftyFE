@@ -63,12 +63,11 @@ interface ApiResponse {
 const getProfileData = async (): Promise<ApiResponse | number> => {
     try {
         const token = await SecureStore.getItemAsync('token');
-        // const token = '12345';
         const name = await SecureStore.getItemAsync('name');
 
         if (!token) {
             console.error('Token is missing');
-            return 1;
+            return -1;
         }
 
         const response = await axios.post(CONFIG.endpoints.login, {
@@ -84,12 +83,7 @@ const getProfileData = async (): Promise<ApiResponse | number> => {
 
     } catch (error) {
         console.error('Error fetching profile data: ', error);
-        switch (error) {
-            case '[AxiosError: Request failed with status code 401]':
-                return -1;
-            default:
-                return 0;
-        }
+        return -1;
     }
 };
 

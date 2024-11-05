@@ -1,4 +1,4 @@
-import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
+import { View, Image, Text, Pressable, ActivityIndicator, Modal, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
 import StartScreenStyle from './start_style';
 import { IMAGES } from '../../image_handler';
@@ -11,11 +11,12 @@ import getProfileData from './get_profile_data';
 const tenantName = 'OneFiftyApp'; 
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
-const redirectUri = "com.OneFifty.App://auth";
+const redirectUri = 'com.OneFifty.App://auth';
 
 const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLoginPage: () => void}) => {
     const {setProfile} = useProfile();
     const [loading, setLoading] = useState<boolean>(false);
+    const [errorPage, setErrorPage] = useState<boolean>(false);
 
     const discovery = {
         authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
@@ -84,18 +85,41 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
             });
             toggleLoginPage();
             setLoading(false);
-        } else if (typeof data === 'number') {
-            setLoading(true);
+        } else {
+            setLoading(false);
+            setErrorPage(true);
         }
     };
 
     return(
       <View style={StartScreenStyle.container}>
-        <View style={[{opacity: loading ? 0.2 : 1}, StartScreenStyle.image]} pointerEvents={ loading ? 'none' : 'auto' }>
+        <View style={[{opacity: loading || errorPage ? 0.2 : 1}, StartScreenStyle.image]} pointerEvents={ loading || errorPage ? 'none' : 'auto' }>
             <Image source={IMAGES.start_screen} />       
         </View>
-        {loading ? <ActivityIndicator size="large" color="#0000ff" style={StartScreenStyle.loading} /> : null}
-        <View style={[{opacity: loading ? 0.2 : 1}, StartScreenStyle.textContainer]} pointerEvents={ loading ? 'none' : 'auto' }>
+
+        {loading ? <View style={StartScreenStyle.loadingContainer}><ActivityIndicator size="large" color="#0000ff" style={StartScreenStyle.loading} /></View> : null}   
+
+        <Modal animationType="fade"
+        transparent={true}
+        visible={errorPage}>
+            <View style={StartScreenStyle.errorPopup}>
+                <View style={StartScreenStyle.errorPopupTitleContainer}>
+                    <TouchableOpacity onPress={() => {setErrorPage(false)}}>
+                        <Image source={IMAGES.back_icon} />
+                    </TouchableOpacity>
+                    <Text style={StartScreenStyle.popupTitle}>תקלה</Text>
+                </View>
+                <View style={StartScreenStyle.errorPopupMainContainer}>
+                    <Text style={StartScreenStyle.popupText}>
+                        אירוע לא צפוי קרה{'\n'}
+                        אנא נסה שנית מאוחר יותר.{'\n'}{'\n'}{'\n'}{'\n'}
+                        פנה אלינו: OneFifty.customers@gmail.com
+                    </Text>
+                </View>
+            </View>
+        </Modal>
+
+        <View style={[{opacity: loading || errorPage ? 0.2 : 1}, StartScreenStyle.textContainer]} pointerEvents={ loading || errorPage ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title}>
                 150 - לומדת פסיכומטרי{'\n'}
                 למד מילים בכל מקום
