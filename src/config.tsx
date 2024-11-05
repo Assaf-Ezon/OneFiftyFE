@@ -1,4 +1,10 @@
 export const CONFIG = {
+    endpoints: {
+        login: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/login',
+        update_game: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats',
+        leaderboard: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/leaderboard/get',
+
+    },
     privacy_policy: `
 מדיניות פרטיות זו נועדה לעזור לך להבין אילו נתונים אנו אוספים, כיצד אנו משתמשים בהם ומגנים על פרטיותך בעת השימוש באפליקציה.
 

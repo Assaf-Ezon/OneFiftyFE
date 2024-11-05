@@ -2,6 +2,23 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
+interface Meaning {
+    Meaning: string;
+    Source: string;
+}
+
+interface WordDetails {
+    FullWord: string;
+    Meanings: Meaning[];
+    Group: number;
+}
+
+interface WordsDictionary {
+    [key: string]: {
+        [word: string]: WordDetails;
+    };
+}
+
 interface Profile {
     name: string,
     email: string,
@@ -10,6 +27,8 @@ interface Profile {
     dateJoined: Date,
     expirationDate: Date,
     profileImage: ImageSourcePropType,
+    hebrewWords: WordsDictionary,
+    englishWords: WordsDictionary,
 };
 
 interface ProfileContextProps {
@@ -22,13 +41,16 @@ export const ProfileContext = createContext<ProfileContextProps | undefined>(und
 
 export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [profile, setProfile] = useState<Profile>({
-        name: 'אסף איזון', 
-        email: 'assafezon@gmail.com', 
-        rank: 1, 
-        score: 100, 
-        dateJoined: new Date('2024-08-20'), 
-        expirationDate: new Date('2025-08-20'), 
-        profileImage: IMAGES.profile_images[0]});
+        name: '', 
+        email: '', 
+        rank: 0, 
+        score: 0, 
+        dateJoined: new Date('1900-01-01'), 
+        expirationDate: new Date('1900-01-01'), 
+        profileImage: IMAGES.profile_images[0],
+        hebrewWords: {},
+        englishWords: {},
+    });
 
     const updateProfileImage = (newImage: ImageSourcePropType) => {
         setProfile((prevProfile) => ({

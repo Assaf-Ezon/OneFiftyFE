@@ -25,11 +25,11 @@ import { LearningSettingsProvider } from './src/context/settings_context/learnin
 
 const Stack = createNativeStackNavigator();
 
-const AuthStack = () => {
+const AuthStack = ({ toggleLoginPage }: {toggleLoginPage: () => void}) => {
   return (
     <Stack.Navigator initialRouteName="splash">
       <Stack.Screen name='splash' component={SplashScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='start' component={StartScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="start" children={(props) => <StartScreen {...props} toggleLoginPage={toggleLoginPage} />} options={{ headerShown: false }} />
 
         <Stack.Screen name='signup' component={SignupScreen} options={{ headerShown: false }} />
         <Stack.Screen name='login' component={LoginScreen} options={{ headerShown: false }} />
@@ -40,23 +40,20 @@ const AuthStack = () => {
 
 const MainAppStack = () => {
   return (
-    <ProfileProvider>
-      <LearningSettingsProvider>
-        <Stack.Navigator initialRouteName="home">
-            <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
-            <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
-            <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
-            <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
-            <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
+    <LearningSettingsProvider>
+      <Stack.Navigator initialRouteName="home">
+          <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
+          <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
+          <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
+          <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
+          <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
 
-            <Stack.Screen name='terms' component={TermsOfServicePage} options={{ headerShown: false }} />
+          <Stack.Screen name='terms' component={TermsOfServicePage} options={{ headerShown: false }} />
 
-            <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
-            <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </LearningSettingsProvider>
-    </ProfileProvider>
-
+          <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
+          <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </LearningSettingsProvider>
   );
 };
 
@@ -64,8 +61,11 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   
   return (
-    <NavigationContainer>
-      {isLoggedIn ? <MainAppStack /> : <AuthStack />}
-    </NavigationContainer>
+    <ProfileProvider>
+      <NavigationContainer>
+        {isLoggedIn ? <MainAppStack /> : <AuthStack toggleLoginPage={() => setIsLoggedIn(true)} />}
+      </NavigationContainer>
+    </ProfileProvider>
+
   );
 };
