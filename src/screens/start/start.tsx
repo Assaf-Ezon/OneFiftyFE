@@ -2,7 +2,9 @@ import { View, Image, Text, Pressable, ActivityIndicator, Modal, TouchableOpacit
 import { useEffect, useState } from 'react';
 import StartScreenStyle from './start_style';
 import { IMAGES } from '../../image_handler';
+
 import { useProfile } from '../../context/general_context/profile_context';
+import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
 import * as SecureStore from 'expo-secure-store';
 import * as AuthSession from "expo-auth-session";
@@ -13,8 +15,10 @@ const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
 const redirectUri = 'com.OneFifty.App://auth';
 
-const StartScreen = ({ navigation, setStackIndex }: {navigation: any, setStackIndex: React.Dispatch<React.SetStateAction<number>>}) => {
+const StartScreen = ({ navigation }: {navigation: any}) => {
     const {setProfile} = useProfile();
+    const {stackIndex, setStackIndex} = useStackManagerContext();
+    
     const [loading, setLoading] = useState<boolean>(false);
     const [errorPage, setErrorPage] = useState<boolean>(false);
 

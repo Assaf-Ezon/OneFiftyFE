@@ -5,20 +5,20 @@ interface StackMangerContextProps {
     setStackIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const StackMangerContext = createContext<StackMangerContextProps | undefined>(undefined);
+const StackManagerContext = createContext<StackMangerContextProps | undefined>(undefined);
 
-export const SidebarProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const StackManagerProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [stackIndex, setStackIndex] = useState<number>(1);
 
     return (
-        <StackMangerContext.Provider value={{ stackIndex, setStackIndex }}>
+        <StackManagerContext.Provider value={{ stackIndex, setStackIndex }}>
             {children}
-        </StackMangerContext.Provider>
+        </StackManagerContext.Provider>
     );
 };
 
 export const useStackManagerContext = () => {
-    const context = useContext(StackMangerContext);
+    const context = useContext(StackManagerContext);
     if (context === undefined) {
         throw new Error('Trying to reach stack manager context outside of stack navigation!');
     }

@@ -4,13 +4,13 @@ import { IMAGES } from '../../image_handler';
 
 import PaymentScreenStyle from './payment_style';
 
-import { SidebarProvider } from '../../context/general_context/sidebar_context';
 import { ProfileImageProvider } from '../../context/settings_context/profile_image_context';
-import { ContactUsFormProvider } from '../../context/general_context/contact_form_context';
+import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
-const PaymentPage = ({ navigation, stackIndex, setStackIndex }: {navigation: any, stackIndex: number, setStackIndex: React.Dispatch<React.SetStateAction<number>>}) => {
-    // const isActive = (stackIndex === 2);
-    const isActive = false;
+const PaymentPage = ({ navigation }: {navigation: any}) => {
+    const {stackIndex, setStackIndex} = useStackManagerContext();
+    const isActive = (stackIndex === 2);
+
     return (
         <View style={PaymentScreenStyle.Container}>
             <View style={PaymentScreenStyle.topPart}>
