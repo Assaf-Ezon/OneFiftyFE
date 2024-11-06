@@ -16,6 +16,7 @@ import LeaderboardPage from './src/screens/leaderboard/leaderboard';
 import ProfilePage from './src/screens/profile/profile';
 
 import TermsOfServicePage from './src/screens/terms_of_service/terms_of_service';
+import PaymentPage from './src/screens/payment/payment';
 
 import KdkPage from './src/screens/kdk/kdk';
 import McPage from './src/screens/mc/mc';
@@ -25,11 +26,11 @@ import { LearningSettingsProvider } from './src/context/settings_context/learnin
 
 const Stack = createNativeStackNavigator();
 
-const AuthStack = ({ toggleLoginPage }: {toggleLoginPage: () => void}) => {
+const AuthStack = ({ setStackIndex }: {setStackIndex: React.Dispatch<React.SetStateAction<number>>}) => {
   return (
     <Stack.Navigator initialRouteName="splash">
       <Stack.Screen name='splash' component={SplashScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="start" children={(props) => <StartScreen {...props} toggleLoginPage={toggleLoginPage} />} options={{ headerShown: false }} />
+      <Stack.Screen name="start" children={(props) => <StartScreen {...props} setStackIndex={setStackIndex} />} options={{ headerShown: false }} />
 
         <Stack.Screen name='signup' component={SignupScreen} options={{ headerShown: false }} />
         <Stack.Screen name='login' component={LoginScreen} options={{ headerShown: false }} />
@@ -38,7 +39,7 @@ const AuthStack = ({ toggleLoginPage }: {toggleLoginPage: () => void}) => {
   );
 };
 
-const MainAppStack = () => {
+const MainAppStack = ({ stackIndex, setStackIndex }: {stackIndex: number, setStackIndex: React.Dispatch<React.SetStateAction<number>>}) => {
   return (
     <LearningSettingsProvider>
       <Stack.Navigator initialRouteName="home">
@@ -49,6 +50,7 @@ const MainAppStack = () => {
           <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
 
           <Stack.Screen name='terms' component={TermsOfServicePage} options={{ headerShown: false }} />
+          <Stack.Screen name='payment' children={(props) => <PaymentPage {...props} stackIndex={stackIndex} setStackIndex={setStackIndex} />} options={{ headerShown: false }} />
 
           <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
           <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
@@ -57,15 +59,30 @@ const MainAppStack = () => {
   );
 };
 
+const InactiveStack = ({ stackIndex, setStackIndex }: {stackIndex: number, setStackIndex: React.Dispatch<React.SetStateAction<number>>}) => {
+  return (
+    <LearningSettingsProvider>
+      <Stack.Navigator initialRouteName="payment">
+          <Stack.Screen name='payment' children={(props) => <PaymentPage {...props} stackIndex={stackIndex} setStackIndex={setStackIndex} />} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </LearningSettingsProvider>
+  );
+};
+
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [stackIndex, setStackIndex] = useState<number>(1);
   
+  const stackHandler: { [key: number]: JSX.Element } = {
+    1: <AuthStack setStackIndex={setStackIndex} />,
+    2: <MainAppStack stackIndex={stackIndex} setStackIndex={setStackIndex} />,
+    3: <InactiveStack stackIndex={stackIndex} setStackIndex={setStackIndex} />
+  }
+
   return (
     <ProfileProvider>
       <NavigationContainer>
-        {isLoggedIn ? <MainAppStack /> : <AuthStack toggleLoginPage={() => setIsLoggedIn(true)} />}
+        {stackHandler[stackIndex]}
       </NavigationContainer>
     </ProfileProvider>
-
   );
 };

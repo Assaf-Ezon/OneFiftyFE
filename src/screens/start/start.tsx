@@ -13,7 +13,7 @@ const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
 const redirectUri = 'com.OneFifty.App://auth';
 
-const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLoginPage: () => void}) => {
+const StartScreen = ({ navigation, setStackIndex }: {navigation: any, setStackIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const {setProfile} = useProfile();
     const [loading, setLoading] = useState<boolean>(false);
     const [errorPage, setErrorPage] = useState<boolean>(false);
@@ -49,13 +49,12 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
         };
         processResponse();
     }, [response]); 
-
+    
     // gets the displayName from the token
     const getNameFromDecodedJWT = (token: string) => {
         const [header, payload, signature] = token.split(".");
         
         const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
-        
         return decodedPayload.name;
     };
 
@@ -72,19 +71,23 @@ const StartScreen = ({ navigation, toggleLoginPage }: {navigation: any, toggleLo
         const data = await getProfileData();
 
         if (data && typeof data !== 'number' && 'UserData' in data) { 
-            setProfile({
-                name: data.UserData.DisplayName,
-                email: data.UserData.Email,
-                rank: 1,
-                score: data.UserData.Score,
-                dateJoined: new Date(data.UserData.DateJoined), 
-                expirationDate: new Date(data.UserData.ExpirationDate), 
-                profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                hebrewWords: data.HebrewWordsDictionary.Words,
-                englishWords: data.EnglishWordsDictionary.Words,
-            });
-            toggleLoginPage();
-            setLoading(false);
+            if (!data.UserData.IsActive) {
+                setStackIndex(3);
+            } else {
+                setProfile({
+                    name: data.UserData.DisplayName,
+                    email: data.UserData.Email,
+                    rank: 1,
+                    score: data.UserData.Score,
+                    dateJoined: new Date(data.UserData.DateJoined), 
+                    expirationDate: new Date(data.UserData.ExpirationDate), 
+                    profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                    hebrewWords: data.HebrewWordsDictionary.Words,
+                    englishWords: data.EnglishWordsDictionary.Words,
+                });
+                setStackIndex(2);
+                setLoading(false);
+            }
         } else {
             setLoading(false);
             setErrorPage(true);
