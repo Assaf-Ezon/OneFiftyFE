@@ -1,5 +1,7 @@
 import { View, Image, Text, Pressable, ActivityIndicator, Modal, TouchableOpacity } from 'react-native';
 import { useEffect, useState } from 'react';
+import Popup from './popups/popups';
+
 import StartScreenStyle from './start_style';
 import { IMAGES } from '../../image_handler';
 
@@ -17,10 +19,12 @@ const redirectUri = 'com.OneFifty.App://auth';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     const {setProfile} = useProfile();
-    const {stackIndex, setStackIndex} = useStackManagerContext();
+    const {setStackIndex} = useStackManagerContext();
     
     const [loading, setLoading] = useState<boolean>(false);
-    const [errorPage, setErrorPage] = useState<boolean>(false);
+
+    const [popupOpen, setPopupOpen] = useState<boolean>(false);
+    const [popupIndex, setPopupIndex] = useState<number>(1);
 
     const discovery = {
         authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
@@ -43,7 +47,6 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     );
 
     useEffect(() => { 
-        // I will try and find a solution for the pop-up issue + will start relying on the token as well to get the Display name and will update the Endpoints later.
         const processResponse = async () => {
             if (response && response.type == 'success') {
                 setLoading(true);
@@ -73,10 +76,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // sets profile context with fetched data
     const handleUserData = async () => {
         const data = await getProfileData();
-
+        
         if (data && typeof data !== 'number' && 'UserData' in data) { 
             if (!data.UserData.IsActive) {
-                setStackIndex(3);
+                setPopupIndex(2);
+                setPopupOpen(true);
             } else {
                 setProfile({
                     name: data.UserData.DisplayName,
@@ -94,39 +98,22 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             }
         } else {
             setLoading(false);
-            setErrorPage(true);
+
+            setPopupIndex(1);
+            setPopupOpen(true);
         }
     };
 
     return(
       <View style={StartScreenStyle.container}>
-        <View style={[{opacity: loading || errorPage ? 0.2 : 1}, StartScreenStyle.image]} pointerEvents={ loading || errorPage ? 'none' : 'auto' }>
+        <View style={[{opacity: loading || popupOpen ? 0.2 : 1}, StartScreenStyle.image]} pointerEvents={ loading || popupOpen ? 'none' : 'auto' }>
             <Image source={IMAGES.start_screen} />       
         </View>
 
         {loading ? <View style={StartScreenStyle.loadingContainer}><ActivityIndicator size="large" color="#0000ff" style={StartScreenStyle.loading} /></View> : null}   
+        {popupOpen ? <Popup index={popupIndex} setPopupOpen={setPopupOpen} /> : null}
 
-        <Modal animationType="fade"
-        transparent={true}
-        visible={errorPage}>
-            <View style={StartScreenStyle.errorPopup}>
-                <View style={StartScreenStyle.errorPopupTitleContainer}>
-                    <TouchableOpacity onPress={() => {setErrorPage(false)}}>
-                        <Image source={IMAGES.back_icon} />
-                    </TouchableOpacity>
-                    <Text style={StartScreenStyle.popupTitle}>תקלה</Text>
-                </View>
-                <View style={StartScreenStyle.errorPopupMainContainer}>
-                    <Text style={StartScreenStyle.popupText}>
-                        אירוע לא צפוי קרה{'\n'}
-                        אנא נסה שנית מאוחר יותר.{'\n'}{'\n'}{'\n'}{'\n'}
-                        פנה אלינו: OneFifty.customers@gmail.com
-                    </Text>
-                </View>
-            </View>
-        </Modal>
-
-        <View style={[{opacity: loading || errorPage ? 0.2 : 1}, StartScreenStyle.textContainer]} pointerEvents={ loading || errorPage ? 'none' : 'auto' }>
+        <View style={[{opacity: loading || popupOpen ? 0.2 : 1}, StartScreenStyle.textContainer]} pointerEvents={ loading || popupOpen ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title}>
                 150 - לומדת פסיכומטרי{'\n'}
                 למד מילים בכל מקום

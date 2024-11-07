@@ -22,17 +22,7 @@ const PaymentPage = ({ navigation }: {navigation: any}) => {
                 </View>
             </View>
             <View style={PaymentScreenStyle.mainPage}>
-                {
-                    isActive ? null :
-                    <Text style={PaymentScreenStyle.explanationText}>
-                        חשבונך הינו פג תוקף מאחד מהסיבות הבאות: {'\n'}
-                            1. תקופת המנוי של המשתמש נגמרה{'\n'}
-                            2. תקופת הניסיון של המשתמש נגמרה{'\n'}
-                        {'\n'}{'\n'}
-                        על מנת להמשיך את השימוש באפליקציה, עליך לרכוש מנוי:{'\n'}
-                        (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
-                    </Text>
-                }
+
             </View>
         </View>
     );

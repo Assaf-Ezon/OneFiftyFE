@@ -29,7 +29,7 @@ const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator initialRouteName="splash">
+    <Stack.Navigator initialRouteName='splash'>
       <Stack.Screen name='splash' component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name='start' component={StartScreen} options={{ headerShown: false }} />
 
@@ -43,7 +43,7 @@ const AuthStack = () => {
 const MainAppStack = () => {
   return (
     <LearningSettingsProvider>
-      <Stack.Navigator initialRouteName="home">
+      <Stack.Navigator initialRouteName='home'>
           <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
           <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
           <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
@@ -63,7 +63,7 @@ const MainAppStack = () => {
 const InactiveStack = () => {
   return (
     <LearningSettingsProvider>
-      <Stack.Navigator initialRouteName="payment">
+      <Stack.Navigator initialRouteName='payment'>
           <Stack.Screen name='payment' component={PaymentPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>

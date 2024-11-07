@@ -80,7 +80,7 @@ const getProfileData = async (): Promise<ApiResponse | number> => {
         });
 
         return response.data;
-
+        
     } catch (error) {
         console.error('Error fetching profile data: ', error);
         return -1;
