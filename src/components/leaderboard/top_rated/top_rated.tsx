@@ -5,10 +5,35 @@ import TopRatedStyle from './top_rated_style';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import LeaderboardCard from './card/card';
+import getLeaderboardData from './top_rated_request';
+import { useEffect, useState } from 'react';
 
 
 const TopRated = () => {
     const {profile} = useProfile();
+
+    interface Score {
+        DisplayName: string;
+        Score: number;
+    }
+
+    interface ApiResponse {
+        PlayerScore: number;
+        Scores: Score[];
+    }
+
+    const [leaderboardData, setLeaderboardData] = useState<ApiResponse | null>(null);
+
+    useEffect(() => {
+        const fetchLeaderboard = async () => {
+            const data = await getLeaderboardData('OverallScore', true);
+            if (data && typeof data != 'number') {
+                setLeaderboardData(data);
+            }
+        };
+
+        fetchLeaderboard();
+    }, []);
 
     return (
         <View style={TopRatedStyle.container}>
@@ -24,10 +49,20 @@ const TopRated = () => {
             <View style={TopRatedStyle.line} />
 
             <LeaderboardCard name= {'אסף איזון'} score={1000} rank={1} image={IMAGES.profile_image} />
-            <LeaderboardCard name= {'אסף איזון'} score={999} rank={2} image={IMAGES.profile_image} />
-            <LeaderboardCard name= {'אסף איזון'} score={998} rank={3} image={IMAGES.profile_image} />
-            <LeaderboardCard name= {'אסף איזון'} score={997} rank={4} image={IMAGES.profile_image} />
-            <LeaderboardCard name= {'אסף איזון'} score={996} rank={5} image={IMAGES.profile_image} />
+            {
+                leaderboardData && leaderboardData.Scores ? leaderboardData.Scores.map((score, index) => {
+                    return (
+                        <LeaderboardCard
+                            key={index}
+                            name={score.DisplayName}
+                            score={score.Score}
+                            rank={index + 2}  // Assuming ranks start from 2 and increment
+                            image={IMAGES.profile_image}
+                        />
+                    );
+                }) 
+                : null
+            }
         </View>
     );
 };  
