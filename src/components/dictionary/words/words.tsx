@@ -4,29 +4,55 @@ import WordsStyle from './words_style';
 import Word from './word/word';
 
 import { useSettings } from '../../../context/dictionary_context/settings_context';
+import { useProfile } from '../../../context/general_context/profile_context';
 
 const Words = () => {
-    type WordType = [string, number, string, string];
-
-    const words: WordType[] = [
-        ['Hebrew', 1, 'אִסְטְנִיס', 'אנין דעת, מעודן, שאינו יכול לסבול צער, מיאוס וגועל'],
-        ['Hebrew', 2, 'אִטֵּר', 'שמאלי'], 
-        ['Hebrew', 3, 'בּוֹהֵק', 'מפיץ אור'], 
-        ['Hebrew', 4, 'אֵימָתַי', 'מתי'], 
-        ['Hebrew', 5, 'גִּיל', 'שמחה'],
-    ];
-
     const { settings } = useSettings();
+    const { profile } = useProfile();
+
+    interface Meaning {
+        Meaning: string;
+        Source: string;
+    }
+    
+    interface WordDetails {
+        FullWord: string;
+        Meanings: Meaning[];
+        Group: number;
+    }
+
+    let words: { [word: string]: WordDetails } = {};
+    try {
+        if (settings.level in profile.hebrewWords && settings.level in profile.englishWords) {
+            switch (settings.language) {
+                case 'Hebrew':
+                    words = profile.hebrewWords[settings.level];
+                    break;
+                case 'English':
+                    words = profile.englishWords[settings.level];
+                    break;
+            }
+        }
+    } catch (error) {
+        console.error('An error has accourd: ', error);
+    }
 
     return (
         <View style={WordsStyle.scrollviewContainer}>
             <ScrollView contentContainerStyle={[WordsStyle.container, {flexGrow: 1}]}
             showsVerticalScrollIndicator={false}>
-                {words.filter(word => word[0] === settings?.language && word[1] == settings.level).map(w => {
-                    return (
-                        <Word word={w[2]} meaning={w[3]} key={w[2]} />
-                    ); 
-                })}
+                {   
+                    Object.entries(words).map(([wordKey, wordDetails]) => {
+                        const combinedMeaning = wordDetails.Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n");
+                        return (
+                            <Word
+                                key={wordKey}
+                                word={wordKey}
+                                meaning={combinedMeaning}
+                            />
+                        );
+                    })
+                }
                 <View style={WordsStyle.blank}></View>
             </ScrollView>
         </View>

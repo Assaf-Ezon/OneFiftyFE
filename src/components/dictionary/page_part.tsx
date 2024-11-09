@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Image, useColorScheme } from 'react-native';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
 import PagePartStyle from './page_part_style';
@@ -12,7 +12,7 @@ import { useContactUsFormContext } from '../../context/general_context/contact_f
 const PagePart = () => {
     const {isOpen, toggleMenu} = useSidebarContext();
     const {isContactFormOpen} = useContactUsFormContext();
-
+    
     return (
         <SettingsProvider>
             <View style={[PagePartStyle.container, {opacity: isOpen || isContactFormOpen ? 0.2 : 1}]} 

@@ -12,7 +12,7 @@ const Settings = () => {
 
     // lang settings
     const [langOpen, setLangOpen] = useState<boolean>(false);
-    const [langValue, setLangValue] = useState<string | null>(null);
+    const [langValue, setLangValue] = useState<string>('');
     
     type LangItemsType = {
         label: string;
@@ -26,7 +26,7 @@ const Settings = () => {
 
     // level settings
     const [levelOpen, setLevelOpen] = useState<boolean>(false);
-    const [levelValue, setLevelValue] = useState<number | null>(null);
+    const [levelValue, setLevelValue] = useState<number>(-1);
     
     type LevelItemsType = {
         label: string;

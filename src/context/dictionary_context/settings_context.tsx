@@ -1,19 +1,19 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface Settings {
-    language: string | null;
-    level: number | null; 
+    language: string;
+    level: number; 
 };
 
 interface SettingsContextProps {
-    settings: Settings | null;
-    setSettings: (settings: Settings | null) => void;
+    settings: Settings;
+    setSettings: (settings: Settings) => void;
 };
 
 export const SettingsContext = createContext<SettingsContextProps | undefined>(undefined);
 
 export const SettingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [settings, setSettings] = useState<Settings | null>(null);
+    const [settings, setSettings] = useState<Settings>({language: '', level: -1});
 
     return (
         <SettingsContext.Provider value={{ settings, setSettings }}>
