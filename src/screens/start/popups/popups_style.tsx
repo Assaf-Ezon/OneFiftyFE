@@ -1,0 +1,99 @@
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+const PopupsStyle = StyleSheet.create({
+    errorPopup: {
+        backgroundColor: '#FAF0E6',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        position: 'absolute',
+        top: '50%', 
+        left: '50%', 
+        transform: [{ translateX: -(width * 0.45) }, { translateY: -(height * 0.15) }],
+        width: width * 0.9,
+        height: height * 0.3,
+        borderRadius: 30,
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
+    },
+    errorPopupTitleContainer: {
+        width: '90%',
+        height: '25%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    errorPopupTitle: {
+        fontSize: 25,
+        fontWeight: '600',
+    },
+    errorPopupMainContainer: {
+        width: '90%',
+        height: '65%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    popupText: {
+        fontSize: 18,
+        fontWeight: '300',
+        textAlign: 'center',
+    },
+    explanationText: {
+        width: '100%',
+        textAlign: 'right',
+    },
+    
+    inactivePopup: {
+        backgroundColor: '#FAF0E6',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        position: 'absolute',
+        top: '50%', 
+        left: '50%', 
+        transform: [{ translateX: -(width * 0.45) }, { translateY: -(height * 0.3) }],
+        width: width * 0.9,
+        height: height * 0.6,
+        borderRadius: 30,
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
+    },
+    inactivePopupTitleContainer: {
+        width: '90%',
+        height: '20%',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
+    inactivePopupTitle: {
+        fontSize: 28,
+        fontWeight: '600',
+    },
+    inactivePopupMainContainer: {
+        width: '90%',
+        height: '45%',
+        alignItems: 'center',
+    },
+    inactiveExplanationText: {
+        width: '100%',
+        fontSize: 15,
+        textAlign: 'right',
+    },
+    inactivePopupBtn: {
+        width: '50%',
+        height: '10%',
+        backgroundColor: '#7F5CA6',
+        borderRadius: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+    },
+    inactivePopupBtnText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: '500',
+    },
+});
+
+export default PopupsStyle;
