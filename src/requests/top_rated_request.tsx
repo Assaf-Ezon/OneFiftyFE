@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CONFIG } from '../../../config';
+import { CONFIG } from '../config';
 import * as SecureStore from 'expo-secure-store';
 
 interface Score {
@@ -12,7 +12,7 @@ interface ApiResponse {
     Scores: Score[];
 }
 
-const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
+export const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
     try {
         const token = await SecureStore.getItemAsync('token');
         const name = await SecureStore.getItemAsync('name');
@@ -33,7 +33,6 @@ const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiRe
             }
         });
 
-        console.log(JSON.stringify(response.data));
         return response.data;
         
     } catch (error) {
@@ -42,4 +41,15 @@ const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiRe
     }
 };
 
-export default getLeaderboardData;
+export const getUserRankByName = (leaderboard: Score[], userName: string): number => {
+    const sortedLeaderboard = [...leaderboard].sort((a, b) => b.Score - a.Score);
+    const userIndex = sortedLeaderboard.findIndex(entry => entry.DisplayName === userName);
+
+    return userIndex !== -1 ? userIndex + 1 : -1;
+}
+
+export const getTopUsersByScore = (leaderboard: Score[], x: number): Score[] => {
+    const sortedLeaderboard = [...leaderboard].sort((a, b) => b.Score - a.Score);
+
+    return sortedLeaderboard.slice(0, x);
+}

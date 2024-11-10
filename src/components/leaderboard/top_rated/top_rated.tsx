@@ -1,34 +1,34 @@
-import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 
 import TopRatedStyle from './top_rated_style';
+import * as SecureStore from 'expo-secure-store';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import LeaderboardCard from './card/card';
-import getLeaderboardData from './top_rated_request';
+import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
 import { useEffect, useState } from 'react';
 
 
 const TopRated = () => {
-    const {profile} = useProfile();
+    const {profile, updateRank} = useProfile();
 
     interface Score {
         DisplayName: string;
         Score: number;
     }
 
-    interface ApiResponse {
-        PlayerScore: number;
-        Scores: Score[];
-    }
-
-    const [leaderboardData, setLeaderboardData] = useState<ApiResponse | null>(null);
+    const [leaderboardData, setLeaderboardData] = useState<Score[] | null>(null);
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
-            const data = await getLeaderboardData('OverallScore', true);
-            if (data && typeof data != 'number') {
-                setLeaderboardData(data);
+            const data = await getLeaderboardData('OverallScore', false);
+
+            if (data && typeof data !== 'number') {
+                setLeaderboardData(getTopUsersByScore(data.Scores, 10));
+            
+                const name = await SecureStore.getItemAsync('name');
+                updateRank(getUserRankByName(data.Scores, typeof name === 'string' ? name : ''));
             }
         };
 
@@ -48,15 +48,14 @@ const TopRated = () => {
             </View>
             <View style={TopRatedStyle.line} />
 
-            <LeaderboardCard name= {'אסף איזון'} score={1000} rank={1} image={IMAGES.profile_image} />
             {
-                leaderboardData && leaderboardData.Scores ? leaderboardData.Scores.map((score, index) => {
+                leaderboardData && leaderboardData ? leaderboardData.map((score, index) => {
                     return (
                         <LeaderboardCard
                             key={index}
                             name={score.DisplayName}
                             score={score.Score}
-                            rank={index + 2}  // Assuming ranks start from 2 and increment
+                            rank={index + 1} 
                             image={IMAGES.profile_image}
                         />
                     );
