@@ -16,10 +16,11 @@ const TopRated = () => {
     interface Score {
         DisplayName: string;
         Score: number;
+        ProfilePicture: number;
     }
 
     const [leaderboardData, setLeaderboardData] = useState<Score[] | null>(null);
-
+    
     useEffect(() => {
         const fetchLeaderboard = async () => {
             const data = await getLeaderboardData('OverallScore', false);
@@ -35,18 +36,19 @@ const TopRated = () => {
         fetchLeaderboard();
     }, []);
 
+    const isValidProfilePictureIndex = (index: number): index is keyof typeof IMAGES.profile_images => index >= 0 && index <= 11;
+
     return (
         <View style={TopRatedStyle.container}>
             <View style={TopRatedStyle.self}>
                 <Image source={profile.profileImage} style={TopRatedStyle.profileImage} />
                 <Text style={TopRatedStyle.textName}>{profile.name}</Text>
-                <Text style={TopRatedStyle.rankText}>מקום: {profile.rank}</Text>
-                <View style={TopRatedStyle.selfScore}>
-                    <Text style={TopRatedStyle.scoreText}>{profile.score}</Text>
-                    <Image source={IMAGES.score_icon} />
+                <View style={TopRatedStyle.selfStatsContainer}>
+                    <Text style={TopRatedStyle.scoreText}>ניקוד: {profile.score}</Text>
+                    <View style={TopRatedStyle.line} />
+                    <Text style={TopRatedStyle.rankText}>מקום: {profile.rank}</Text> 
                 </View>
             </View>
-            <View style={TopRatedStyle.line} />
 
             {
                 leaderboardData && leaderboardData ? leaderboardData.map((score, index) => {
@@ -56,7 +58,9 @@ const TopRated = () => {
                             name={score.DisplayName}
                             score={score.Score}
                             rank={index + 1} 
-                            image={IMAGES.profile_image}
+                            image={isValidProfilePictureIndex(score.ProfilePicture) 
+                            ? IMAGES.profile_images[score.ProfilePicture] 
+                            : IMAGES.profile_images[0]}
                         />
                     );
                 }) 

@@ -43,7 +43,7 @@ const LeaderboardCardStyle = StyleSheet.create({
     },
     score: {
         flexDirection: 'row',
-        marginLeft: 8,
+        marginLeft: 15,
     },
     scoreText: {
         marginRight: 5,

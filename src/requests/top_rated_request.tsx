@@ -5,6 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 interface Score {
     DisplayName: string;
     Score: number;
+    ProfilePicture: number;
 }
 
 interface ApiResponse {
