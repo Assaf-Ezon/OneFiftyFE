@@ -15,15 +15,14 @@ interface LeaderBoardCardProp {
 const LeaderboardCard: FC<LeaderBoardCardProp> = ({ name, score, rank, image }) => {
 
     return (
-        <View style={LeaderboardCardStyle.selfScore}>
-            <View style={LeaderboardCardStyle.score}>
-                <Text style={LeaderboardCardStyle.scoreText}>מקום: {rank}</Text>
-                {/* <Image source={IMAGES.score_icon} /> */}
+        <View style={LeaderboardCardStyle.profileScore}>
+            <View style={LeaderboardCardStyle.rankContainer}>
+                <Text style={LeaderboardCardStyle.rankText}>{rank}</Text>
             </View>
             <View style={LeaderboardCardStyle.profileContainer}>
                 <View style={LeaderboardCardStyle.profileDetailsContainer}>
                     <Text style={LeaderboardCardStyle.profileNameText}>{name}</Text>
-                    <Text style={LeaderboardCardStyle.profileEmailText}>ניקוד: {score}</Text>
+                    <Text style={LeaderboardCardStyle.profileScoreText}>ניקוד: {score}</Text>
                 </View>
                 <Image style={LeaderboardCardStyle.profileImage} source={image} />
             </View>
