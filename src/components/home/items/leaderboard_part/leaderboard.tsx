@@ -23,8 +23,8 @@ const LeaderboardPart: FC = () => {
                 </View>
                 <View style={leaderboardPartStyle.profileContainer}>
                     <View style={leaderboardPartStyle.profileDetailsContainer}>
-                        <Text style={leaderboardPartStyle.profileNameText}>{profile?.name}</Text>
-                        <Text style={leaderboardPartStyle.profileEmailText}>מקום {profile?.rank}</Text>
+                        <Text style={leaderboardPartStyle.profileNameText}>{profile.name}</Text>
+                        <Text style={leaderboardPartStyle.profileEmailText}>מקום {profile.rank}</Text>
                     </View>
                     <Image style={leaderboardPartStyle.profileImage} source={IMAGES.profile_image} />
                 </View>

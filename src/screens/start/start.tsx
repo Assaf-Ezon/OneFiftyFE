@@ -9,8 +9,10 @@ import { useProfile } from '../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
 import * as SecureStore from 'expo-secure-store';
-import * as AuthSession from "expo-auth-session";
-import getProfileData from './get_profile_data';
+import * as AuthSession from 'expo-auth-session';
+
+import getProfileData from '../../requests/profile_data_request';
+import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 
 const tenantName = 'OneFiftyApp'; 
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
@@ -18,14 +20,18 @@ const policyName = 'B2C_1_OneFiftyApp';
 const redirectUri = 'com.OneFifty.App://auth';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
+    // contexts
     const {setProfile} = useProfile();
     const {setStackIndex} = useStackManagerContext();
     
+    // loading flag
     const [loading, setLoading] = useState<boolean>(false);
 
+    // popup flag and index
     const [popupOpen, setPopupOpen] = useState<boolean>(false);
     const [popupIndex, setPopupIndex] = useState<number>(1);
 
+    // login handle
     const discovery = {
         authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
         tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
@@ -46,6 +52,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         discovery
     );
 
+    // activated when there is a response
     useEffect(() => { 
         const processResponse = async () => {
             if (response && response.type == 'success') {
@@ -82,17 +89,36 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setPopupIndex(2);
                 setPopupOpen(true);
             } else {
-                setProfile({
-                    name: data.UserData.DisplayName,
-                    email: data.UserData.Email,
-                    rank: 1,
-                    score: data.UserData.Score,
-                    dateJoined: new Date(data.UserData.DateJoined), 
-                    expirationDate: new Date(data.UserData.ExpirationDate), 
-                    profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    hebrewWords: data.HebrewWordsDictionary.Words,
-                    englishWords: data.EnglishWordsDictionary.Words,
-                });
+                const scores = await getLeaderboardData('OverallScore', false);
+
+                if (scores && typeof scores !== 'number' && 'Scores' in scores) {
+                    const name = await SecureStore.getItemAsync('name');
+
+                    setProfile({
+                        name: data.UserData.DisplayName,
+                        email: data.UserData.Email,
+                        rank: getUserRankByName(scores.Scores, typeof name === 'string' ? name : ''),
+                        score: data.UserData.Score,
+                        dateJoined: new Date(data.UserData.DateJoined), 
+                        expirationDate: new Date(data.UserData.ExpirationDate), 
+                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                        hebrewWords: data.HebrewWordsDictionary.Words,
+                        englishWords: data.EnglishWordsDictionary.Words,
+                    });
+                } else {
+                    setProfile({
+                        name: data.UserData.DisplayName,
+                        email: data.UserData.Email,
+                        rank: 0,
+                        score: data.UserData.Score,
+                        dateJoined: new Date(data.UserData.DateJoined), 
+                        expirationDate: new Date(data.UserData.ExpirationDate), 
+                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                        hebrewWords: data.HebrewWordsDictionary.Words,
+                        englishWords: data.EnglishWordsDictionary.Words,
+                    });
+                }
+
                 setStackIndex(2);
                 setLoading(false);
             }

@@ -3,7 +3,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
 
 const LeaderboardCardStyle = StyleSheet.create({
-    selfScore: {
+    profileScore: {
         width: '100%',
         height: height * 0.1,
         backgroundColor: 'white',
@@ -31,7 +31,7 @@ const LeaderboardCardStyle = StyleSheet.create({
         fontSize: 18,
         fontWeight: '700',
     },
-    profileEmailText: {
+    profileScoreText: {
         textAlign: 'right',
         color: '#656565',
     },
@@ -41,13 +41,13 @@ const LeaderboardCardStyle = StyleSheet.create({
         borderRadius: 25,
         overflow: "hidden",
     },
-    score: {
+    rankContainer: {
         flexDirection: 'row',
-        marginLeft: 8,
+        marginLeft: 25,
     },
-    scoreText: {
-        marginRight: 5,
-        fontWeight: '500',
+    rankText: {
+        fontWeight: '900',
+        fontSize: 20,
     },
 });
 

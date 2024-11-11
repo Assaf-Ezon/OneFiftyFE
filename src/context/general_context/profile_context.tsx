@@ -35,6 +35,7 @@ interface ProfileContextProps {
     profile: Profile;
     setProfile: (profile: Profile) => void;
     updateProfileImage: (newImage: ImageSourcePropType) => void;
+    updateRank: (rank: number) => void;
 };
 
 export const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
@@ -59,8 +60,15 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }));
     };
 
+    const updateRank = (rank: number) => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            rank: rank,
+        }));
+    };
+
     return (
-        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage }}>
+        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank }}>
             {children}
         </ProfileContext.Provider>
     );
