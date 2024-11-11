@@ -38,7 +38,7 @@ const ChangeProfileImageStyle = StyleSheet.create({
     submitContainer: {
         width: '90%',
         height: '25%',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
     },
     submitBtn: {
@@ -51,6 +51,10 @@ const ChangeProfileImageStyle = StyleSheet.create({
     },
     submitBtnText: {
         color: 'white',
+    },
+    errorText: {
+        color: 'red',
+        fontWeight: '500',
     },
 });
 
