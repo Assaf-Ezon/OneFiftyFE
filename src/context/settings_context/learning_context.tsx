@@ -1,6 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface Settings {
+    newWords: boolean;
+    incorrectWords: boolean;
+    practiceWords: boolean;
     smartStudy: boolean;
     language: string | null;
     levels: { [key: number]: number };
@@ -10,20 +13,24 @@ interface LearningSettingsContextProps {
     isLearningSettingOpen: boolean;
     toggleLearningSettings: () => void;
     settings: Settings;
-    setSettings: (settings: Settings) => void;
+    updateCheckboxes: (smart: boolean, n: boolean, incorect: boolean, practice: boolean) => void
     updateLevel: (level: number, value: number) => void;
+    updateLanguage: (lang: string | null) => void;
 }
 
 const LearningSettingsContext = createContext<LearningSettingsContextProps | undefined>(undefined);
 
 export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
+    // popup open flag
     const [isLearningSettingOpen, setIsLearningSettingOpen] = useState<boolean>(false);
 
+    // set flag
     const toggleLearningSettings = () => {
         setIsLearningSettingOpen(prev => !prev);
     };
 
-    const [settings, setSettings] = useState<Settings>({smartStudy: true, language: null,
+    // use state of the settings
+    const [settings, setSettings] = useState<Settings>({newWords: false, incorrectWords: false, practiceWords: false, smartStudy: false, language: null,
         levels: {
             1: 0,
             2: 0,
@@ -38,6 +45,18 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         },
     });
 
+    //update checkboxes
+    const updateCheckboxes = (smart: boolean, n: boolean, incorect: boolean, practice: boolean) => {
+        setSettings((prevState: Settings) => ({
+            ...prevState, 
+            smartStudy: smart,
+            newWords: n,
+            incorrectWords: incorect,
+            practiceWords: practice,
+        }));
+    };
+
+    //update levels
     const updateLevel = (level: number, value: number) => {
         setSettings((prevState: Settings) => ({
             ...prevState, 
@@ -48,8 +67,16 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         }));
     };
 
+    //update language
+    const updateLanguage = (lang: string | null) => {
+        setSettings((prevState: Settings) => ({
+            ...prevState, 
+            language: lang,
+        }));
+    };
+
     return (
-        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, setSettings, updateLevel }}>
+        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage }}>
             {children}
         </LearningSettingsContext.Provider>
     );

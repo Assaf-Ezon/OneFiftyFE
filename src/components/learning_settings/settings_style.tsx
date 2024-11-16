@@ -23,6 +23,7 @@ const SettingsStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
+        backgroundColor: 'red',
 
     },
     title: {
@@ -34,13 +35,49 @@ const SettingsStyle = StyleSheet.create({
     },
     SettingsPart: {
         width: '90%',
-        height: '55%',
+        height: '70%',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'flex-end',
+        backgroundColor: 'yellow',
+    },
+    TypeOfPractice: {
+        width: '100%',
+        height: '35%',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        backgroundColor: 'red',
+    },
+    TypeOfPracticeTitle: {
+        fontSize: 15,
+        fontWeight: '500',
+    },
+    OptionsContainer: {
+        width: '100%',
+        height: '80%',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+    },
+    VerticalLine: {
+        width: 1,
+        height: '100%',
+        backgroundColor: 'black',
+        opacity: 0.5,
+    },
+    RegularStudyText: {
+        marginRight: 8,
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    PracticeContainer: {
+        backgroundColor: 'green',
+        justifyContent: 'space-evenly',
+        alignItems: 'flex-end',
+        width: '45%',
+        height: '100%',
     },
     SmartStudyDescription: {
-        textAlign: 'right',
+        textAlign: 'center',
         marginBottom: 10,
     },
     SmartStudy: {
@@ -61,7 +98,8 @@ const SettingsStyle = StyleSheet.create({
     },
     ChooseLevelText: {
         textAlign: 'right',
-        fontSize: 18,
+        fontSize: 15,
+        fontWeight: '500',
     },
     selectLevels: {
         width: '100%',
@@ -82,14 +120,15 @@ const SettingsStyle = StyleSheet.create({
     },
     LowerPart: {
         width: '90%',
-        height: '20%',
+        height: '15%',
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'green',
     },
     submitBtn: {
         backgroundColor: '#7F5CA6',
         width: '50%',
-        height: '40%',
+        height: '50%',
         borderRadius: 60,
         justifyContent: 'center',
         alignItems: 'center',
