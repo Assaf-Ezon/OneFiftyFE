@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Text, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import CheckBox from 'expo-checkbox';
 import NumericInput from './numeric_input/numeric_input';
@@ -11,9 +11,6 @@ import { useLearningSettingsContext } from '../../context/settings_context/learn
 const LearningSettings = () => {
     // settings context
     const {isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLanguage, generateRandomNumbers} = useLearningSettingsContext();
-
-    // flag for if filled correctly
-    const [isfilledCorrectly, setIsFilledCorrectly] = useState<boolean>(true);
 
     // state handling for smart study checkbox
     const [smartStudy, setSmartStudy] = useState<boolean>(settings.smartStudy);
@@ -47,21 +44,29 @@ const LearningSettings = () => {
     useEffect(() => {
         updateLanguage(langValue);
         updateCheckboxes(smartStudy, newWordsChecbox, incorrectWordsChecbox, practiceWordsChecbox);
-    }, [langValue, newWordsChecbox, incorrectWordsChecbox, practiceWordsChecbox]);
+    }, [langValue, smartStudy, newWordsChecbox, incorrectWordsChecbox, practiceWordsChecbox]);
 
     // checks if the form is filled correctly
     const checkForm = () => {
-        return (true);
+        if (Object.values(settings.levels).every(value => value === 0)) {
+            Alert.alert('טופס לא תקין ', 'בחר כמה מילים לתרגל');
+            return false;
+        }
+        if (!langValue) {
+            Alert.alert('טופס לא תקין ', 'בחר שפה');
+            return false;
+        }
+        if (!((smartStudy && !newWordsChecbox && !incorrectWordsChecbox && !practiceWordsChecbox) || (!smartStudy && (newWordsChecbox || incorrectWordsChecbox || practiceWordsChecbox)))) {
+            Alert.alert('טופס לא תקין ', 'בחר צורת תרגול');
+            return false;
+        }
+
+        return true;
     };
 
     // updates the settings context with the choosen settings
     const updateSettings = () => {
-        if (checkForm()) {
-            setIsFilledCorrectly(true);
-            toggleLearningSettings();
-        } else {
-            setIsFilledCorrectly(false);
-        }
+        checkForm() ? toggleLearningSettings() : null;
     };
 
     return (
@@ -72,7 +77,7 @@ const LearningSettings = () => {
                 </View>
                 <View style={SettingsStyle.SettingsPart}>
                     <View style={SettingsStyle.PickLevel}>
-                        <Text style={SettingsStyle.ChooseLevelText}>בחר מילים מכל רמה (100 מילים מקסימום):</Text>
+                        <Text style={SettingsStyle.ChooseLevelText}>בחר מילים מכל רמה (אין לעבור 100 מילים סה"כ):</Text>
                         <View style={SettingsStyle.selectLevels}>
                         {
                             Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
@@ -98,11 +103,11 @@ const LearningSettings = () => {
                         placeholder='בחר שפת תרגול'
                         textStyle={{textAlign: 'right'}}
                     />
-                    
+
                     <View style={SettingsStyle.TypeOfPractice}>
                         <Text style={SettingsStyle.TypeOfPracticeTitle}>בחר צורת תרגול (אחת משתי האפשרויות):</Text>
                         <View style={SettingsStyle.OptionsContainer}>
-                            <View style={[SettingsStyle.PracticeContainer, {opacity: isRegularPracticeOn() ? 0.7 : 1}]}
+                            <View style={[SettingsStyle.PracticeContainer, {opacity: isRegularPracticeOn() ? 0.4 : 1}]}
                             pointerEvents={ isRegularPracticeOn()  ? 'none' : 'auto' }>
                                 <View style={SettingsStyle.SmartStudy}>
                                     <Text style={SettingsStyle.SmartStudyText}>תרגול חכם</Text>
@@ -113,7 +118,7 @@ const LearningSettings = () => {
 
                             <View style={SettingsStyle.VerticalLine} />
 
-                            <View style={[SettingsStyle.PracticeContainer , {opacity: smartStudy ? 0.7 : 1}]}
+                            <View style={[SettingsStyle.PracticeContainer , {opacity: smartStudy ? 0.4 : 1}]}
                             pointerEvents={ smartStudy  ? 'none' : 'auto' }>
                                 <View style={SettingsStyle.SmartStudy}>
                                     <Text style={SettingsStyle.RegularStudyText}>מילים חדשות</Text>
@@ -130,10 +135,6 @@ const LearningSettings = () => {
                             </View>
                         </View>
                     </View>
-                    {
-                        isfilledCorrectly ? null :
-                        <Text style={SettingsStyle.popupMsg}>אנא בחר שפה + רמות / תרגול חכם</Text>
-                    }
                 </View>
                 <View style={SettingsStyle.LowerPart}>
                     <TouchableOpacity style={SettingsStyle.submitBtn} onPress={() => {updateSettings()}}>

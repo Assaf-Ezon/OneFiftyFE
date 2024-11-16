@@ -80,16 +80,16 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
     const generateRandomNumbers = () => {
         let total = 0;
 
-    while (total < 100) {
-        const index = Math.floor(Math.random() * 10);
+        while (total < 100) {
+            const index = Math.floor(Math.random() * 10);
 
-        const maxAddable = Math.min(50 - settings.levels[index], 100 - total);
+            const maxAddable = Math.min(50 - settings.levels[index], 100 - total);
 
-        const randomValue = Math.floor(Math.random() * maxAddable) + 1;
-        updateLevel(index, randomValue);
+            const randomValue = Math.floor(Math.random() * maxAddable) + 1;
+            updateLevel(index, randomValue);
 
-        total += randomValue;
-    }
+            total += randomValue;
+        }
     };
 
     return (

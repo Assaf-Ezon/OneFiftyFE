@@ -123,10 +123,6 @@ const SettingsStyle = StyleSheet.create({
     levelsText: {
         marginTop: 2,
     },
-    popupMsg: {
-        color: 'red',
-        fontWeight: '600',
-    },
     LowerPart: {
         width: '90%',
         height: '15%',

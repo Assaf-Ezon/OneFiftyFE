@@ -12,7 +12,7 @@ const NumbericInputStyle = StyleSheet.create({
         alignItems: 'center',
     },
     inputField: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 'bold',
     },
     btn: {
