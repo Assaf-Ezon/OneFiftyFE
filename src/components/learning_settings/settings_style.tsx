@@ -23,15 +23,13 @@ const SettingsStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
-        backgroundColor: 'red',
-
     },
     title: {
         fontSize: 25,
         fontWeight: '600',
     },
     exitBtn: {
-
+        
     },
     SettingsPart: {
         width: '90%',
@@ -39,14 +37,13 @@ const SettingsStyle = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'flex-end',
-        backgroundColor: 'yellow',
     },
     TypeOfPractice: {
+        marginTop: 5,
         width: '100%',
         height: '35%',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        backgroundColor: 'red',
     },
     TypeOfPracticeTitle: {
         fontSize: 15,
@@ -70,7 +67,6 @@ const SettingsStyle = StyleSheet.create({
         fontWeight: '500',
     },
     PracticeContainer: {
-        backgroundColor: 'green',
         justifyContent: 'space-evenly',
         alignItems: 'flex-end',
         width: '45%',
@@ -91,12 +87,25 @@ const SettingsStyle = StyleSheet.create({
     },
     PickLevel: {
         width: '100%',
-        height: '25%',
+        height: '40%',
         flexDirection: 'column',
         justifyContent: 'space-between',
-
+        alignItems: 'center',
+    },
+    RandomBtn: {
+        backgroundColor: 'white',
+        width: '25%',
+        height: '15%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 20,
+    },
+    RandomBtnText: {
+        fontWeight: '600',
     },
     ChooseLevelText: {
+        width: '100%',
         textAlign: 'right',
         fontSize: 15,
         fontWeight: '500',
@@ -123,7 +132,6 @@ const SettingsStyle = StyleSheet.create({
         height: '15%',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'green',
     },
     submitBtn: {
         backgroundColor: '#7F5CA6',

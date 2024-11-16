@@ -11,11 +11,15 @@ interface NumericInputInterface {
 
 const NumericInput: FC<NumericInputInterface> = ({ level }) => {
     const {settings, updateLevel} = useLearningSettingsContext();
-    const [value, setValue] = useState<number>(settings.levels[level] ?? 0);
+    const [value, setValue] = useState<number>(settings.levels[level]);
 
     useEffect(() => {
         updateLevel(level, value);
     }, [value])
+
+    useEffect(() => {
+        setValue(settings.levels[level]);
+    }, [settings.levels[level]]);
 
     const increase = () => {
         if (value < 50) {

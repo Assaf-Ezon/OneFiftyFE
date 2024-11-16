@@ -16,6 +16,7 @@ interface LearningSettingsContextProps {
     updateCheckboxes: (smart: boolean, n: boolean, incorect: boolean, practice: boolean) => void
     updateLevel: (level: number, value: number) => void;
     updateLanguage: (lang: string | null) => void;
+    generateRandomNumbers: () => void;
 }
 
 const LearningSettingsContext = createContext<LearningSettingsContextProps | undefined>(undefined);
@@ -75,8 +76,24 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         }));
     };
 
+    // generate random words per level
+    const generateRandomNumbers = () => {
+        let total = 0;
+
+    while (total < 100) {
+        const index = Math.floor(Math.random() * 10);
+
+        const maxAddable = Math.min(50 - settings.levels[index], 100 - total);
+
+        const randomValue = Math.floor(Math.random() * maxAddable) + 1;
+        updateLevel(index, randomValue);
+
+        total += randomValue;
+    }
+    };
+
     return (
-        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage }}>
+        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage, generateRandomNumbers }}>
             {children}
         </LearningSettingsContext.Provider>
     );
