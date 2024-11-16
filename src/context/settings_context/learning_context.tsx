@@ -3,7 +3,7 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 interface Settings {
     smartStudy: boolean;
     language: string | null;
-    levels: [number, boolean][];
+    levels: { [key: number]: number };
 }
 
 interface LearningSettingsContextProps {
@@ -11,6 +11,7 @@ interface LearningSettingsContextProps {
     toggleLearningSettings: () => void;
     settings: Settings;
     setSettings: (settings: Settings) => void;
+    updateLevel: (level: number, value: number) => void;
 }
 
 const LearningSettingsContext = createContext<LearningSettingsContextProps | undefined>(undefined);
@@ -22,22 +23,33 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         setIsLearningSettingOpen(prev => !prev);
     };
 
-    const [settings, setSettings] = useState<Settings>({smartStudy: true, language: null, 
-        levels: [
-            [1, false],
-            [2, false],
-            [3, false],
-            [4, false],
-            [5, false],
-            [6, false],
-            [7, false],
-            [8, false],
-            [9, false],
-            [10, false],
-        ]});
+    const [settings, setSettings] = useState<Settings>({smartStudy: true, language: null,
+        levels: {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0,
+        },
+    });
+
+    const updateLevel = (level: number, value: number) => {
+        setSettings((prevState: Settings) => ({
+            ...prevState, 
+            levels: {
+                ...prevState.levels,
+                [level]: value, 
+            },
+        }));
+    };
 
     return (
-        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, setSettings }}>
+        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, setSettings, updateLevel }}>
             {children}
         </LearningSettingsContext.Provider>
     );

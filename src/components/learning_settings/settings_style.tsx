@@ -21,7 +21,7 @@ const SettingsStyle = StyleSheet.create({
         width: '90%',
         height: '10%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
 
     },
@@ -66,10 +66,15 @@ const SettingsStyle = StyleSheet.create({
     selectLevels: {
         width: '100%',
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
     },
     checkboxContainer: {
         alignItems: 'center',
+        marginTop: 5,
+    },
+    levelsText: {
+        marginTop: 2,
     },
     popupMsg: {
         color: 'red',
