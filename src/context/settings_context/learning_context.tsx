@@ -76,20 +76,30 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         }));
     };
 
-    // generate random words per level
     const generateRandomNumbers = () => {
-        let total = 0;
+        _resetLevels();
 
-        while (total < 100) {
-            const index = Math.floor(Math.random() * 10);
+        const randomDictionary = Array.from({ length: 10 }, (_, i) => i + 1).reduce<Record<number, boolean>>((dict, key) => {
+            dict[key] = Math.random() < 0.5;
+            return dict;
+        }, {});
 
-            const maxAddable = Math.min(50 - settings.levels[index], 100 - total);
+        const trueCount = Object.values(randomDictionary).filter(value => value).length;
 
-            const randomValue = Math.floor(Math.random() * maxAddable) + 1;
-            updateLevel(index, randomValue);
+        Object.entries(randomDictionary).filter(([key, value]) => value).forEach(([key]) => {
+            const randomValue = Math.floor(Math.random() * (100/trueCount)) + 1;
+            updateLevel(Number(key), randomValue);
+        });
+    }
 
-            total += randomValue;
-        }
+    const _resetLevels = () => {
+        setSettings((prevState: Settings) => ({
+            ...prevState,
+            levels: Object.keys(prevState.levels).reduce((acc, key) => {
+                acc[Number(key)] = 0;
+                return acc;
+            }, {} as { [key: number]: number }),
+        }));
     };
 
     return (
