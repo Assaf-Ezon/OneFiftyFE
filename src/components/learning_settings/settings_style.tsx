@@ -21,26 +21,59 @@ const SettingsStyle = StyleSheet.create({
         width: '90%',
         height: '10%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
-
     },
     title: {
         fontSize: 25,
         fontWeight: '600',
     },
     exitBtn: {
-
+        
     },
     SettingsPart: {
         width: '90%',
-        height: '55%',
+        height: '70%',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'flex-end',
     },
+    TypeOfPractice: {
+        marginTop: 5,
+        width: '100%',
+        height: '35%',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+    },
+    TypeOfPracticeTitle: {
+        fontSize: 15,
+        fontWeight: '500',
+    },
+    OptionsContainer: {
+        width: '100%',
+        height: '80%',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+    },
+    VerticalLine: {
+        width: 1,
+        height: '100%',
+        backgroundColor: 'black',
+        opacity: 0.5,
+    },
+    RegularStudyText: {
+        marginRight: 8,
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    PracticeContainer: {
+        justifyContent: 'space-evenly',
+        alignItems: 'flex-end',
+        width: '45%',
+        height: '100%',
+    },
     SmartStudyDescription: {
-        textAlign: 'right',
+        textAlign: 'center',
         marginBottom: 10,
     },
     SmartStudy: {
@@ -54,37 +87,52 @@ const SettingsStyle = StyleSheet.create({
     },
     PickLevel: {
         width: '100%',
-        height: '25%',
+        height: '40%',
         flexDirection: 'column',
         justifyContent: 'space-between',
-
+        alignItems: 'center',
+    },
+    RandomBtn: {
+        backgroundColor: 'white',
+        width: '25%',
+        height: '15%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRadius: 20,
+    },
+    RandomBtnText: {
+        fontWeight: '600',
     },
     ChooseLevelText: {
+        width: '100%',
         textAlign: 'right',
-        fontSize: 18,
+        fontSize: 15,
+        fontWeight: '500',
     },
     selectLevels: {
         width: '100%',
         flexDirection: 'row',
+        flexWrap: 'wrap',
         justifyContent: 'space-between',
     },
     checkboxContainer: {
         alignItems: 'center',
+        marginTop: 5,
     },
-    popupMsg: {
-        color: 'red',
-        fontWeight: '600',
+    levelsText: {
+        marginTop: 2,
     },
     LowerPart: {
         width: '90%',
-        height: '20%',
+        height: '15%',
         justifyContent: 'center',
         alignItems: 'center',
     },
     submitBtn: {
         backgroundColor: '#7F5CA6',
         width: '50%',
-        height: '40%',
+        height: '50%',
         borderRadius: 60,
         justifyContent: 'center',
         alignItems: 'center',

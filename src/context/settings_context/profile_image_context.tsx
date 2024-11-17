@@ -1,5 +1,4 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { ImageSourcePropType } from 'react-native';
 
 interface ProfileImageContextProps {
     isProfileImageMenuOpen: boolean;

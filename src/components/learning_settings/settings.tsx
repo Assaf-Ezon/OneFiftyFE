@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
-import CheckBox from 'expo-checkbox';
+import React, { useEffect, useState } from 'react';
+import { Text, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-
-import { IMAGES } from '../../image_handler';
+import CheckBox from 'expo-checkbox';
+import NumericInput from './numeric_input/numeric_input';
 
 import SettingsStyle from './settings_style';
 
@@ -11,13 +10,19 @@ import { useLearningSettingsContext } from '../../context/settings_context/learn
 
 const LearningSettings = () => {
     // settings context
-    const {isLearningSettingOpen, toggleLearningSettings, settings, setSettings} = useLearningSettingsContext();
-
-    // flag for if filled correctly
-    const [isfilledCorrectly, setIsFilledCorrectly] = useState<boolean>(true);
+    const {isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLanguage, generateRandomNumbers} = useLearningSettingsContext();
 
     // state handling for smart study checkbox
     const [smartStudy, setSmartStudy] = useState<boolean>(settings.smartStudy);
+
+    // state handling for regular study checkbox
+    const [newWordsChecbox, setNewWordsChecbox] = useState<boolean>(settings.newWords);
+    const [incorrectWordsChecbox, setIncorrectWordsChecbox] = useState<boolean>(settings.incorrectWords);
+    const [practiceWordsChecbox, setPracticeWordsChecbox] = useState<boolean>(settings.practiceWords);
+
+    const isRegularPracticeOn = () => {
+        return newWordsChecbox || incorrectWordsChecbox || practiceWordsChecbox;
+    };  
 
     // state handling for language dropdown menu - 1. for open and close menu. 2. for choosing the value.
     const [langOpen, setLangOpen] = useState<boolean>(false);
@@ -34,91 +39,110 @@ const LearningSettings = () => {
         {label: 'אנגלית', value: 'English'},
         {label: 'עברית', value: 'Hebrew'},
     ]);
-
-    // the checkbox options
-    const [levels, setLevels] = useState<[number, boolean][]>(settings.levels);
-
-    // updates the levels list state
-    const toggleSpecificLevel = (level: number) => { 
-        setLevels(prev => 
-            prev.map(prevLevel => 
-                prevLevel[0] === level 
-                ? [prevLevel[0], !prevLevel[1]] 
-                : prevLevel
-            )
-        );
-    };
+    
+    // update settings in context
+    useEffect(() => {
+        updateLanguage(langValue);
+        updateCheckboxes(smartStudy, newWordsChecbox, incorrectWordsChecbox, practiceWordsChecbox);
+    }, [langValue, smartStudy, newWordsChecbox, incorrectWordsChecbox, practiceWordsChecbox]);
 
     // checks if the form is filled correctly
     const checkForm = () => {
-        return (smartStudy) || (langValue && levels.some(level => level[1] === true));
+        if (Object.values(settings.levels).every(value => value === 0)) {
+            Alert.alert('טופס לא תקין ', 'בחר כמה מילים לתרגל');
+            return false;
+        }
+        if (!langValue) {
+            Alert.alert('טופס לא תקין ', 'בחר שפה');
+            return false;
+        }
+        if (!((smartStudy && !newWordsChecbox && !incorrectWordsChecbox && !practiceWordsChecbox) || (!smartStudy && (newWordsChecbox || incorrectWordsChecbox || practiceWordsChecbox)))) {
+            Alert.alert('טופס לא תקין ', 'בחר צורת תרגול');
+            return false;
+        }
+
+        return true;
     };
 
     // updates the settings context with the choosen settings
     const updateSettings = () => {
-        if (checkForm()) {
-            setSettings({
-                smartStudy: smartStudy,
-                language: langValue,
-                levels: levels
-            });
-            setIsFilledCorrectly(true);
-            toggleLearningSettings();
-        } else {
-            setIsFilledCorrectly(false);
-        }
+        checkForm() ? toggleLearningSettings() : null;
     };
 
     return (
-        <View style={[{display: isLearningSettingOpen ? 'flex' : 'none'}, SettingsStyle.container]}>
-            <View style={SettingsStyle.upperPart}>
-                <TouchableOpacity style={SettingsStyle.exitBtn} onPress={() => {toggleLearningSettings()}}>
-                    <Image source={IMAGES.back_icon} />
-                </TouchableOpacity>
-                <Text style={SettingsStyle.title}>הגדרות:</Text>
-            </View>
-            <View style={SettingsStyle.SettingsPart}>
-                <View style={SettingsStyle.SmartStudy}>
-                    <Text style={SettingsStyle.SmartStudyText}>תרגול חכם</Text>
-                    <CheckBox value={smartStudy} onValueChange={() => {setSmartStudy(prev => !prev)}} />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={[{display: isLearningSettingOpen ? 'flex' : 'none'}, SettingsStyle.container]}>
+                <View style={SettingsStyle.upperPart}>
+                    <Text style={SettingsStyle.title}>הגדרות:</Text>
                 </View>
-                <Text style={SettingsStyle.SmartStudyDescription}>תרגול חכם הינו מתרגל אוטומטי, בחירתו משמע התעלמות מיתר ההגדרות (מומלץ).</Text>
-                <DropDownPicker
-                    open={langOpen}
-                    value={langValue}
-                    items={langItems}
-                    setOpen={setLangOpen}
-                    setValue={setLangValue}
-                    setItems={setLangItems}
-                    placeholder='בחר שפת תרגול'
-                    textStyle={{textAlign: 'right'}}
-                />
-                <View style={SettingsStyle.PickLevel}>
-                    <Text style={SettingsStyle.ChooseLevelText}>בחר רמות:</Text>
-                    <View style={SettingsStyle.selectLevels}>
+                <View style={SettingsStyle.SettingsPart}>
+                    <View style={SettingsStyle.PickLevel}>
+                        <Text style={SettingsStyle.ChooseLevelText}>בחר מילים מכל רמה (אין לעבור 100 מילים סה"כ):</Text>
+                        <View style={SettingsStyle.selectLevels}>
                         {
-                            levels.map(level => {
-                                return (
-                                    <View style={SettingsStyle.checkboxContainer} key={level[0]}>
-                                        <CheckBox value={level[1]} onValueChange={() => {toggleSpecificLevel(level[0])}} />
-                                        <Text>{level[0]}</Text>
-                                    </View>
-                                )
-                            })
-                        }
+                            Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
+                                <View style={SettingsStyle.checkboxContainer} key={i}>
+                                <NumericInput level={i} />
+                                <Text style={SettingsStyle.levelsText}>{i}</Text>
+                                </View>
+                            ))
+                        }   
+                        </View>
+                        <TouchableOpacity style={SettingsStyle.RandomBtn} onPress={generateRandomNumbers}>
+                            <Text style={SettingsStyle.RandomBtnText}>רנדומלי</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <DropDownPicker
+                        open={langOpen}
+                        value={langValue}
+                        items={langItems}
+                        setOpen={setLangOpen}
+                        setValue={setLangValue}
+                        setItems={setLangItems}
+                        placeholder='בחר שפת תרגול'
+                        textStyle={{textAlign: 'right'}}
+                    />
+
+                    <View style={SettingsStyle.TypeOfPractice}>
+                        <Text style={SettingsStyle.TypeOfPracticeTitle}>בחר צורת תרגול (אחת משתי האפשרויות):</Text>
+                        <View style={SettingsStyle.OptionsContainer}>
+                            <View style={[SettingsStyle.PracticeContainer, {opacity: isRegularPracticeOn() ? 0.4 : 1}]}
+                            pointerEvents={ isRegularPracticeOn()  ? 'none' : 'auto' }>
+                                <View style={SettingsStyle.SmartStudy}>
+                                    <Text style={SettingsStyle.SmartStudyText}>תרגול חכם</Text>
+                                    <CheckBox value={smartStudy} onValueChange={() => {setSmartStudy(prev => !prev)}} />
+                                </View>
+                                <Text style={SettingsStyle.SmartStudyDescription}>בוחר עבורך איזה מילים לתרגל (מומלץ)</Text>
+                            </View>
+
+                            <View style={SettingsStyle.VerticalLine} />
+
+                            <View style={[SettingsStyle.PracticeContainer , {opacity: smartStudy ? 0.4 : 1}]}
+                            pointerEvents={ smartStudy  ? 'none' : 'auto' }>
+                                <View style={SettingsStyle.SmartStudy}>
+                                    <Text style={SettingsStyle.RegularStudyText}>מילים חדשות</Text>
+                                    <CheckBox value={newWordsChecbox} onValueChange={() => {setNewWordsChecbox(prev => !prev)}} />
+                                </View>
+                                <View style={SettingsStyle.SmartStudy}>
+                                    <Text style={SettingsStyle.RegularStudyText}>מילים שלא הצלחתי</Text>
+                                    <CheckBox value={incorrectWordsChecbox} onValueChange={() => {setIncorrectWordsChecbox(prev => !prev)}} />
+                                </View>
+                                <View style={SettingsStyle.SmartStudy}>
+                                    <Text style={SettingsStyle.RegularStudyText}>מילים לתרגול נוסף</Text>
+                                    <CheckBox value={practiceWordsChecbox} onValueChange={() => {setPracticeWordsChecbox(prev => !prev)}} />
+                                </View>
+                            </View>
+                        </View>
                     </View>
                 </View>
-                {
-                    isfilledCorrectly ? null :
-                    <Text style={SettingsStyle.popupMsg}>אנא בחר שפה + רמות / תרגול חכם</Text>
-                }
+                <View style={SettingsStyle.LowerPart}>
+                    <TouchableOpacity style={SettingsStyle.submitBtn} onPress={() => {updateSettings()}}>
+                        <Text style={SettingsStyle.submitBtnText}>אישור</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <View style={SettingsStyle.LowerPart}>
-                <TouchableOpacity style={SettingsStyle.submitBtn} onPress={() => {updateSettings()}}>
-                    <Text style={SettingsStyle.submitBtnText}>אישור</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 };  
 
