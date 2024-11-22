@@ -2,6 +2,7 @@ import axios from 'axios';
 import { CONFIG } from '../config';
 import * as SecureStore from 'expo-secure-store';
 
+// dictionaries interfaces
 interface Meaning {
     Meaning: string;
     Source: string;
@@ -17,6 +18,24 @@ interface WordsDictionary {
     [key: string]: {
         [word: string]: WordDetails;
     };
+}
+
+// statistics interfaces
+interface WordStatisticsData {
+    Word: WordDetails;                 
+    ConsecutiveSuccesses: number; 
+    LastSeen: string;           
+    Successes: number;          
+    Failures: number;            
+}
+
+interface WordsStatistics {
+    WordCount: number;
+    Words: { [groupId: number]: { [word: string]: WordStatisticsData } };
+}
+
+interface UserStatistics {
+    WordsStatistics: WordsStatistics; 
 }
 
 interface UserData {
@@ -36,22 +55,12 @@ interface UserData {
 }
 
 interface ApiResponse {
-    EnglishUserStatistics: {
-        WordsStatistics: {
-            WordCount: number;
-            Words: WordsDictionary;
-        };
-    };
+    EnglishUserStatistics: UserStatistics,
     EnglishWordsDictionary: {
         WordCount: number;
         Words: WordsDictionary;
     };
-    HebrewUserStatistics: {
-        WordsStatistics: {
-            WordCount: number;
-            Words: WordsDictionary;
-        };
-    };
+    HebrewUserStatistics: UserStatistics,
     HebrewWordsDictionary: {
         WordCount: number;
         Words: WordsDictionary;
@@ -78,7 +87,7 @@ const getProfileData = async (): Promise<ApiResponse | number> => {
                 'Content-Type': 'application/json',
             }
         });
-        console.log(response.data);
+        
         return response.data;
         
     } catch (error) {

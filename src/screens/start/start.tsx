@@ -6,6 +6,7 @@ import StartScreenStyle from './start_style';
 import { IMAGES } from '../../image_handler';
 
 import { useProfile } from '../../context/general_context/profile_context';
+import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
 import * as SecureStore from 'expo-secure-store';
@@ -22,6 +23,7 @@ const redirectUri = 'com.OneFifty.App://auth';
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
     const {setProfile} = useProfile();
+    const {setHebrewWords, setEnglishWords, setHebrewUserStatistics, setEnglishUserStatistics} = useWords();
     const {setStackIndex} = useStackManagerContext();
     
     // loading flag
@@ -80,7 +82,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         }  
     };
 
-    // sets profile context with fetched data
+    // sets profile and words context with fetched data
     const handleUserData = async () => {
         const data = await getProfileData();
         
@@ -102,8 +104,6 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        hebrewWords: data.HebrewWordsDictionary.Words,
-                        englishWords: data.EnglishWordsDictionary.Words,
                     });
                 } else {
                     setProfile({
@@ -114,10 +114,13 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        hebrewWords: data.HebrewWordsDictionary.Words,
-                        englishWords: data.EnglishWordsDictionary.Words,
                     });
                 }
+
+                setHebrewWords(data.HebrewWordsDictionary);
+                setEnglishWords(data.EnglishWordsDictionary);
+                setHebrewUserStatistics(data.HebrewUserStatistics);
+                setEnglishUserStatistics(data.EnglishUserStatistics);
 
                 setStackIndex(2);
                 setLoading(false);

@@ -42,22 +42,35 @@ interface UserStatistics {
 }
 
 interface WordsContextProps {
-    hebrewWords: WordsDictionary | {},
-    englishWords: WordsDictionary | {},
-    hebrewUserStatistics: UserStatistics | {},
-    englishUserStatistics: UserStatistics | {},
+    hebrewWords: WordsDictionary,
+    setHebrewWords: (words: WordsDictionary) => void;
+    englishWords: WordsDictionary,
+    setEnglishWords: (words: WordsDictionary) => void;
+    hebrewUserStatistics: UserStatistics,
+    setHebrewUserStatistics: (words: UserStatistics) => void;
+    englishUserStatistics: UserStatistics,
+    setEnglishUserStatistics: (words: UserStatistics) => void;
 };
 
 export const WordsContext = createContext<WordsContextProps | undefined>(undefined);
 
 export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [hebrewWords, setHebrewWords] = useState<WordsDictionary | {}>({});
-    const [englishWords, setEnglishWords] = useState<WordsDictionary | {}>({});
-    const [hebrewUserStatistics, setHebrewUserStatistics] = useState<UserStatistics | {}>({});;
-    const [englishUserStatistics, setEnglishUserStatistics] = useState<UserStatistics | {}>({});;
+    const [hebrewWords, setHebrewWords] = useState<WordsDictionary>({} as WordsDictionary);
+    const [englishWords, setEnglishWords] = useState<WordsDictionary>({} as WordsDictionary);
+    const [hebrewUserStatistics, setHebrewUserStatistics] = useState<UserStatistics>({} as UserStatistics);
+    const [englishUserStatistics, setEnglishUserStatistics] = useState<UserStatistics>({} as UserStatistics);
 
     return (
-        <WordsContext.Provider value={{ hebrewWords, englishWords, hebrewUserStatistics, englishUserStatistics }}>
+        <WordsContext.Provider value={{ 
+            hebrewWords, 
+            setHebrewWords, 
+            englishWords, 
+            setEnglishWords, 
+            hebrewUserStatistics, 
+            setHebrewUserStatistics, 
+            englishUserStatistics, 
+            setEnglishUserStatistics 
+        }}>
             {children}
         </WordsContext.Provider>
     );

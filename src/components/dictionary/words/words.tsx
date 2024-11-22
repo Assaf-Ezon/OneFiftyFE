@@ -5,11 +5,12 @@ import Word from './word/word';
 
 import { useSettings } from '../../../context/dictionary_context/settings_context';
 import { useProfile } from '../../../context/general_context/profile_context';
+import { useWords } from '../../../context/general_context/words_context';
 
 const Words = () => {
     const { settings } = useSettings();
-    const { profile } = useProfile();
-
+    const { englishWords, hebrewWords } = useWords();
+    
     interface Meaning {
         Meaning: string;
         Source: string;
@@ -23,13 +24,13 @@ const Words = () => {
 
     let words: { [word: string]: WordDetails } = {};
     try {
-        if (settings.level in profile.hebrewWords && settings.level in profile.englishWords) {
+        if (settings.level in hebrewWords.Words && settings.level in englishWords.Words) {
             switch (settings.language) {
                 case 'Hebrew':
-                    words = profile.hebrewWords[settings.level];
+                    words = hebrewWords.Words[settings.level];
                     break;
                 case 'English':
-                    words = profile.englishWords[settings.level];
+                    words = englishWords.Words[settings.level];
                     break;
             }
         }

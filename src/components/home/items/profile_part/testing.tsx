@@ -15,59 +15,67 @@ interface WordsDictionary {
     };
 }
 
-const fullDict: WordsDictionary  = {
-    1: {
-        "הֲגַם שֶׁ...": {
-            "FullWord":"הֲגַם שֶׁ...",
-            "Meanings": [
-                {
-                    "Meaning":"אף על פי",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
+interface FullWordsDictionary {
+    WordCount: number;
+    Words: WordsDictionary;
+}
+
+const fullDict: FullWordsDictionary  = {
+    "WordCount": 5, 
+    "Words": {
+        1: {
+            "הֲגַם שֶׁ...": {
+                "FullWord":"הֲגַם שֶׁ...",
+                "Meanings": [
+                    {
+                        "Meaning":"אף על פי",
+                        "Source":""
+                    }
+                ],
+                "Group": 0,
+            },
+            "אָבַד עָלָיו הַכֶּלַח": {
+                "FullWord":"אָבַד עָלָיו הַכֶּלַח",
+                "Meanings": [
+                    {
+                        "Meaning":"התיישן, עבר זמנו",
+                        "Source":""
+                    }
+                ],
+                "Group": 0,
+            },
         },
-        "אָבַד עָלָיו הַכֶּלַח": {
-            "FullWord":"אָבַד עָלָיו הַכֶּלַח",
-            "Meanings": [
-                {
-                    "Meaning":"התיישן, עבר זמנו",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
-        },
-    },
-    2: {
-        "אַבְדָּאִי": {
-            "FullWord":"אַבְדָּאִי",
-            "Meanings": [
-                {
-                    "Meaning":"גבר חזק ותקיף, בריון",
-                    "Source":"ויקימילון"
-                }
-            ],
-            "Group": 0,
-        },
-        "אֵבוּס": {
-            "FullWord":"אֵבוּס",
-            "Meanings": [
-                {
-                    "Meaning":"כלי צר ומוארך הפתוח בחלקו העליון ובו משאירים מזון לבהמות",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
-        },
-        "אֲבוּקָה": {
-            "FullWord":"אֲבוּקָה",
-            "Meanings": [
-                {
-                    "Meaning":"לפיד",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
+        2: {
+            "אַבְדָּאִי": {
+                "FullWord":"אַבְדָּאִי",
+                "Meanings": [
+                    {
+                        "Meaning":"גבר חזק ותקיף, בריון",
+                        "Source":"ויקימילון"
+                    }
+                ],
+                "Group": 0,
+            },
+            "אֵבוּס": {
+                "FullWord":"אֵבוּס",
+                "Meanings": [
+                    {
+                        "Meaning":"כלי צר ומוארך הפתוח בחלקו העליון ובו משאירים מזון לבהמות",
+                        "Source":""
+                    }
+                ],
+                "Group": 0,
+            },
+            "אֲבוּקָה": {
+                "FullWord":"אֲבוּקָה",
+                "Meanings": [
+                    {
+                        "Meaning":"לפיד",
+                        "Source":""
+                    }
+                ],
+                "Group": 0,
+            },
         },
     },
 }
@@ -136,10 +144,10 @@ const statistics: UserStatistics = {
 const get_new_words = () => {
     const newWords: { [groupId: number]: { [word: string]: WordDetails } } = {}; 
 
-    for (const [groupKey, groupValue] of Object.entries(fullDict)) {
+    for (const [groupKey, groupValue] of Object.entries(fullDict.Words)) {
         const newGroupWords: { [word: string]: WordDetails } = {};
         
-        const groupId = Number(groupKey); 
+        const groupId = Number(groupKey);
 
         if (groupId in statistics.WordsStatistics.Words) {
             for (const [wordsKey, wordsValue] of Object.entries(groupValue)) {

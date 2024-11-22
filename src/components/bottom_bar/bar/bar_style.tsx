@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { CONFIG } from '../../../config';
 
 const barStyle = StyleSheet.create({
     container: {
@@ -15,6 +16,7 @@ const barStyle = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 2,
         backgroundColor: 'white',
+        zIndex: CONFIG.zIndexLevels.bottom_bar,
     },
 });
 
