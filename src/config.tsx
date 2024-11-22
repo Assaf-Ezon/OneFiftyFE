@@ -3,7 +3,8 @@ export const CONFIG = {
         login: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/login',
         update_game: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats',
         leaderboard: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/leaderboard/get',
-        profile_picture: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1//user/update/profile/picture',
+        profile_picture: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/profile/picture',
+        update_words: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats'
 
     },
     privacy_policy: `
