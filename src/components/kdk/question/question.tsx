@@ -6,7 +6,6 @@ import { fadeIn } from '../../../animations/fade_animations';
 
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { opacity } from 'react-native-reanimated/lib/typescript/reanimated2/Colors';
 
 const Question = () => {
     const navigation = useNavigation();

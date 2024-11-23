@@ -77,7 +77,8 @@ export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [hebrewUserStatistics, setHebrewUserStatistics] = useState<UserStatistics>({} as UserStatistics);
     const [englishUserStatistics, setEnglishUserStatistics] = useState<UserStatistics>({} as UserStatistics);
 
-    const _getNewWords = (fullDict: WordsDictionary, statistics: UserStatistics) => {
+    // remaining new words calculation
+    const _getNewWords = (fullDict: WordsDictionary, statistics: UserStatistics): { [groupId: number]: { [word: string]: WordDetails } } => {
         const newWords: { [groupId: number]: { [word: string]: WordDetails } } = {}; 
     
         for (const [groupKey, groupValue] of Object.entries(fullDict.Words)) {
