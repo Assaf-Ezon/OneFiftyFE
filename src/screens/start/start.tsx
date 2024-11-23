@@ -23,7 +23,7 @@ const redirectUri = 'com.OneFifty.App://auth';
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
     const {setProfile} = useProfile();
-    const {setHebrewWords, setEnglishWords, setHebrewUserStatistics, setEnglishUserStatistics} = useWords();
+    const {setHebrewWords, setEnglishWords, setHebrewUserStatistics, setEnglishUserStatistics, updateNewHebrewWords, updateNewEnglishWords} = useWords();
     const {setStackIndex} = useStackManagerContext();
     
     // loading flag
@@ -121,6 +121,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
+                // updateNewHebrewWords();
+                // updateNewEnglishWords();
 
                 setStackIndex(2);
                 setLoading(false);
