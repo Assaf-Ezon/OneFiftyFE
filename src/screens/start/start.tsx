@@ -23,7 +23,19 @@ const redirectUri = 'com.OneFifty.App://auth';
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
     const {setProfile} = useProfile();
-    const {setHebrewWords, setEnglishWords, setHebrewUserStatistics, setEnglishUserStatistics, updateNewHebrewWords, updateNewEnglishWords} = useWords();
+    const {hebrewWords, 
+        setHebrewWords, 
+        englishWords, 
+        setEnglishWords, 
+        hebrewUserStatistics, 
+        setHebrewUserStatistics, 
+        englishUserStatistics, 
+        setEnglishUserStatistics, 
+        hebrewNewWords, 
+        updateNewHebrewWords, 
+        englishNewWords, 
+        updateNewEnglishWords} = useWords();
+
     const {setStackIndex} = useStackManagerContext();
     
     // loading flag
@@ -121,11 +133,6 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
-                // updateNewHebrewWords();
-                // updateNewEnglishWords();
-
-                setStackIndex(2);
-                setLoading(false);
             }
         } else {
             setLoading(false);
@@ -134,6 +141,28 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             setPopupOpen(true);
         }
     };
+
+    // handles calculating new words for hebrew - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(hebrewWords).length > 0 && Object.keys(hebrewUserStatistics).length > 0) {
+            updateNewHebrewWords();
+        }
+    }, [hebrewWords, hebrewUserStatistics]);
+
+    // handles calculating new words for english - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(englishWords).length > 0 && Object.keys(englishUserStatistics).length > 0) {
+            updateNewEnglishWords();
+        }
+    }, [englishWords, englishUserStatistics]);
+
+    // changes the navigation stack when the new word dict is built
+    useEffect(() => {
+        if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
+            setLoading(false);
+            setStackIndex(2);
+        }
+    }, [hebrewNewWords, englishNewWords]);
 
     return(
       <View style={StartScreenStyle.container}>

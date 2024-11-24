@@ -165,5 +165,3 @@ const get_new_words = () => {
 }
 
 get_new_words();
-
-

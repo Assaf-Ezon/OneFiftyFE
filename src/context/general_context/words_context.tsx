@@ -80,7 +80,7 @@ export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // remaining new words calculation
     const _getNewWords = (fullDict: WordsDictionary, statistics: UserStatistics): { [groupId: number]: { [word: string]: WordDetails } } => {
         const newWords: { [groupId: number]: { [word: string]: WordDetails } } = {}; 
-    
+        
         for (const [groupKey, groupValue] of Object.entries(fullDict.Words)) {
             const newGroupWords: { [word: string]: WordDetails } = {};
             
@@ -97,7 +97,6 @@ export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
                 newWords[groupId] = groupValue;
             }
         }
-        console.log(newWords);
         return newWords;
     };
 
