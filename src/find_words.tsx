@@ -58,12 +58,28 @@ class addNewWords {
             wordsDict[key] = {};
         }
 
-        for (const [word, word_info] of Object.entries(contextDict[key])) {
+        const wordsArray = Object.entries(contextDict[key]);
+
+        for (let i = wordsArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
+        }
+
+        const selectedWords = wordsArray.slice(0, amount_of_words);
+        console.log(selectedWords);
+        selectedWords.forEach(([word, word_info]) => {
             wordsDict[key][word] = {
                 ...word_info, 
                 Type: 'new'   
             };
-        }
+        });
+
+        // for (const [word, word_info] of Object.entries(contextDict[key])) {
+        //     wordsDict[key][word] = {
+        //         ...word_info, 
+        //         Type: 'new'   
+        //     };
+        // }
 
         return wordsDict;
     }
@@ -71,7 +87,7 @@ class addNewWords {
 
 class addWrongWords {
     static add(contextDict: UserStatistics | {}, key: number, amount_of_words: number, wordsDict: Words): Words {
-        console.log(`mode: wrong, key: ${key}, amount: ${amount_of_words}`);
+        // console.log(`mode: wrong, key: ${key}, amount: ${amount_of_words}`);
 
         if (!wordsDict[key]) {
             wordsDict[key] = {};
@@ -83,7 +99,7 @@ class addWrongWords {
 
 class addPracticeWords {
     static add(contextDict: UserStatistics | {}, key: number, amount_of_words: number, wordsDict: Words): Words {
-        console.log(`mode: practice, key: ${key}, amount: ${amount_of_words}`);
+        // console.log(`mode: practice, key: ${key}, amount: ${amount_of_words}`);
 
         if (!wordsDict[key]) {
             wordsDict[key] = {};
@@ -95,7 +111,7 @@ class addPracticeWords {
 
 class addSmartWords {
     static add(key: number, amount_of_words: number, wordsDict: Words): Words {
-        console.log("Adding smart words...");
+        // console.log("Adding smart words...");
 
         if (!wordsDict[key]) {
             wordsDict[key] = {};
@@ -197,14 +213,34 @@ const settings: Settings = {
     smartStudy: false,
     language: "Hebrew",
     levels: {
-        1: 100,
-        2: 100,
+        1: 4,
+        2: 4,
     },
 };
 
 const new_words: NewWords = {
     1: {
         "הֲגַם שֶׁ...": {
+            "FullWord":"הֲגַם שֶׁ...",
+            "Meanings": [
+                {
+                    "Meaning":"אף על פי",
+                    "Source":""
+                }
+            ],
+            "Group": 0,
+        },
+        "איסטניס": {
+            "FullWord":"הֲגַם שֶׁ...",
+            "Meanings": [
+                {
+                    "Meaning":"אף על פי",
+                    "Source":""
+                }
+            ],
+            "Group": 0,
+        },
+        "פרקדן": {
             "FullWord":"הֲגַם שֶׁ...",
             "Meanings": [
                 {
