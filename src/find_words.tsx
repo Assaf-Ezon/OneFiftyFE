@@ -4,59 +4,107 @@ interface Meaning {
     Source: string;
 }
 
+interface WordListDetails {
+    FullWord: string;
+    Meanings: Meaning[];
+    Group: number;
+    Type: string;
+}
+
+interface Words {
+    [key: string]: {
+        [word: string]: WordListDetails;
+    };
+}
+
+// new words dictionaries interface
 interface WordDetails {
     FullWord: string;
     Meanings: Meaning[];
     Group: number;
 }
 
-interface Words {
-    [key: string]: {
-        [word: string]: WordDetails;
-    };
+interface NewWords {
+    [groupId: number]: { 
+        [word: string]: WordDetails 
+    }
+}
+
+// interfaces for statistics
+interface WordStatisticsData {
+    Word: WordDetails;                 
+    ConsecutiveSuccesses: number; 
+    LastSeen: string;           
+    Successes: number;          
+    Failures: number;            
+}
+
+interface WordsStatistics {
+    WordCount: number;
+    Words: { [groupId: number]: { [word: string]: WordStatisticsData } };
+}
+
+interface UserStatistics {
+    WordsStatistics: WordsStatistics; 
 }
 
 
+
 class addNewWords {
-    static add(key: number, amount_of_words: number, wordsDict: Words): void {
-        console.log("Adding new words...");
+    static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: Words): Words {
+        console.log(`mode: new, key: ${key}, amount: ${amount_of_words}`);
+        
+        if (!wordsDict[key]) {
+            wordsDict[key] = {};
+        }
+
+        for (const [word, word_info] of Object.entries(contextDict[key])) {
+            wordsDict[key][word] = {
+                ...word_info, 
+                Type: 'new'   
+            };
+        }
+
+        return wordsDict;
     }
 }
 
 class addWrongWords {
-    static add(key: number, amount_of_words: number, wordsDict: Words): void {
-        console.log("Adding incorrect words...");
+    static add(contextDict: UserStatistics | {}, key: number, amount_of_words: number, wordsDict: Words): Words {
+        console.log(`mode: wrong, key: ${key}, amount: ${amount_of_words}`);
+
+        if (!wordsDict[key]) {
+            wordsDict[key] = {};
+        }
+
+        return wordsDict;
     }
 }
 
 class addPracticeWords {
-    static add(key: number, amount_of_words: number, wordsDict: Words): void {
-        console.log("Adding practice words...");
+    static add(contextDict: UserStatistics | {}, key: number, amount_of_words: number, wordsDict: Words): Words {
+        console.log(`mode: practice, key: ${key}, amount: ${amount_of_words}`);
+
+        if (!wordsDict[key]) {
+            wordsDict[key] = {};
+        }
+
+        return wordsDict;
     }
 }
 
 class addSmartWords {
-    static add(key: number, amount_of_words: number, wordsDict: Words): void {
+    static add(key: number, amount_of_words: number, wordsDict: Words): Words {
         console.log("Adding smart words...");
+
+        if (!wordsDict[key]) {
+            wordsDict[key] = {};
+        }
+
+        return wordsDict;
     }
 }
 
-
-// Define a type for the booleanList mapping
-type BooleanListType = {
-    newWords: (key: number, amount_of_words: number, wordsDict: Words) => void;
-    incorrectWords: (key: number, amount_of_words: number, wordsDict: Words) => void;
-    practiceWords: (key: number, amount_of_words: number, wordsDict: Words) => void;
-    smartStudy: (key: number, amount_of_words: number, wordsDict: Words) => void;
-};
-
-// Boolean-to-method mapping
-const booleanList: BooleanListType = {
-    newWords: addNewWords.add,
-    incorrectWords: addWrongWords.add,
-    practiceWords: addPracticeWords.add,
-    smartStudy: addSmartWords.add,
-};
 
 // Settings interface
 interface Settings {
@@ -70,16 +118,24 @@ interface Settings {
 
 class createWordList {
     private _settings: Settings;
-    private _booleans: Partial<BooleanListType>;
+    private _booleans_count: number;
     private _words: Words;
 
-    constructor(settings: Settings) {
+    private _new_words: NewWords;
+    private _statistics: UserStatistics; 
+
+    constructor(settings: Settings, new_words: NewWords, statistics: UserStatistics) {
+        this._new_words = new_words;
+        this._statistics = statistics;
+        
         this._settings = settings;
-        this._booleans = {};
+        this._booleans_count = 0;
+
+        const booleanList: string[] = ["newWords", "incorrectWords", "practiceWords", "smartStudy"];
 
         for (const [key, value] of Object.entries(this._settings)) {
-            if (typeof value === "boolean" && value && key in booleanList) {
-                this._booleans[key as keyof BooleanListType] = booleanList[key as keyof BooleanListType];
+            if (typeof value === "boolean" && value && booleanList.includes(key)) {
+                this._booleans_count += 1;
             }
         }
 
@@ -93,28 +149,43 @@ class createWordList {
     createList() {
         for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
             if (typeof level_value == 'number' && level_value > 0) {
-                const amountList = this._divideNumber(level_value, this._booleans);
-                for (const [amount_key, amount_value] of Object.entries(amountList)) {
-                    this._booleans[amount_key as keyof BooleanListType]?.(parseInt(level_key), amount_value, this._words);
+                const amountList = this._divideNumber(level_value);
+
+                if (this._settings.newWords && amountList.length) {
+                    this._words = addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                    amountList.pop();
+                }
+                if (this._settings.incorrectWords && amountList.length) {
+                    addWrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                    amountList.pop();
+                }
+                if (this._settings.practiceWords && amountList.length) {
+                    addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                    amountList.pop();
+                }
+                if (this._settings.smartStudy && amountList.length) {
+                    addSmartWords.add(parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                    amountList.pop();
                 }
             }
         }
     }
 
-    private _divideNumber(number: number, booleanDict: Partial<BooleanListType>): { [key: string]: number } {
-        const dictLength = Object.keys(this._booleans).length;
-        const baseValue = Math.floor(number / dictLength);
-        const remainder = number % dictLength;
-    
-        const result: { [key: string]: number } = {};
-    
-        let index = 0;
-        for (const key in booleanDict) {
-            result[key] = baseValue + (index < remainder ? 1 : 0);
-            index++;
+    private _divideNumber(amount: number): number[] {
+        const baseValue = Math.floor(amount / this._booleans_count); 
+        const remainder = amount % this._booleans_count; 
+
+        const result = Array(this._booleans_count).fill(baseValue);
+
+        for (let i = this._booleans_count - remainder; i < this._booleans_count; i++) {
+            result[i] += 1;
         }
-    
+
         return result;
+    }
+
+    printWords() {
+        console.log(this._words);
     }
 }
 
@@ -126,10 +197,92 @@ const settings: Settings = {
     smartStudy: false,
     language: "Hebrew",
     levels: {
-        1: 10,
-        2: 10,
-        3: 10,
+        1: 100,
+        2: 100,
     },
 };
 
-const c = new createWordList(settings);
+const new_words: NewWords = {
+    1: {
+        "הֲגַם שֶׁ...": {
+            "FullWord":"הֲגַם שֶׁ...",
+            "Meanings": [
+                {
+                    "Meaning":"אף על פי",
+                    "Source":""
+                }
+            ],
+            "Group": 0,
+        },
+    },
+    2: {
+        "אֵבוּס": {
+            "FullWord":"אֵבוּס",
+            "Meanings": [
+                {
+                    "Meaning":"כלי צר ומוארך הפתוח בחלקו העליון ובו משאירים מזון לבהמות",
+                    "Source":""
+                }
+            ],
+            "Group": 0,
+        },
+        "אֲבוּקָה": {
+            "FullWord":"אֲבוּקָה",
+            "Meanings": [
+                {
+                    "Meaning":"לפיד",
+                    "Source":""
+                }
+            ],
+            "Group": 0,
+        },
+    },
+}
+
+const stats: UserStatistics = {
+    "WordsStatistics": {
+        "WordCount": 2,
+        "Words": {
+            1: {
+                "אָבַד עָלָיו הַכֶּלַח": {
+                    "Word": {
+                        "FullWord": "אָבַד עָלָיו הַכֶּלַח",
+                        "Meanings": [
+                            {
+                                "Meaning": "התיישן, עבר זמנו", 
+                                "Source": ""
+                            },
+                        ],
+                        "Group": 1,
+                    },
+                    "ConsecutiveSuccesses": 2,
+                    "LastSeen": "2024-11-22T10:09:59.7948609Z",
+                    "Successes": 2,
+                    "Failures": 0
+                },
+            },
+            2: {  
+                "אַבְדָּאִי": {
+                    "Word": {
+                        "FullWord":  "אַבְדָּאִי",
+                        "Meanings": [
+                            {
+                                "Meaning":"גבר חזק ותקיף, בריון",
+                                "Source":"ויקימילון"
+                            },
+                        ],
+                        "Group": 2,
+                    },
+                    "ConsecutiveSuccesses": 0,
+                    "LastSeen": "2024-11-22T10:09:59.794862Z",
+                    "Successes": 0,
+                    "Failures": 2
+                },
+            },
+        },
+    },
+}
+
+const c = new createWordList(settings, new_words, stats);
+c.createList();
+c.printWords();
