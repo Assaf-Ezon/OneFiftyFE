@@ -52,7 +52,7 @@ interface UserStatistics {
 
 class addNewWords {
     static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: Words): Words {
-        console.log(`mode: new, key: ${key}, amount: ${amount_of_words}`);
+        // console.log(`mode: new, key: ${key}, amount: ${amount_of_words}`);
         
         if (!wordsDict[key]) {
             wordsDict[key] = {};

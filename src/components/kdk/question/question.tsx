@@ -35,7 +35,6 @@ const Question = () => {
         case "Hebrew":
             const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics);
             words = Object.entries(heCreateGame.createList());
-            // console.log(JSON.stringify(words));
             break;
         case "English":
             const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics);
@@ -63,7 +62,7 @@ const Question = () => {
 
     const changeWord = () => {
         if ((wordPerLevelCount + 1) == amountInLevel) {
-            if (levelsAmount == listPointer) {
+            if ((listPointer + 1) == levelsAmount) {
                 navigation.goBack();
             } else {
                 setListPointer(listPointer + 1);
