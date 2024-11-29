@@ -155,22 +155,23 @@ export default class createWordList {
         this._settings = settings;
     }
 
-    createList() {
+    createList(): Words {
         try {
             for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
                 if (typeof level_value == 'number' && level_value > 0) {
+                    
                     const amountList = this._divideNumber(level_value);
-    
+
                     if (this._settings.newWords && amountList.length) {
                         this._words = addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
                         // this._words = addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.incorrectWords && amountList.length) {
+                    if (this._settings.incorrectWords && amountList.length  && this.checkLevelExistsInStatisticsList(parseInt(level_key))) {
                         addWrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.practiceWords && amountList.length) {
+                    if (this._settings.practiceWords && amountList.length   && this.checkLevelExistsInStatisticsList(parseInt(level_key))) {
                         addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
@@ -180,11 +181,23 @@ export default class createWordList {
                     }
                 }
             }
+
+            return this._words;
+
         } catch (error) {
             console.error(`error: ${error}`);
         }
 
-        return this._words;
+        return {
+            0: {
+                "": {
+                    FullWord: "",
+                    Meanings: [],
+                    Group: 0,
+                    Type: "",
+                }
+            }
+        };
     }
 
     private _divideNumber(amount: number): number[] {
@@ -199,6 +212,15 @@ export default class createWordList {
 
         return result;
     }
+
+    checkLevelExistsInNewList(level: number): boolean {
+        return level in this._new_words;
+    }
+
+    checkLevelExistsInStatisticsList(level: number): boolean {
+        return level in this._statistics.WordsStatistics.Words;
+    }
+
 
     printWords() {
         console.log(this._words);

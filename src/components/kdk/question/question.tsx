@@ -24,12 +24,14 @@ interface Meaning {
 }
 
 const Question = () => {
+    // navigation controller
     const navigation = useNavigation();
-    const [answer, setAnswer] = useState<boolean>(false);
 
+    // settings and words contexts
     const { settings } = useLearningSettingsContext();
     const { hebrewUserStatistics, englishUserStatistics, hebrewNewWords, englishNewWords } = useWords();
     
+    // getting the words list - by language
     let words: [string, { [word: string]: Word; }][] = [];
     switch (settings.language) {
         case "Hebrew":
@@ -42,32 +44,37 @@ const Question = () => {
             break;
     }
 
-    const levelsAmount = words.length;
-    const [listPointer, setListPointer] = useState<number>(0);
-    const [level, setLevel] = useState<number>(parseInt(words[listPointer][0]));
-    const [amountInLevel, setAmountInLevel] = useState<number>(Object.keys(words[listPointer][1]).length);
+    // hooks and state managers
+    const [answer, setAnswer] = useState<boolean>(false); // managing the buttons
 
+    const levelsAmount = words.length; // how many levels there are
+    const [listPointer, setListPointer] = useState<number>(0); // pointer to the list of [level num, words] - to manage levels
+    const [level, setLevel] = useState<number>(parseInt(words[listPointer][0])); // storing the current level of the word
+    const [amountInLevel, setAmountInLevel] = useState<number>(Object.keys(words[listPointer][1]).length); // stores the amount of words in the level
+
+    // calculates the total amount of words
     let totalWords = 0;
     words.forEach(group => {
         const wordGroup = group[1];
         totalWords += Object.keys(wordGroup).length;  
     });
 
-    const [wordCount, setWordCount] = useState<number>(0);
-    const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0);
+    const [wordCount, setWordCount] = useState<number>(0); // counter of all the words
+    const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // counter of the words in the current level
 
-    const [word, setWord] = useState<string>(Object.keys(words[listPointer][1])[wordPerLevelCount]);
-    const [pirush, setPirush] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n")); 
-    const [type, setType] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Type);
+    const [word, setWord] = useState<string>(Object.keys(words[listPointer][1])[wordPerLevelCount]); // the word itself
+    const [pirush, setPirush] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n")); // the meanings
+    const [type, setType] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Type); // the type of the word ("new", "incorrect", "practice", "smart")
 
+    // calls every time you press the "next" button for the next word
     const changeWord = () => {
-        if ((wordPerLevelCount + 1) == amountInLevel) {
-            if ((listPointer + 1) == levelsAmount) {
+        if ((wordPerLevelCount + 1) == amountInLevel) { // if its the last word in the current level
+            if ((listPointer + 1) == levelsAmount) { // if its the last level in the session
                 navigation.goBack();
             } else {
                 setListPointer(listPointer + 1);
                 setLevel(parseInt(word[listPointer][0]));
-                setAmountInLevel(Object.keys(words[0][1]).length);
+                setAmountInLevel(Object.keys(words[listPointer][1]).length);
 
                 setWordCount(wordCount + 1);
                 setWordPerLevelCount(0);
