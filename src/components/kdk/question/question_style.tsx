@@ -28,6 +28,9 @@ const QuestionStyle = StyleSheet.create({
         shadowOpacity: 0.05,
         shadowRadius: 1,
     },
+    texts: {
+        alignItems: 'center',
+    },
     interpretation: {
         width: width * 0.9,
         height: height * 0.2,

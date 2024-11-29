@@ -66,20 +66,13 @@ class addNewWords {
         }
 
         const selectedWords = wordsArray.slice(0, amount_of_words);
-        console.log(selectedWords);
+
         selectedWords.forEach(([word, word_info]) => {
             wordsDict[key][word] = {
                 ...word_info, 
                 Type: 'new'   
             };
         });
-
-        // for (const [word, word_info] of Object.entries(contextDict[key])) {
-        //     wordsDict[key][word] = {
-        //         ...word_info, 
-        //         Type: 'new'   
-        //     };
-        // }
 
         return wordsDict;
     }
@@ -132,7 +125,7 @@ interface Settings {
     levels: { [key: number]: number };
 }
 
-class createWordList {
+export default class createWordList {
     private _settings: Settings;
     private _booleans_count: number;
     private _words: Words;
@@ -140,10 +133,7 @@ class createWordList {
     private _new_words: NewWords;
     private _statistics: UserStatistics; 
 
-    constructor(settings: Settings, new_words: NewWords, statistics: UserStatistics) {
-        this._new_words = new_words;
-        this._statistics = statistics;
-        
+    constructor(settings: Settings, new_words: NewWords, statistics: UserStatistics) { 
         this._settings = settings;
         this._booleans_count = 0;
 
@@ -156,6 +146,9 @@ class createWordList {
         }
 
         this._words = {};
+
+        this._new_words = new_words;
+        this._statistics = statistics;
     }
 
     setSettings(settings: Settings): void {
@@ -163,28 +156,35 @@ class createWordList {
     }
 
     createList() {
-        for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
-            if (typeof level_value == 'number' && level_value > 0) {
-                const amountList = this._divideNumber(level_value);
-
-                if (this._settings.newWords && amountList.length) {
-                    this._words = addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
-                    amountList.pop();
-                }
-                if (this._settings.incorrectWords && amountList.length) {
-                    addWrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
-                    amountList.pop();
-                }
-                if (this._settings.practiceWords && amountList.length) {
-                    addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
-                    amountList.pop();
-                }
-                if (this._settings.smartStudy && amountList.length) {
-                    addSmartWords.add(parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
-                    amountList.pop();
+        try {
+            for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
+                if (typeof level_value == 'number' && level_value > 0) {
+                    const amountList = this._divideNumber(level_value);
+    
+                    if (this._settings.newWords && amountList.length) {
+                        this._words = addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
+                        // this._words = addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                        amountList.pop();
+                    }
+                    if (this._settings.incorrectWords && amountList.length) {
+                        addWrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                        amountList.pop();
+                    }
+                    if (this._settings.practiceWords && amountList.length) {
+                        addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                        amountList.pop();
+                    }
+                    if (this._settings.smartStudy && amountList.length) {
+                        addSmartWords.add(parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                        amountList.pop();
+                    }
                 }
             }
+        } catch (error) {
+            console.error(`error: ${error}`);
         }
+
+        return this._words;
     }
 
     private _divideNumber(amount: number): number[] {
@@ -319,6 +319,6 @@ const stats: UserStatistics = {
     },
 }
 
-const c = new createWordList(settings, new_words, stats);
-c.createList();
-c.printWords();
+// const c = new createWordList(settings, new_words, stats);
+// c.createList();
+// c.printWords();

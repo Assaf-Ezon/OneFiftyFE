@@ -7,27 +7,85 @@ import { fadeIn } from '../../../animations/fade_animations';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 
+import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { useWords } from '../../../context/general_context/words_context';
+import createWordList from '../../../find_words';
+
+interface Meaning {
+    Meaning: string;
+    Source: string;
+}
+  
+  interface Word {
+    FullWord: string;
+    Meanings: Meaning[];
+    Group: number;
+    Type: string;
+}
+
 const Question = () => {
     const navigation = useNavigation();
     const [answer, setAnswer] = useState<boolean>(false);
 
-    const words = JSON.parse('{"איסטניס": "מעודן, אנין טעם", "תמימות דעים": "הסכמה כוללת", "אָסוּתָא": "לבריאות"}');
-    const len = Object.keys(words).length;
+    const { settings } = useLearningSettingsContext();
+    const { hebrewUserStatistics, englishUserStatistics, hebrewNewWords, englishNewWords } = useWords();
+    
+    let words: [string, { [word: string]: Word; }][] = [];
+    switch (settings.language) {
+        case "Hebrew":
+            const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics);
+            words = Object.entries(heCreateGame.createList());
+            // console.log(JSON.stringify(words));
+            break;
+        case "English":
+            const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics);
+            words = Object.entries(enCreateGame.createList());
+            break;
+    }
 
-    const [count, setCount] = useState<number>(1);
-    const [word, setWord] = useState<string>(Object.entries(words)[0][0]);
-    const [pirush, setPirush] = useState<any>(Object.entries(words)[0][1]); 
+    const levelsAmount = words.length;
+    const [listPointer, setListPointer] = useState<number>(0);
+    const [level, setLevel] = useState<number>(parseInt(words[listPointer][0]));
+    const [amountInLevel, setAmountInLevel] = useState<number>(Object.keys(words[listPointer][1]).length);
+
+    let totalWords = 0;
+    words.forEach(group => {
+        const wordGroup = group[1];
+        totalWords += Object.keys(wordGroup).length;  
+    });
+
+    const [wordCount, setWordCount] = useState<number>(0);
+    const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0);
+
+    const [word, setWord] = useState<string>(Object.keys(words[listPointer][1])[wordPerLevelCount]);
+    const [pirush, setPirush] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n")); 
+    const [type, setType] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Type);
 
     const changeWord = () => {
-        if (len == count) {
-            navigation.goBack();
-        }
-        else {
-            setCount(count => count + 1);
-            setWord(Object.entries(words)[count][0]);
-            setPirush(Object.entries(words)[count][1]);
+        if ((wordPerLevelCount + 1) == amountInLevel) {
+            if (levelsAmount == listPointer) {
+                navigation.goBack();
+            } else {
+                setListPointer(listPointer + 1);
+                setLevel(parseInt(word[listPointer][0]));
+                setAmountInLevel(Object.keys(words[0][1]).length);
+
+                setWordCount(wordCount + 1);
+                setWordPerLevelCount(0);
+
+                setWord(Object.keys(words[listPointer][1])[wordPerLevelCount]);
+                setPirush(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n"));
+            }
+        } else {
+            setWordCount(wordCount + 1);
+            setWordPerLevelCount(wordPerLevelCount + 1);
+
+            setWord(Object.keys(words[listPointer][1])[wordPerLevelCount]);
+            setPirush(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n"));
+            setType(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Type);
+
             setAnswer(false);
-        };
+        }
     };
 
     const setIfAnswerCorrect = (isCorrect: boolean) => {
@@ -39,7 +97,7 @@ const Question = () => {
 
     useEffect(() => {
         fadeIn(fadeAnim).start();
-    }, [count, fadeAnim]);
+    }, [wordCount, fadeAnim]);
 
     const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
 
@@ -55,7 +113,11 @@ const Question = () => {
         <>
             <Animated.View style={[QuestionStyle.question, {opacity: fadeAnim}]}>
                 <View style={QuestionStyle.wordSection}>
-                    <Text style={QuestionStyle.wordCounter}>{count}/{len}</Text>
+                    <View style={QuestionStyle.texts}>
+                        <Text style={QuestionStyle.wordCounter}>{wordCount + 1}/{totalWords}</Text>
+                        <Text style={QuestionStyle.wordCounter}>מקבץ: {level}</Text>
+                        <Text style={QuestionStyle.wordCounter}>סוג מילה: {type}</Text>
+                    </View>
                     <Text style={QuestionStyle.word}>{word}</Text>
                 </View>
                 <View style={QuestionStyle.interpretation}>
