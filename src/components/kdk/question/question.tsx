@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Image, Animated } from 'react-native';
+import { Text, View, TouchableOpacity, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import QuestionStyle from './question_style';
@@ -15,8 +15,8 @@ interface Meaning {
     Meaning: string;
     Source: string;
 }
-  
-  interface Word {
+
+interface Word {
     FullWord: string;
     Meanings: Meaning[];
     Group: number;
@@ -24,88 +24,129 @@ interface Meaning {
 }
 
 const Question = () => {
-    // navigation controller
+    // Navigation
     const navigation = useNavigation();
 
-    // settings and words contexts
+    // Contexts
     const { settings } = useLearningSettingsContext();
     const { hebrewUserStatistics, englishUserStatistics, hebrewNewWords, englishNewWords } = useWords();
+
+    // State
+    const [words, setWords] = useState<[string, { [word: string]: Word }][]>([]);
+    const [totalWords, setTotalWords] = useState<number>(0);
+
+    const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
+    const [level, setLevel] = useState<number | null>(null); // Current level number
+    const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
+    const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
+    const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // Counter for the current level
+
+    const [word, setWord] = useState<string>("");
+    const [pirush, setPirush] = useState<string>("");
+    const [type, setType] = useState<string>("");
+
+    const [answer, setAnswer] = useState<number>(1); // Button states
+
+    const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
+    const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
     
-    // getting the words list - by language
-    let words: [string, { [word: string]: Word; }][] = [];
-    switch (settings.language) {
-        case "Hebrew":
-            const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics);
-            words = Object.entries(heCreateGame.createList());
-            break;
-        case "English":
-            const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics);
-            words = Object.entries(enCreateGame.createList());
-            break;
-    }
+    // Update the words list based on settings.language
+    useEffect(() => {
+        let wordsList: [string, { [word: string]: Word }][] = [];
 
-    // hooks and state managers
-    const [answer, setAnswer] = useState<boolean>(false); // managing the buttons
+        switch (settings.language) {
+            case "Hebrew":
+                const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics);
+                wordsList = Object.entries(heCreateGame.createList());
+                break;
+            case "English":
+                const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics);
+                wordsList = Object.entries(enCreateGame.createList());
+                break;
+        }
 
-    const levelsAmount = words.length; // how many levels there are
-    const [listPointer, setListPointer] = useState<number>(0); // pointer to the list of [level num, words] - to manage levels
-    const [level, setLevel] = useState<number>(parseInt(words[listPointer][0])); // storing the current level of the word
-    const [amountInLevel, setAmountInLevel] = useState<number>(Object.keys(words[listPointer][1]).length); // stores the amount of words in the level
+        Object.keys(wordsList).length === 0 ? navigation.goBack() : null;
 
-    // calculates the total amount of words
-    let totalWords = 0;
-    words.forEach(group => {
-        const wordGroup = group[1];
-        totalWords += Object.keys(wordGroup).length;  
-    });
+        setWords(wordsList);
+    }, []);
 
-    const [wordCount, setWordCount] = useState<number>(0); // counter of all the words
-    const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // counter of the words in the current level
+    // Initialize other state based on words list
+    useEffect(() => {
+        if (words.length > 0) {
+            const initialPointer = 0;
+            const initialLevel = parseInt(words[initialPointer][0]);
+            const initialAmount = Object.keys(words[initialPointer][1]).length;
 
-    const [word, setWord] = useState<string>(Object.keys(words[listPointer][1])[wordPerLevelCount]); // the word itself
-    const [pirush, setPirush] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n")); // the meanings
-    const [type, setType] = useState<string>(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Type); // the type of the word ("new", "incorrect", "practice", "smart")
+            const firstWordKey = Object.keys(words[initialPointer][1])[0];
+            const firstWordMeaning = words[initialPointer][1][firstWordKey];
 
-    // calls every time you press the "next" button for the next word
+            setListPointer(0);
+            setLevel(initialLevel);
+            setAmountInLevel(initialAmount);
+
+            setWord(firstWordKey);
+            setPirush(firstWordMeaning.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+            setType(firstWordMeaning.Type);
+
+            // Calculate total words
+            let total = 0;
+            words.forEach(group => {
+                const wordGroup = group[1];
+                total += Object.keys(wordGroup).length;  
+            });
+            setTotalWords(total);
+            }
+    }, [words]);
+
+    // Word change logic
     const changeWord = () => {
-        if ((wordPerLevelCount + 1) == amountInLevel) { // if its the last word in the current level
-            if ((listPointer + 1) == levelsAmount) { // if its the last level in the session
+        if ((wordPerLevelCount + 1) === amountInLevel) {
+            if ((listPointer + 1) === words.length) {
                 navigation.goBack();
             } else {
-                setListPointer(listPointer + 1);
-                setLevel(parseInt(word[listPointer][0]));
-                setAmountInLevel(Object.keys(words[listPointer][1]).length);
+                const nextPointer = listPointer + 1;
+                const nextLevel = parseInt(words[nextPointer][0]);
+                const nextAmount = Object.keys(words[nextPointer][1]).length;
+
+                const nextWordKey = Object.keys(words[nextPointer][1])[0];
+                const nextWord = words[nextPointer][1][nextWordKey];
+
+                setListPointer(nextPointer);
+                setLevel(nextLevel);
+                setAmountInLevel(nextAmount);
 
                 setWordCount(wordCount + 1);
                 setWordPerLevelCount(0);
 
-                setWord(Object.keys(words[listPointer][1])[wordPerLevelCount]);
-                setPirush(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n"));
+                setWord(nextWordKey);
+                setPirush(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+                setType(nextWord.Type);
             }
         } else {
+            const nextWordIndex = wordPerLevelCount + 1;
+            const nextWordKey = Object.keys(words[listPointer][1])[nextWordIndex];
+            const nextWord = words[listPointer][1][nextWordKey];
+
             setWordCount(wordCount + 1);
-            setWordPerLevelCount(wordPerLevelCount + 1);
+            setWordPerLevelCount(nextWordIndex);
 
-            setWord(Object.keys(words[listPointer][1])[wordPerLevelCount]);
-            setPirush(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Meanings.map((meaningObj: { Meaning: any; }) => meaningObj.Meaning).join("\n"));
-            setType(words[listPointer][1][Object.keys(words[listPointer][1])[wordPerLevelCount]].Type);
+            setWord(nextWordKey);
+            setPirush(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+            setType(nextWord.Type);
 
-            setAnswer(false);
+            setAnswer(1);
         }
     };
 
     const setIfAnswerCorrect = (isCorrect: boolean) => {
-        /* is correct logic here */
-        setAnswer(true);
+        /* Handle answer logic */
+        setAnswer(3);
     };
 
-    const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
-
+    // Animations
     useEffect(() => {
         fadeIn(fadeAnim).start();
     }, [wordCount, fadeAnim]);
-
-    const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
 
     useEffect(() => {
         if (answer) {
@@ -115,50 +156,52 @@ const Question = () => {
         }
     }, [answer, btnFadeAnim]);
 
+    // JSX
     return (
-        <>
-            <Animated.View style={[QuestionStyle.question, {opacity: fadeAnim}]}>
-                <View style={QuestionStyle.wordSection}>
-                    <View style={QuestionStyle.texts}>
-                        <Text style={QuestionStyle.wordCounter}>{wordCount + 1}/{totalWords}</Text>
-                        <Text style={QuestionStyle.wordCounter}>מקבץ: {level}</Text>
-                        <Text style={QuestionStyle.wordCounter}>סוג מילה: {type}</Text>
+        <Animated.View style={[QuestionStyle.question, { opacity: fadeAnim }]}>
+                        <View style={QuestionStyle.wordSection}>
+                <Text style={QuestionStyle.word}>{word}</Text>
+            </View>
+            <View style={QuestionStyle.texts}>  
+                <Text style={QuestionStyle.wordCounter}>סוג: {type}</Text>
+                <Text style={QuestionStyle.wordCounter}>רמה: {level}</Text>
+                <Text style={QuestionStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
+            </View>
+            <View style={QuestionStyle.interpretation}>
+                <LinearGradient
+                    colors={['#F27155', '#EA7B30']}
+                    start={{ x: 1, y: 0.5 }}
+                    end={{ x: 0, y: 0.5 }}
+                    style={QuestionStyle.color}
+                >
+                    <View style={QuestionStyle.meaningContainer}>
+                        {answer != 1 ? <Text style={QuestionStyle.meaning}>{pirush}</Text> : null}
                     </View>
-                    <Text style={QuestionStyle.word}>{word}</Text>
-                </View>
-                <View style={QuestionStyle.interpretation}>
-                    <LinearGradient colors={['#F27155', '#EA7B30']}
-                                    start={{ x: 1, y: 0.5 }}
-                                    end={{ x: 0, y: 0.5 }}
-                                    style={QuestionStyle.color}>
-
-                        <View style={QuestionStyle.meaningContainer}>
-                            {answer ? (
-                                <Text style={QuestionStyle.meaning}>{pirush}</Text>
-                            ) : null}
-                        </View>
-                    </LinearGradient>
-                </View>
-
-                {!answer ? (
+                </LinearGradient>
+            </View>
+            {answer == 1 ? (
+                <Animated.View style={{ opacity: btnFadeAnim }}>
+                    <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() =>{setAnswer(2)}}>
+                        <Text style={QuestionStyle.btnText}>הצג תשובה</Text>
+                    </TouchableOpacity>
+                </Animated.View>
+            ) : answer == 2 ? (
                 <View style={QuestionStyle.btns}>
-                    <TouchableOpacity style={QuestionStyle.btn} onPress={() => {setIfAnswerCorrect(false)}}>
+                    <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIfAnswerCorrect(false)}>
                         <Text style={QuestionStyle.btnText}>לא ידעתי</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={QuestionStyle.btn} onPress={() => {setIfAnswerCorrect(true)}}>
+                    <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIfAnswerCorrect(true)}>
                         <Text style={QuestionStyle.btnText}>ידעתי</Text>
                     </TouchableOpacity>
                 </View>
-                ) : null}
-                {answer ? (
-                    <Animated.View style={{opacity: btnFadeAnim}}>
-                        <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() => {changeWord()}}>
-                            <Text style={QuestionStyle.btnText}>המשך</Text>
-                        </TouchableOpacity>
-                    </Animated.View>
-                ) : null}
-            </Animated.View>
-        </>
+            ) : answer == 3 ? (
+                <Animated.View style={{ opacity: btnFadeAnim }}>
+                    <TouchableOpacity style={QuestionStyle.nextBtn} onPress={changeWord}>
+                        <Text style={QuestionStyle.btnText}>המשך</Text>
+                    </TouchableOpacity>
+                </Animated.View>
+            ) : null}
+        </Animated.View>
     );
 };
 

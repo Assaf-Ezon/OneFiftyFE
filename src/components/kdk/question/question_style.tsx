@@ -14,7 +14,7 @@ const QuestionStyle = StyleSheet.create({
         marginTop: 10,
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
     wordCounter: {
@@ -29,6 +29,8 @@ const QuestionStyle = StyleSheet.create({
         shadowRadius: 1,
     },
     texts: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
     interpretation: {

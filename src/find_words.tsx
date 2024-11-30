@@ -70,7 +70,7 @@ class addNewWords {
         selectedWords.forEach(([word, word_info]) => {
             wordsDict[key][word] = {
                 ...word_info, 
-                Type: 'new'   
+                Type: 'חדש'   
             };
         });
 
@@ -162,7 +162,7 @@ export default class createWordList {
                     
                     const amountList = this._divideNumber(level_value);
 
-                    if (this._settings.newWords && amountList.length) {
+                    if (this._settings.newWords && amountList.length) { // add " && this.checkLevelExistsInNewList(parseInt(level_key))" to statement
                         this._words = addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
                         // this._words = addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
@@ -188,16 +188,7 @@ export default class createWordList {
             console.error(`error: ${error}`);
         }
 
-        return {
-            0: {
-                "": {
-                    FullWord: "",
-                    Meanings: [],
-                    Group: 0,
-                    Type: "",
-                }
-            }
-        };
+        return {};
     }
 
     private _divideNumber(amount: number): number[] {
