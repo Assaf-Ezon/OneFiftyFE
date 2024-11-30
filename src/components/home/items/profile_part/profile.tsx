@@ -5,7 +5,6 @@ import { IMAGES } from '../../../../image_handler';
 import { useProfile } from '../../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../../context/general_context/sidebar_context';
 
-
 const ProfilePartHome: FC = () => {
     const {profile} = useProfile();
     const {toggleMenu} = useSidebarContext();

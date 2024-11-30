@@ -24,6 +24,7 @@ import McPage from './src/screens/mc/mc';
 import { ProfileProvider } from './src/context/general_context/profile_context';
 import { LearningSettingsProvider } from './src/context/settings_context/learning_context';
 import { useStackManagerContext, StackManagerProvider } from './src/context/general_context/stack_manager_context';
+import { WordsProvider } from './src/context/general_context/words_context';
 
 const Stack = createNativeStackNavigator();
 
@@ -89,9 +90,11 @@ const StackNavigator = () => {
 export default function App() {
   return (
     <ProfileProvider>
-      <StackManagerProvider>
-        <StackNavigator />
-      </StackManagerProvider>
+      <WordsProvider>
+        <StackManagerProvider>
+          <StackNavigator />
+        </StackManagerProvider>
+      </WordsProvider>
     </ProfileProvider>
   );
 };

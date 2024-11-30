@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { CONFIG } from '../../config';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,6 +17,7 @@ const SettingsStyle = StyleSheet.create({
         borderRadius: 30,
         shadowOpacity: 0.15,
         shadowRadius: 5,
+        zIndex: CONFIG.zIndexLevels.popups,
     },
     upperPart: {
         width: '90%',

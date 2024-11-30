@@ -8,7 +8,6 @@ import LeaderboardPart from './items/leaderboard_part/leaderboard';
 import { useSidebarContext } from '../../context/general_context/sidebar_context';
 import { useContactUsFormContext } from '../../context/general_context/contact_form_context';
 
-
 const HomeScrollView = () => {
     const {isOpen} = useSidebarContext();
     const {isContactFormOpen} = useContactUsFormContext();

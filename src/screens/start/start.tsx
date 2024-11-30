@@ -6,6 +6,7 @@ import StartScreenStyle from './start_style';
 import { IMAGES } from '../../image_handler';
 
 import { useProfile } from '../../context/general_context/profile_context';
+import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
 import * as SecureStore from 'expo-secure-store';
@@ -22,6 +23,19 @@ const redirectUri = 'com.OneFifty.App://auth';
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
     const {setProfile} = useProfile();
+    const {hebrewWords, 
+        setHebrewWords, 
+        englishWords, 
+        setEnglishWords, 
+        hebrewUserStatistics, 
+        setHebrewUserStatistics, 
+        englishUserStatistics, 
+        setEnglishUserStatistics, 
+        hebrewNewWords, 
+        updateNewHebrewWords, 
+        englishNewWords, 
+        updateNewEnglishWords} = useWords();
+
     const {setStackIndex} = useStackManagerContext();
     
     // loading flag
@@ -80,7 +94,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         }  
     };
 
-    // sets profile context with fetched data
+    // sets profile and words context with fetched data
     const handleUserData = async () => {
         const data = await getProfileData();
         
@@ -102,8 +116,6 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        hebrewWords: data.HebrewWordsDictionary.Words,
-                        englishWords: data.EnglishWordsDictionary.Words,
                     });
                 } else {
                     setProfile({
@@ -114,13 +126,13 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        hebrewWords: data.HebrewWordsDictionary.Words,
-                        englishWords: data.EnglishWordsDictionary.Words,
                     });
                 }
 
-                setStackIndex(2);
-                setLoading(false);
+                setHebrewWords(data.HebrewWordsDictionary);
+                setEnglishWords(data.EnglishWordsDictionary);
+                setHebrewUserStatistics(data.HebrewUserStatistics);
+                setEnglishUserStatistics(data.EnglishUserStatistics);
             }
         } else {
             setLoading(false);
@@ -129,6 +141,28 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             setPopupOpen(true);
         }
     };
+
+    // handles calculating new words for hebrew - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(hebrewWords).length > 0 && Object.keys(hebrewUserStatistics).length > 0) {
+            updateNewHebrewWords();
+        }
+    }, [hebrewWords, hebrewUserStatistics]);
+
+    // handles calculating new words for english - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(englishWords).length > 0 && Object.keys(englishUserStatistics).length > 0) {
+            updateNewEnglishWords();
+        }
+    }, [englishWords, englishUserStatistics]);
+
+    // changes the navigation stack when the new word dict is built
+    useEffect(() => {
+        if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
+            setLoading(false);
+            setStackIndex(2);
+        }
+    }, [hebrewNewWords, englishNewWords]);
 
     return(
       <View style={StartScreenStyle.container}>

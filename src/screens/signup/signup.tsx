@@ -4,7 +4,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox'
 import { IMAGES } from '../../image_handler';
 import SignupScreenStyle from './signup_style';
-import signup_request from './signup_request'
 
 const SignupScreen = ({ navigation }: {navigation: any}) => {
     const [signupFailed, setSignupFailed] = useState<boolean>(false);
@@ -88,7 +87,7 @@ const SignupScreen = ({ navigation }: {navigation: any}) => {
                 </View>
             </View>
             <View style={SignupScreenStyle.submitBtnContainer}>
-                <Pressable style={SignupScreenStyle.submitBtn} onPress={() => signup_request(navigation, setSignupFailed, email, password, name)}>
+                <Pressable style={SignupScreenStyle.submitBtn} onPress={() => {}}>
                     <Text style={SignupScreenStyle.submitText}>הירשם</Text>
                 </Pressable>
                 {signupFailed ? (

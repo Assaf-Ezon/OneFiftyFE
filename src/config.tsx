@@ -3,8 +3,15 @@ export const CONFIG = {
         login: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/login',
         update_game: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats',
         leaderboard: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/leaderboard/get',
-        profile_picture: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1//user/update/profile/picture',
+        profile_picture: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/profile/picture',
+        update_words: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats'
 
+    },
+    zIndexLevels: {
+        regular: 2,
+        bottom_bar: 10,
+        side_bar: 20,
+        popups: 30,
     },
     privacy_policy: `
 מדיניות פרטיות זו נועדה לעזור לך להבין אילו נתונים אנו אוספים, כיצד אנו משתמשים בהם ומגנים על פרטיותך בעת השימוש באפליקציה.

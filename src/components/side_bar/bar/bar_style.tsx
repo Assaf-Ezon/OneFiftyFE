@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { CONFIG } from '../../../config';
 
 const { width, height } = Dimensions.get('window');
 
@@ -15,6 +16,7 @@ const barStyle = StyleSheet.create({
         borderRadius: 40,
         shadowOpacity: 0.3,
         shadowRadius: 20,
+        zIndex: CONFIG.zIndexLevels.side_bar,
     },
     upperPart: {
         flex: 2,
