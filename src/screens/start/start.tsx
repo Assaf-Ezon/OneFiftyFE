@@ -42,12 +42,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         {
             clientId,
             redirectUri,
-            scopes: ["openid"],
-            responseType: AuthSession.ResponseType.IdToken,
-            prompt: AuthSession.Prompt.Login,
+            scopes: ["https://onefiftyapp.onmicrosoft.com/e448e103-0d00-4b1f-842e-96da9d017f11/offline_access", "offline_access"],
+            responseType: AuthSession.ResponseType.Code,
             extraParams: {
                 nonce: 'defaultNonce', 
-            }
+            },
         },
         discovery
     );
@@ -75,8 +74,47 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            await SecureStore.setItemAsync('token', response.params.id_token);
-            await SecureStore.setItemAsync('name', getNameFromDecodedJWT(response.params.id_token));
+            console.log(response.params);
+
+            try {
+                // auth code to refresh token + id token example.
+                const tokenResponse = await AuthSession.exchangeCodeAsync(
+                    {
+                        clientId: clientId,
+                        scopes: ["openid", "offline_access", "profile"],
+                        redirectUri: redirectUri,
+                        code: response.params.code,
+                        extraParams: request?.codeVerifier ? {
+                            code_verifier: request?.codeVerifier,
+                        } : undefined
+                    },
+                    discovery
+                );
+
+                // validate not null on both
+                const idToken = tokenResponse.idToken;
+                const refreshToken = tokenResponse.refreshToken;
+                
+                // example for refresh request - should happen periodically
+                const refreshedTokenResponse = await AuthSession.refreshAsync(
+                    {
+                        clientId: clientId,
+                        scopes: ["openid", "offline_access", "profile"],
+                        refreshToken: refreshToken,
+                    },
+                    discovery
+                )
+                console.log("testoooo");
+                console.log(refreshedTokenResponse);
+                
+                await SecureStore.setItemAsync('token', response.params.id_token);
+                await SecureStore.setItemAsync('name', getNameFromDecodedJWT(response.params.id_token));
+            }
+            catch (err){
+                console.log(err)
+            }
+
+            
         }  
     };
 
