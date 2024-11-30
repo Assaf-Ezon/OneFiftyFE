@@ -2,23 +2,6 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
-interface Meaning {
-    Meaning: string;
-    Source: string;
-}
-
-interface WordDetails {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-}
-
-interface WordsDictionary {
-    [key: string]: {
-        [word: string]: WordDetails;
-    };
-}
-
 interface Profile {
     name: string,
     email: string,
@@ -27,8 +10,6 @@ interface Profile {
     dateJoined: Date,
     expirationDate: Date,
     profileImage: ImageSourcePropType,
-    hebrewWords: WordsDictionary,
-    englishWords: WordsDictionary,
 };
 
 interface ProfileContextProps {
@@ -49,8 +30,6 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         dateJoined: new Date('1900-01-01'), 
         expirationDate: new Date('1900-01-01'), 
         profileImage: IMAGES.profile_images[0],
-        hebrewWords: {},
-        englishWords: {},
     });
 
     const updateProfileImage = (newImage: ImageSourcePropType) => {

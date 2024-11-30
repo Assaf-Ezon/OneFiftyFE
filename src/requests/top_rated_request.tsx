@@ -15,7 +15,7 @@ interface ApiResponse {
 
 export const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
     try {
-        const token = await SecureStore.getItemAsync('token');
+        const token = await SecureStore.getItemAsync('acess_token');
         const name = await SecureStore.getItemAsync('name');
 
         if (!token) {

@@ -62,7 +62,7 @@ interface ApiResponse {
 
 const getProfileData = async (): Promise<ApiResponse | number> => {
     try {
-        const token = await SecureStore.getItemAsync('token');
+        const token = await SecureStore.getItemAsync('acess_token');
         const name = await SecureStore.getItemAsync('name');
 
         if (!token) {

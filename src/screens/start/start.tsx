@@ -1,4 +1,4 @@
-import { View, Image, Text, Pressable, ActivityIndicator, Modal, TouchableOpacity } from 'react-native';
+import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import Popup from './popups/popups';
 
@@ -64,7 +64,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     }, [response]); 
     
     // gets the displayName from the token
-    const getNameFromDecodedJWT = (token: string) => {
+    const getNameFromDecodedJWT = (token: string): string => {
         const [header, payload, signature] = token.split(".");
         
         const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
@@ -74,8 +74,6 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            console.log(response.params);
-
             try {
                 // auth code to refresh token + id token example.
                 const tokenResponse = await AuthSession.exchangeCodeAsync(
@@ -96,25 +94,28 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 const refreshToken = tokenResponse.refreshToken;
                 
                 // example for refresh request - should happen periodically
-                const refreshedTokenResponse = await AuthSession.refreshAsync(
-                    {
-                        clientId: clientId,
-                        scopes: ["openid", "offline_access", "profile"],
-                        refreshToken: refreshToken,
-                    },
-                    discovery
-                )
-                console.log("testoooo");
-                console.log(refreshedTokenResponse);
+                // const refreshedTokenResponse = await AuthSession.refreshAsync(
+                //     {
+                //         clientId: clientId,
+                //         scopes: ["openid", "offline_access", "profile"],
+                //         refreshToken: refreshToken,
+                //     },
+                //     discovery
+                // );
                 
-                await SecureStore.setItemAsync('token', response.params.id_token);
-                await SecureStore.setItemAsync('name', getNameFromDecodedJWT(response.params.id_token));
+                if (idToken && refreshToken) {
+                    await SecureStore.setItemAsync('acess_token', idToken);
+                    await SecureStore.setItemAsync('access_token_exp', ((Date.now() / 1000) + 3600).toString());
+
+                    await SecureStore.setItemAsync('refresh_token', refreshToken);
+                    await SecureStore.setItemAsync('refresh_token_exp', ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+
+                    await SecureStore.setItemAsync('name', getNameFromDecodedJWT(idToken));
+                }
             }
             catch (err){
-                console.log(err)
-            }
-
-            
+                console.error(err);
+            }  
         }  
     };
 
@@ -140,8 +141,6 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        hebrewWords: data.HebrewWordsDictionary.Words,
-                        englishWords: data.EnglishWordsDictionary.Words,
                     });
                 } else {
                     setProfile({
@@ -152,8 +151,6 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        hebrewWords: data.HebrewWordsDictionary.Words,
-                        englishWords: data.EnglishWordsDictionary.Words,
                     });
                 }
 
