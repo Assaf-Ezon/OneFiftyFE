@@ -25,6 +25,14 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
     };
 
+        // gets the displayName from the token
+    const getNameFromDecodedJWT = (token: string): string => {
+        const [header, payload, signature] = token.split(".");
+        
+        const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+        return decodedPayload.name;
+    };
+    
     useEffect(() => {
         const validation = async () => {
             const refresh_token = await SecureStore.getItemAsync('refresh_token')
@@ -42,10 +50,19 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                               scopes: ["openid", "offline_access", "profile"],
                               refreshToken: refresh_token,
                           },
-                            discovery
+                              discovery
                         );
-                        await handleUserData();
                         
+                        if (refreshedTokenResponse.idToken && refreshedTokenResponse.refreshToken) {
+                            await SecureStore.setItemAsync('acess_token', refreshedTokenResponse.idToken);
+                            await SecureStore.setItemAsync('access_token_exp', ((Date.now() / 1000) + 3600).toString());
+        
+                            await SecureStore.setItemAsync('refresh_token', refreshedTokenResponse.refreshToken);
+                            await SecureStore.setItemAsync('refresh_token_exp', ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+        
+                            await SecureStore.setItemAsync('name', getNameFromDecodedJWT(refreshedTokenResponse.idToken));
+                        }
+                        await handleUserData();
                         setStackIndex(2);
                     }, 1000); 
                 }
