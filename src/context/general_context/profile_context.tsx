@@ -1,7 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../image_handler';
-
 interface Profile {
     name: string,
     email: string,
