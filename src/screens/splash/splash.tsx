@@ -44,30 +44,28 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         navigation.replace('start');
                     }, 1000); 
                 } else {
-                    setTimeout(async () => {
-                        const refreshedTokenResponse = await AuthSession.refreshAsync({
-                              clientId: clientId,
-                              scopes: ["openid", "offline_access", "profile"],
-                              refreshToken: refresh_token,
-                          },
-                              discovery
-                        );
-                        
-                        if (refreshedTokenResponse.idToken && refreshedTokenResponse.refreshToken) {
-                            await SecureStore.setItemAsync('acess_token', refreshedTokenResponse.idToken);
-                            await SecureStore.setItemAsync('access_token_exp', ((Date.now() / 1000) + 3600).toString());
-        
-                            await SecureStore.setItemAsync('refresh_token', refreshedTokenResponse.refreshToken);
-                            await SecureStore.setItemAsync('refresh_token_exp', ((Date.now() / 1000) + 13 * 24 * 3600).toString());
-        
-                            await SecureStore.setItemAsync('name', getNameFromDecodedJWT(refreshedTokenResponse.idToken));
-                        }
-                        await handleUserData();
-                        setStackIndex(2);
-                    }, 1000); 
+                    const refreshedTokenResponse = await AuthSession.refreshAsync({
+                          clientId: clientId,
+                          scopes: ["openid", "offline_access", "profile"],
+                          refreshToken: refresh_token,
+                      },
+                          discovery
+                    );
+                    
+                    if (refreshedTokenResponse.idToken && refreshedTokenResponse.refreshToken) {
+                        await SecureStore.setItemAsync('acess_token', refreshedTokenResponse.idToken);
+                        await SecureStore.setItemAsync('access_token_exp', ((Date.now() / 1000) + 3600).toString());
+    
+                        await SecureStore.setItemAsync('refresh_token', refreshedTokenResponse.refreshToken);
+                        await SecureStore.setItemAsync('refresh_token_exp', ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+    
+                        await SecureStore.setItemAsync('name', getNameFromDecodedJWT(refreshedTokenResponse.idToken));
+                    }
+                    await handleUserData();
+                    setStackIndex(2);
                 }
             } else {
-                  navigation.replace('start');
+                navigation.replace('start');
             }
         }
 
