@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 
 export const setProfilePicture = async (index: number | null) => {
     try {
-        const token = await SecureStore.getItemAsync('token');
+        const token = await SecureStore.getItemAsync('access_token');
         const name = await SecureStore.getItemAsync('name');
         
         if (!token) {

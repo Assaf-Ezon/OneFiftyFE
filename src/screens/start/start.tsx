@@ -1,4 +1,4 @@
-import { View, Image, Text, Pressable, ActivityIndicator, Modal, TouchableOpacity } from 'react-native';
+import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import Popup from './popups/popups';
 
@@ -56,12 +56,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         {
             clientId,
             redirectUri,
-            scopes: ["openid"],
-            responseType: AuthSession.ResponseType.IdToken,
-            prompt: AuthSession.Prompt.Login,
+            scopes: ["https://onefiftyapp.onmicrosoft.com/e448e103-0d00-4b1f-842e-96da9d017f11/offline_access", "offline_access"],
+            responseType: AuthSession.ResponseType.Code,
             extraParams: {
                 nonce: 'defaultNonce', 
-            }
+            },
         },
         discovery
     );
@@ -89,8 +88,38 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            await SecureStore.setItemAsync('token', response.params.id_token);
-            await SecureStore.setItemAsync('name', getNameFromDecodedJWT(response.params.id_token));
+            try {
+                // auth code to refresh token + id token example.
+                const tokenResponse = await AuthSession.exchangeCodeAsync(
+                    {
+                        clientId: clientId,
+                        scopes: ["openid", "offline_access", "profile"],
+                        redirectUri: redirectUri,
+                        code: response.params.code,
+                        extraParams: request?.codeVerifier ? {
+                            code_verifier: request?.codeVerifier,
+                        } : undefined
+                    },
+                    discovery
+                );
+
+                // validate not null on both
+                const idToken = tokenResponse.idToken;
+                const refreshToken = tokenResponse.refreshToken;
+                
+                if (idToken && refreshToken) {
+                    await SecureStore.setItemAsync('access_token', idToken);
+                    await SecureStore.setItemAsync('access_token_exp', ((Date.now() / 1000) + 3600).toString());
+
+                    await SecureStore.setItemAsync('refresh_token', refreshToken);
+                    await SecureStore.setItemAsync('refresh_token_exp', ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+
+                    await SecureStore.setItemAsync('name', getNameFromDecodedJWT(idToken));
+                }
+            }
+            catch (err){
+                console.error(err);
+            }    
         }  
     };
 
