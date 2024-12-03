@@ -74,7 +74,6 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                       await SecureStore.setItemAsync('name', getNameFromDecodedJWT(refreshedTokenResponse.idToken));
                   }
                   await handleUserData();
-                  setStackIndex(2);
               }
           } else {
               navigation.replace('start');
@@ -125,9 +124,30 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
         }
     }
 
+    // handles calculating new words for hebrew - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(hebrewWords).length > 0 && Object.keys(hebrewUserStatistics).length > 0) {
+            updateNewHebrewWords();
+        }
+    }, [hebrewWords, hebrewUserStatistics]);
+
+    // handles calculating new words for english - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(englishWords).length > 0 && Object.keys(englishUserStatistics).length > 0) {
+            updateNewEnglishWords();
+        }
+    }, [englishWords, englishUserStatistics]);
+
+    // changes the navigation stack when the new word dict is built
+    useEffect(() => {
+      if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
+          setStackIndex(2);
+      }
+    }, [hebrewNewWords, englishNewWords]);
+
     return(
       <View style={{backgroundColor: "#FAF0E6", flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <Image source={IMAGES.logo} />
+          <Image source={IMAGES.logo} />
       </View>
     );
 };
