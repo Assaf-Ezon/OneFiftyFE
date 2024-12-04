@@ -71,8 +71,8 @@ interface ApiResponse {
 
 const getProfileData = async (): Promise<ApiResponse | number> => {
     try {
-        const token = await SecureStore.getItemAsync('access_token');
-        const name = await SecureStore.getItemAsync('name');
+        const token = await SecureStore.getItemAsync(CONFIG.access_token);
+        const name = await SecureStore.getItemAsync(CONFIG.name);
 
         if (!token) {
             console.error('Token is missing');

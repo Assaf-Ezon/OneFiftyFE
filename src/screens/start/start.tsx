@@ -3,7 +3,9 @@ import { useEffect, useState } from 'react';
 import Popup from './popups/popups';
 
 import StartScreenStyle from './start_style';
+
 import { IMAGES } from '../../image_handler';
+import { CONFIG } from '../../config';
 
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
@@ -108,13 +110,13 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 const refreshToken = tokenResponse.refreshToken;
                 
                 if (idToken && refreshToken) {
-                    await SecureStore.setItemAsync('access_token', idToken);
-                    await SecureStore.setItemAsync('access_token_exp', ((Date.now() / 1000) + 3600).toString());
+                    await SecureStore.setItemAsync(CONFIG.access_token, idToken);
+                    await SecureStore.setItemAsync(CONFIG.access_token_exp, ((Date.now() / 1000) + 3600).toString());
 
-                    await SecureStore.setItemAsync('refresh_token', refreshToken);
-                    await SecureStore.setItemAsync('refresh_token_exp', ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+                    await SecureStore.setItemAsync(CONFIG.refresh_token, refreshToken);
+                    await SecureStore.setItemAsync(CONFIG.refresh_token_exp, ((Date.now() / 1000) + 13 * 24 * 3600).toString());
 
-                    await SecureStore.setItemAsync('name', getNameFromDecodedJWT(idToken));
+                    await SecureStore.setItemAsync(CONFIG.name, getNameFromDecodedJWT(idToken));
                 }
             }
             catch (err){

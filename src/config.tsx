@@ -13,6 +13,11 @@ export const CONFIG = {
         side_bar: 20,
         popups: 30,
     },
+    access_token: 'access_token',
+    access_token_exp: 'access_token_exp',
+    refresh_token: 'refresh_token',
+    refresh_token_exp: 'refresh_token_exp',
+    name: 'name',
     privacy_policy: `
 מדיניות פרטיות זו נועדה לעזור לך להבין אילו נתונים אנו אוספים, כיצד אנו משתמשים בהם ומגנים על פרטיותך בעת השימוש באפליקציה.
 

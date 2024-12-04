@@ -2,6 +2,7 @@ import { View, Image } from 'react-native';
 import { useEffect } from 'react';
 
 import { IMAGES } from '../../image_handler';
+import { CONFIG } from '../../config';
 
 import * as SecureStore from 'expo-secure-store';
 import * as AuthSession from 'expo-auth-session';
@@ -47,8 +48,8 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
     useEffect(() => {
       const validation = async () => {
-          const refresh_token = await SecureStore.getItemAsync('refresh_token')
-          const refresh_token_exp = await SecureStore.getItemAsync('refresh_token_exp');
+          const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token)
+          const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
 
           if (typeof refresh_token_exp == 'string' && typeof refresh_token == 'string') {
               if (parseInt(refresh_token_exp) <= (Date.now() / 1000)) {
@@ -65,13 +66,13 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                   );
 
                   if (refreshedTokenResponse.idToken && refreshedTokenResponse.refreshToken) {
-                      await SecureStore.setItemAsync('access_token', refreshedTokenResponse.idToken);
-                      await SecureStore.setItemAsync('access_token_exp', ((Date.now() / 1000) + 3600).toString());
+                      await SecureStore.setItemAsync(CONFIG.access_token, refreshedTokenResponse.idToken);
+                      await SecureStore.setItemAsync(CONFIG.access_token_exp, ((Date.now() / 1000) + 3600).toString());
   
-                      await SecureStore.setItemAsync('refresh_token', refreshedTokenResponse.refreshToken);
-                      await SecureStore.setItemAsync('refresh_token_exp', ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+                      await SecureStore.setItemAsync(CONFIG.refresh_token, refreshedTokenResponse.refreshToken);
+                      await SecureStore.setItemAsync(CONFIG.refresh_token_exp, ((Date.now() / 1000) + 13 * 24 * 3600).toString());
   
-                      await SecureStore.setItemAsync('name', getNameFromDecodedJWT(refreshedTokenResponse.idToken));
+                      await SecureStore.setItemAsync(CONFIG.name, getNameFromDecodedJWT(refreshedTokenResponse.idToken));
                   }
                   await handleUserData();
               }
