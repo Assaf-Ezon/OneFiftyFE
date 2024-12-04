@@ -1,9 +1,16 @@
 import { Image, Text, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
+
 import { useNavigation } from '@react-navigation/native';
+import { CONFIG } from '../../../config';
+
 import iconStyle from './icon_style';
+
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
+import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
+
+import * as SecureStore from 'expo-secure-store';
 
 
 interface sideBarIconProp {
@@ -16,8 +23,10 @@ interface sideBarIconProp {
 
 const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressActionIndex, screenName }) => {
     const navigation = useNavigation();
+
     const {toggleMenu} = useSidebarContext();
     const {toggleOpenContactUsForm} = useContactUsFormContext();
+    const {setStackIndex} = useStackManagerContext();
 
     const navigateToPage = () => {
         toggleMenu();
@@ -29,7 +38,12 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
         toggleOpenContactUsForm();
     };
 
-    const onPressHandler = [navigateToPage, openContactUsForm, () => {}]
+    const logout = async () => {
+        setStackIndex(1);
+        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, (0).toString());
+    };
+
+    const onPressHandler = [navigateToPage, openContactUsForm, logout];
 
     return (
         <>

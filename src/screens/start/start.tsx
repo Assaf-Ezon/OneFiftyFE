@@ -12,15 +12,11 @@ import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
 import * as SecureStore from 'expo-secure-store';
-import * as AuthSession from 'expo-auth-session';
+import authentication from '../authentication';
 
 import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 
-const tenantName = 'OneFiftyApp'; 
-const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
-const policyName = 'B2C_1_OneFiftyApp';
-const redirectUri = 'com.OneFifty.App://auth';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
@@ -40,6 +36,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     const {setStackIndex} = useStackManagerContext();
     
+    const auth = new authentication();
+
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -47,25 +45,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     const [popupOpen, setPopupOpen] = useState<boolean>(false);
     const [popupIndex, setPopupIndex] = useState<number>(1);
 
-    // login handle
-    const discovery = {
-        authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
-        tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
-    };
 
-
-    const [request, response, promptAsync] = AuthSession.useAuthRequest(
-        {
-            clientId,
-            redirectUri,
-            scopes: ["https://onefiftyapp.onmicrosoft.com/e448e103-0d00-4b1f-842e-96da9d017f11/offline_access", "offline_access"],
-            responseType: AuthSession.ResponseType.Code,
-            extraParams: {
-                nonce: 'defaultNonce', 
-            },
-        },
-        discovery
-    );
+    const [request, response, promptAsync] = auth.authPopup();
 
     // activated when there is a response
     useEffect(() => { 
@@ -78,50 +59,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         };
         processResponse();
     }, [response]); 
-    
-    // gets the displayName from the token
-    const getNameFromDecodedJWT = (token: string) => {
-        const [header, payload, signature] = token.split(".");
-        
-        const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
-        return decodedPayload.name;
-    };
 
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            try {
-                // auth code to refresh token + id token example.
-                const tokenResponse = await AuthSession.exchangeCodeAsync(
-                    {
-                        clientId: clientId,
-                        scopes: ["openid", "offline_access", "profile"],
-                        redirectUri: redirectUri,
-                        code: response.params.code,
-                        extraParams: request?.codeVerifier ? {
-                            code_verifier: request?.codeVerifier,
-                        } : undefined
-                    },
-                    discovery
-                );
-
-                // validate not null on both
-                const idToken = tokenResponse.idToken;
-                const refreshToken = tokenResponse.refreshToken;
-                
-                if (idToken && refreshToken) {
-                    await SecureStore.setItemAsync(CONFIG.access_token, idToken);
-                    await SecureStore.setItemAsync(CONFIG.access_token_exp, ((Date.now() / 1000) + 3600).toString());
-
-                    await SecureStore.setItemAsync(CONFIG.refresh_token, refreshToken);
-                    await SecureStore.setItemAsync(CONFIG.refresh_token_exp, ((Date.now() / 1000) + 13 * 24 * 3600).toString());
-
-                    await SecureStore.setItemAsync(CONFIG.name, getNameFromDecodedJWT(idToken));
-                }
-            }
-            catch (err){
-                console.error(err);
-            }    
+            auth.getFirstTokens(request, response);
         }  
     };
 

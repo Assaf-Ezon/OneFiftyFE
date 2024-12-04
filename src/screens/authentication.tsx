@@ -1,0 +1,106 @@
+import * as SecureStore from 'expo-secure-store';
+import * as AuthSession from 'expo-auth-session';
+
+import { CONFIG } from '../config';
+
+const tenantName = 'OneFiftyApp'; 
+const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
+const policyName = 'B2C_1_OneFiftyApp';
+const redirectUri = 'com.OneFifty.App://auth';
+
+const discovery = {
+    authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
+    tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
+};
+
+export default class authentication {
+    constructor() {
+
+    }
+
+    authPopup (): [
+        AuthSession.AuthRequest | null,
+        AuthSession.AuthSessionResult | null,
+        (options?: AuthSession.AuthRequestPromptOptions) => Promise<AuthSession.AuthSessionResult>
+      ] {
+        const [request, response, promptAsync] = AuthSession.useAuthRequest(
+            {
+                clientId,
+                redirectUri,
+                scopes: ["https://onefiftyapp.onmicrosoft.com/e448e103-0d00-4b1f-842e-96da9d017f11/offline_access", "offline_access"],
+                responseType: AuthSession.ResponseType.Code,
+                extraParams: {
+                    nonce: 'defaultNonce', 
+                },
+            },
+            discovery
+        );
+        return [request, response, promptAsync];
+    }
+
+    getNameFromDecodedJWT(token: string) {
+        const [header, payload, signature] = token.split(".");
+        
+        const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+        return decodedPayload.name;
+    };
+
+    async getFirstTokens (request: any, response: any) {
+        if (response && response.type == 'success') {
+            try {
+                // auth code to refresh token + id token example.
+                const tokenResponse = await AuthSession.exchangeCodeAsync(
+                    {
+                        clientId: clientId,
+                        scopes: ["openid", "offline_access", "profile"],
+                        redirectUri: redirectUri,
+                        code: response.params.code,
+                        extraParams: request?.codeVerifier ? {
+                            code_verifier: request?.codeVerifier,
+                        } : undefined
+                    },
+                    discovery
+                );
+
+                this._saveTokens(tokenResponse);
+
+            }
+            catch (err){
+                console.error(err);
+            }    
+        }  
+    };
+
+    async refreshTokens (refresh_token: any) {
+        try {
+            const refreshedTokenResponse = await AuthSession.refreshAsync({
+                clientId: clientId,
+                scopes: ["openid", "offline_access", "profile"],
+                refreshToken: refresh_token,
+            },
+                discovery
+            );
+
+            this._saveTokens(refreshedTokenResponse);
+        } 
+        catch (err) {
+            console.error(err);
+        }
+    }
+
+    private async _saveTokens (tokenResponse: any) {
+        // validate not null on both
+        const idToken = tokenResponse.idToken;
+        const refreshToken = tokenResponse.refreshToken;
+        
+        if (idToken && refreshToken) {
+            await SecureStore.setItemAsync(CONFIG.access_token, idToken);
+            await SecureStore.setItemAsync(CONFIG.access_token_exp, ((Date.now() / 1000) + 3600).toString());
+
+            await SecureStore.setItemAsync(CONFIG.refresh_token, refreshToken);
+            await SecureStore.setItemAsync(CONFIG.refresh_token_exp, ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+
+            await SecureStore.setItemAsync(CONFIG.name, this.getNameFromDecodedJWT(idToken));
+        }
+    }
+}
