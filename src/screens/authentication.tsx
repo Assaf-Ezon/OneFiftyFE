@@ -94,11 +94,17 @@ export default class authentication {
         const refreshToken = tokenResponse.refreshToken;
         
         if (idToken && refreshToken) {
+            let access_token_exp = new Date();
+            access_token_exp.setUTCHours(access_token_exp.getUTCHours() + 1);
+
             await SecureStore.setItemAsync(CONFIG.access_token, idToken);
-            await SecureStore.setItemAsync(CONFIG.access_token_exp, ((Date.now() / 1000) + 3600).toString());
+            await SecureStore.setItemAsync(CONFIG.access_token_exp, access_token_exp.toISOString());
+
+            let refresh_token_exp = new Date();
+            refresh_token_exp.setUTCDate(refresh_token_exp.getUTCDate() + 13);
 
             await SecureStore.setItemAsync(CONFIG.refresh_token, refreshToken);
-            await SecureStore.setItemAsync(CONFIG.refresh_token_exp, ((Date.now() / 1000) + 13 * 24 * 3600).toString());
+            await SecureStore.setItemAsync(CONFIG.refresh_token_exp, access_token_exp.toISOString());
 
             await SecureStore.setItemAsync(CONFIG.name, this.getNameFromDecodedJWT(idToken));
         }

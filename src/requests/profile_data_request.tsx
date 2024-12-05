@@ -87,7 +87,7 @@ const getProfileData = async (): Promise<ApiResponse | number> => {
                 'Content-Type': 'application/json',
             }
         });
-        
+
         return response.data;
         
     } catch (error) {

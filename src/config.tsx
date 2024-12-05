@@ -1,4 +1,5 @@
 export const CONFIG = {
+    Version: '1.0.0',
     endpoints: {
         login: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/login',
         update_game: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats',

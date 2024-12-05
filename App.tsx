@@ -58,7 +58,7 @@ const MainAppStack = () => {
           <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>
-  );
+  ); 
 };
 
 const InactiveStack = () => {

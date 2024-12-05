@@ -40,7 +40,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
 
     const logout = async () => {
         setStackIndex(1);
-        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, (0).toString());
+        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, new Date().toISOString());
     };
 
     const onPressHandler = [navigateToPage, openContactUsForm, logout];
