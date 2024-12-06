@@ -38,7 +38,7 @@ export default class authentication {
         return [request, response, promptAsync];
     }
 
-    getNameFromDecodedJWT(token: string) {
+    private _getNameFromDecodedJWT(token: string) {
         const [header, payload, signature] = token.split(".");
         
         const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
@@ -104,8 +104,9 @@ export default class authentication {
     private async _saveTokens (tokenResponse: any): Promise<boolean> {
         const idToken = tokenResponse.idToken;
         const refreshToken = tokenResponse.refreshToken;
+        const name = this._getNameFromDecodedJWT(idToken)
         
-        if (idToken && refreshToken) {
+        if (idToken && refreshToken && name) {
             let access_token_exp = new Date();
             access_token_exp.setUTCHours(access_token_exp.getUTCHours() + 1);
 
@@ -118,7 +119,7 @@ export default class authentication {
             await SecureStore.setItemAsync(CONFIG.refresh_token, refreshToken);
             await SecureStore.setItemAsync(CONFIG.refresh_token_exp, access_token_exp.toISOString());
 
-            await SecureStore.setItemAsync(CONFIG.name, this.getNameFromDecodedJWT(idToken));
+            await SecureStore.setItemAsync(CONFIG.name, name);
 
             return true;
         }
