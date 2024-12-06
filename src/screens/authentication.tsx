@@ -49,7 +49,6 @@ export default class authentication {
         if (response && response.type == 'success') {
             for (let i = 0; i < 2; i++) {
                 try {
-                    // auth code to refresh token + id token example.
                     const tokenResponse = await AuthSession.exchangeCodeAsync(
                         {
                             clientId: clientId,
@@ -103,7 +102,6 @@ export default class authentication {
     }
 
     private async _saveTokens (tokenResponse: any): Promise<boolean> {
-        // validate not null on both
         const idToken = tokenResponse.idToken;
         const refreshToken = tokenResponse.refreshToken;
         

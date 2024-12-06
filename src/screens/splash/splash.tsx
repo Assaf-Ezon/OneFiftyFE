@@ -42,8 +42,10 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token);
             const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
 
-            if (typeof refresh_token_exp == 'string' && typeof refresh_token == 'string') {
+            if (refresh_token && refresh_token_exp && typeof refresh_token_exp == 'string' && typeof refresh_token == 'string') {
                 if (new Date(refresh_token_exp) <= (new Date())) {
+                    console.log(new Date(refresh_token_exp));
+                    console.log(new Date());
                     setTimeout(() => {
                         navigation.replace('start');
                     }, 1000); 
