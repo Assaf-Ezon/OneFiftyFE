@@ -42,15 +42,16 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token);
             const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
 
+            // checks if the refresh and access tokens exist and if they are string type
             if (refresh_token && refresh_token_exp && typeof refresh_token_exp == 'string' && typeof refresh_token == 'string') {
+                // checks if the refresh token is expired
                 if (new Date(refresh_token_exp) <= (new Date())) {
-                    console.log(new Date(refresh_token_exp));
-                    console.log(new Date());
                     setTimeout(() => {
                         navigation.replace('start');
                     }, 1000); 
                 } else {
                     setTimeout(async () => {
+                        // checks if retrieving the refresh token is successful
                         const success = await auth.refreshTokens(refresh_token);
                         if (!success) {
                             Alert.alert('תקלה בהתחברות!');
@@ -74,6 +75,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             if (data.Version != CONFIG.Version) {
                 setIsVersionIncorrect(true);
             } else if (!data.UserData.IsActive) {
+                // if user is not active - the refresh token expiration date is set to right now
                 await SecureStore.setItemAsync(CONFIG.refresh_token_exp, new Date().toISOString());
                 setIsNotActiveOpen(true);
             } else {
