@@ -1,4 +1,4 @@
-import { View, Image, Modal, TouchableOpacity, Text } from 'react-native';
+import { View, Image, Modal, TouchableOpacity, Text, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 
 import SplashScreenStyle from './splash_style';
@@ -49,7 +49,10 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     }, 1000); 
                 } else {
                     setTimeout(async () => {
-                        await auth.refreshTokens(refresh_token);
+                        const success = await auth.refreshTokens(refresh_token);
+                        if (!success) {
+                            Alert.alert('תקלה בהתחברות!');
+                        }
                     }, 1000);
 
                     await handleUserData();

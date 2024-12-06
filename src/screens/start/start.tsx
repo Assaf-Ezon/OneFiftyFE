@@ -63,7 +63,13 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            auth.getFirstTokens(request, response);
+            const success = await auth.getFirstTokens(request, response);
+            if (!success) {
+                setLoading(false);
+
+                setPopupIndex(1);
+                setPopupOpen(true);
+            }
         }  
     };
 

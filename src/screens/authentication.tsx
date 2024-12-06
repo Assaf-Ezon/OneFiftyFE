@@ -45,50 +45,64 @@ export default class authentication {
         return decodedPayload.name;
     };
 
-    async getFirstTokens (request: any, response: any) {
+    async getFirstTokens (request: any, response: any): Promise<boolean> {
         if (response && response.type == 'success') {
+            for (let i = 0; i < 2; i++) {
+                try {
+                    // auth code to refresh token + id token example.
+                    const tokenResponse = await AuthSession.exchangeCodeAsync(
+                        {
+                            clientId: clientId,
+                            scopes: ["openid", "offline_access", "profile"],
+                            redirectUri: redirectUri,
+                            code: response.params.code,
+                            extraParams: request?.codeVerifier ? {
+                                code_verifier: request?.codeVerifier,
+                            } : undefined
+                        },
+                        discovery
+                    );
+
+                    const success = await this._saveTokens(tokenResponse);
+                    if (success) {
+                        return true;
+                    }
+
+                }
+                catch (err){
+                    console.error(err);
+                }   
+            } 
+        }
+
+        return false;  
+    };
+
+    async refreshTokens (refresh_token: any): Promise<boolean> {
+        for (let i = 0; i < 2; i++) {
             try {
-                // auth code to refresh token + id token example.
-                const tokenResponse = await AuthSession.exchangeCodeAsync(
-                    {
-                        clientId: clientId,
-                        scopes: ["openid", "offline_access", "profile"],
-                        redirectUri: redirectUri,
-                        code: response.params.code,
-                        extraParams: request?.codeVerifier ? {
-                            code_verifier: request?.codeVerifier,
-                        } : undefined
-                    },
+                const refreshedTokenResponse = await AuthSession.refreshAsync({
+                    clientId: clientId,
+                    scopes: ["openid", "offline_access", "profile"],
+                    refreshToken: refresh_token,
+                },
                     discovery
                 );
 
-                this._saveTokens(tokenResponse);
-
-            }
-            catch (err){
+                const success = await this._saveTokens(refreshedTokenResponse);
+                if (success) {
+                    return true;
+                }
+            } 
+            catch (err) {
                 console.error(err);
-            }    
-        }  
-    };
-
-    async refreshTokens (refresh_token: any) {
-        try {
-            const refreshedTokenResponse = await AuthSession.refreshAsync({
-                clientId: clientId,
-                scopes: ["openid", "offline_access", "profile"],
-                refreshToken: refresh_token,
-            },
-                discovery
-            );
-
-            this._saveTokens(refreshedTokenResponse);
-        } 
-        catch (err) {
-            console.error(err);
+            }
         }
+
+        return false;
     }
 
-    private async _saveTokens (tokenResponse: any) {
+    private async _saveTokens (tokenResponse: any): Promise<boolean> {
         // validate not null on both
         const idToken = tokenResponse.idToken;
         const refreshToken = tokenResponse.refreshToken;
@@ -107,6 +121,10 @@ export default class authentication {
             await SecureStore.setItemAsync(CONFIG.refresh_token_exp, access_token_exp.toISOString());
 
             await SecureStore.setItemAsync(CONFIG.name, this.getNameFromDecodedJWT(idToken));
+
+            return true;
         }
+        
+        return false;
     }
 }
