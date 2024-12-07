@@ -1,17 +1,23 @@
-import { Text, View, Image } from 'react-native';
-import { IMAGES } from '../../../image_handler';
+import { Text, View, Image, Alert } from 'react-native';
+import { useEffect, useState } from 'react';
 
+import { IMAGES } from '../../../image_handler';
 import TopRatedStyle from './top_rated_style';
+
 import * as SecureStore from 'expo-secure-store';
 
-import { useProfile } from '../../../context/general_context/profile_context';
 import LeaderboardCard from './card/card';
+
+import { useProfile } from '../../../context/general_context/profile_context';
+import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
-import { useEffect, useState } from 'react';
+
+
 
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
+    const {setStackIndexByName} = useStackManagerContext();
 
     interface Score {
         DisplayName: string;
@@ -23,13 +29,23 @@ const TopRated = () => {
     
     useEffect(() => {
         const fetchLeaderboard = async () => {
-            const data = await getLeaderboardData('OverallScore', false);
+            const leaderboardData = await getLeaderboardData('OverallScore', false);
 
-            if (data && typeof data !== 'number') {
-                setLeaderboardData(getTopUsersByScore(data.Scores, 10));
+            if (leaderboardData && typeof leaderboardData !== 'number') {
+                setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
             
                 const name = await SecureStore.getItemAsync('name');
-                updateRank(getUserRankByName(data.Scores, typeof name === 'string' ? name : ''));
+                updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
+            } else if (leaderboardData && typeof leaderboardData == 'number') {
+                switch (leaderboardData) {
+                    case 0:
+                        Alert.alert('משהו לא צפוי קרה!');
+                        break;
+                    case -1:
+                        Alert.alert('התחברות נכשלה!');
+                        setStackIndexByName('auth');
+                        break;
+                }
             }
         };
 

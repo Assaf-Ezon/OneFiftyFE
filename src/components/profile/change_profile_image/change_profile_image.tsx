@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Alert } from 'react-native';
 import { useState } from 'react';
 import { IMAGES } from '../../../image_handler';
 
@@ -7,22 +7,32 @@ import ProfileImageOption from './image/image';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
+import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { setProfilePicture } from '../../../requests/change_profile_picture_request';
 
 const ChangeProfileImagePopup = () => {
     const {updateProfileImage} = useProfile();
+    const {setStackIndexByName} = useStackManagerContext();
     const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex} = useProfileImageMenuContext();
 
     const [errorType, setErrorType] = useState<number>(0);
 
     const update = async () => {
         if (typeof imageIndex === 'number') {
-            if (await setProfilePicture(imageIndex as keyof typeof IMAGES.profile_images)) {
-                setErrorType(0);
-                updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
-                toggleProfileImageMenu();
-            } else {
-                setErrorType(1);
+            const setProfilePictureRequest = await setProfilePicture(imageIndex as keyof typeof IMAGES.profile_images);
+            switch (setProfilePictureRequest) {
+                case 1:
+                    setErrorType(0);
+                    updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
+                    toggleProfileImageMenu();
+                    break;
+                case 0:
+                    setErrorType(1);
+                    break;
+                case -1:
+                    Alert.alert('התחברות נכשלה!');
+                    setStackIndexByName('auth');
+                    break;
             }
         } else {
             setErrorType(2);

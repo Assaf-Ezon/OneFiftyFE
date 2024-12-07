@@ -9,7 +9,11 @@ export const setProfilePicture = async (index: number | null) => {
         
         if (!token) {
             console.error('Token is missing');
-            return 0;
+
+            if (!await authenticationHandler.getInstance().refresh()) {
+                return -1;
+            }
+            const token = await authenticationHandler.getInstance().getAccessToken();
         }
         if (index === null) {
             console.error('index does not exist');
@@ -28,10 +32,10 @@ export const setProfilePicture = async (index: number | null) => {
         
         if (response.status === 200) {
             return 1;
-          } else {
+        } else {
             console.error('Request failed with status: ', response.status);
             return 0;
-          }
+        }
         
     } catch (error) {
         console.error('Error fetching profile data: ', error);

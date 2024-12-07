@@ -76,7 +76,11 @@ const getProfileData = async (): Promise<ApiResponse | number> => {
 
         if (!token) {
             console.error('Token is missing');
-            return -1;
+
+            if (!await authenticationHandler.getInstance().refresh()) {
+                return -1;
+            }
+            const token = await authenticationHandler.getInstance().getAccessToken();
         }
 
         const response = await axios.post(CONFIG.endpoints.login, {
@@ -92,7 +96,7 @@ const getProfileData = async (): Promise<ApiResponse | number> => {
         
     } catch (error) {
         console.error('Error fetching profile data: ', error);
-        return -1;
+        return 0;
     }
 };
 
