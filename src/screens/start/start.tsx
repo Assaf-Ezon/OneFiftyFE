@@ -12,7 +12,7 @@ import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
 import * as SecureStore from 'expo-secure-store';
-import authentication from '../authentication';
+import authenticationHandler from '../authentication';
 
 import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
@@ -36,7 +36,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     const {setStackIndexByName} = useStackManagerContext();
     
-    const auth = new authentication();
+    const auth = new authenticationHandler();
 
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
@@ -77,11 +77,15 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     const handleUserData = async () => {
         const data = await getProfileData();
         
+        // the user data is what we need
         if (data && typeof data !== 'number' && 'UserData' in data) { 
+            // the version is latest
             if (!data.UserData.IsActive) {
                 setPopupIndex(2);
                 setPopupOpen(true);
-            } else {
+            } 
+            // the user is active
+            else {
                 const leaderboardData = await getLeaderboardData('OverallScore', false);
 
                 var userRank = 0;

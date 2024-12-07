@@ -13,13 +13,23 @@ const discovery = {
     tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
 };
 
-export default class authentication {
+export default class authenticationHandler {
+    private static instance: authenticationHandler;
+
     constructor() {
 
     }
 
+    public static getInstance(): authenticationHandler {
+        if (!authenticationHandler.instance) {
+            authenticationHandler.instance = new authenticationHandler();
+        }
+
+        return authenticationHandler.instance;
+    }
+
     // responsible of the first code and the login popup
-    getAuthCode (): [
+    public getAuthCode (): [
         AuthSession.AuthRequest | null,
         AuthSession.AuthSessionResult | null,
         (options?: AuthSession.AuthRequestPromptOptions) => Promise<AuthSession.AuthSessionResult>
@@ -39,7 +49,8 @@ export default class authentication {
         return [request, response, promptAsync];
     }
 
-    async getAuthToken (request: any, response: any): Promise<boolean> {
+    // get tokens after login
+    public async getAuthToken (request: any, response: any): Promise<boolean> {
         if (response && response.type == 'success') {
             for (let i = 0; i < 2; i++) {
                 try {
@@ -71,24 +82,29 @@ export default class authentication {
         return false;  
     };
 
-    async refresh (refresh_token: any): Promise<boolean> {
-        for (let i = 0; i < 2; i++) {
-            try {
-                const refreshedTokenResponse = await AuthSession.refreshAsync({
-                    clientId: clientId,
-                    scopes: ["openid", "offline_access", "profile"],
-                    refreshToken: refresh_token,
-                },
-                    discovery
-                );
-
-                const success = await this._saveTokens(refreshedTokenResponse);
-                if (success) {
-                    return true;
+    // refresh the tokens
+    public async refresh (): Promise<boolean> {
+        const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token);
+        
+        if (typeof refresh_token == 'string') {
+            for (let i = 0; i < 2; i++) {
+                try {
+                    const refreshedTokenResponse = await AuthSession.refreshAsync({
+                        clientId: clientId,
+                        scopes: ["openid", "offline_access", "profile"],
+                        refreshToken: refresh_token,
+                    },
+                        discovery
+                    );
+    
+                    const success = await this._saveTokens(refreshedTokenResponse);
+                    if (success) {
+                        return true;
+                    }
+                } 
+                catch (err) {
+                    console.error(err);
                 }
-            } 
-            catch (err) {
-                console.error(err);
             }
         }
 
@@ -122,6 +138,29 @@ export default class authentication {
         return false;
     }
 
+    // is the refresh token a string and exist
+    public async isRefreshTokenValid(): Promise<boolean> {
+        const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token);
+        const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
+
+        if (refresh_token && refresh_token_exp && typeof refresh_token_exp == 'string' && typeof refresh_token == 'string') {
+            return true;
+        }
+        return false;
+    }
+
+    // is the refresh token not expired
+    public async IsRefreshTokenExpired(): Promise<boolean> {
+        const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
+
+        if (refresh_token_exp && typeof refresh_token_exp == 'string') {
+            return new Date(refresh_token_exp) <= (new Date());
+        } else {
+            return true;
+        }
+    }
+
+    // releases the name from the JWT token
     private _getNameFromDecodedJWT(token: string) {
         const [header, payload, signature] = token.split(".");
         

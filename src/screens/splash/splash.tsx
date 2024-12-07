@@ -7,7 +7,7 @@ import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
 
 import * as SecureStore from 'expo-secure-store';
-import authentication from '../authentication';
+import authenticationHandler from '../authentication';
 
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 import { useProfile } from '../../context/general_context/profile_context';
@@ -35,24 +35,19 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     const [isVersionIncorrect, setIsVersionIncorrect] = useState<boolean>(false);
     const [isNotActiveOpen, setIsNotActiveOpen] = useState<boolean>(false);
 
-    const auth = new authentication();
-
     useEffect(() => {
         const validation = async () => {
-            const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token);
-            const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
-
             // checks if the refresh and access tokens exist and if they are string type
-            if (refresh_token && refresh_token_exp && typeof refresh_token_exp == 'string' && typeof refresh_token == 'string') {
+            if (await authenticationHandler.getInstance().isRefreshTokenValid()) {
                 // checks if the refresh token is expired
-                if (new Date(refresh_token_exp) <= (new Date())) {
+                if (await authenticationHandler.getInstance().IsRefreshTokenExpired) {
                     setTimeout(() => {
                         navigation.replace('start');
                     }, 1000); 
                 } else {
                     setTimeout(async () => {
                         // checks if retrieving the refresh token is successful
-                        const success = await auth.refresh(refresh_token);
+                        const success = await authenticationHandler.getInstance().refresh();
                         if (!success) {
                             Alert.alert('תקלה בהתחברות!');
                         }
@@ -71,10 +66,14 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     const handleUserData = async () => {
         const data = await getProfileData();
         
+        // the user data is what we need
         if (data && typeof data !== 'number' && 'UserData' in data) { 
+            // the version is latest
             if (data.Version != CONFIG.Version) {
                 setIsVersionIncorrect(true);
-            } else if (!data.UserData.IsActive) {
+            } 
+            // the user is active
+            else if (!data.UserData.IsActive) {
                 var oldDate = new Date();
                 oldDate.setUTCHours(oldDate.getUTCHours() - 24);
                 
