@@ -6,7 +6,6 @@ import SplashScreenStyle from './splash_style';
 import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
 
-import * as SecureStore from 'expo-secure-store';
 import authenticationHandler from '../authentication';
 
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
@@ -73,11 +72,8 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 setIsVersionIncorrect(true);
             } 
             // the user is active
-            else if (!data.UserData.IsActive) {
-                var oldDate = new Date();
-                oldDate.setUTCHours(oldDate.getUTCHours() - 24);
-                
-                await SecureStore.setItemAsync(CONFIG.refresh_token_exp, oldDate.toISOString());
+            else if (!data.UserData.IsActive) {         
+                await authenticationHandler.getInstance().setRefreshTokenToExpired();
                 setIsNotActiveOpen(true);
             } else {
                 const leaderboardData = await getLeaderboardData('OverallScore', false);
@@ -85,7 +81,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 var userRank = 0;
 
                 if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
-                    const name = await SecureStore.getItemAsync('name');
+                    const name = await authenticationHandler.getInstance().getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 
                 

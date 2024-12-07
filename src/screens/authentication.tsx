@@ -20,12 +20,51 @@ export default class authenticationHandler {
 
     }
 
+    // singleton instance
     public static getInstance(): authenticationHandler {
         if (!authenticationHandler.instance) {
             authenticationHandler.instance = new authenticationHandler();
         }
 
         return authenticationHandler.instance;
+    }
+
+    // get the name
+    public async getName(): Promise<string> {
+        const name = await SecureStore.getItemAsync(CONFIG.name);
+        return typeof name == 'string' ? name : '';
+    }
+
+    // get access token
+    public async getAccessToken(): Promise<string> {
+        const access = await SecureStore.getItemAsync(CONFIG.access_token);
+        return typeof access == 'string' ? access : '';
+    }
+
+    // get access token expiration
+    public async getAccessTokenExpiration(): Promise<string> {
+        const access_exp = await SecureStore.getItemAsync(CONFIG.access_token_exp);
+        return typeof access_exp == 'string' ? access_exp : '';
+    }
+
+    // get refresh token
+    public async getRefreshToken(): Promise<string> {
+        const refresh = await SecureStore.getItemAsync(CONFIG.refresh_token);
+        return typeof refresh == 'string' ? refresh : '';
+    }
+
+    // get refresh token expiration
+    public async getRefreshTokenExpiration(): Promise<string> {
+        const refresh_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
+        return typeof refresh_exp == 'string' ? refresh_exp : '';
+    }
+
+    // sets the expiration date of the refresh token to yesterday
+    public async setRefreshTokenToExpired() {
+        var oldDate = new Date();
+        oldDate.setUTCHours(oldDate.getUTCHours() - 24);
+        
+        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, oldDate.toISOString());
     }
 
     // responsible of the first code and the login popup

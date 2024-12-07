@@ -10,8 +10,7 @@ import { useSidebarContext } from '../../../context/general_context/sidebar_cont
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 
-import * as SecureStore from 'expo-secure-store';
-
+import authenticationHandler from '../../../screens/authentication';
 
 interface sideBarIconProp {
     iconPath: ImageSourcePropType;
@@ -40,11 +39,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
 
     const logout = async () => {
         setStackIndexByName('auth');
-        
-        var oldDate = new Date();
-        oldDate.setUTCHours(oldDate.getUTCHours() - 24);
-        
-        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, oldDate.toISOString());
+        await authenticationHandler.getInstance().setRefreshTokenToExpired();
     };
 
     const onPressHandler = [navigateToPage, openContactUsForm, logout];

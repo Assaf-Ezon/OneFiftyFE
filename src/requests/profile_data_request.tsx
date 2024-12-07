@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { CONFIG } from '../config';
-import * as SecureStore from 'expo-secure-store';
+import authenticationHandler from '../screens/authentication';
 
 // dictionaries interfaces
 interface Meaning {
@@ -71,8 +71,8 @@ interface ApiResponse {
 
 const getProfileData = async (): Promise<ApiResponse | number> => {
     try {
-        const token = await SecureStore.getItemAsync(CONFIG.access_token);
-        const name = await SecureStore.getItemAsync(CONFIG.name);
+        const token = await authenticationHandler.getInstance().getAccessToken();
+        const name = await authenticationHandler.getInstance().getName();
 
         if (!token) {
             console.error('Token is missing');

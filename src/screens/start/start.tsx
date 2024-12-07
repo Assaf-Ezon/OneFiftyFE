@@ -5,13 +5,11 @@ import Popup from './popups/popups';
 import StartScreenStyle from './start_style';
 
 import { IMAGES } from '../../image_handler';
-import { CONFIG } from '../../config';
 
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
-import * as SecureStore from 'expo-secure-store';
 import authenticationHandler from '../authentication';
 
 import getProfileData from '../../requests/profile_data_request';
@@ -91,7 +89,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 var userRank = 0;
 
                 if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
-                    const name = await SecureStore.getItemAsync('name');
+                    const name = await authenticationHandler.getInstance().getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 
                 
