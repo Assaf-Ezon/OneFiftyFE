@@ -1,3 +1,5 @@
+import retry from 'p-retry';
+
 import * as SecureStore from 'expo-secure-store';
 import * as AuthSession from 'expo-auth-session';
 
@@ -91,7 +93,7 @@ export default class authenticationHandler {
     // get tokens after login
     public async getAuthToken (request: any, response: any): Promise<boolean> {
         if (response && response.type == 'success') {
-            for (let i = 0; i < 2; i++) {
+            const getTokens = async (): Promise<boolean> => {
                 try {
                     const tokenResponse = await AuthSession.exchangeCodeAsync(
                         {
@@ -105,17 +107,32 @@ export default class authenticationHandler {
                         },
                         discovery
                     );
-
+    
                     const success = await this._saveTokens(tokenResponse);
-                    if (success) {
-                        return true;
+
+                    if (!success) {
+                        throw new Error('Missing token');
                     }
 
-                }
-                catch (err){
-                    console.error(err);
+                    return true;
+                } catch (err){
+                    throw new Error('Missing token');
                 }   
-            } 
+            }
+
+            try {
+                const result = await retry(getTokens, {
+                  retries: CONFIG.retries, 
+                  onFailedAttempt: (error) => {
+                    console.warn(`Attempt ${error.attemptNumber} failed. Retrying...`);
+                  },
+                });
+        
+                return result; 
+            } catch (finalError) {
+                console.error('All retry attempts failed:', finalError);
+                return false; 
+            }
         }
 
         return false;  
@@ -125,8 +142,8 @@ export default class authenticationHandler {
     public async refresh (): Promise<boolean> {
         const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token);
         
-        if (typeof refresh_token == 'string') {
-            for (let i = 0; i < 2; i++) {
+        if (refresh_token && typeof refresh_token == 'string') {
+            const getUpdatedTokens = async (): Promise<boolean> => {
                 try {
                     const refreshedTokenResponse = await AuthSession.refreshAsync({
                         clientId: clientId,
@@ -137,13 +154,28 @@ export default class authenticationHandler {
                     );
     
                     const success = await this._saveTokens(refreshedTokenResponse);
-                    if (success) {
-                        return true;
+                    if (!success) {
+                        throw new Error('token and name are missing');
                     }
-                } 
-                catch (err) {
-                    console.error(err);
+
+                    return true;
+                }  catch (err) {
+                    throw new Error('token and name are missing');
                 }
+            }
+
+            try {
+                const result = await retry(getUpdatedTokens, {
+                  retries: CONFIG.retries, 
+                  onFailedAttempt: (error) => {
+                    console.warn(`Attempt ${error.attemptNumber} failed. Retrying...`);
+                  },
+                });
+        
+                return result; 
+            } catch (finalError) {
+                console.error('All retry attempts failed:', finalError);
+                return false; 
             }
         }
 
