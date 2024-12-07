@@ -17,7 +17,7 @@ import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
-    const {setStackIndex} = useStackManagerContext();
+    const {setStackIndexByName} = useStackManagerContext();
     const {hebrewWords, 
       setHebrewWords, 
       englishWords, 
@@ -52,7 +52,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 } else {
                     setTimeout(async () => {
                         // checks if retrieving the refresh token is successful
-                        const success = await auth.refreshTokens(refresh_token);
+                        const success = await auth.refresh(refresh_token);
                         if (!success) {
                             Alert.alert('תקלה בהתחברות!');
                         }
@@ -76,18 +76,21 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 setIsVersionIncorrect(true);
             } else if (!data.UserData.IsActive) {
                 // if user is not active - the refresh token expiration date is set to right now
-                await SecureStore.setItemAsync(CONFIG.refresh_token_exp, new Date().toISOString());
+                var oldDate = new Date();
+                oldDate.setUTCHours(oldDate.getUTCHours() - 24);
+                
+                await SecureStore.setItemAsync(CONFIG.refresh_token_exp, oldDate.toISOString());
                 setIsNotActiveOpen(true);
             } else {
-                const scores = await getLeaderboardData('OverallScore', false);
+                const leaderboardData = await getLeaderboardData('OverallScore', false);
 
-                if (scores && typeof scores !== 'number' && 'Scores' in scores) {
+                if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
                     const name = await SecureStore.getItemAsync('name');
 
                     setProfile({
                         name: data.UserData.DisplayName,
                         email: data.UserData.Email,
-                        rank: getUserRankByName(scores.Scores, typeof name === 'string' ? name : ''),
+                        rank: getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''),
                         score: data.UserData.Score,
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
@@ -130,7 +133,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     // changes the navigation stack when the new word dict is built
     useEffect(() => {
       if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
-          setStackIndex(2);
+        setStackIndexByName('main');
       }
     }, [hebrewNewWords, englishNewWords]);
 
@@ -157,7 +160,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         </Text>
                     </View>
                     <View style={SplashScreenStyle.btnsContainer}>
-                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => setStackIndex(3)}>
+                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => setStackIndexByName('inactive')}>
                                 <Text style={SplashScreenStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => navigation.replace('start')}>

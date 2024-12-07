@@ -18,7 +18,8 @@ export default class authentication {
 
     }
 
-    authPopup (): [
+    // responsible of the first code and the login popup
+    getAuthCode (): [
         AuthSession.AuthRequest | null,
         AuthSession.AuthSessionResult | null,
         (options?: AuthSession.AuthRequestPromptOptions) => Promise<AuthSession.AuthSessionResult>
@@ -38,14 +39,7 @@ export default class authentication {
         return [request, response, promptAsync];
     }
 
-    private _getNameFromDecodedJWT(token: string) {
-        const [header, payload, signature] = token.split(".");
-        
-        const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
-        return decodedPayload.name;
-    };
-
-    async getFirstTokens (request: any, response: any): Promise<boolean> {
+    async getAuthToken (request: any, response: any): Promise<boolean> {
         if (response && response.type == 'success') {
             for (let i = 0; i < 2; i++) {
                 try {
@@ -77,7 +71,7 @@ export default class authentication {
         return false;  
     };
 
-    async refreshTokens (refresh_token: any): Promise<boolean> {
+    async refresh (refresh_token: any): Promise<boolean> {
         for (let i = 0; i < 2; i++) {
             try {
                 const refreshedTokenResponse = await AuthSession.refreshAsync({
@@ -101,6 +95,7 @@ export default class authentication {
         return false;
     }
 
+    // updates the name, idToken and the refreshToken (and its expiration date) in the secure store
     private async _saveTokens (tokenResponse: any): Promise<boolean> {
         const idToken = tokenResponse.idToken;
         const refreshToken = tokenResponse.refreshToken;
@@ -108,7 +103,7 @@ export default class authentication {
         
         if (idToken && refreshToken && name) {
             let access_token_exp = new Date();
-            access_token_exp.setUTCHours(access_token_exp.getUTCHours() + 1);
+            access_token_exp.setUTCMinutes(access_token_exp.getUTCMinutes() + 30);
 
             await SecureStore.setItemAsync(CONFIG.access_token, idToken);
             await SecureStore.setItemAsync(CONFIG.access_token_exp, access_token_exp.toISOString());
@@ -117,7 +112,7 @@ export default class authentication {
             refresh_token_exp.setUTCDate(refresh_token_exp.getUTCDate() + 13);
 
             await SecureStore.setItemAsync(CONFIG.refresh_token, refreshToken);
-            await SecureStore.setItemAsync(CONFIG.refresh_token_exp, access_token_exp.toISOString());
+            await SecureStore.setItemAsync(CONFIG.refresh_token_exp, refresh_token_exp.toISOString());
 
             await SecureStore.setItemAsync(CONFIG.name, name);
 
@@ -126,4 +121,11 @@ export default class authentication {
         
         return false;
     }
+
+    private _getNameFromDecodedJWT(token: string) {
+        const [header, payload, signature] = token.split(".");
+        
+        const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+        return decodedPayload.name;
+    };
 }

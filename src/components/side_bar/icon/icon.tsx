@@ -26,7 +26,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
 
     const {toggleMenu} = useSidebarContext();
     const {toggleOpenContactUsForm} = useContactUsFormContext();
-    const {setStackIndex} = useStackManagerContext();
+    const {setStackIndexByName} = useStackManagerContext();
 
     const navigateToPage = () => {
         toggleMenu();
@@ -39,8 +39,12 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
     };
 
     const logout = async () => {
-        setStackIndex(1);
-        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, new Date().toISOString());
+        setStackIndexByName('auth');
+        
+        var oldDate = new Date();
+        oldDate.setUTCHours(oldDate.getUTCHours() - 24);
+        
+        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, oldDate.toISOString());
     };
 
     const onPressHandler = [navigateToPage, openContactUsForm, logout];

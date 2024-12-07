@@ -72,7 +72,7 @@ const InactiveStack = () => {
 };
 
 const StackNavigator = () => {
-  const { stackIndex, setStackIndex } = useStackManagerContext();
+  const { stackIndex } = useStackManagerContext();
 
   const stackHandler: { [key: number]: JSX.Element } = {
     1: <AuthStack />,

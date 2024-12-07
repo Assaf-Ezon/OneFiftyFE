@@ -30,7 +30,7 @@ const ErrorPopup = ({setPopupOpen} : {setPopupOpen: React.Dispatch<React.SetStat
 };
 
 const InactivePopup = () => {
-    const {setStackIndex} = useStackManagerContext();
+    const {setStackIndexByName} = useStackManagerContext();
     
     return(
         <Modal animationType="fade"
@@ -50,7 +50,7 @@ const InactivePopup = () => {
                         (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
                     </Text>
                 </View>
-                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndex(3)}>
+                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName('inactive')}>
                         <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
                 </TouchableOpacity>
             </View>

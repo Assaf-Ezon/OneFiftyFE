@@ -8,14 +8,14 @@ import { ProfileImageProvider } from '../../context/settings_context/profile_ima
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 
 const PaymentPage = ({ navigation }: {navigation: any}) => {
-    const {stackIndex, setStackIndex} = useStackManagerContext();
+    const {stackIndex, setStackIndexByName} = useStackManagerContext();
     const isActive = (stackIndex === 2);
 
     return (
         <View style={PaymentScreenStyle.Container}>
             <View style={PaymentScreenStyle.topPart}>
                 <View style={PaymentScreenStyle.topPartText}>
-                    <TouchableOpacity onPress={() => {isActive ? navigation.replace('home') : setStackIndex(1)}}>
+                    <TouchableOpacity onPress={() => {isActive ? navigation.replace('home') : setStackIndexByName('auth')}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
                     <Text style={PaymentScreenStyle.pageTitle}>תשלום</Text>

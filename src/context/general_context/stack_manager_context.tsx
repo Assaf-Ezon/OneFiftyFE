@@ -2,7 +2,7 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface StackMangerContextProps {
     stackIndex: number;
-    setStackIndex: React.Dispatch<React.SetStateAction<number>>;
+    setStackIndexByName: (name: string) => void;
 }
 
 const StackManagerContext = createContext<StackMangerContextProps | undefined>(undefined);
@@ -10,8 +10,18 @@ const StackManagerContext = createContext<StackMangerContextProps | undefined>(u
 export const StackManagerProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [stackIndex, setStackIndex] = useState<number>(1);
 
+    const names: { [key: string]: number } = {
+        'auth': 1,
+        'main': 2,
+        'inactive': 3
+    }
+
+    const setStackIndexByName = (name: string) => {
+        setStackIndex(names[name]);
+    }
+
     return (
-        <StackManagerContext.Provider value={{ stackIndex, setStackIndex }}>
+        <StackManagerContext.Provider value={{ stackIndex, setStackIndexByName }}>
             {children}
         </StackManagerContext.Provider>
     );

@@ -34,7 +34,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         englishNewWords, 
         updateNewEnglishWords} = useWords();
 
-    const {setStackIndex} = useStackManagerContext();
+    const {setStackIndexByName} = useStackManagerContext();
     
     const auth = new authentication();
 
@@ -46,7 +46,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     const [popupIndex, setPopupIndex] = useState<number>(1);
 
 
-    const [request, response, promptAsync] = auth.authPopup();
+    const [request, response, promptAsync] = auth.getAuthCode();
 
     // activated when there is a response
     useEffect(() => { 
@@ -63,7 +63,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            const success = await auth.getFirstTokens(request, response);
+            const success = await auth.getAuthToken(request, response);
             if (!success) {
                 setLoading(false);
 
@@ -82,15 +82,15 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setPopupIndex(2);
                 setPopupOpen(true);
             } else {
-                const scores = await getLeaderboardData('OverallScore', false);
+                const leaderboardData = await getLeaderboardData('OverallScore', false);
 
-                if (scores && typeof scores !== 'number' && 'Scores' in scores) {
+                if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
                     const name = await SecureStore.getItemAsync('name');
 
                     setProfile({
                         name: data.UserData.DisplayName,
                         email: data.UserData.Email,
-                        rank: getUserRankByName(scores.Scores, typeof name === 'string' ? name : ''),
+                        rank: getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''),
                         score: data.UserData.Score,
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
@@ -139,7 +139,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
         if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
             setLoading(false);
-            setStackIndex(2);
+            setStackIndexByName('main');
         }
     }, [hebrewNewWords, englishNewWords]);
 
