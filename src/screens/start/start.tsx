@@ -84,29 +84,22 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             } else {
                 const leaderboardData = await getLeaderboardData('OverallScore', false);
 
+                var userRank = 0;
+
                 if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
                     const name = await SecureStore.getItemAsync('name');
-
-                    setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''),
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    });
-                } else {
-                    setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: 0,
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    });
-                }
+                    var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
+                } 
+                
+                setProfile({
+                  name: data.UserData.DisplayName,
+                  email: data.UserData.Email,
+                  rank: userRank,
+                  score: data.UserData.Score,
+                  dateJoined: new Date(data.UserData.DateJoined), 
+                  expirationDate: new Date(data.UserData.ExpirationDate), 
+                  profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+              });
 
                 setHebrewWords(data.HebrewWordsDictionary);
                 setEnglishWords(data.EnglishWordsDictionary);

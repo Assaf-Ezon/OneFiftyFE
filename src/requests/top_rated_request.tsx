@@ -46,7 +46,7 @@ export const getUserRankByName = (leaderboard: Score[], userName: string): numbe
     const sortedLeaderboard = [...leaderboard].sort((a, b) => b.Score - a.Score);
     const userIndex = sortedLeaderboard.findIndex(entry => entry.DisplayName === userName);
 
-    return userIndex !== -1 ? userIndex + 1 : -1;
+    return userIndex !== -1 ? userIndex + 1 : 0;
 }
 
 export const getTopUsersByScore = (leaderboard: Score[], x: number): Score[] => {
