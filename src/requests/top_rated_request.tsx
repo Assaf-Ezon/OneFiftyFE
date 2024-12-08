@@ -14,6 +14,7 @@ interface ApiResponse {
 }
 
 export const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
+    return -1;
     try {
         const token = await authenticationHandler.getInstance().getAccessToken();
         const name = await authenticationHandler.getInstance().getName();
@@ -53,8 +54,8 @@ export const getUserRankByName = (leaderboard: Score[], userName: string): numbe
     return userIndex !== -1 ? userIndex + 1 : 0;
 }
 
-export const getTopUsersByScore = (leaderboard: Score[], x: number): Score[] => {
+export const getTopUsersByScore = (leaderboard: Score[], places: number): Score[] => {
     const sortedLeaderboard = [...leaderboard].sort((a, b) => b.Score - a.Score);
 
-    return sortedLeaderboard.slice(0, x);
+    return sortedLeaderboard.slice(0, places);
 }

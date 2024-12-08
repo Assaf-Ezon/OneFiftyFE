@@ -53,6 +53,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setLoading(true);
                 await saveInfo();
                 await handleUserData();
+            } else {
+                setLoading(false);
+                
+                setPopupIndex(1);
+                setPopupOpen(true);
             }
         };
         processResponse();

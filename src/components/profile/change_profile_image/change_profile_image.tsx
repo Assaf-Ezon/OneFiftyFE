@@ -20,6 +20,7 @@ const ChangeProfileImagePopup = () => {
     const update = async () => {
         if (typeof imageIndex === 'number') {
             const setProfilePictureRequest = await setProfilePicture(imageIndex as keyof typeof IMAGES.profile_images);
+            
             switch (setProfilePictureRequest) {
                 case 1:
                     setErrorType(0);

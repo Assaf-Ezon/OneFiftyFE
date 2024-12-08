@@ -36,7 +36,7 @@ const TopRated = () => {
             
                 const name = await SecureStore.getItemAsync('name');
                 updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
-            } else if (leaderboardData && typeof leaderboardData == 'number') {
+            } else if (typeof leaderboardData == 'number') {
                 switch (leaderboardData) {
                     case 0:
                         Alert.alert('משהו לא צפוי קרה!');

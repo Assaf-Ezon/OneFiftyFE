@@ -38,19 +38,20 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
         const validation = async () => {
             // checks if the refresh and access tokens exist and if they are string type
             if (await authenticationHandler.getInstance().isRefreshTokenValid()) {
+                console.log('test1');
                 // checks if the refresh token is expired
-                if (await authenticationHandler.getInstance().IsRefreshTokenExpired) {
+                if (await authenticationHandler.getInstance().IsRefreshTokenExpired()) {
                     setTimeout(() => {
                         navigation.replace('start');
                     }, 1000); 
                 } else {
-                    setTimeout(async () => {
-                        // checks if retrieving the refresh token is successful
-                        const success = await authenticationHandler.getInstance().refresh();
-                        if (!success) {
-                            Alert.alert('תקלה בהתחברות!');
-                        }
-                    }, 1000);
+                      // checks if retrieving the refresh token is successful
+                      const success = await authenticationHandler.getInstance().refresh();
+
+                      if (!success) {
+                          Alert.alert('תקלה בהתחברות!');
+                          navigation.replace('start');
+                      }
 
                     await handleUserData();
                 }
@@ -64,7 +65,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
   
     const handleUserData = async () => {
         const data = await getProfileData();
-        
+
         // the user data is what we need
         if (data && typeof data !== 'number' && 'UserData' in data) { 
             // the version is latest
