@@ -38,7 +38,6 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
         const validation = async () => {
             // checks if the refresh and access tokens exist and if they are string type
             if (await authenticationHandler.getInstance().isRefreshTokenValid()) {
-                console.log('test1');
                 // checks if the refresh token is expired
                 if (await authenticationHandler.getInstance().IsRefreshTokenExpired()) {
                     setTimeout(() => {

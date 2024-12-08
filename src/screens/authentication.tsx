@@ -225,7 +225,6 @@ export default class authenticationHandler {
         const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
 
         if (refresh_token_exp && typeof refresh_token_exp == 'string') {
-            console.log(new Date(refresh_token_exp) <= (new Date()));
             return new Date(refresh_token_exp) <= (new Date());
         }
 
