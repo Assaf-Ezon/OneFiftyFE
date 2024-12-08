@@ -61,6 +61,14 @@ export default class authenticationHandler {
         return typeof refresh_exp == 'string' ? refresh_exp : '';
     }
 
+    // sets the expiration date of the access token to yesterday
+    public async setAccessTokenToExpired() {
+        var oldDate = new Date();
+        oldDate.setUTCHours(oldDate.getUTCHours() - 24);
+        
+        await SecureStore.setItemAsync(CONFIG.access_token_exp, oldDate.toISOString());
+    }
+
     // sets the expiration date of the refresh token to yesterday
     public async setRefreshTokenToExpired() {
         var oldDate = new Date();
@@ -208,6 +216,15 @@ export default class authenticationHandler {
         
         return false;
     }
+
+    public async logout () {
+        await SecureStore.setItemAsync(CONFIG.access_token, '');
+        await SecureStore.setItemAsync(CONFIG.refresh_token, '');
+        await SecureStore.setItemAsync(CONFIG.name, '');
+
+        this.setAccessTokenToExpired();
+        this.setRefreshTokenToExpired();
+    } 
 
     // is the refresh token a string and exist
     public async isRefreshTokenValid(): Promise<boolean> {
