@@ -217,6 +217,7 @@ export default class authenticationHandler {
         return false;
     }
 
+    // handles logout - sets all secureStore to non relevant values
     public async logout () {
         await SecureStore.setItemAsync(CONFIG.access_token, '');
         await SecureStore.setItemAsync(CONFIG.refresh_token, '');
