@@ -39,7 +39,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
 
     const logout = async () => {
         setStackIndexByName('auth');
-        await authenticationHandler.getInstance().setRefreshTokenToExpired();
+        await authenticationHandler.getInstance().logout();
     };
 
     const onPressHandler = [navigateToPage, openContactUsForm, logout];

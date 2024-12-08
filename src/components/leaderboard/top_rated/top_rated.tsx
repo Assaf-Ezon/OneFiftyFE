@@ -11,6 +11,7 @@ import LeaderboardCard from './card/card';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
+import authenticationHandler from '../../../screens/authentication';
 
 
 
@@ -43,6 +44,7 @@ const TopRated = () => {
                         break;
                     case -1:
                         Alert.alert('התחברות נכשלה!');
+                        await authenticationHandler.getInstance().logout();
                         setStackIndexByName('auth');
                         break;
                 }

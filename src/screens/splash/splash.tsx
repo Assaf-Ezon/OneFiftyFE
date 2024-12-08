@@ -73,7 +73,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             } 
             // the user is active
             else if (!data.UserData.IsActive) {         
-                await authenticationHandler.getInstance().setRefreshTokenToExpired();
+                await authenticationHandler.getInstance().logout();
                 setIsNotActiveOpen(true);
             } else {
                 const leaderboardData = await getLeaderboardData('OverallScore', false);
