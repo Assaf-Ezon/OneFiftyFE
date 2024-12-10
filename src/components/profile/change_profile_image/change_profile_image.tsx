@@ -16,6 +16,8 @@ const ChangeProfileImagePopup = () => {
     const {setStackIndexByName} = useStackManagerContext();
     const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex} = useProfileImageMenuContext();
 
+    const authInstance = AuthenticationHandler.getInstance(); 
+
     const [errorType, setErrorType] = useState<number>(0);
 
     const update = async () => {
@@ -33,7 +35,7 @@ const ChangeProfileImagePopup = () => {
                     break;
                 case -1:
                     Alert.alert('התחברות נכשלה!');
-                    await AuthenticationHandler.getInstance().logout();
+                    await authInstance.logout();
                     setStackIndexByName(StackNames.Auth);
                     break;
             }

@@ -20,6 +20,8 @@ const TopRated = () => {
     const {profile, updateRank} = useProfile();
     const {setStackIndexByName} = useStackManagerContext();
 
+    const authInstance = AuthenticationHandler.getInstance();
+
     interface Score {
         DisplayName: string;
         Score: number;
@@ -35,7 +37,7 @@ const TopRated = () => {
             if (leaderboardData && typeof leaderboardData !== 'number') {
                 setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
             
-                const name = await AuthenticationHandler.getInstance().getName();
+                const name = await authInstance.getName();
                 updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
             } else if (typeof leaderboardData == 'number') {
                 switch (leaderboardData) {
@@ -44,7 +46,7 @@ const TopRated = () => {
                         break;
                     case -1:
                         Alert.alert('התחברות נכשלה!');
-                        await AuthenticationHandler.getInstance().logout();
+                        await authInstance.logout();
                         setStackIndexByName(StackNames.Auth);
                         break;
                 }

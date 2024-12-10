@@ -14,18 +14,19 @@ interface ApiResponse {
 }
 
 export const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
-    return -1;
     try {
-        const token = await AuthenticationHandler.getInstance().getAccessToken();
-        const name = await AuthenticationHandler.getInstance().getName();
+        const authInstance = AuthenticationHandler.getInstance();
+
+        const token = await authInstance.getAccessToken();
+        const name = await authInstance.getName();
 
         if (!token) {
             console.error('Token is missing');
 
-            if (!await AuthenticationHandler.getInstance().refresh()) {
+            if (!await authInstance.refresh()) {
                 return -1;
             }
-            const token = await AuthenticationHandler.getInstance().getAccessToken();
+            const token = await authInstance.getAccessToken();
         }
 
         const response = await axios.post(CONFIG.endpoints.leaderboard, {

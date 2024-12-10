@@ -34,7 +34,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     const {setStackIndexByName} = useStackManagerContext();
     
-    const auth = new AuthenticationHandler();
+    const authInstance = AuthenticationHandler.getInstance();
 
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
@@ -44,7 +44,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     const [popupIndex, setPopupIndex] = useState<number>(1);
 
 
-    const [request, response, promptAsync] = auth.getAuthCode();
+    const [request, response, promptAsync] = authInstance.getAuthCode();
 
     // activated when there is a response
     useEffect(() => { 
@@ -66,7 +66,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            const success = await auth.getAuthToken(request, response);
+            const success = await authInstance.getAuthToken(request, response);
             if (!success) {
                 setLoading(false);
 
@@ -94,7 +94,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 var userRank = 0;
 
                 if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
-                    const name = await AuthenticationHandler.getInstance().getName();
+                    const name = await authInstance.getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 
                 

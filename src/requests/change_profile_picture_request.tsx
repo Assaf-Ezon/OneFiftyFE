@@ -3,17 +3,20 @@ import { CONFIG } from '../config';
 import AuthenticationHandler from '../screens/AuthenticationHandler';
 
 export const setProfilePicture = async (index: number | null) => {
+
+    const authInstance = AuthenticationHandler.getInstance();
+
     try {
-        const token = await AuthenticationHandler.getInstance().getAccessToken();
-        const name = await AuthenticationHandler.getInstance().getName();
+        const token = await authInstance.getAccessToken();
+        const name = await authInstance.getName();
         
         if (!token) {
             console.error('Token is missing');
 
-            if (!await AuthenticationHandler.getInstance().refresh()) {
+            if (!await authInstance.refresh()) {
                 return -1;
             }
-            const token = await AuthenticationHandler.getInstance().getAccessToken();
+            const token = await authInstance.getAccessToken();
         }
         if (index === null) {
             console.error('index does not exist');

@@ -31,19 +31,21 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       updateNewEnglishWords} = useWords();
     const {setProfile} = useProfile();
 
+    const authInstance = AuthenticationHandler.getInstance();
+
     const [isVersionIncorrect, setIsVersionIncorrect] = useState<boolean>(false);
     const [isNotActiveOpen, setIsNotActiveOpen] = useState<boolean>(false);
 
     useEffect(() => {
         const validation = async () => {
             // checks if the refresh token is expired
-            if (await AuthenticationHandler.getInstance().IsRefreshTokenExpired()) {
+            if (await authInstance.IsRefreshTokenExpired()) {
                 setTimeout(() => {
                     navigation.replace('start');
                 }, 1000); 
             } else {
                     // checks if retrieving the refresh token is successful
-                    const success = await AuthenticationHandler.getInstance().refresh();
+                    const success = await authInstance.refresh();
 
                     if (!success) {
                         Alert.alert('תקלה בהתחברות!');
@@ -68,7 +70,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             } 
             // the user is active
             else if (!data.UserData.IsActive) {         
-                await AuthenticationHandler.getInstance().logout();
+                await authInstance.logout();
                 setIsNotActiveOpen(true);
             } else {
                 const leaderboardData = await getLeaderboardData('OverallScore', false);
@@ -76,7 +78,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 var userRank = 0;
 
                 if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
-                    const name = await AuthenticationHandler.getInstance().getName();
+                    const name = await authInstance.getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 
                 
