@@ -6,9 +6,9 @@ import SplashScreenStyle from './splash_style';
 import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
 
-import authenticationHandler from '../authentication';
+import AuthenticationHandler from '../AuthenticationHandler';
 
-import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 
@@ -36,31 +36,26 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
     useEffect(() => {
         const validation = async () => {
-            // checks if the refresh and access tokens exist and if they are string type
-            if (await authenticationHandler.getInstance().isRefreshTokenValid()) {
-                // checks if the refresh token is expired
-                if (await authenticationHandler.getInstance().IsRefreshTokenExpired()) {
-                    setTimeout(() => {
-                        navigation.replace('start');
-                    }, 1000); 
-                } else {
-                      // checks if retrieving the refresh token is successful
-                      const success = await authenticationHandler.getInstance().refresh();
-
-                      if (!success) {
-                          Alert.alert('תקלה בהתחברות!');
-                          navigation.replace('start');
-                      }
-
-                    await handleUserData();
-                }
+            // checks if the refresh token is expired
+            if (await AuthenticationHandler.getInstance().IsRefreshTokenExpired()) {
+                setTimeout(() => {
+                    navigation.replace('start');
+                }, 1000); 
             } else {
-                navigation.replace('start');
+                    // checks if retrieving the refresh token is successful
+                    const success = await AuthenticationHandler.getInstance().refresh();
+
+                    if (!success) {
+                        Alert.alert('תקלה בהתחברות!');
+                        navigation.replace('start');
+                    }
+
+                await handleUserData();
             }
         }
 
-    validation();
-  }, []);
+        validation();
+    }, []);
   
     const handleUserData = async () => {
         const data = await getProfileData();
@@ -73,7 +68,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             } 
             // the user is active
             else if (!data.UserData.IsActive) {         
-                await authenticationHandler.getInstance().logout();
+                await AuthenticationHandler.getInstance().logout();
                 setIsNotActiveOpen(true);
             } else {
                 const leaderboardData = await getLeaderboardData('OverallScore', false);
@@ -81,7 +76,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 var userRank = 0;
 
                 if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
-                    const name = await authenticationHandler.getInstance().getName();
+                    const name = await AuthenticationHandler.getInstance().getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 
                 
@@ -123,7 +118,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     // changes the navigation stack when the new word dict is built
     useEffect(() => {
       if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
-        setStackIndexByName('main');
+        setStackIndexByName(StackNames.Main);
       }
     }, [hebrewNewWords, englishNewWords]);
 
@@ -150,7 +145,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         </Text>
                     </View>
                     <View style={SplashScreenStyle.btnsContainer}>
-                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => setStackIndexByName('inactive')}>
+                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
                                 <Text style={SplashScreenStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => navigation.replace('start')}>

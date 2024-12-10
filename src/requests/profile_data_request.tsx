@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { CONFIG } from '../config';
-import authenticationHandler from '../screens/authentication';
+import AuthenticationHandler from '../screens/AuthenticationHandler';
 
 // dictionaries interfaces
 interface Meaning {
@@ -71,16 +71,16 @@ interface ApiResponse {
 
 const getProfileData = async (): Promise<ApiResponse | number> => {
     try {
-        const token = await authenticationHandler.getInstance().getAccessToken();
-        const name = await authenticationHandler.getInstance().getName();
+        const token = await AuthenticationHandler.getInstance().getAccessToken();
+        const name = await AuthenticationHandler.getInstance().getName();
 
         if (!token) {
             console.error('Token is missing');
 
-            if (!await authenticationHandler.getInstance().refresh()) {
+            if (!await AuthenticationHandler.getInstance().refresh()) {
                 return -1;
             }
-            const token = await authenticationHandler.getInstance().getAccessToken();
+            const token = await AuthenticationHandler.getInstance().getAccessToken();
         }
 
         const response = await axios.post(CONFIG.endpoints.login, {

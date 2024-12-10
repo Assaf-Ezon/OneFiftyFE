@@ -3,7 +3,7 @@ import { View, Text, Modal, TouchableOpacity, Image } from 'react-native';
 import PopupsStyle from './popups_style';
 import { IMAGES } from '../../../image_handler';
 
-import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 
 const ErrorPopup = ({setPopupOpen} : {setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
     return(
@@ -50,7 +50,7 @@ const InactivePopup = () => {
                         (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
                     </Text>
                 </View>
-                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName('inactive')}>
+                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
                         <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
                 </TouchableOpacity>
             </View>

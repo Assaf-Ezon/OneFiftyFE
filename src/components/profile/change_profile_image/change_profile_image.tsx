@@ -7,9 +7,9 @@ import ProfileImageOption from './image/image';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
-import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 import { setProfilePicture } from '../../../requests/change_profile_picture_request';
-import authenticationHandler from '../../../screens/authentication';
+import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 
 const ChangeProfileImagePopup = () => {
     const {updateProfileImage} = useProfile();
@@ -33,8 +33,8 @@ const ChangeProfileImagePopup = () => {
                     break;
                 case -1:
                     Alert.alert('התחברות נכשלה!');
-                    await authenticationHandler.getInstance().logout();
-                    setStackIndexByName('auth');
+                    await AuthenticationHandler.getInstance().logout();
+                    setStackIndexByName(StackNames.Auth);
                     break;
             }
         } else {

@@ -9,9 +9,9 @@ import * as SecureStore from 'expo-secure-store';
 import LeaderboardCard from './card/card';
 
 import { useProfile } from '../../../context/general_context/profile_context';
-import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
-import authenticationHandler from '../../../screens/authentication';
+import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 
 
 
@@ -35,7 +35,7 @@ const TopRated = () => {
             if (leaderboardData && typeof leaderboardData !== 'number') {
                 setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
             
-                const name = await SecureStore.getItemAsync('name');
+                const name = await AuthenticationHandler.getInstance().getName();
                 updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
             } else if (typeof leaderboardData == 'number') {
                 switch (leaderboardData) {
@@ -44,8 +44,8 @@ const TopRated = () => {
                         break;
                     case -1:
                         Alert.alert('התחברות נכשלה!');
-                        await authenticationHandler.getInstance().logout();
-                        setStackIndexByName('auth');
+                        await AuthenticationHandler.getInstance().logout();
+                        setStackIndexByName(StackNames.Auth);
                         break;
                 }
             }

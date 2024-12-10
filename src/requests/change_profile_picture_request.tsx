@@ -1,19 +1,19 @@
 import axios from 'axios';
 import { CONFIG } from '../config';
-import authenticationHandler from '../screens/authentication';
+import AuthenticationHandler from '../screens/AuthenticationHandler';
 
 export const setProfilePicture = async (index: number | null) => {
     try {
-        const token = await authenticationHandler.getInstance().getAccessToken();
-        const name = await authenticationHandler.getInstance().getName();
+        const token = await AuthenticationHandler.getInstance().getAccessToken();
+        const name = await AuthenticationHandler.getInstance().getName();
         
         if (!token) {
             console.error('Token is missing');
 
-            if (!await authenticationHandler.getInstance().refresh()) {
+            if (!await AuthenticationHandler.getInstance().refresh()) {
                 return -1;
             }
-            const token = await authenticationHandler.getInstance().getAccessToken();
+            const token = await AuthenticationHandler.getInstance().getAccessToken();
         }
         if (index === null) {
             console.error('index does not exist');

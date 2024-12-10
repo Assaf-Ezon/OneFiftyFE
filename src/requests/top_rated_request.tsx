@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { CONFIG } from '../config';
-import authenticationHandler from '../screens/authentication';
+import AuthenticationHandler from '../screens/AuthenticationHandler';
 
 interface Score {
     DisplayName: string;
@@ -16,16 +16,16 @@ interface ApiResponse {
 export const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
     return -1;
     try {
-        const token = await authenticationHandler.getInstance().getAccessToken();
-        const name = await authenticationHandler.getInstance().getName();
+        const token = await AuthenticationHandler.getInstance().getAccessToken();
+        const name = await AuthenticationHandler.getInstance().getName();
 
         if (!token) {
             console.error('Token is missing');
 
-            if (!await authenticationHandler.getInstance().refresh()) {
+            if (!await AuthenticationHandler.getInstance().refresh()) {
                 return -1;
             }
-            const token = await authenticationHandler.getInstance().getAccessToken();
+            const token = await AuthenticationHandler.getInstance().getAccessToken();
         }
 
         const response = await axios.post(CONFIG.endpoints.leaderboard, {

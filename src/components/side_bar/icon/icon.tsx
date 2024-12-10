@@ -8,9 +8,9 @@ import iconStyle from './icon_style';
 
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
-import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 
-import authenticationHandler from '../../../screens/authentication';
+import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 
 interface sideBarIconProp {
     iconPath: ImageSourcePropType;
@@ -38,8 +38,8 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
     };
 
     const logout = async () => {
-        setStackIndexByName('auth');
-        await authenticationHandler.getInstance().logout();
+        setStackIndexByName(StackNames.Auth);
+        await AuthenticationHandler.getInstance().logout();
     };
 
     const onPressHandler = [navigateToPage, openContactUsForm, logout];

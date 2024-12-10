@@ -15,20 +15,20 @@ const discovery = {
     tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
 };
 
-export default class authenticationHandler {
-    private static instance: authenticationHandler;
+export default class AuthenticationHandler {
+    private static instance: AuthenticationHandler;
 
     constructor() {
 
     }
 
     // singleton instance
-    public static getInstance(): authenticationHandler {
-        if (!authenticationHandler.instance) {
-            authenticationHandler.instance = new authenticationHandler();
+    public static getInstance(): AuthenticationHandler {
+        if (!AuthenticationHandler.instance) {
+            AuthenticationHandler.instance = new AuthenticationHandler();
         }
 
-        return authenticationHandler.instance;
+        return AuthenticationHandler.instance;
     }
 
     // get the name
@@ -63,18 +63,18 @@ export default class authenticationHandler {
 
     // sets the expiration date of the access token to yesterday
     public async setAccessTokenToExpired() {
-        var oldDate = new Date();
-        oldDate.setUTCHours(oldDate.getUTCHours() - 24);
+        var expiredDate = new Date();
+        expiredDate.setUTCHours(expiredDate.getUTCHours() - 24);
         
-        await SecureStore.setItemAsync(CONFIG.access_token_exp, oldDate.toISOString());
+        await SecureStore.setItemAsync(CONFIG.access_token_exp, expiredDate.toISOString());
     }
 
     // sets the expiration date of the refresh token to yesterday
     public async setRefreshTokenToExpired() {
-        var oldDate = new Date();
-        oldDate.setUTCHours(oldDate.getUTCHours() - 24);
+        var expiredDate = new Date();
+        expiredDate.setUTCHours(expiredDate.getUTCHours() - 24);
         
-        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, oldDate.toISOString());
+        await SecureStore.setItemAsync(CONFIG.refresh_token_exp, expiredDate.toISOString());
     }
 
     // responsible of the first code and the login popup
@@ -227,22 +227,12 @@ export default class authenticationHandler {
         this.setRefreshTokenToExpired();
     } 
 
-    // is the refresh token a string and exist
-    public async isRefreshTokenValid(): Promise<boolean> {
+    // is the refresh token not expired
+    public async IsRefreshTokenExpired(): Promise<boolean> {
         const refresh_token = await SecureStore.getItemAsync(CONFIG.refresh_token);
         const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
 
         if (refresh_token && refresh_token_exp && typeof refresh_token_exp == 'string' && typeof refresh_token == 'string') {
-            return true;
-        }
-        return false;
-    }
-
-    // is the refresh token not expired
-    public async IsRefreshTokenExpired(): Promise<boolean> {
-        const refresh_token_exp = await SecureStore.getItemAsync(CONFIG.refresh_token_exp);
-
-        if (refresh_token_exp && typeof refresh_token_exp == 'string') {
             return new Date(refresh_token_exp) <= (new Date());
         }
 

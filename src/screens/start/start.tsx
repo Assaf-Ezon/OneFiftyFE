@@ -8,9 +8,9 @@ import { IMAGES } from '../../image_handler';
 
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
-import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
-import authenticationHandler from '../authentication';
+import AuthenticationHandler from '../AuthenticationHandler';
 
 import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
@@ -34,7 +34,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     const {setStackIndexByName} = useStackManagerContext();
     
-    const auth = new authenticationHandler();
+    const auth = new AuthenticationHandler();
 
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
@@ -55,7 +55,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 await handleUserData();
             } else {
                 setLoading(false);
-                
+
                 setPopupIndex(1);
                 setPopupOpen(true);
             }
@@ -94,7 +94,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 var userRank = 0;
 
                 if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
-                    const name = await authenticationHandler.getInstance().getName();
+                    const name = await AuthenticationHandler.getInstance().getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 
                 
@@ -139,7 +139,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
         if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
             setLoading(false);
-            setStackIndexByName('main');
+            setStackIndexByName(StackNames.Main);
         }
     }, [hebrewNewWords, englishNewWords]);
 
