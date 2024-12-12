@@ -1,6 +1,7 @@
-import { Text, View, TouchableOpacity, Image, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 import { IMAGES } from '../../../image_handler';
+import { CONFIG } from '../../../config';
 
 import ChangeProfileImageStyle from './change_profile_image_style';
 import ProfileImageOption from './image/image';
@@ -19,25 +20,29 @@ const ChangeProfileImagePopup = () => {
     const authInstance = AuthenticationHandler.getInstance(); 
 
     const [errorType, setErrorType] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const update = async () => {
-        if (typeof imageIndex === 'number') {
-            const setProfilePictureRequest = await setProfilePicture(imageIndex as keyof typeof IMAGES.profile_images);
-            
-            switch (setProfilePictureRequest) {
-                case 1:
+        if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
+            const name = await authInstance.getName();
+            const access_token = await authInstance.getAccessToken();
+
+            if (name && access_token) {
+                setLoading(true);
+                const setProfilePictureRequest = await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
+                setLoading(false);
+
+                if (setProfilePictureRequest) {
                     setErrorType(0);
                     updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
                     toggleProfileImageMenu();
-                    break;
-                case 0:
+                } else {
                     setErrorType(1);
-                    break;
-                case -1:
-                    Alert.alert('התחברות נכשלה!');
-                    await authInstance.logout();
-                    setStackIndexByName(StackNames.Auth);
-                    break;
+                }
+            } else {
+                Alert.alert('התחברות נכשלה!');
+                await authInstance.logout();
+                setStackIndexByName(StackNames.Auth);
             }
         } else {
             setErrorType(2);
@@ -52,7 +57,8 @@ const ChangeProfileImagePopup = () => {
                 </TouchableOpacity>
                 <Text style={ChangeProfileImageStyle.title}>בחר תמונת פרופיל: </Text>
             </View>
-            <View style={ChangeProfileImageStyle.imagesContainer}>
+            <View style={[ChangeProfileImageStyle.imagesContainer, {opacity: loading ? 0.5 : 1}]}
+                pointerEvents={loading ? "none" : "auto"}>
                 {
                     Object.entries(IMAGES.profile_images).map(([key, image]) => {
                         return (
@@ -73,6 +79,8 @@ const ChangeProfileImagePopup = () => {
                     null
                 }
             </View>
+
+            {loading ? <View style={ChangeProfileImageStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
         </View>
     );
 };  

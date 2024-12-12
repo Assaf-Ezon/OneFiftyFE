@@ -60,10 +60,13 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     }, []);
   
     const handleUserData = async () => {
-        const data = await getProfileData();
+        const name = await authInstance.getName();
+        const token = await authInstance.getAccessToken();
+
+        const data = await getProfileData(name, token);
 
         // the user data is what we need
-        if (data && typeof data !== 'number' && 'UserData' in data) { 
+        if (data && 'UserData' in data) { 
             // the version is latest
             if (data.Version != CONFIG.Version) {
                 setIsVersionIncorrect(true);
@@ -73,7 +76,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 await authInstance.logout();
                 setIsNotActiveOpen(true);
             } else {
-                const leaderboardData = await getLeaderboardData('OverallScore', false);
+                const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
                 var userRank = 0;
 

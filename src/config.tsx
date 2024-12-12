@@ -23,6 +23,9 @@ export const CONFIG = {
     refresh_token_exp: 'refresh_token_exp',
     name: 'name',
 
+    min_profile_image: 0,
+    max_profile_image: 11,
+
     privacy_policy: `
 מדיניות פרטיות זו נועדה לעזור לך להבין אילו נתונים אנו אוספים, כיצד אנו משתמשים בהם ומגנים על פרטיותך בעת השימוש באפליקציה.
 

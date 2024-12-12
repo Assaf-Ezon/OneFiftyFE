@@ -78,10 +78,13 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     // sets profile and words context with fetched data
     const handleUserData = async () => {
-        const data = await getProfileData();
+        const name = await authInstance.getName();
+        const token = await authInstance.getAccessToken();
+
+        const data = await getProfileData(name, token);
         
         // the user data is what we need
-        if (data && typeof data !== 'number' && 'UserData' in data) { 
+        if (data && 'UserData' in data) { 
             // the version is latest
             if (!data.UserData.IsActive) {
                 setPopupIndex(2);
@@ -89,7 +92,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             } 
             // the user is active
             else {
-                const leaderboardData = await getLeaderboardData('OverallScore', false);
+                const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
                 var userRank = 0;
 

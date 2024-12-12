@@ -1,4 +1,4 @@
-import { Text, View, Image, Alert } from 'react-native';
+import { Text, View, Image, Alert, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 
 import { IMAGES } from '../../../image_handler';
@@ -12,6 +12,7 @@ import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
+import { CONFIG } from '../../../config';
 
 
 
@@ -29,34 +30,37 @@ const TopRated = () => {
     }
 
     const [leaderboardData, setLeaderboardData] = useState<Score[] | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
     
     useEffect(() => {
         const fetchLeaderboard = async () => {
-            const leaderboardData = await getLeaderboardData('OverallScore', false);
+            const name = await authInstance.getName();
+            const access_token = await authInstance.getAccessToken();
 
-            if (leaderboardData && typeof leaderboardData !== 'number') {
-                setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
-            
-                const name = await authInstance.getName();
-                updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
-            } else if (typeof leaderboardData == 'number') {
-                switch (leaderboardData) {
-                    case 0:
-                        Alert.alert('משהו לא צפוי קרה!');
-                        break;
-                    case -1:
-                        Alert.alert('התחברות נכשלה!');
-                        await authInstance.logout();
-                        setStackIndexByName(StackNames.Auth);
-                        break;
+            if (name && access_token) {
+                setLoading(true);
+                const leaderboardData = await getLeaderboardData(name, access_token, 'OverallScore', false);
+                setLoading(false);
+                
+                if (leaderboardData) {
+                    setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
+                
+                    const name = await authInstance.getName();
+                    updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
+                } else {
+                        Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                 }
+            } else {
+                Alert.alert('התחברות נכשלה!');
+                await authInstance.logout();
+                setStackIndexByName(StackNames.Auth);
             }
         };
 
         fetchLeaderboard();
     }, []);
 
-    const isValidProfilePictureIndex = (index: number): index is keyof typeof IMAGES.profile_images => index >= 0 && index <= 11;
+    const isValidProfilePictureIndex = (index: number): index is keyof typeof IMAGES.profile_images => index >= CONFIG.min_profile_image && index <= CONFIG.max_profile_image;
 
     return (
         <View style={TopRatedStyle.container}>
@@ -69,7 +73,7 @@ const TopRated = () => {
                     <Text style={TopRatedStyle.rankText}>מקום: {profile.rank}</Text> 
                 </View>
             </View>
-
+            {loading ? <View style={TopRatedStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
             {
                 leaderboardData && leaderboardData ? leaderboardData.map((score, index) => {
                     return (

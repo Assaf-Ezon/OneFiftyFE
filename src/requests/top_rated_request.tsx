@@ -1,6 +1,6 @@
 import axios from 'axios';
+import retry from 'p-retry';
 import { CONFIG } from '../config';
-import AuthenticationHandler from '../screens/AuthenticationHandler';
 
 interface Score {
     DisplayName: string;
@@ -13,38 +13,40 @@ interface ApiResponse {
     Scores: Score[];
 }
 
-export const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
-    try {
-        const authInstance = AuthenticationHandler.getInstance();
-
-        const token = await authInstance.getAccessToken();
-        const name = await authInstance.getName();
-
-        if (!token) {
-            console.error('Token is missing');
-
-            if (!await authInstance.refresh()) {
-                return -1;
-            }
-            const token = await authInstance.getAccessToken();
+export const getLeaderboardData = async (name: string, token: string, type: string, partial: boolean): Promise<ApiResponse | null> => {
+    const leaderboardDataRequest = async () => {
+        try {
+            const response = await axios.post(CONFIG.endpoints.leaderboard, {
+                DisplayName: name,
+                LeaderboardType: type,
+                PartialList: partial,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            return response.data;
+            
+        } catch (error) {
+            throw new Error();
         }
+    }
 
-        const response = await axios.post(CONFIG.endpoints.leaderboard, {
-            DisplayName: name,
-            LeaderboardType: type,
-            PartialList: partial,
-        }, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
+    try {
+        const result = await retry(leaderboardDataRequest, {
+          retries: CONFIG.retries, 
+          onFailedAttempt: (error) => {
+            console.warn(`Attempt ${error.attemptNumber} failed. Retrying...`);
+          },
         });
 
-        return response.data;
-        
-    } catch (error) {
-        console.error('Error fetching profile data: ', error);
-        return 0;
+        return result; 
+
+    } catch (finalError) {
+        console.error('All retry attempts failed:', finalError);
+        return null;
     }
 };
 
