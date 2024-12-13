@@ -81,7 +81,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
                 var userRank = 0;
 
-                if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
+                if (leaderboardData && 'Scores' in leaderboardData) {
                     const name = await authInstance.getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 

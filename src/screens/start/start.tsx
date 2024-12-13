@@ -1,6 +1,6 @@
 import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import Popup from './popups/popups';
+import Popup, {AuthErrorType} from './popups/popups';
 
 import StartScreenStyle from './start_style';
 
@@ -36,13 +36,14 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     
     const authInstance = AuthenticationHandler.getInstance();
 
+    // prevents the first useEffect to activate when page initialized
+    const [initialized, setInitialized] = useState(false);
+
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
 
     // popup flag and index
-    const [popupOpen, setPopupOpen] = useState<boolean>(false);
-    const [popupIndex, setPopupIndex] = useState<number>(1);
-
+    const [popupIndex, setPopupIndex] = useState<number>(AuthErrorType.None);
 
     const [request, response, promptAsync] = authInstance.getAuthCode();
 
@@ -55,12 +56,15 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 await handleUserData();
             } else {
                 setLoading(false);
-
-                setPopupIndex(1);
-                setPopupOpen(true);
+                setPopupIndex(AuthErrorType.Error);
             }
         };
-        processResponse();
+        
+        if (initialized) {
+            processResponse();
+        } else {
+            setInitialized(true); 
+        }
     }, [response]); 
 
     // saves token and name inside the local storage
@@ -70,10 +74,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             if (!success) {
                 setLoading(false);
 
-                setPopupIndex(1);
-                setPopupOpen(true);
+                setPopupIndex(AuthErrorType.Error);
             }
-        }  
+        } else {
+            setPopupIndex(AuthErrorType.Error);
+        }
     };
 
     // sets profile and words context with fetched data
@@ -87,8 +92,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         if (data && 'UserData' in data) { 
             // the version is latest
             if (!data.UserData.IsActive) {
-                setPopupIndex(2);
-                setPopupOpen(true);
+                setPopupIndex(AuthErrorType.Inactive);
             } 
             // the user is active
             else {
@@ -96,7 +100,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
                 var userRank = 0;
 
-                if (leaderboardData && typeof leaderboardData !== 'number' && 'Scores' in leaderboardData) {
+                if (leaderboardData && 'Scores' in leaderboardData) {
                     const name = await authInstance.getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
                 } 
@@ -119,8 +123,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         } else {
             setLoading(false);
 
-            setPopupIndex(1);
-            setPopupOpen(true);
+            setPopupIndex(AuthErrorType.Error);
         }
     };
 
@@ -148,14 +151,16 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     return(
       <View style={StartScreenStyle.container}>
-        <View style={[{opacity: loading || popupOpen ? 0.2 : 1}, StartScreenStyle.image]} pointerEvents={ loading || popupOpen ? 'none' : 'auto' }>
+        <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.image]} 
+        pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Image source={IMAGES.start_screen} />       
         </View>
 
         {loading ? <View style={StartScreenStyle.loadingContainer}><ActivityIndicator size="large" color="#0000ff" style={StartScreenStyle.loading} /></View> : null}   
-        {popupOpen ? <Popup index={popupIndex} setPopupOpen={setPopupOpen} /> : null}
+        <Popup index={popupIndex} setPopupIndex={setPopupIndex} />
 
-        <View style={[{opacity: loading || popupOpen ? 0.2 : 1}, StartScreenStyle.textContainer]} pointerEvents={ loading || popupOpen ? 'none' : 'auto' }>
+        <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.textContainer]} 
+        pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title}>
                 150 - לומדת פסיכומטרי{'\n'}
                 למד מילים בכל מקום

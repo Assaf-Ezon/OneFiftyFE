@@ -2,7 +2,7 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-export const setProfilePicture = async (name: string, token: string, index: number | null): Promise<boolean> => {
+export const setProfilePicture = async (name: string, token: string, index: number | null) => {
 
     const setProfilePictureRequest = async () => {
         try {
@@ -20,7 +20,9 @@ export const setProfilePicture = async (name: string, token: string, index: numb
                 }
             });
             
-            return true;
+            if (response.status !== 200) {
+                throw new Error();
+            }
             
         } catch (error) {
             throw new Error();
@@ -35,10 +37,8 @@ export const setProfilePicture = async (name: string, token: string, index: numb
           },
         });
 
-        return result; 
-
     } catch (finalError) {
         console.error('All retry attempts failed:', finalError);
-        return false;
+        throw new Error('All retry attempts failed');
     }
 };

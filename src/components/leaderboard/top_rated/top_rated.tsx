@@ -42,7 +42,7 @@ const TopRated = () => {
                 const leaderboardData = await getLeaderboardData(name, access_token, 'OverallScore', false);
                 setLoading(false);
                 
-                if (leaderboardData) {
+                if (leaderboardData && 'Scores' in leaderboardData) {
                     setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
                 
                     const name = await authInstance.getName();

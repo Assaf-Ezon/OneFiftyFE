@@ -5,14 +5,14 @@ import { IMAGES } from '../../../image_handler';
 
 import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 
-const ErrorPopup = ({setPopupOpen} : {setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(
         <Modal animationType="fade"
         transparent={true}
         visible={true}>
             <View style={PopupsStyle.errorPopup}>
                 <View style={PopupsStyle.errorPopupTitleContainer}>
-                    <TouchableOpacity onPress={() => {setPopupOpen(false)}}>
+                    <TouchableOpacity onPress={() => {setPopupIndex(AuthErrorType.None)}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
                     <Text style={PopupsStyle.errorPopupTitle}>תקלה</Text>
@@ -58,9 +58,16 @@ const InactivePopup = () => {
     );
 };
 
-const Popup = ({index, setPopupOpen}: {index: number, setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+export enum AuthErrorType {
+    None = 0,
+    Error = 1,
+    Inactive = 2,
+}
+
+const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const popupsHandler: { [key: number]: JSX.Element | null } = {
-        1: <ErrorPopup setPopupOpen={setPopupOpen} />,
+        0: null,
+        1: <ErrorPopup setPopupIndex={setPopupIndex} />,
         2: <InactivePopup />,
     }
 

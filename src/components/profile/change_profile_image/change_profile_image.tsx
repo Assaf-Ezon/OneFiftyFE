@@ -12,6 +12,12 @@ import { useStackManagerContext, StackNames } from '../../../context/general_con
 import { setProfilePicture } from '../../../requests/change_profile_picture_request';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 
+enum ErrorType {
+    None = 0,
+    Error = 1,
+    NoImage = 2,
+}
+
 const ChangeProfileImagePopup = () => {
     const {updateProfileImage} = useProfile();
     const {setStackIndexByName} = useStackManagerContext();
@@ -19,7 +25,7 @@ const ChangeProfileImagePopup = () => {
 
     const authInstance = AuthenticationHandler.getInstance(); 
 
-    const [errorType, setErrorType] = useState<number>(0);
+    const [errorType, setErrorType] = useState<number>(ErrorType.None);
     const [loading, setLoading] = useState<boolean>(false);
 
     const update = async () => {
@@ -29,23 +35,26 @@ const ChangeProfileImagePopup = () => {
 
             if (name && access_token) {
                 setLoading(true);
-                const setProfilePictureRequest = await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
-                setLoading(false);
 
-                if (setProfilePictureRequest) {
-                    setErrorType(0);
+                try {
+                    await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
+                    
+                    setErrorType(ErrorType.None);
                     updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
                     toggleProfileImageMenu();
-                } else {
-                    setErrorType(1);
+                } catch (error) {
+                    setErrorType(ErrorType.Error);
                 }
+
+                setLoading(false);
+
             } else {
                 Alert.alert('התחברות נכשלה!');
                 await authInstance.logout();
                 setStackIndexByName(StackNames.Auth);
             }
         } else {
-            setErrorType(2);
+            setErrorType(ErrorType.NoImage);
         }
     }   
 
