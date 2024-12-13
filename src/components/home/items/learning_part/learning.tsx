@@ -7,6 +7,7 @@ import LearningCard from './card/card';
 
 import { IMAGES } from '../../../../image_handler';
 import { GAMES } from '../../../../game_objects';
+import { Screens } from '../../../../screen_names';
 
 const LearningPartHome: FC = () => {
     const navigation = useNavigation();
@@ -14,7 +15,7 @@ const LearningPartHome: FC = () => {
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
-                <TouchableOpacity onPress={() => {navigation.navigate('learning')}}><Text style={learningPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEARNING)}}><Text style={learningPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={learningPartStyle.title}>לומדות מילים</Text>   
             </View>
             <View style={learningPartStyle.cardsContainerContainer}>

@@ -3,8 +3,8 @@ import { Text, TouchableOpacity, View, Image } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
 import PaymentScreenStyle from './payment_style';
+import { Screens } from '../../screen_names';
 
-import { ProfileImageProvider } from '../../context/settings_context/profile_image_context';
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
 const PaymentPage = ({ navigation }: {navigation: any}) => {
@@ -15,7 +15,7 @@ const PaymentPage = ({ navigation }: {navigation: any}) => {
         <View style={PaymentScreenStyle.Container}>
             <View style={PaymentScreenStyle.topPart}>
                 <View style={PaymentScreenStyle.topPartText}>
-                    <TouchableOpacity onPress={() => {isActive ? navigation.replace('home') : setStackIndexByName(StackNames.Auth)}}>
+                    <TouchableOpacity onPress={() => {isActive ? navigation.replace(Screens.HOME) : setStackIndexByName(StackNames.Auth)}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
                     <Text style={PaymentScreenStyle.pageTitle}>תשלום</Text>

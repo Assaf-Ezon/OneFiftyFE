@@ -1,15 +1,17 @@
+import { Screens } from './screen_names'; 
+
 export const GAMES = [
     {
         id: 1,
         name: 'ידעתי/לא ידעתי',
-        page_name: 'kdk',
+        page_name: Screens.KDK,
         description: 'משחקונים קצרים שבודקים האם הינך יודע את המילים.',
         image_route: require('../assets/profile image icons/profile_picture.jpg'),
     },
     {
         id: 2,
         name: 'רב ברירה',
-        page_name: 'mc',
+        page_name: Screens.MC,
         description: 'בחר את הפירוש הנכון מבין ארבעת הפירושים.',
         image_route: require('../assets/profile image icons/profile_picture.jpg'),
     },

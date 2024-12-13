@@ -3,6 +3,7 @@ import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from 'expo-checkbox'
 import { IMAGES } from '../../image_handler';
+import { Screens } from '../../screen_names';
 import SignupScreenStyle from './signup_style';
 
 const SignupScreen = ({ navigation }: {navigation: any}) => {
@@ -96,7 +97,7 @@ const SignupScreen = ({ navigation }: {navigation: any}) => {
             </View>
         </View>
         <View style={SignupScreenStyle.alreadySignedContainer}>
-            <TouchableOpacity onPress={() => {navigation.replace('login')}}><Text style={SignupScreenStyle.goToSignInText}> התחבר</Text></TouchableOpacity>
+            <TouchableOpacity onPress={() => {navigation.replace(Screens.LOGIN)}}><Text style={SignupScreenStyle.goToSignInText}> התחבר</Text></TouchableOpacity>
             <Text style={SignupScreenStyle.alreadySignedText}>כבר יש משתמש קיים?</Text>
         </View>
       </View>

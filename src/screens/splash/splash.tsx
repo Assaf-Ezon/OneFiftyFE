@@ -5,6 +5,7 @@ import SplashScreenStyle from './splash_style';
 
 import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
+import { Screens } from '../../screen_names';
 
 import AuthenticationHandler from '../AuthenticationHandler';
 
@@ -41,7 +42,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             // checks if the refresh token is expired
             if (await authInstance.IsRefreshTokenExpired()) {
                 setTimeout(() => {
-                    navigation.replace('start');
+                    navigation.replace(Screens.START);
                 }, 1000); 
             } else {
                     // checks if retrieving the refresh token is successful
@@ -49,7 +50,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
                     if (!success) {
                         Alert.alert('תקלה בהתחברות!');
-                        navigation.replace('start');
+                        navigation.replace(Screens.START);
                     }
 
                 await handleUserData();
@@ -102,7 +103,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
             }
         } else {
             Alert.alert('תקלה בהתחברות!');
-            navigation.replace('start');
+            navigation.replace(Screens.START);
         }
     }
 
@@ -153,7 +154,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
                                 <Text style={SplashScreenStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => navigation.replace('start')}>
+                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => navigation.replace(Screens.START)}>
                                 <Text style={SplashScreenStyle.inactivePopupBtnText}>למסך התחברות</Text>
                         </TouchableOpacity>
                     </View>
