@@ -14,20 +14,22 @@ const PlansContainer = () => {
     return (
 
         <View style={PlansContainerStyle.mainPage}>
-            {
-                isPaymentWebViewOpen ? 
-                <WebView
-                    originWhitelist={['*']}
-                    source={{ html: '<h1><center>Hello world</center></h1>' }}
-                />
-                : null
-            }
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Plan name={Plans.OneMonth.Name} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} />
                 <Plan name={Plans.TwoMonths.Name} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} />
                 <Plan name={Plans.ThreeMonts.Name} title={Plans.ThreeMonts.Title} description={Plans.ThreeMonts.Description} price={Plans.ThreeMonts.Price} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
+            {
+                isPaymentWebViewOpen ? 
+                    <View style={PlansContainerStyle.WebviewContainer}>
+                        <WebView
+                            originWhitelist={['*']}
+                            source={require('../../../assets/html/paypal_form.html')}
+                        />
+                    </View>
+                : null
+            }
         </View>
     );
 };

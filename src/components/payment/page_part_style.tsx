@@ -13,6 +13,12 @@ const PlansContainerStyle = StyleSheet.create({
         height: 80, 
         width: '100%',
     },
+    WebviewContainer: {
+        width: width,
+        height: height,
+        position: 'absolute',
+
+    },
 });
 
 export default PlansContainerStyle;

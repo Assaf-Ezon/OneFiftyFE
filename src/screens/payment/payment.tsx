@@ -9,7 +9,6 @@ import { Screens } from '../../screen_names';
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 import { PaymentProvider } from '../../context/payment/payment_context';
 
-
 const PaymentPage = ({ navigation }: {navigation: any}) => {
     const {stackIndex, setStackIndexByName} = useStackManagerContext();
     const isActive = (stackIndex === 2);
