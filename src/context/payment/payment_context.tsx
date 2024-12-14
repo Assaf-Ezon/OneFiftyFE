@@ -8,15 +8,18 @@ interface Payment {
 interface PaymentContextProps {
     details: Payment | null;
     setDetails: (details: Payment) => void;
+    isPaymentWebViewOpen: boolean;
+    setIsPaymentWebViewOpen: (isPaymentWebViewOpen: boolean) => void;
 };
 
 export const PaymentContext = createContext<PaymentContextProps | undefined>(undefined);
 
 export const PaymentProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [details, setDetails] = useState<Payment | null>(null);
+    const [isPaymentWebViewOpen, setIsPaymentWebViewOpen] = useState<boolean>(false);
 
     return (
-        <PaymentContext.Provider value={{ details, setDetails }}>
+        <PaymentContext.Provider value={{ details, setDetails, isPaymentWebViewOpen, setIsPaymentWebViewOpen }}>
             {children}
         </PaymentContext.Provider>
     );

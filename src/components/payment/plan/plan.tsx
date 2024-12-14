@@ -3,6 +3,8 @@ import { FC } from 'react';
 
 import PlanStyle from './plan_style';
 
+import { usePaymentContext } from '../../../context/payment/payment_context';
+
 interface PlanProps {
     name: string,
     title: string,
@@ -11,6 +13,16 @@ interface PlanProps {
 }
 
 const Plan: FC<PlanProps> = ({ name, title, description, price }) => {
+    const {setDetails, setIsPaymentWebViewOpen} = usePaymentContext(); 
+
+    const openWebView = () => {     
+        setIsPaymentWebViewOpen(true);
+        setDetails({
+            name: name,
+            price: price,
+        });
+    };
+
     return (
         <View style={PlanStyle.Container}>
             <View style={PlanStyle.TitleContainer}>
@@ -21,7 +33,7 @@ const Plan: FC<PlanProps> = ({ name, title, description, price }) => {
                 <Text style={PlanStyle.Price}>מחיר: {price} ש"ח</Text>  
             </View>
             <View style={PlanStyle.PayBtnContainer}>
-                <TouchableOpacity style={PlanStyle.PayBtn}>
+                <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => {openWebView()}}>
                     <Text style={PlanStyle.PayBtnText}>שלם עכשיו</Text>
                 </TouchableOpacity>
             </View>

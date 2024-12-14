@@ -4,11 +4,12 @@ const { width, height } = Dimensions.get('window');
 
 const PlanStyle = StyleSheet.create({
     Container: {
-        marginTop: 10,
+        marginTop: 20,
         width: width * 0.9,
-        height: height * 0.25,
+        height: height * 0.22,
         backgroundColor: '#FAF0E6',
         borderRadius: 30,
+        borderWidth: 1,
         shadowOpacity: 0.1,
         shadowRadius: 5,
         justifyContent: 'space-evenly',
