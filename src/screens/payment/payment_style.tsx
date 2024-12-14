@@ -33,10 +33,6 @@ const PaymentScreenStyle = StyleSheet.create({
         alignItems: 'center',
         height: height * 0.8,
     },
-    explanationText: {
-        width: '100%',
-        textAlign: 'right',
-    },
     blank: {
         height: 80, 
         width: '100%',

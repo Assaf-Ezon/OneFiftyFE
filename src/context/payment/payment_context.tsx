@@ -1,0 +1,31 @@
+import { createContext, FC, ReactNode, useContext, useState } from 'react';
+
+interface Payment {
+    name: string,
+    price: number,
+};
+
+interface PaymentContextProps {
+    details: Payment | null;
+    setDetails: (details: Payment) => void;
+};
+
+export const PaymentContext = createContext<PaymentContextProps | undefined>(undefined);
+
+export const PaymentProvider: FC<{ children: ReactNode }> = ({ children }) => {
+    const [details, setDetails] = useState<Payment | null>(null);
+
+    return (
+        <PaymentContext.Provider value={{ details, setDetails }}>
+            {children}
+        </PaymentContext.Provider>
+    );
+};
+
+export const usePaymentContext = () => {
+    const context = useContext(PaymentContext);
+    if (!context) {
+      throw new Error('Trying to reach payment context outside of payment provider');
+    }
+    return context;
+};
