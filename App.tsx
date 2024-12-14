@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { useState } from 'react';
+import { Screens } from './src/screen_names';
 
 import SplashScreen from './src/screens/splash/splash'
 import StartScreen from './src/screens/start/start';
@@ -30,13 +30,13 @@ const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
   return (
-    <Stack.Navigator initialRouteName='splash'>
-      <Stack.Screen name='splash' component={SplashScreen} options={{ headerShown: false }} />
-      <Stack.Screen name='start' component={StartScreen} options={{ headerShown: false }} />
+    <Stack.Navigator initialRouteName={Screens.SPLASH}>
+      <Stack.Screen name={Screens.SPLASH} component={SplashScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={Screens.START} component={StartScreen} options={{ headerShown: false }} />
 
-        <Stack.Screen name='signup' component={SignupScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='login' component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='forgot_password' component={ForgotPasswordScreen} options={{ headerShown: false }} />
+        <Stack.Screen name={Screens.SIGNUP} component={SignupScreen} options={{ headerShown: false }} />
+        <Stack.Screen name={Screens.LOGIN} component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name={Screens.FORGOT_PASSWORD} component={ForgotPasswordScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
@@ -44,35 +44,35 @@ const AuthStack = () => {
 const MainAppStack = () => {
   return (
     <LearningSettingsProvider>
-      <Stack.Navigator initialRouteName='home'>
-          <Stack.Screen name='home' component={HomePage} options={{ headerShown: false }} />
-          <Stack.Screen name='dictionary' component={DictionaryPage} options={{ headerShown: false }} />
-          <Stack.Screen name='learning' component={LearningPage} options={{ headerShown: false }} />
-          <Stack.Screen name='leaderboard' component={LeaderboardPage} options={{ headerShown: false }} />
-          <Stack.Screen name='profile' component={ProfilePage} options={{ headerShown: false }} />
+      <Stack.Navigator initialRouteName={Screens.HOME}>
+          <Stack.Screen name={Screens.HOME} component={HomePage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.DICTIONARY} component={DictionaryPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.LEARNING} component={LearningPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.LEADERBOARD} component={LeaderboardPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PROFILE} component={ProfilePage} options={{ headerShown: false }} />
 
-          <Stack.Screen name='terms' component={TermsOfServicePage} options={{ headerShown: false }} />
-          <Stack.Screen name='payment' component={PaymentPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.TERMS} component={TermsOfServicePage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
 
-          <Stack.Screen name='kdk' component={KdkPage} options={{ headerShown: false }} />
-          <Stack.Screen name='mc' component={McPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.KDK} component={KdkPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.MC} component={McPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>
-  );
+  ); 
 };
 
 const InactiveStack = () => {
   return (
     <LearningSettingsProvider>
-      <Stack.Navigator initialRouteName='payment'>
-          <Stack.Screen name='payment' component={PaymentPage} options={{ headerShown: false }} />
+      <Stack.Navigator initialRouteName={Screens.PAYMENT}>
+          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>
   );
 };
 
 const StackNavigator = () => {
-  const { stackIndex, setStackIndex } = useStackManagerContext();
+  const { stackIndex } = useStackManagerContext();
 
   const stackHandler: { [key: number]: JSX.Element } = {
     1: <AuthStack />,

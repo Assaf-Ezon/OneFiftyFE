@@ -1,6 +1,6 @@
 import axios from 'axios';
+import retry from 'p-retry';
 import { CONFIG } from '../config';
-import * as SecureStore from 'expo-secure-store';
 
 // dictionaries interfaces
 interface Meaning {
@@ -69,30 +69,38 @@ interface ApiResponse {
     Version: string;
 }
 
-const getProfileData = async (): Promise<ApiResponse | number> => {
-    try {
-        const token = await SecureStore.getItemAsync('token');
-        const name = await SecureStore.getItemAsync('name');
-
-        if (!token) {
-            console.error('Token is missing');
-            return -1;
+const getProfileData = async (name: string, token: string): Promise<ApiResponse | null> => {
+    const getProfileDataRequest = async () => {
+        try {
+            const response = await axios.post(CONFIG.endpoints.login, {
+                DisplayName: name,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            return response.data;
+            
+        } catch (error) {
+            throw new Error();
         }
+    }
 
-        const response = await axios.post(CONFIG.endpoints.login, {
-            DisplayName: name,
-        }, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
+    try {
+        const result = await retry(getProfileDataRequest, {
+          retries: CONFIG.retries, 
+          onFailedAttempt: (error) => {
+            console.warn(`Attempt ${error.attemptNumber} failed. Retrying...`);
+          },
         });
-        
-        return response.data;
-        
-    } catch (error) {
-        console.error('Error fetching profile data: ', error);
-        return -1;
+
+        return result; 
+
+    } catch (finalError) {
+        console.error('All retry attempts failed:', finalError);
+        return null;
     }
 };
 

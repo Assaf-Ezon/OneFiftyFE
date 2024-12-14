@@ -64,7 +64,7 @@ const Question = () => {
                 wordsList = Object.entries(enCreateGame.createList());
                 break;
         }
-
+        
         Object.keys(wordsList).length === 0 ? navigation.goBack() : null;
 
         setWords(wordsList);
@@ -76,10 +76,10 @@ const Question = () => {
             const initialPointer = 0;
             const initialLevel = parseInt(words[initialPointer][0]);
             const initialAmount = Object.keys(words[initialPointer][1]).length;
-
+            
             const firstWordKey = Object.keys(words[initialPointer][1])[0];
             const firstWordMeaning = words[initialPointer][1][firstWordKey];
-
+            
             setListPointer(0);
             setLevel(initialLevel);
             setAmountInLevel(initialAmount);
@@ -95,7 +95,7 @@ const Question = () => {
                 total += Object.keys(wordGroup).length;  
             });
             setTotalWords(total);
-            }
+        }
     }, [words]);
 
     // Word change logic

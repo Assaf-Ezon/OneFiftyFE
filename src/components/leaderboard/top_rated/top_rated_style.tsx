@@ -1,4 +1,3 @@
-import { AutoScaling } from 'aws-sdk';
 import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -48,6 +47,16 @@ const TopRatedStyle = StyleSheet.create({
     scoreText: {
         fontSize: 18,
         fontWeight: '400',
+    },
+    loadingContainer: {
+        position: 'absolute',
+        top: '50%', 
+        left: '50%', 
+        width: 50,
+        height: 50,
+        transform: [{ translateX: -20 }, { translateY: -20 }],
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 

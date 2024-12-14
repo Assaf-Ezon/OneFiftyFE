@@ -3,16 +3,16 @@ import { View, Text, Modal, TouchableOpacity, Image } from 'react-native';
 import PopupsStyle from './popups_style';
 import { IMAGES } from '../../../image_handler';
 
-import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 
-const ErrorPopup = ({setPopupOpen} : {setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(
         <Modal animationType="fade"
         transparent={true}
         visible={true}>
             <View style={PopupsStyle.errorPopup}>
                 <View style={PopupsStyle.errorPopupTitleContainer}>
-                    <TouchableOpacity onPress={() => {setPopupOpen(false)}}>
+                    <TouchableOpacity onPress={() => {setPopupIndex(AuthErrorType.None)}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
                     <Text style={PopupsStyle.errorPopupTitle}>תקלה</Text>
@@ -30,7 +30,7 @@ const ErrorPopup = ({setPopupOpen} : {setPopupOpen: React.Dispatch<React.SetStat
 };
 
 const InactivePopup = () => {
-    const {setStackIndex} = useStackManagerContext();
+    const {setStackIndexByName} = useStackManagerContext();
     
     return(
         <Modal animationType="fade"
@@ -50,7 +50,7 @@ const InactivePopup = () => {
                         (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
                     </Text>
                 </View>
-                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndex(3)}>
+                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
                         <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
                 </TouchableOpacity>
             </View>
@@ -58,9 +58,16 @@ const InactivePopup = () => {
     );
 };
 
-const Popup = ({index, setPopupOpen}: {index: number, setPopupOpen: React.Dispatch<React.SetStateAction<boolean>>}) => {
+export enum AuthErrorType {
+    None = 0,
+    Error = 1,
+    Inactive = 2,
+}
+
+const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const popupsHandler: { [key: number]: JSX.Element | null } = {
-        1: <ErrorPopup setPopupOpen={setPopupOpen} />,
+        0: null,
+        1: <ErrorPopup setPopupIndex={setPopupIndex} />,
         2: <InactivePopup />,
     }
 

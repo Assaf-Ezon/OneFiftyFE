@@ -56,6 +56,16 @@ const ChangeProfileImageStyle = StyleSheet.create({
         color: 'red',
         fontWeight: '500',
     },
+    loadingContainer: {
+        position: 'absolute',
+        top: '50%', 
+        left: '50%', 
+        width: 50,
+        height: 50,
+        transform: [{ translateX: -20 }, { translateY: -20 }],
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default ChangeProfileImageStyle;

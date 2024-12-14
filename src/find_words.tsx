@@ -159,7 +159,6 @@ export default class createWordList {
         try {
             for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
                 if (typeof level_value == 'number' && level_value > 0) {
-                    
                     const amountList = this._divideNumber(level_value);
 
                     if (this._settings.newWords && amountList.length) { // add " && this.checkLevelExistsInNewList(parseInt(level_key))" to statement

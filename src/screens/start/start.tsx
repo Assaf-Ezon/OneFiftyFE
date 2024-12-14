@@ -1,24 +1,20 @@
-import { View, Image, Text, Pressable, ActivityIndicator, Modal, TouchableOpacity } from 'react-native';
+import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import Popup from './popups/popups';
+import Popup, {AuthErrorType} from './popups/popups';
 
 import StartScreenStyle from './start_style';
+
 import { IMAGES } from '../../image_handler';
 
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
-import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
+import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
-import * as SecureStore from 'expo-secure-store';
-import * as AuthSession from 'expo-auth-session';
+import AuthenticationHandler from '../AuthenticationHandler';
 
 import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 
-const tenantName = 'OneFiftyApp'; 
-const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
-const policyName = 'B2C_1_OneFiftyApp';
-const redirectUri = 'com.OneFifty.App://auth';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
@@ -36,35 +32,20 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         englishNewWords, 
         updateNewEnglishWords} = useWords();
 
-    const {setStackIndex} = useStackManagerContext();
+    const {setStackIndexByName} = useStackManagerContext();
     
+    const authInstance = AuthenticationHandler.getInstance();
+
+    // prevents the first useEffect to activate when page initialized
+    const [initialized, setInitialized] = useState(false);
+
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
 
     // popup flag and index
-    const [popupOpen, setPopupOpen] = useState<boolean>(false);
-    const [popupIndex, setPopupIndex] = useState<number>(1);
+    const [popupIndex, setPopupIndex] = useState<number>(AuthErrorType.None);
 
-    // login handle
-    const discovery = {
-        authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
-        tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
-    };
-
-
-    const [request, response, promptAsync] = AuthSession.useAuthRequest(
-        {
-            clientId,
-            redirectUri,
-            scopes: ["openid"],
-            responseType: AuthSession.ResponseType.IdToken,
-            prompt: AuthSession.Prompt.Login,
-            extraParams: {
-                nonce: 'defaultNonce', 
-            }
-        },
-        discovery
-    );
+    const [request, response, promptAsync] = authInstance.getAuthCode();
 
     // activated when there is a response
     useEffect(() => { 
@@ -73,61 +54,66 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setLoading(true);
                 await saveInfo();
                 await handleUserData();
+            } else {
+                setLoading(false);
+                setPopupIndex(AuthErrorType.Error);
             }
         };
-        processResponse();
-    }, [response]); 
-    
-    // gets the displayName from the token
-    const getNameFromDecodedJWT = (token: string) => {
-        const [header, payload, signature] = token.split(".");
         
-        const decodedPayload = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
-        return decodedPayload.name;
-    };
+        if (initialized) {
+            processResponse();
+        } else {
+            setInitialized(true); 
+        }
+    }, [response]); 
 
     // saves token and name inside the local storage
     const saveInfo = async () => {
         if (response && response.type == 'success') {
-            await SecureStore.setItemAsync('token', response.params.id_token);
-            await SecureStore.setItemAsync('name', getNameFromDecodedJWT(response.params.id_token));
-        }  
+            const success = await authInstance.getAuthToken(request, response);
+            if (!success) {
+                setLoading(false);
+
+                setPopupIndex(AuthErrorType.Error);
+            }
+        } else {
+            setPopupIndex(AuthErrorType.Error);
+        }
     };
 
     // sets profile and words context with fetched data
     const handleUserData = async () => {
-        const data = await getProfileData();
+        const name = await authInstance.getName();
+        const token = await authInstance.getAccessToken();
+
+        const data = await getProfileData(name, token);
         
-        if (data && typeof data !== 'number' && 'UserData' in data) { 
+        // the user data is what we need
+        if (data && 'UserData' in data) { 
+            // the version is latest
             if (!data.UserData.IsActive) {
-                setPopupIndex(2);
-                setPopupOpen(true);
-            } else {
-                const scores = await getLeaderboardData('OverallScore', false);
+                setPopupIndex(AuthErrorType.Inactive);
+            } 
+            // the user is active
+            else {
+                const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
-                if (scores && typeof scores !== 'number' && 'Scores' in scores) {
-                    const name = await SecureStore.getItemAsync('name');
+                var userRank = 0;
 
-                    setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: getUserRankByName(scores.Scores, typeof name === 'string' ? name : ''),
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    });
-                } else {
-                    setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: 0,
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    });
-                }
+                if (leaderboardData && 'Scores' in leaderboardData) {
+                    const name = await authInstance.getName();
+                    var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
+                } 
+                
+                setProfile({
+                  name: data.UserData.DisplayName,
+                  email: data.UserData.Email,
+                  rank: userRank,
+                  score: data.UserData.Score,
+                  dateJoined: new Date(data.UserData.DateJoined), 
+                  expirationDate: new Date(data.UserData.ExpirationDate), 
+                  profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+              });
 
                 setHebrewWords(data.HebrewWordsDictionary);
                 setEnglishWords(data.EnglishWordsDictionary);
@@ -137,8 +123,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         } else {
             setLoading(false);
 
-            setPopupIndex(1);
-            setPopupOpen(true);
+            setPopupIndex(AuthErrorType.Error);
         }
     };
 
@@ -160,20 +145,22 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
         if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
             setLoading(false);
-            setStackIndex(2);
+            setStackIndexByName(StackNames.Main);
         }
     }, [hebrewNewWords, englishNewWords]);
 
     return(
       <View style={StartScreenStyle.container}>
-        <View style={[{opacity: loading || popupOpen ? 0.2 : 1}, StartScreenStyle.image]} pointerEvents={ loading || popupOpen ? 'none' : 'auto' }>
+        <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.image]} 
+        pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Image source={IMAGES.start_screen} />       
         </View>
 
         {loading ? <View style={StartScreenStyle.loadingContainer}><ActivityIndicator size="large" color="#0000ff" style={StartScreenStyle.loading} /></View> : null}   
-        {popupOpen ? <Popup index={popupIndex} setPopupOpen={setPopupOpen} /> : null}
+        <Popup index={popupIndex} setPopupIndex={setPopupIndex} />
 
-        <View style={[{opacity: loading || popupOpen ? 0.2 : 1}, StartScreenStyle.textContainer]} pointerEvents={ loading || popupOpen ? 'none' : 'auto' }>
+        <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.textContainer]} 
+        pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title}>
                 150 - לומדת פסיכומטרי{'\n'}
                 למד מילים בכל מקום

@@ -1,6 +1,6 @@
 import axios from 'axios';
+import retry from 'p-retry';
 import { CONFIG } from '../config';
-import * as SecureStore from 'expo-secure-store';
 
 interface Score {
     DisplayName: string;
@@ -13,32 +13,40 @@ interface ApiResponse {
     Scores: Score[];
 }
 
-export const getLeaderboardData = async (type: string, partial: boolean): Promise<ApiResponse | number> => {
-    try {
-        const token = await SecureStore.getItemAsync('token');
-        const name = await SecureStore.getItemAsync('name');
-
-        if (!token) {
-            console.error('Token is missing');
-            return -1;
+export const getLeaderboardData = async (name: string, token: string, type: string, partial: boolean): Promise<ApiResponse | null> => {
+    const leaderboardDataRequest = async () => {
+        try {
+            const response = await axios.post(CONFIG.endpoints.leaderboard, {
+                DisplayName: name,
+                LeaderboardType: type,
+                PartialList: partial,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            return response.data;
+            
+        } catch (error) {
+            throw new Error();
         }
+    }
 
-        const response = await axios.post(CONFIG.endpoints.leaderboard, {
-            DisplayName: name,
-            LeaderboardType: type,
-            PartialList: partial,
-        }, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            }
+    try {
+        const result = await retry(leaderboardDataRequest, {
+          retries: CONFIG.retries, 
+          onFailedAttempt: (error) => {
+            console.warn(`Attempt ${error.attemptNumber} failed. Retrying...`);
+          },
         });
 
-        return response.data;
-        
-    } catch (error) {
-        console.error('Error fetching profile data: ', error);
-        return -1;
+        return result; 
+
+    } catch (finalError) {
+        console.error('All retry attempts failed:', finalError);
+        return null;
     }
 };
 
@@ -46,11 +54,11 @@ export const getUserRankByName = (leaderboard: Score[], userName: string): numbe
     const sortedLeaderboard = [...leaderboard].sort((a, b) => b.Score - a.Score);
     const userIndex = sortedLeaderboard.findIndex(entry => entry.DisplayName === userName);
 
-    return userIndex !== -1 ? userIndex + 1 : -1;
+    return userIndex !== -1 ? userIndex + 1 : 0;
 }
 
-export const getTopUsersByScore = (leaderboard: Score[], x: number): Score[] => {
+export const getTopUsersByScore = (leaderboard: Score[], places: number): Score[] => {
     const sortedLeaderboard = [...leaderboard].sort((a, b) => b.Score - a.Score);
 
-    return sortedLeaderboard.slice(0, x);
+    return sortedLeaderboard.slice(0, places);
 }

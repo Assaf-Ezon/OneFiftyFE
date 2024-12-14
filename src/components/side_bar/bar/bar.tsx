@@ -3,6 +3,7 @@ import { useRef, useEffect } from 'react';
 import barStyle from './bar_style';
 import SideBarIcon from '../icon/icon';
 import { IMAGES } from '../../../image_handler';
+import { Screens } from '../../../screen_names';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 
@@ -49,21 +50,21 @@ const SideBar = () => {
                 </View>
             </View>
             <View style={barStyle.middlePart}>
-                <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} onPressActionIndex={0} screenName={'home'} />
+                <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} onPressActionIndex={0} screenName={Screens.HOME} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_dictionary} iconText='מילון' isRed={false} onPressActionIndex={0} screenName={'dictionary'} />
+                <SideBarIcon iconPath={IMAGES.unused_dictionary} iconText='מילון' isRed={false} onPressActionIndex={0} screenName={Screens.DICTIONARY} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} onPressActionIndex={0} screenName={'learning'} />
+                <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} onPressActionIndex={0} screenName={Screens.LEARNING} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} onPressActionIndex={0} screenName={'leaderboard'} />
+                <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} onPressActionIndex={0} screenName={Screens.LEADERBOARD} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} onPressActionIndex={0} screenName={'profile'} />
+                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} onPressActionIndex={0} screenName={Screens.PROFILE} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} onPressActionIndex={0} screenName={''} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} onPressActionIndex={1} screenName={''} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.information} iconText='תנאי שימוש' isRed={false} onPressActionIndex={0} screenName={'terms'} />
+                <SideBarIcon iconPath={IMAGES.information} iconText='תנאי שימוש' isRed={false} onPressActionIndex={0} screenName={Screens.TERMS} />
             </View>
             <View style={barStyle.lowerPart}>
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={2} screenName={''} />

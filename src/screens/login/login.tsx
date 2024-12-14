@@ -3,6 +3,7 @@ import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react
 import CheckBox from 'expo-checkbox';
 import LoginScreenStyle from './login_style';
 import { IMAGES } from '../../image_handler';
+import { Screens } from '../../screen_names';
 
 const LoginScreen = ({ navigation }: {navigation: any}) => {
     const [isSelected, setSelection] = useState(false);
@@ -40,14 +41,14 @@ const LoginScreen = ({ navigation }: {navigation: any}) => {
                 </View>
             </View>
             <View style={LoginScreenStyle.submitBtnContainer}>
-                <Pressable style={LoginScreenStyle.submitBtn} onPress={() => {navigation.replace('home')}}>
+                <Pressable style={LoginScreenStyle.submitBtn} onPress={() => {navigation.replace(Screens.HOME)}}>
                     <Text style={LoginScreenStyle.submitText}>התחבר</Text>
                 </Pressable>
-                <TouchableOpacity onPress={() => {navigation.replace('forgot_password')}}><Text style={LoginScreenStyle.forgotPasswordText}>שכחתי סיסמא</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.replace(Screens.FORGOT_PASSWORD)}}><Text style={LoginScreenStyle.forgotPasswordText}>שכחתי סיסמא</Text></TouchableOpacity>
             </View>
         </View>
         <View style={LoginScreenStyle.alreadySignedContainer}>
-            <TouchableOpacity onPress={() => {navigation.replace('signup')}}><Text style={LoginScreenStyle.goToSignInText}>  צור משתמש</Text></TouchableOpacity >
+            <TouchableOpacity onPress={() => {navigation.replace(Screens.SIGNUP)}}><Text style={LoginScreenStyle.goToSignInText}>  צור משתמש</Text></TouchableOpacity >
             <Text style={LoginScreenStyle.alreadySignedText}>אין משתמש?</Text>
         </View>
       </View>

@@ -1,31 +1,60 @@
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 import { IMAGES } from '../../../image_handler';
+import { CONFIG } from '../../../config';
 
 import ChangeProfileImageStyle from './change_profile_image_style';
 import ProfileImageOption from './image/image';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
+import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 import { setProfilePicture } from '../../../requests/change_profile_picture_request';
+import AuthenticationHandler from '../../../screens/AuthenticationHandler';
+
+enum ErrorType {
+    None = 0,
+    Error = 1,
+    NoImage = 2,
+}
 
 const ChangeProfileImagePopup = () => {
     const {updateProfileImage} = useProfile();
+    const {setStackIndexByName} = useStackManagerContext();
     const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex} = useProfileImageMenuContext();
 
-    const [errorType, setErrorType] = useState<number>(0);
+    const authInstance = AuthenticationHandler.getInstance(); 
+
+    const [errorType, setErrorType] = useState<number>(ErrorType.None);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const update = async () => {
-        if (typeof imageIndex === 'number') {
-            if (await setProfilePicture(imageIndex as keyof typeof IMAGES.profile_images)) {
-                setErrorType(0);
-                updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
-                toggleProfileImageMenu();
+        if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
+            const name = await authInstance.getName();
+            const access_token = await authInstance.getAccessToken();
+
+            if (name && access_token) {
+                setLoading(true);
+
+                try {
+                    await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
+                    
+                    setErrorType(ErrorType.None);
+                    updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
+                    toggleProfileImageMenu();
+                } catch (error) {
+                    setErrorType(ErrorType.Error);
+                }
+
+                setLoading(false);
+
             } else {
-                setErrorType(1);
+                Alert.alert('התחברות נכשלה!');
+                await authInstance.logout();
+                setStackIndexByName(StackNames.Auth);
             }
         } else {
-            setErrorType(2);
+            setErrorType(ErrorType.NoImage);
         }
     }   
 
@@ -37,7 +66,8 @@ const ChangeProfileImagePopup = () => {
                 </TouchableOpacity>
                 <Text style={ChangeProfileImageStyle.title}>בחר תמונת פרופיל: </Text>
             </View>
-            <View style={ChangeProfileImageStyle.imagesContainer}>
+            <View style={[ChangeProfileImageStyle.imagesContainer, {opacity: loading ? 0.5 : 1}]}
+                pointerEvents={loading ? "none" : "auto"}>
                 {
                     Object.entries(IMAGES.profile_images).map(([key, image]) => {
                         return (
@@ -58,6 +88,8 @@ const ChangeProfileImagePopup = () => {
                     null
                 }
             </View>
+
+            {loading ? <View style={ChangeProfileImageStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
         </View>
     );
 };  

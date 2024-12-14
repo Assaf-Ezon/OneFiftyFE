@@ -1,40 +1,44 @@
 import axios from 'axios';
+import retry from 'p-retry';
 import { CONFIG } from '../config';
-import * as SecureStore from 'expo-secure-store';
 
-export const setProfilePicture = async (index: number | null) => {
-    try {
-        const token = await SecureStore.getItemAsync('token');
-        const name = await SecureStore.getItemAsync('name');
-        
-        if (!token) {
-            console.error('Token is missing');
-            return 0;
-        }
-        if (index === null) {
-            console.error('index does not exist');
-            return 0;
-        }
-        
-        const response = await axios.post(CONFIG.endpoints.profile_picture, {
-            DisplayName: name,
-            ProfilePicture: index,
-        }, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
+export const setProfilePicture = async (name: string, token: string, index: number | null) => {
+
+    const setProfilePictureRequest = async () => {
+        try {
+            if (index === null) {
+                throw new Error('index does not exist');
             }
+            
+            const response = await axios.post(CONFIG.endpoints.profile_picture, {
+                DisplayName: name,
+                ProfilePicture: index,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (response.status !== 200) {
+                throw new Error();
+            }
+            
+        } catch (error) {
+            throw new Error();
+        }
+    }
+
+    try {
+        const result = await retry(setProfilePictureRequest, {
+          retries: CONFIG.retries, 
+          onFailedAttempt: (error) => {
+            console.warn(`Attempt ${error.attemptNumber} failed. Retrying...`);
+          },
         });
-        
-        if (response.status === 200) {
-            return 1;
-          } else {
-            console.error('Request failed with status: ', response.status);
-            return 0;
-          }
-        
-    } catch (error) {
-        console.error('Error fetching profile data: ', error);
-        return 0;
+
+    } catch (finalError) {
+        console.error('All retry attempts failed:', finalError);
+        throw new Error('All retry attempts failed');
     }
 };

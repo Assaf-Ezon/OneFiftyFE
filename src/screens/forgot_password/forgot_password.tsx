@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, Text, Pressable, TextInput, TouchableOpacity } from 'react-native';
 import forgotPasswordScreenStyle from './forgot_password_style';
 import { IMAGES } from '../../image_handler';
+import { Screens } from '../../screen_names';
 
 const ForgotPasswordScreen = ({ navigation }: {navigation: any}) => {
     const [isSelected, setSelection] = useState(false);
@@ -40,7 +41,7 @@ const ForgotPasswordScreen = ({ navigation }: {navigation: any}) => {
                 <Pressable style={forgotPasswordScreenStyle.submitBtn}>
                     <Text style={forgotPasswordScreenStyle.submitText}>שנה סיסמא</Text>
                 </Pressable>
-                <TouchableOpacity onPress={() => {navigation.replace('login')}}><Text style={forgotPasswordScreenStyle.backToLogin}>חזור להתחברות</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.replace(Screens.LOGIN)}}><Text style={forgotPasswordScreenStyle.backToLogin}>חזור להתחברות</Text></TouchableOpacity>
             </View>
         </View>
         <View style={forgotPasswordScreenStyle.bottomBlank}></View>

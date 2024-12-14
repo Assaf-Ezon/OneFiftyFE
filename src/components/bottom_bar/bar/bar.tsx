@@ -4,6 +4,7 @@ import { FC } from 'react';
 import barStyle from './bar_style';
 
 import BottomBarIcon from '../icon/icon';
+import { Screens } from '../../../screen_names';
 
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
@@ -25,11 +26,11 @@ const BottomBar: FC<bottomBarProp> = ({ homePath, dictionaryPath, learningPath, 
 
     return (
         <View pointerEvents={ isOpen || isLearningSettingOpen || isProfileImageMenuOpen ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen || isProfileImageMenuOpen ? 0.2 : 1}, barStyle.container]}>
-            <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == "profile" ? true : false} screenName='profile' />
-            <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == "leaderboard" ? true : false} screenName='leaderboard' />
-            <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == "learning" ? true : false} screenName='learning' />
-            <BottomBarIcon iconPath={dictionaryPath} iconText='מילון' activeScreen={activeScreen == "dictionary" ? true : false} screenName='dictionary' />
-            <BottomBarIcon iconPath={homePath} iconText='בית' activeScreen={activeScreen == "home" ? true : false} screenName='home' />
+            <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == Screens.PROFILE ? true : false} screenName={Screens.PROFILE} />
+            <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == Screens.LEADERBOARD ? true : false} screenName={Screens.LEADERBOARD} />
+            <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == Screens.LEARNING ? true : false} screenName={Screens.LEARNING} />
+            <BottomBarIcon iconPath={dictionaryPath} iconText='מילון' activeScreen={activeScreen == Screens.DICTIONARY ? true : false} screenName={Screens.DICTIONARY} />
+            <BottomBarIcon iconPath={homePath} iconText='בית' activeScreen={activeScreen == Screens.HOME ? true : false} screenName={Screens.HOME} />
         </View>
     );
 };

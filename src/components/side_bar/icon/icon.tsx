@@ -1,10 +1,16 @@
 import { Image, Text, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
+
 import { useNavigation } from '@react-navigation/native';
+import { CONFIG } from '../../../config';
+
 import iconStyle from './icon_style';
+
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
+import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
 
+import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 
 interface sideBarIconProp {
     iconPath: ImageSourcePropType;
@@ -16,8 +22,12 @@ interface sideBarIconProp {
 
 const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressActionIndex, screenName }) => {
     const navigation = useNavigation();
+
     const {toggleMenu} = useSidebarContext();
     const {toggleOpenContactUsForm} = useContactUsFormContext();
+    const {setStackIndexByName} = useStackManagerContext();
+
+    const authInstance = AuthenticationHandler.getInstance();
 
     const navigateToPage = () => {
         toggleMenu();
@@ -29,7 +39,12 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
         toggleOpenContactUsForm();
     };
 
-    const onPressHandler = [navigateToPage, openContactUsForm, () => {}]
+    const logout = async () => {
+        setStackIndexByName(StackNames.Auth);
+        await authInstance.logout();
+    };
+
+    const onPressHandler = [navigateToPage, openContactUsForm, logout];
 
     return (
         <>
