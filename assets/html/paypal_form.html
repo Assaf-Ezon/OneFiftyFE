@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self' https://*.paypal.com paypalobjects.com">
     <title>Centered PayPal Button</title>
     <style>
         body {
@@ -13,9 +14,9 @@
             overflow: hidden;
         }
 
-        #paypal-button-container {
+        #paypal-button-container-P-5G376592NK9596341M4L2EPA {
             position: absolute;
-            width: 100%;
+            width: 100%; 
             transition: all 0.5s ease-in-out;
         }
 
@@ -33,25 +34,24 @@
             transition: all 0.5s ease-in-out;
         }
     </style>
-    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
 </head>
 <body>
-    <div id="paypal-button-container" class="to-center"></div>
-
+    <div id="paypal-button-container-P-5G376592NK9596341M4L2EPA" class="to-center"></div>
+    <script src="https://www.paypal.com/sdk/js?client-id=Acb15E9G0uzfwMn6Lv9-4goLil_7_286aJ4XcAfTKlnhIOGymFft9BtZ9Al-C5UBTvciC50qu4WEh96Q&currency=ILS" data-sdk-integration-source="button-factory"></script>
     <script>
-        const buttonContainer = document.getElementById("paypal-button-container");
+        const buttonContainer = document.getElementById("paypal-button-container-P-5G376592NK9596341M4L2EPA");
+
+        let postParams = {
+            "DisplayName": "Assaff",
+            "Plan": "OneMonth",
+        }
 
         paypal.Buttons({
             style: {
                 shape: 'rect',
                 color: 'gold',
-                layout: 'vertical', 
-                label: 'subscribe',
-            },
-            onClick: function () {
-                // Move button to the top on click
-                buttonContainer.classList.remove("to-center");
-                buttonContainer.classList.add("to-top");
+                layout: 'vertical',
+                label: 'subscribe'
             },
             createOrder: function(data, actions) {
                 return actions.order.create({
@@ -61,9 +61,14 @@
                             value: "20.00"
                         },
                         description: "Purchase Unit test description",
-                        custom_id: "Goatie" // Ace can add here the display name - and I can get it in the response under custom_id
+                        custom_id: "Assaff" // Ace can add here the display name - and I can get it in the response under custom_id
                     }]
                 })
+            },
+            onClick: function () {
+                // Move button to the top on click
+                buttonContainer.classList.remove("to-center");
+                buttonContainer.classList.add("to-top");
             },
             onApprove: function(data, actions) {
                 return actions.order.capture().then(function(details,actions) {
@@ -87,22 +92,22 @@
                     postParams["InvoiceData"] = payload
                     alert('Post -' + JSON.stringify(postParams))
                     return fetch('https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/activate/subscription', {
-                                method: 'post',
-                            mode: "cors",
-                                headers: {
-                                    'content-type': 'application/json',
-                                    'Authorization': 'Bearer '
-                                },
-                                body: JSON.stringify(postParams)
-                        })
+                        method: 'post',
+                        mode: "cors",
+                        headers: {
+                            'content-type': 'application/json',
+                            'Authorization': 'Bearer '
+                        },
+                        body: JSON.stringify(postParams)
+                    })
                 })
             },
             onCancel: function () {
                 // Return button to the center when the PayPal form is closed
                 buttonContainer.classList.remove("to-top");
                 buttonContainer.classList.add("to-center");
-            }
-        }).render('#paypal-button-container');
+            },
+        }).render('#paypal-button-container-P-5G376592NK9596341M4L2EPA'); // Renders the PayPal button
     </script>
 </body>
 </html>
