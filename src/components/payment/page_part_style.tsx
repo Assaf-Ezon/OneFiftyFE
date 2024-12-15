@@ -15,9 +15,9 @@ const PlansContainerStyle = StyleSheet.create({
     },
     WebviewContainer: {
         width: width,
-        height: height,
+        height: height * 0.93,
         position: 'absolute',
-
+        top: '-15%',
     },
 });
 
