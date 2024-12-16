@@ -135,13 +135,8 @@
     </script>
     <script>
         function sendMessage() {
-          window.ReactNativeWebView.postMessage('remove');
+            window.ReactNativeWebView.postMessage('remove');
         }
-
-        window.addEventListener('message', (event) => {
-            const receivedData = JSON.parse(event.data);
-            // alert('Received Data:', receivedData);
-        });
     </script>
 </body>
 </html>

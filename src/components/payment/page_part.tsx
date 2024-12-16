@@ -1,5 +1,5 @@
 import { View, ScrollView } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import Plan from './plan/plan';
 
@@ -14,19 +14,26 @@ const PlansContainer = () => {
     const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
     const authInstance = AuthenticationHandler.getInstance();
 
-    const [params, setParams] = useState<string>('');
-    const [first, setFirst] = useState<boolean>(true);
+    const webviewRef = useRef<WebView | null>(null);
 
-    useEffect(() => {
-        const parametersForWebview = async () => {
-            const paymentParams = { 'DisplayName': await authInstance.getName(), 'name': details.name, 'price': details.price };
-    
-            setParams(`window.postMessage(JSON.stringify(${JSON.stringify(paymentParams)}), '*');`);
-            console.log(params);
+    const injectPaymentParams = async () => {
+        if (webviewRef.current) {
+            const displayName = await authInstance.getName();
+            const name = details.name;
+            const price = details.price;
+        
+            const script = `
+                window.paymentParams = {
+                    displayName: '${displayName}',  
+                    name: '${name}',
+                    price: ${price}
+                };
+                alert(JSON.stringify(window.paymentParams));
+            `;
+        
+            webviewRef.current.injectJavaScript(script);
         }
-
-        parametersForWebview();
-    }, [details]);
+    };
 
     return (
 
@@ -42,8 +49,11 @@ const PlansContainer = () => {
                     <View style={PlansContainerStyle.WebviewContainer}>
                         <WebView
                             originWhitelist={['*']}
+                            ref={webviewRef}
+                            onLoad={() => {
+                                injectPaymentParams();  // Inject the script when the WebView has fully loaded
+                            }}
                             source={require('../../../assets/html/paypal_form.html')}
-                            injectedJavaScript={params}
                             onMessage={(event) => {
                                 if (event.nativeEvent.data == 'remove') {
                                     setIsPaymentWebViewOpen(false);
