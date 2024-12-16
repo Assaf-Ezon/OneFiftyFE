@@ -30,7 +30,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       updateNewHebrewWords, 
       englishNewWords, 
       updateNewEnglishWords} = useWords();
-    const {setProfile} = useProfile();
+    const {setProfile, isWithin3Days} = useProfile();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -94,6 +94,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                   dateJoined: new Date(data.UserData.DateJoined), 
                   expirationDate: new Date(data.UserData.ExpirationDate), 
                   profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                  trial: isWithin3Days(data.UserData.DateJoined, data.UserData.ExpirationDate),
               });
 
                 setHebrewWords(data.HebrewWordsDictionary);
