@@ -16,11 +16,12 @@ const Plan: FC<PlanProps> = ({ name, title, description, price }) => {
     const {setDetails, setIsPaymentWebViewOpen} = usePaymentContext(); 
 
     const openWebView = () => {     
-        setIsPaymentWebViewOpen(true);
         setDetails({
             name: name,
             price: price,
         });
+
+        setIsPaymentWebViewOpen(true);
     };
 
     return (
