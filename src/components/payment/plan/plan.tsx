@@ -9,7 +9,7 @@ interface PlanProps {
     name: string,
     title: string,
     description: string,
-    price: number,
+    price: string,
 }
 
 const Plan: FC<PlanProps> = ({ name, title, description, price }) => {

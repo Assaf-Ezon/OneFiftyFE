@@ -58,17 +58,14 @@
 <body>
     
     <div id="paypal-button-container-P-5G376592NK9596341M4L2EPA" class="to-center">
-        <button onclick="sendMessage()" id="close-button" class="close-button">חזור לדף הקודם</button>
+        <button onclick="exitWebpage()" id="close-button" class="close-button">חזור לדף הקודם</button>
     </div>
     <script src="https://www.paypal.com/sdk/js?client-id=Acb15E9G0uzfwMn6Lv9-4goLil_7_286aJ4XcAfTKlnhIOGymFft9BtZ9Al-C5UBTvciC50qu4WEh96Q&currency=ILS" data-sdk-integration-source="button-factory"></script>
     <script>
         const buttonContainer = document.getElementById("paypal-button-container-P-5G376592NK9596341M4L2EPA");
         const closeButtonContainer = document.getElementById("close-button");
 
-        let postParams = {
-            "DisplayName": "Assaff",
-            "Plan": "OneMonth",
-        }
+        let postParams = {};
 
         paypal.Buttons({
             style: {
@@ -82,10 +79,10 @@
                     purchase_units: [{
                         amount: {
                             currency_code: "ILS",
-                            value: "20.00"
+                            value: window.paymentParams['price']
                         },
                         description: "Purchase Unit test description",
-                        custom_id: "Assaff" // Ace can add here the display name - and I can get it in the response under custom_id
+                        custom_id: window.paymentParams['displayName'] // Ace can add here the display name - and I can get it in the response under custom_id
                     }]
                 })
             },
@@ -95,6 +92,8 @@
                 buttonContainer.classList.add("to-top");
             },
             onApprove: function(data, actions) {
+                closeButtonContainer.style.display = 'none';
+
                 return actions.order.capture().then(function(details,actions) {
                     let payload = {
                         "primary_recipients": [{ "billing_info": details["payer"] }],
@@ -112,18 +111,12 @@
                         }
                     }
 
+                    postParams["DisplayName"] = window.paymentParams['displayName']
+                    postParams["Plan"] = window.paymentParams['plan']
                     postParams["OrderId"] = details.id // send transaction id as it is the one located in the business dashboard
                     postParams["InvoiceData"] = payload
-                    alert('Post -' + JSON.stringify(postParams))
-                    return fetch('https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/activate/subscription', {
-                        method: 'post',
-                        mode: "cors",
-                        headers: {
-                            'content-type': 'application/json',
-                            'Authorization': 'Bearer '
-                        },
-                        body: JSON.stringify(postParams)
-                    })
+
+                    return activateSubscription(postParams);
                 })
             },
             onCancel: function () {
@@ -131,10 +124,41 @@
                 buttonContainer.classList.remove("to-top");
                 buttonContainer.classList.add("to-center");
             },
+            onError: function (err) {
+                // Return button to the center when the PayPal form is closed
+                buttonContainer.classList.remove("to-top");
+                buttonContainer.classList.add("to-center");
+                closeButtonContainer.style.display = 'flex';
+
+                alert("תקלה לא צפויה קרתה, חשבונך לא חויב");
+            },
         }).render('#paypal-button-container-P-5G376592NK9596341M4L2EPA'); // Renders the PayPal button
+
+        async function activateSubscription(postParams) {
+            try {
+                const activation = fetch('https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/activate/subscription', {
+                    method: 'post',
+                    mode: "cors",
+                    headers: {
+                        'content-type': 'application/json',
+                        'Authorization': 'Bearer '
+                    },
+                    body: JSON.stringify(postParams)
+                });
+
+                return activation;
+            } catch (err) {
+                // Return button to the center when the PayPal form is closed
+                buttonContainer.classList.remove("to-top");
+                buttonContainer.classList.add("to-center");
+                closeButtonContainer.style.display = 'flex';
+                
+                alert("תקלה לא צפויה קרתה");
+            }
+        }
     </script>
     <script>
-        function sendMessage() {
+        function exitWebpage() {
             window.ReactNativeWebView.postMessage('remove');
         }
     </script>

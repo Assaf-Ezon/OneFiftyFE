@@ -25,10 +25,9 @@ const PlansContainer = () => {
             const script = `
                 window.paymentParams = {
                     displayName: '${displayName}',  
-                    name: '${name}',
+                    plan: '${name}',
                     price: ${price}
                 };
-                alert(JSON.stringify(window.paymentParams));
             `;
         
             webviewRef.current.injectJavaScript(script);
@@ -39,9 +38,9 @@ const PlansContainer = () => {
 
         <View style={PlansContainerStyle.mainPage}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Plan name={Plans.OneMonth.Name} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} />
-                <Plan name={Plans.TwoMonths.Name} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} />
-                <Plan name={Plans.ThreeMonts.Name} title={Plans.ThreeMonts.Title} description={Plans.ThreeMonts.Description} price={Plans.ThreeMonts.Price} />
+                <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} />
+                <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} />
+                <Plan name={Plans.ThreeMonts.Plan} title={Plans.ThreeMonts.Title} description={Plans.ThreeMonts.Description} price={Plans.ThreeMonts.Price} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
             {

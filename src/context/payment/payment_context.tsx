@@ -2,7 +2,7 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface Payment {
     name: string,
-    price: number,
+    price: string,
 };
 
 interface PaymentContextProps {
@@ -17,7 +17,7 @@ export const PaymentContext = createContext<PaymentContextProps | undefined>(und
 export const PaymentProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [details, setDetails] = useState<Payment>({
         name: '',
-        price: 0,
+        price: '00.00',
     });
     const [isPaymentWebViewOpen, setIsPaymentWebViewOpen] = useState<boolean>(false);
 
