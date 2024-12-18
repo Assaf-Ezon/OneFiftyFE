@@ -144,13 +144,11 @@
                     },
                     body: JSON.stringify(postParams)
                 });
-
                 alert('מנוי נרכש בהצלחה!');
                 subscriptionPurchased();
 
             } catch (err) {
                 if (retries > 0) {
-                    alert(`Retrying... attempts left: ${retries}, Error: ${err.message}`);
                     return activateSubscription(postParams, retries - 1);
                 }
                 // Return button to the center when the PayPal form is closed

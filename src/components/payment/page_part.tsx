@@ -22,8 +22,10 @@ import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 
 const PlansContainer = () => {
+    // navigation handler
     const navigation = useNavigation();
 
+    // contexts
     const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
         const {setProfile, isWithin3Days} = useProfile();
         const {hebrewWords, 
@@ -39,13 +41,18 @@ const PlansContainer = () => {
             englishNewWords, 
             updateNewEnglishWords} = useWords();
 
+    //auth instance
     const authInstance = AuthenticationHandler.getInstance();
 
+    // creation of both lists counter
     const [canRedirect, setCanRedirect] = useState<number>(0);
+    // loading flag
     const [loading, setLoading] = useState<boolean>(false);
 
+    // reference to the webview
     const webviewRef = useRef<WebView | null>(null);
 
+    // parameters passed to the webview
     const injectPaymentParams = async () => {
         if (webviewRef.current) {
             const displayName = await authInstance.getName();
@@ -65,6 +72,7 @@ const PlansContainer = () => {
         }
     };
 
+    // update the profile data after purchase
     const updateProfileAfterPurchase = async () => {
         setIsPaymentWebViewOpen(false);
         setLoading(true);
@@ -77,7 +85,7 @@ const PlansContainer = () => {
         // the user data is what we need
         if (data && 'UserData' in data) { 
             // the version is latest
-            if (!data.UserData.IsActive) {
+            if (data.UserData.IsActive) {
                 setLoading(false);
                 Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו");
             } 
@@ -130,7 +138,7 @@ const PlansContainer = () => {
         }
     }, [englishWords, englishUserStatistics]);
 
-    // redirection
+    // redirect if "newHebrewWords" and "newEnglishWords" are set
     useEffect(() => {
         if (canRedirect == 2) {
             setLoading(false);
