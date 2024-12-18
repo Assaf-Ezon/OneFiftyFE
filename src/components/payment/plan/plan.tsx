@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { FC } from 'react';
 
+import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
 import { usePaymentContext } from '../../../context/payment/payment_context';
@@ -10,9 +11,11 @@ interface PlanProps {
     title: string,
     description: string,
     price: string,
+    isRecommended: boolean,
+    backgroundColor: string,
 }
 
-const Plan: FC<PlanProps> = ({ name, title, description, price }) => {
+const Plan: FC<PlanProps> = ({ name, title, description, price, isRecommended, backgroundColor }) => {
     const {setDetails, setIsPaymentWebViewOpen} = usePaymentContext(); 
 
     const openWebView = () => {     
@@ -25,18 +28,20 @@ const Plan: FC<PlanProps> = ({ name, title, description, price }) => {
     };
 
     return (
-        <View style={PlanStyle.Container}>
+        <View style={[{backgroundColor: backgroundColor}, PlanStyle.Container]}>
             <View style={PlanStyle.TitleContainer}>
                 <Text style={PlanStyle.Title}>תכנית: {title}</Text>
+                <Image source={IMAGES.plan} />
             </View>
             <View style={PlanStyle.MainContainer}>
-                <Text style={PlanStyle.Description}>{description}</Text>
-                <Text style={PlanStyle.Price}>מחיר: {price} ש"ח</Text>  
+                <Text style={PlanStyle.Description}>{description}</Text> 
+                <Image source={IMAGES.check} />
             </View>
             <View style={PlanStyle.PayBtnContainer}>
                 <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => {openWebView()}}>
-                    <Text style={PlanStyle.PayBtnText}>שלם עכשיו</Text>
+                    <Text style={[{color: backgroundColor}, PlanStyle.PayBtnText]}>שלם עכשיו</Text>
                 </TouchableOpacity>
+                <Text style={PlanStyle.Price}>{price} ₪</Text> 
             </View>
         </View>
     );

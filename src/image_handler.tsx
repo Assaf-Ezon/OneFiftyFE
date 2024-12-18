@@ -55,4 +55,7 @@ export const IMAGES = {
 
     open_dictionary: require('../assets/dictionary icons/open.png'),
     close_dictionary: require('../assets/dictionary icons/close.png'),
+
+    plan: require('../assets/generic icons/plan_icon.png'),
+    check: require('../assets/generic icons/check_icon.png'),
 }

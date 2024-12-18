@@ -38,9 +38,9 @@ const PlansContainer = () => {
 
         <View style={PlansContainerStyle.mainPage}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} />
-                <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} />
-                <Plan name={Plans.ThreeMonts.Plan} title={Plans.ThreeMonts.Title} description={Plans.ThreeMonts.Description} price={Plans.ThreeMonts.Price} />
+                <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} isRecommended={Plans.OneMonth.isRecommended} backgroundColor={Plans.OneMonth.backgroundColor} />
+                <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} isRecommended={Plans.TwoMonths.isRecommended} backgroundColor={Plans.TwoMonths.backgroundColor} />
+                <Plan name={Plans.ThreeMonths.Plan} title={Plans.ThreeMonths.Title} description={Plans.ThreeMonths.Description} price={Plans.ThreeMonths.Price} isRecommended={Plans.ThreeMonths.isRecommended} backgroundColor={Plans.ThreeMonths.backgroundColor} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
             {
