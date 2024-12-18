@@ -64,19 +64,16 @@ const PlansContainer = () => {
             webviewRef.current.injectJavaScript(script);
         }
     };
-    useEffect(() => {
-        updateProfileAfterPurchase();
-    }, [])
-    const updateProfileAfterPurchase = async () => {
-        setLoading(true);
 
+    const updateProfileAfterPurchase = async () => {
         setIsPaymentWebViewOpen(false);
+        setLoading(true);
 
         const name = await authInstance.getName();
         const token = await authInstance.getAccessToken();
 
         const data = await getProfileData(name, token);
-        
+
         // the user data is what we need
         if (data && 'UserData' in data) { 
             // the version is latest
@@ -135,14 +132,15 @@ const PlansContainer = () => {
 
     // redirection
     useEffect(() => {
-        setLoading(false);
-        canRedirect == 2 ? navigation.navigate(Screens.HOME) : null;
+        if (canRedirect == 2) {
+            setLoading(false);
+            navigation.navigate(Screens.HOME);
+        }
     }, [canRedirect]);
 
     return (
         <View style={[{opacity: loading ? 0.2 : 1}, PlansContainerStyle.mainPage]}
         pointerEvents={loading ? 'none' : 'auto'}>
-            {loading ? <View><ActivityIndicator size="large" color="black" /></View> : null}
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} isRecommended={Plans.OneMonth.isRecommended} backgroundColor={Plans.OneMonth.backgroundColor} />
                 <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} isRecommended={Plans.TwoMonths.isRecommended} backgroundColor={Plans.TwoMonths.backgroundColor} />
@@ -170,6 +168,7 @@ const PlansContainer = () => {
                     </View>
                 : null
             }
+            {loading ? <View style={PlansContainerStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
         </View>
     );
 };

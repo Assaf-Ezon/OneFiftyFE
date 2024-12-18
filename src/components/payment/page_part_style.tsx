@@ -19,6 +19,16 @@ const PlansContainerStyle = StyleSheet.create({
         position: 'absolute',
         top: '-15%',
     },
+    loadingContainer: {
+        position: 'absolute',
+        top: '40%', 
+        left: '50%', 
+        width: 50,
+        height: 50,
+        transform: [{ translateX: -20 }, { translateY: -20 }],
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default PlansContainerStyle;
