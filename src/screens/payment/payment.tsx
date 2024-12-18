@@ -14,10 +14,10 @@ import { useProfile } from '../../context/general_context/profile_context';
 const PaymentPage = ({ navigation }: {navigation: any}) => {
     const {stackIndex, setStackIndexByName} = useStackManagerContext();
     const {profile} = useProfile();
-    const isActive = (stackIndex === 2);
+    const isActive = (stackIndex == StackNames.Main);
 
     useEffect(() => {
-        if (stackIndex == StackNames.Main && !profile.trial) {
+        if (isActive && !profile.trial) {
             navigation.navigate(Screens.HOME);
         } 
     }, []);
