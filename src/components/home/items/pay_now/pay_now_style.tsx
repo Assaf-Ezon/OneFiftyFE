@@ -35,12 +35,17 @@ const PayNowStyle = StyleSheet.create({
     },
     titleContainer: {
         width: '95%',
-        height: '25%',
+        height: '30%',
+        justifyContent: 'space-around',
     },
     Title: {
         textAlign: 'right',
         fontSize: 24,
         fontWeight: '700',
+        marginRight: 10,
+    },
+    expiration: {
+        textAlign: 'right',
         marginRight: 10,
     },
     Price: {

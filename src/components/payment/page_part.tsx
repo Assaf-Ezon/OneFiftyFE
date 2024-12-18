@@ -1,18 +1,47 @@
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import Plan from './plan/plan';
 
+import { useNavigation } from '@react-navigation/native';
+
 import PlansContainerStyle from './page_part_style';
 
 import { Plans } from '../../payment_plans';
+import { Screens } from '../../screen_names';
+
+import { CONFIG } from '../../config';
+import { IMAGES } from '../../image_handler';
 
 import { usePaymentContext } from '../../context/payment/payment_context';
+import { useProfile } from '../../context/general_context/profile_context';
+import { useWords } from '../../context/general_context/words_context';
 import AuthenticationHandler from '../../screens/AuthenticationHandler';
 
+import getProfileData from '../../requests/profile_data_request';
+import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
+
 const PlansContainer = () => {
+    const navigation = useNavigation();
+
     const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
+        const {setProfile, isWithin3Days} = useProfile();
+        const {hebrewWords, 
+            setHebrewWords, 
+            englishWords, 
+            setEnglishWords, 
+            hebrewUserStatistics, 
+            setHebrewUserStatistics, 
+            englishUserStatistics, 
+            setEnglishUserStatistics, 
+            hebrewNewWords, 
+            updateNewHebrewWords, 
+            englishNewWords, 
+            updateNewEnglishWords} = useWords();
+
     const authInstance = AuthenticationHandler.getInstance();
+
+    const [canRedirect, setCanRedirect] = useState<number>(0);
 
     const webviewRef = useRef<WebView | null>(null);
 
@@ -26,13 +55,83 @@ const PlansContainer = () => {
                 window.paymentParams = {
                     displayName: '${displayName}',  
                     plan: '${name}',
-                    price: ${price}
+                    price: ${price},
+                    retries: ${CONFIG.retries},
                 };
             `;
         
             webviewRef.current.injectJavaScript(script);
         }
     };
+    useEffect(() => {
+        updateProfileAfterPurchase();
+    }, [])
+    const updateProfileAfterPurchase = async () => {
+        setIsPaymentWebViewOpen(false);
+
+        const name = await authInstance.getName();
+        const token = await authInstance.getAccessToken();
+
+        const data = await getProfileData(name, token);
+        
+        // the user data is what we need
+        if (data && 'UserData' in data) { 
+            // the version is latest
+            if (!data.UserData.IsActive) {
+                Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו");
+            } 
+            // the user is active
+            else {
+                const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
+
+                var userRank = 0;
+
+                if (leaderboardData && 'Scores' in leaderboardData) {
+                    const name = await authInstance.getName();
+                    var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
+                } 
+                
+                setProfile({
+                  name: data.UserData.DisplayName,
+                  email: data.UserData.Email,
+                  rank: userRank,
+                  score: data.UserData.Score,
+                  dateJoined: new Date(data.UserData.DateJoined), 
+                  expirationDate: new Date(data.UserData.ExpirationDate), 
+                  profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                  trial: isWithin3Days(data.UserData.DateJoined, data.UserData.ExpirationDate),
+              });
+
+                setHebrewWords(data.HebrewWordsDictionary);
+                setEnglishWords(data.EnglishWordsDictionary);
+                setHebrewUserStatistics(data.HebrewUserStatistics);
+                setEnglishUserStatistics(data.EnglishUserStatistics);
+            }
+        } else {
+            Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו");
+        }
+    }
+
+    // handles calculating new words for hebrew - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(hebrewWords).length > 0 && Object.keys(hebrewUserStatistics).length > 0) {
+            updateNewHebrewWords();
+            setCanRedirect(canRedirect + 1);
+        }
+    }, [hebrewWords, hebrewUserStatistics]);
+
+    // handles calculating new words for english - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(englishWords).length > 0 && Object.keys(englishUserStatistics).length > 0) {
+            updateNewEnglishWords();
+            setCanRedirect(canRedirect + 1);
+        }
+    }, [englishWords, englishUserStatistics]);
+
+    // redirection
+    useEffect(() => {
+        canRedirect == 2 ? navigation.navigate(Screens.HOME) : null;
+    }, [canRedirect]);
 
     return (
 
@@ -56,6 +155,8 @@ const PlansContainer = () => {
                             onMessage={(event) => {
                                 if (event.nativeEvent.data == 'remove') {
                                     setIsPaymentWebViewOpen(false);
+                                } else if (event.nativeEvent.data == 'success') {
+                                    updateProfileAfterPurchase();
                                 }
                             }}
                         />

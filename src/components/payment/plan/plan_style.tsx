@@ -8,7 +8,6 @@ const PlanStyle = StyleSheet.create({
         width: width * 0.9,
         height: height * 0.22,
         borderRadius: 30,
-        borderWidth: 1,
         shadowOpacity: 0.1,
         shadowRadius: 5,
         justifyContent: 'space-evenly',

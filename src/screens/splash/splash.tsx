@@ -65,7 +65,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
         const token = await authInstance.getAccessToken();
 
         const data = await getProfileData(name, token);
-
+        
         // the user data is what we need
         if (data && 'UserData' in data) { 
             // the version is latest
@@ -80,7 +80,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
                 var userRank = 0;
-
+                
                 if (leaderboardData && 'Scores' in leaderboardData) {
                     const name = await authInstance.getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
