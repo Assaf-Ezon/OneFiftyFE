@@ -23,7 +23,7 @@ interface ProfileContextProps {
     setProfile: (profile: Profile) => void;
     updateProfileImage: (newImage: ImageSourcePropType) => void;
     updateRank: (rank: number) => void;
-    isWithin3Days: (dateJoined: string, expirationDate: string) => boolean;
+    IsInTrail: (dateJoined: string, expirationDate: string) => boolean;
 };
 
 export const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
@@ -54,7 +54,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }));
     };
 
-    const isWithin3Days = (dateJoined: string, expirationDate: string): boolean => {
+    const IsInTrail = (dateJoined: string, expirationDate: string): boolean => {
         const joined: Date = new Date(dateJoined);
         const expiration: Date = new Date(expirationDate);
     
@@ -73,7 +73,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
 
     return (
-        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, isWithin3Days }}>
+        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, IsInTrail }}>
             {children}
         </ProfileContext.Provider>
     );

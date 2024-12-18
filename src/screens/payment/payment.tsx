@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View, Image } from 'react-native';
 import { useEffect } from 'react';
-import PlansContainer from '../../components/payment/page_part';
+import PlansContainer from '../../components/payment/plans_container';
 
 import { IMAGES } from '../../image_handler';
 

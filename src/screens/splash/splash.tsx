@@ -30,7 +30,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       updateNewHebrewWords, 
       englishNewWords, 
       updateNewEnglishWords} = useWords();
-    const {setProfile, isWithin3Days} = useProfile();
+    const {setProfile, IsInTrail} = useProfile();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -65,7 +65,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
         const token = await authInstance.getAccessToken();
 
         const data = await getProfileData(name, token);
-        
+
         // the user data is what we need
         if (data && 'UserData' in data) { 
             // the version is latest
@@ -94,7 +94,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                   dateJoined: new Date(data.UserData.DateJoined), 
                   expirationDate: new Date(data.UserData.ExpirationDate), 
                   profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                  trial: isWithin3Days(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                  trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
               });
 
                 setHebrewWords(data.HebrewWordsDictionary);

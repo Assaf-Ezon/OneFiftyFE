@@ -5,7 +5,7 @@ import Plan from './plan/plan';
 
 import { useNavigation } from '@react-navigation/native';
 
-import PlansContainerStyle from './page_part_style';
+import PlansContainerStyle from './plans_container_style';
 
 import { Plans } from '../../payment_plans';
 import { Screens } from '../../screen_names';
@@ -27,7 +27,7 @@ const PlansContainer = () => {
 
     // contexts
     const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
-        const {setProfile, isWithin3Days} = useProfile();
+        const {setProfile, IsInTrail} = useProfile();
         const {hebrewWords, 
             setHebrewWords, 
             englishWords, 
@@ -55,12 +55,14 @@ const PlansContainer = () => {
     // parameters passed to the webview
     const injectPaymentParams = async () => {
         if (webviewRef.current) {
+            const token = await authInstance.getAccessToken();
             const displayName = await authInstance.getName();
             const name = details.name;
             const price = details.price;
         
             const script = `
                 window.paymentParams = {
+                    token: '${token}',
                     displayName: '${displayName}',  
                     plan: '${name}',
                     price: ${price},
@@ -81,13 +83,13 @@ const PlansContainer = () => {
         const token = await authInstance.getAccessToken();
 
         const data = await getProfileData(name, token);
-
+        console.log(data);
         // the user data is what we need
         if (data && 'UserData' in data) { 
             // the version is latest
             if (data.UserData.IsActive) {
                 setLoading(false);
-                Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו");
+                Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו באימייל");
             } 
             // the user is active
             else {
@@ -108,7 +110,7 @@ const PlansContainer = () => {
                   dateJoined: new Date(data.UserData.DateJoined), 
                   expirationDate: new Date(data.UserData.ExpirationDate), 
                   profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                  trial: isWithin3Days(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                  trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
               });
 
                 setHebrewWords(data.HebrewWordsDictionary);
@@ -118,7 +120,7 @@ const PlansContainer = () => {
             }
         } else {
             setLoading(false);
-            Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו");
+            Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו באימייל");
         }
     }
 

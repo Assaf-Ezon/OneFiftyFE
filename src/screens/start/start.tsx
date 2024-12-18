@@ -18,7 +18,7 @@ import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
-    const {setProfile, isWithin3Days} = useProfile();
+    const {setProfile, IsInTrail} = useProfile();
     const {hebrewWords, 
         setHebrewWords, 
         englishWords, 
@@ -87,7 +87,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         const token = await authInstance.getAccessToken();
 
         const data = await getProfileData(name, token);
-        
+
         // the user data is what we need
         if (data && 'UserData' in data) { 
             // the version is latest
@@ -113,7 +113,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                   dateJoined: new Date(data.UserData.DateJoined), 
                   expirationDate: new Date(data.UserData.ExpirationDate), 
                   profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                  trial: isWithin3Days(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                  trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
               });
 
                 setHebrewWords(data.HebrewWordsDictionary);
