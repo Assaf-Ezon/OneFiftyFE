@@ -1,4 +1,4 @@
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { useEffect, useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import Plan from './plan/plan';
@@ -42,6 +42,7 @@ const PlansContainer = () => {
     const authInstance = AuthenticationHandler.getInstance();
 
     const [canRedirect, setCanRedirect] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const webviewRef = useRef<WebView | null>(null);
 
@@ -67,6 +68,8 @@ const PlansContainer = () => {
         updateProfileAfterPurchase();
     }, [])
     const updateProfileAfterPurchase = async () => {
+        setLoading(true);
+
         setIsPaymentWebViewOpen(false);
 
         const name = await authInstance.getName();
@@ -78,6 +81,7 @@ const PlansContainer = () => {
         if (data && 'UserData' in data) { 
             // the version is latest
             if (!data.UserData.IsActive) {
+                setLoading(false);
                 Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו");
             } 
             // the user is active
@@ -108,6 +112,7 @@ const PlansContainer = () => {
                 setEnglishUserStatistics(data.EnglishUserStatistics);
             }
         } else {
+            setLoading(false);
             Alert.alert("תקלה לא צפויה קרתה, אנא פנה אלינו");
         }
     }
@@ -130,12 +135,14 @@ const PlansContainer = () => {
 
     // redirection
     useEffect(() => {
+        setLoading(false);
         canRedirect == 2 ? navigation.navigate(Screens.HOME) : null;
     }, [canRedirect]);
 
     return (
-
-        <View style={PlansContainerStyle.mainPage}>
+        <View style={[{opacity: loading ? 0.2 : 1}, PlansContainerStyle.mainPage]}
+        pointerEvents={loading ? 'none' : 'auto'}>
+            {loading ? <View><ActivityIndicator size="large" color="black" /></View> : null}
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} isRecommended={Plans.OneMonth.isRecommended} backgroundColor={Plans.OneMonth.backgroundColor} />
                 <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} isRecommended={Plans.TwoMonths.isRecommended} backgroundColor={Plans.TwoMonths.backgroundColor} />
