@@ -42,6 +42,9 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
 
+    // flag for redirection 
+    const [canRedirect, setCanRedirect] = useState<boolean>(false);
+
     // popup flag and index
     const [popupIndex, setPopupIndex] = useState<number>(AuthErrorType.None);
 
@@ -120,6 +123,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
+
+                setCanRedirect(true);
             }
         } else {
             setLoading(false);
@@ -144,11 +149,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     // changes the navigation stack when the new word dict is built
     useEffect(() => {
-        if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
+        if (canRedirect) {
             setLoading(false);
             setStackIndexByName(StackNames.Main);
         }
-    }, [hebrewNewWords, englishNewWords]);
+      }, [canRedirect]);
 
     return(
       <View style={StartScreenStyle.container}>

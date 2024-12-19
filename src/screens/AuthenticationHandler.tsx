@@ -30,7 +30,7 @@ export default class AuthenticationHandler {
 
         return AuthenticationHandler.instance;
     }
-
+    
     // get the name
     public async getName(): Promise<string> {
         const name = await SecureStore.getItemAsync(CONFIG.name);

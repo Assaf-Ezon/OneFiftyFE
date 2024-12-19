@@ -80,7 +80,7 @@ const getProfileData = async (name: string, token: string): Promise<ApiResponse 
                     'Content-Type': 'application/json',
                 }
             });
-    
+            
             return response.data;
             
         } catch (error) {

@@ -37,6 +37,8 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     const [isVersionIncorrect, setIsVersionIncorrect] = useState<boolean>(false);
     const [isNotActiveOpen, setIsNotActiveOpen] = useState<boolean>(false);
 
+    const [canRedirect, setCanRedirect] = useState<boolean>(false);
+
     useEffect(() => {
         const validation = async () => {
             // checks if the refresh token is expired
@@ -52,7 +54,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         Alert.alert('תקלה בהתחברות!');
                         navigation.replace(Screens.START);
                     }
-
+                
                 await handleUserData();
             }
         }
@@ -101,6 +103,8 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
+
+                setCanRedirect(true);
             }
         } else {
             Alert.alert('תקלה בהתחברות!');
@@ -124,10 +128,10 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
     // changes the navigation stack when the new word dict is built
     useEffect(() => {
-      if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
+      if (canRedirect) {
         setStackIndexByName(StackNames.Main);
       }
-    }, [hebrewNewWords, englishNewWords]);
+    }, [canRedirect]);
 
     return(
       <View style={{backgroundColor: "#FAF0E6", flex: 1, justifyContent: 'center', alignItems: 'center'}}>
