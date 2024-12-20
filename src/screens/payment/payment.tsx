@@ -8,7 +8,7 @@ import PaymentScreenStyle from './payment_style';
 import { Screens } from '../../screen_names';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
-import { PaymentProvider } from '../../context/payment/payment_context';
+import { PaymentProvider } from '../../context/payment_context/payment_context';
 import { useProfile } from '../../context/general_context/profile_context';
 
 const PaymentPage = ({ navigation }: {navigation: any}) => {

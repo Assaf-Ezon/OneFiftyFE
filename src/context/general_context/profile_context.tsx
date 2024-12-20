@@ -67,7 +67,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
     
         const differenceInMs: number = expirationTimestamp - joinedTimestamp;
     
-        const maxDifferenceInMs: number = (3 * DAY) + (MINUTE);
+        const maxDifferenceInMs: number = (3 * DAY) + (12 * HOUR);
     
         return differenceInMs <= maxDifferenceInMs;
     }

@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
-import { usePaymentContext } from '../../../context/payment/payment_context';
+import { usePaymentContext } from '../../../context/payment_context/payment_context';
 
 interface PlanProps {
     name: string,
