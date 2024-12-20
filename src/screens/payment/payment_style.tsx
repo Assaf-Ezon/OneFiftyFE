@@ -31,10 +31,11 @@ const PaymentScreenStyle = StyleSheet.create({
         marginTop: 20,
         width: width * 0.9,
         alignItems: 'center',
+        height: height * 0.8,
     },
-    explanationText: {
+    blank: {
+        height: 80, 
         width: '100%',
-        textAlign: 'right',
     },
 });
 

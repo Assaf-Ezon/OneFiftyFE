@@ -25,7 +25,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
 
     const {toggleMenu} = useSidebarContext();
     const {toggleOpenContactUsForm} = useContactUsFormContext();
-    const {setStackIndexByName} = useStackManagerContext();
+    const {setStackIndexByName, handleLogout} = useStackManagerContext();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -40,6 +40,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
     };
 
     const logout = async () => {
+        handleLogout();
         setStackIndexByName(StackNames.Auth);
         await authInstance.logout();
     };

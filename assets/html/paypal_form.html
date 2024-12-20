@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self' https://*.paypal.com paypalobjects.com">
+    <title>Centered PayPal Button</title>
+    <style>
+        body {
+            background-color: #FAF0E6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .close-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #333333; 
+            color: #FFFFFF; 
+            font-family: Arial;
+            font-weight: bold;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 5px; 
+            outline: none;
+            width: 100%;
+            height: 6vh;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        #paypal-button-container-P-5G376592NK9596341M4L2EPA {
+            position: absolute;
+            width: 95%; 
+            transition: all 0.5s ease-in-out;
+        }
+
+        .to-top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.5s ease-in-out;
+        }
+
+        .to-center {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="paypal-button-container-P-5G376592NK9596341M4L2EPA" class="to-center">
+        <button onclick="exitWebpage()" id="close-button" class="close-button">חזור לדף הקודם</button>
+    </div>
+    <script src="https://www.paypal.com/sdk/js?client-id=Acb15E9G0uzfwMn6Lv9-4goLil_7_286aJ4XcAfTKlnhIOGymFft9BtZ9Al-C5UBTvciC50qu4WEh96Q&currency=ILS" data-sdk-integration-source="button-factory"></script>
+    <script>
+        const buttonContainer = document.getElementById("paypal-button-container-P-5G376592NK9596341M4L2EPA");
+        const closeButtonContainer = document.getElementById("close-button");
+
+        let postParams = {};
+
+        paypal.Buttons({
+            style: {
+                shape: 'rect',
+                color: 'gold',
+                layout: 'vertical',
+                label: 'subscribe'
+            },
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            currency_code: "ILS",
+                            value: window.paymentParams['price']
+                        },
+                        description: "Purchase Unit test description",
+                        custom_id: window.paymentParams['displayName'] 
+                    }]
+                })
+            },
+            onClick: function () {
+                // Move button to the top on click
+                buttonContainer.classList.remove("to-center");
+                buttonContainer.classList.add("to-top");
+            },
+            onApprove: function(data, actions) {
+                closeButtonContainer.style.display = 'none';
+
+                return actions.order.capture().then(function(details,actions) {
+                    let payload = {
+                        "primary_recipients": [{ "billing_info": details["payer"] }],
+                        "detail": {
+                            "terms_and_conditions": "No refund after 21 days.",
+                            "currency_code": details["purchase_units"][0]["amount"]["currency_code"]
+                        },
+                        "items": [{
+                            "name": "One-Month subscription",
+                            "unit_amount": details["purchase_units"][0]["amount"],
+                            "quantity": "1"
+                        }],
+                        "payments": {
+                            "amount": details["purchase_units"][0]["amount"]
+                        }
+                    }
+
+                    postParams["DisplayName"] = window.paymentParams['displayName']
+                    postParams["Plan"] = window.paymentParams['plan']
+                    postParams["OrderId"] = details.id // send transaction id as it is the one located in the business dashboard
+                    postParams["InvoiceData"] = payload
+
+                    activateSubscription(postParams, window.paymentParams['retries']);
+                })
+            },
+            onCancel: function () {
+                // Return button to the center when the PayPal form is closed
+                buttonContainer.classList.remove("to-top");
+                buttonContainer.classList.add("to-center");
+            },
+            onError: function (err) {
+                // Return button to the center when the PayPal form is closed
+                buttonContainer.classList.remove("to-top");
+                buttonContainer.classList.add("to-center");
+                closeButtonContainer.style.display = 'flex';
+
+                alert("תקלה לא צפויה קרתה, חשבונך לא חויב");
+            },
+        }).render('#paypal-button-container-P-5G376592NK9596341M4L2EPA'); // Renders the PayPal button
+
+        async function activateSubscription(postParams, retries = 2) {
+            try {
+                const activation = await fetch('https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/activate/subscription', {
+                    method: 'post',
+                    mode: "cors",
+                    headers: {
+                        'content-type': 'application/json',
+                        'Authorization': `Bearer ${window.paymentParams['token']}`
+                    },
+                    body: JSON.stringify(postParams)
+                });
+
+                if (activation.status >= 200 && activation.status < 300) {
+                    alert('מנוי נרכש בהצלחה!');
+                    subscriptionPurchased();
+                } else {
+                    throw new Error(`Request failed with status code: ${activation.status}`);
+                }
+            } catch (err) {
+                if (retries > 0) {
+                    return activateSubscription(postParams, retries - 1);
+                }
+                // Return button to the center when the PayPal form is closed
+                buttonContainer.classList.remove("to-top");
+                buttonContainer.classList.add("to-center");
+                closeButtonContainer.style.display = 'flex';
+                
+                alert("תקלה לא צפויה קרתה, אנא פנה אלינו באימייל");
+            }
+        }
+    </script>
+    <script>
+        function exitWebpage() {
+            window.ReactNativeWebView.postMessage('remove');
+        }
+        function subscriptionPurchased() {
+            window.ReactNativeWebView.postMessage('success');
+        }
+    </script>
+</body>
+</html>

@@ -29,8 +29,10 @@ import { WordsProvider } from './src/context/general_context/words_context';
 const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
+  const { authStackInitialRouteName } = useStackManagerContext();
+
   return (
-    <Stack.Navigator initialRouteName={Screens.SPLASH}>
+    <Stack.Navigator initialRouteName={authStackInitialRouteName}>
       <Stack.Screen name={Screens.SPLASH} component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name={Screens.START} component={StartScreen} options={{ headerShown: false }} />
 

@@ -30,12 +30,14 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       updateNewHebrewWords, 
       englishNewWords, 
       updateNewEnglishWords} = useWords();
-    const {setProfile} = useProfile();
+    const {setProfile, IsInTrail} = useProfile();
 
     const authInstance = AuthenticationHandler.getInstance();
 
     const [isVersionIncorrect, setIsVersionIncorrect] = useState<boolean>(false);
     const [isNotActiveOpen, setIsNotActiveOpen] = useState<boolean>(false);
+
+    const [canRedirect, setCanRedirect] = useState<boolean>(false);
 
     useEffect(() => {
         const validation = async () => {
@@ -52,7 +54,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         Alert.alert('תקלה בהתחברות!');
                         navigation.replace(Screens.START);
                     }
-
+                
                 await handleUserData();
             }
         }
@@ -80,7 +82,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
                 var userRank = 0;
-
+                
                 if (leaderboardData && 'Scores' in leaderboardData) {
                     const name = await authInstance.getName();
                     var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
@@ -94,12 +96,15 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                   dateJoined: new Date(data.UserData.DateJoined), 
                   expirationDate: new Date(data.UserData.ExpirationDate), 
                   profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                  trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
               });
 
                 setHebrewWords(data.HebrewWordsDictionary);
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
+
+                setCanRedirect(true);
             }
         } else {
             Alert.alert('תקלה בהתחברות!');
@@ -123,10 +128,10 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
     // changes the navigation stack when the new word dict is built
     useEffect(() => {
-      if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
+      if (canRedirect) {
         setStackIndexByName(StackNames.Main);
       }
-    }, [hebrewNewWords, englishNewWords]);
+    }, [canRedirect]);
 
     return(
       <View style={{backgroundColor: "#FAF0E6", flex: 1, justifyContent: 'center', alignItems: 'center'}}>

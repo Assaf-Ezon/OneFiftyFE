@@ -8,19 +8,21 @@ interface LearningCardProp {
     image: ImageSourcePropType;
     title: string;
     screenName: string;
+    isActive: boolean;
 }
 
-const OptionCard: FC<LearningCardProp> = ({ image, title, screenName }) => {
+const OptionCard: FC<LearningCardProp> = ({ image, title, screenName, isActive }) => {
     const navigation = useNavigation();
 
     return (
-        <>        
+        <View style={{opacity: isActive ? 1 : 0.6}}
+        pointerEvents={isActive ? 'auto' : 'none'}>        
             <View style={cardStyle.line} />
             <TouchableOpacity style={cardStyle.container} onPress={() => {navigation.navigate(screenName)}}>
                 <Text style={cardStyle.text}>{title}</Text>
                 <Image source={image} />
             </TouchableOpacity>
-        </>
+        </View>
 
     );
 };

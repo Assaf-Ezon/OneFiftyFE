@@ -18,7 +18,7 @@ import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
-    const {setProfile} = useProfile();
+    const {setProfile, IsInTrail} = useProfile();
     const {hebrewWords, 
         setHebrewWords, 
         englishWords, 
@@ -41,6 +41,9 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     // loading flag
     const [loading, setLoading] = useState<boolean>(false);
+
+    // flag for redirection 
+    const [canRedirect, setCanRedirect] = useState<boolean>(false);
 
     // popup flag and index
     const [popupIndex, setPopupIndex] = useState<number>(AuthErrorType.None);
@@ -87,7 +90,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         const token = await authInstance.getAccessToken();
 
         const data = await getProfileData(name, token);
-        
+
         // the user data is what we need
         if (data && 'UserData' in data) { 
             // the version is latest
@@ -113,12 +116,15 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                   dateJoined: new Date(data.UserData.DateJoined), 
                   expirationDate: new Date(data.UserData.ExpirationDate), 
                   profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                  trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
               });
 
                 setHebrewWords(data.HebrewWordsDictionary);
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
+
+                setCanRedirect(true);
             }
         } else {
             setLoading(false);
@@ -143,11 +149,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     // changes the navigation stack when the new word dict is built
     useEffect(() => {
-        if (Object.keys(hebrewNewWords).length > 0 && Object.keys(englishNewWords).length > 0) {
+        if (canRedirect) {
             setLoading(false);
             setStackIndexByName(StackNames.Main);
         }
-    }, [hebrewNewWords, englishNewWords]);
+      }, [canRedirect]);
 
     return(
       <View style={StartScreenStyle.container}>
