@@ -20,7 +20,7 @@ enum ErrorType {
 
 const ChangeProfileImagePopup = () => {
     const {profile, updateProfileImage} = useProfile();
-    const {setStackIndexByName, handleLogout} = useStackManagerContext();
+    const {handleLogout, handleInactive} = useStackManagerContext();
     const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex} = useProfileImageMenuContext();
 
     const authInstance = AuthenticationHandler.getInstance(); 
@@ -31,7 +31,7 @@ const ChangeProfileImagePopup = () => {
     const update = async () => {
         if (profile.expirationDate <= new Date()) {
             Alert.alert('תוקף המנוי נגמר');
-            handleLogout();
+            handleInactive();
         }
         else if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
             const name = await authInstance.getName();
@@ -54,8 +54,7 @@ const ChangeProfileImagePopup = () => {
 
             } else {
                 Alert.alert('התחברות נכשלה!');
-                await authInstance.logout();
-                setStackIndexByName(StackNames.Auth);
+                handleLogout();
             }
         } else {
             setErrorType(ErrorType.NoImage);

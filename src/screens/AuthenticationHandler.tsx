@@ -39,9 +39,7 @@ export default class AuthenticationHandler {
 
     // get access token
     public async getAccessToken(): Promise<string> {
-        const access_token_exp = await SecureStore.getItemAsync(CONFIG.access_token_exp);
-
-        if (typeof access_token_exp == 'string' && new Date(access_token_exp) <= (new Date())) {
+        if (new Date(await this.getAccessTokenExpiration()) <= (new Date())) {
             try {
                 await this.refresh();
             } catch (err) {

@@ -12,12 +12,9 @@ import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../..
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 import { CONFIG } from '../../../config';
 
-
-
-
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
-    const {setStackIndexByName, handleLogout} = useStackManagerContext();
+    const {handleLogout, handleInactive} = useStackManagerContext();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -50,14 +47,13 @@ const TopRated = () => {
                 }
             } else {
                 Alert.alert('התחברות נכשלה!');
-                await authInstance.logout();
-                setStackIndexByName(StackNames.Auth);
+                handleLogout();
             }
         };
 
         if (profile.expirationDate <= new Date()) {
             Alert.alert('תוקף המנוי נגמר');
-            handleLogout();
+            handleInactive();
         } else {
             fetchLeaderboard();
         }

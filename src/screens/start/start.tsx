@@ -89,42 +89,55 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         const name = await authInstance.getName();
         const token = await authInstance.getAccessToken();
 
-        const data = await getProfileData(name, token);
+        if (name && token) {
+            try {
+                const data = await getProfileData(name, token);
 
-        // the user data is what we need
-        if (data && 'UserData' in data) { 
-            // the version is latest
-            if (!data.UserData.IsActive) {
-                setPopupIndex(AuthErrorType.Inactive);
-            } 
-            // the user is active
-            else {
-                const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
+                // the user data is what we need
+                if (data && 'UserData' in data) { 
+                    // the version is latest
+                    if (!data.UserData.IsActive) {
+                        setPopupIndex(AuthErrorType.Inactive);
+                    } 
+                    // the user is active
+                    else {
+                        const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
-                var userRank = 0;
+                        var userRank = 0;
 
-                if (leaderboardData && 'Scores' in leaderboardData) {
-                    const name = await authInstance.getName();
-                    var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
-                } 
-                
-                setProfile({
-                  name: data.UserData.DisplayName,
-                  email: data.UserData.Email,
-                  rank: userRank,
-                  score: data.UserData.Score,
-                  dateJoined: new Date(data.UserData.DateJoined), 
-                  expirationDate: new Date(data.UserData.ExpirationDate), 
-                  profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                  trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
-              });
+                        if (leaderboardData && 'Scores' in leaderboardData) {
+                            const name = await authInstance.getName();
+                            var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
+                        } 
+                        
+                        setProfile({
+                        name: data.UserData.DisplayName,
+                        email: data.UserData.Email,
+                        rank: userRank,
+                        score: data.UserData.Score,
+                        dateJoined: new Date(data.UserData.DateJoined), 
+                        expirationDate: new Date(data.UserData.ExpirationDate), 
+                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                        trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                    });
 
-                setHebrewWords(data.HebrewWordsDictionary);
-                setEnglishWords(data.EnglishWordsDictionary);
-                setHebrewUserStatistics(data.HebrewUserStatistics);
-                setEnglishUserStatistics(data.EnglishUserStatistics);
+                        setHebrewWords(data.HebrewWordsDictionary);
+                        setEnglishWords(data.EnglishWordsDictionary);
+                        setHebrewUserStatistics(data.HebrewUserStatistics);
+                        setEnglishUserStatistics(data.EnglishUserStatistics);
 
-                setCanRedirect(true);
+                        setCanRedirect(true);
+                    }
+                } else {
+                    setLoading(false);
+
+                    setPopupIndex(AuthErrorType.Error);
+                }
+            } catch (err) {
+                console.error(err);
+                setLoading(false);
+
+                setPopupIndex(AuthErrorType.Error);
             }
         } else {
             setLoading(false);

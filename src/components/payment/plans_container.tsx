@@ -1,4 +1,4 @@
-import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { View, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import Plan from './plan/plan';
@@ -40,18 +40,24 @@ const PlansContainer = () => {
             const displayName = await authInstance.getName();
             const name = details.name;
             const price = details.price;
+
+            if (name && token) {
+                const script = `
+                    window.paymentParams = {
+                        token: '${token}',
+                        displayName: '${displayName}',  
+                        plan: '${name}',
+                        price: ${price},
+                        retries: ${CONFIG.retries},
+                    };
+                `;
         
-            const script = `
-                window.paymentParams = {
-                    token: '${token}',
-                    displayName: '${displayName}',  
-                    plan: '${name}',
-                    price: ${price},
-                    retries: ${CONFIG.retries},
-                };
-            `;
-        
-            webviewRef.current.injectJavaScript(script);
+                webviewRef.current.injectJavaScript(script);
+            } else {
+                Alert.alert('התחברות נכשלה!');
+                await authInstance.logout();
+                setStackIndexByName(StackNames.Auth);
+            }
         }
     };
 

@@ -13,6 +13,7 @@ interface StackMangerContextProps {
     setStackIndexByName: (name: StackNames) => void;
     authStackInitialRouteName: string;
     handleLogout: () => void;
+    handleInactive: () => void;
 }
 
 const StackManagerContext = createContext<StackMangerContextProps | undefined>(undefined);
@@ -33,8 +34,12 @@ export const StackManagerProvider: FC<{ children: ReactNode }> = ({ children }) 
         setStackIndexByName(StackNames.Auth);
     }
 
+    const handleInactive = async () => {
+        setStackIndexByName(StackNames.Inactive);
+    }
+
     return (
-        <StackManagerContext.Provider value={{ stackIndex, setStackIndexByName, authStackInitialRouteName, handleLogout }}>
+        <StackManagerContext.Provider value={{ stackIndex, setStackIndexByName, authStackInitialRouteName, handleLogout, handleInactive }}>
             {children}
         </StackManagerContext.Provider>
     );

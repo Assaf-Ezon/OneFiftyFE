@@ -80,7 +80,7 @@ const getProfileData = async (name: string, token: string): Promise<ApiResponse 
                     'Content-Type': 'application/json',
                 }
             });
-            
+
             return response.data;
             
         } catch (error) {
@@ -100,7 +100,7 @@ const getProfileData = async (name: string, token: string): Promise<ApiResponse 
 
     } catch (finalError) {
         console.error('All retry attempts failed:', finalError);
-        return null;
+        throw new Error('All retry attempts failed');
     }
 };
 
