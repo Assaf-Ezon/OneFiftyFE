@@ -39,6 +39,16 @@ export default class AuthenticationHandler {
 
     // get access token
     public async getAccessToken(): Promise<string> {
+        const access_token_exp = await SecureStore.getItemAsync(CONFIG.access_token_exp);
+
+        if (typeof access_token_exp == 'string' && new Date(access_token_exp) <= (new Date())) {
+            try {
+                await this.refresh();
+            } catch (err) {
+                throw new Error('cant refresh tokens');
+            }
+        }
+
         const access = await SecureStore.getItemAsync(CONFIG.access_token);
         return typeof access == 'string' ? access : '';
     }
@@ -198,7 +208,7 @@ export default class AuthenticationHandler {
         
         if (idToken && refreshToken && name) {
             let access_token_exp = new Date();
-            access_token_exp.setUTCMinutes(access_token_exp.getUTCMinutes() + 30);
+            access_token_exp.setUTCMinutes(access_token_exp.getUTCMinutes() + 1);
 
             await SecureStore.setItemAsync(CONFIG.access_token, idToken);
             await SecureStore.setItemAsync(CONFIG.access_token_exp, access_token_exp.toISOString());
