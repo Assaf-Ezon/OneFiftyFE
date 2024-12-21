@@ -39,6 +39,11 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
     const [canRedirect, setCanRedirect] = useState<boolean>(false);
 
+    const errorHandler = () => {
+        Alert.alert('תקלה בהתחברות!');
+        navigation.replace(Screens.START);
+    }
+
     useEffect(() => {
         const validation = async () => {
             // checks if the refresh token is expired
@@ -66,50 +71,59 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
         const name = await authInstance.getName();
         const token = await authInstance.getAccessToken();
 
-        const data = await getProfileData(name, token);
+        if (name && token) {
+            try {
+                const data = await getProfileData(name, token);
 
-        // the user data is what we need
-        if (data && 'UserData' in data) { 
-            // the version is latest
-            if (data.Version != CONFIG.Version) {
-                setIsVersionIncorrect(true);
-            } 
-            // the user is active
-            else if (!data.UserData.IsActive) {         
-                await authInstance.logout();
-                setIsNotActiveOpen(true);
-            } else {
-                const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
+                // the user data is what we need
+                if (data && 'UserData' in data) { 
+                    // the version is latest
+                    if (data.Version != CONFIG.Version) {
+                        setIsVersionIncorrect(true);
+                    } 
+                    // the user is active
+                    else if (!data.UserData.IsActive) {         
+                        await authInstance.logout();
+                        setIsNotActiveOpen(true);
+                    } else {
+                        const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
-                var userRank = 0;
-                
-                if (leaderboardData && 'Scores' in leaderboardData) {
-                    const name = await authInstance.getName();
-                    var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
-                } 
-                
-                setProfile({
-                  name: data.UserData.DisplayName,
-                  email: data.UserData.Email,
-                  rank: userRank,
-                  score: data.UserData.Score,
-                  dateJoined: new Date(data.UserData.DateJoined), 
-                  expirationDate: new Date(data.UserData.ExpirationDate), 
-                  profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                  trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
-              });
+                        var userRank = 0;
+                        
+                        if (leaderboardData && 'Scores' in leaderboardData) {
+                            const name = await authInstance.getName();
+                            var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
+                        } 
+                        
+                        setProfile({
+                        name: data.UserData.DisplayName,
+                        email: data.UserData.Email,
+                        rank: userRank,
+                        score: data.UserData.Score,
+                        dateJoined: new Date(data.UserData.DateJoined), 
+                        expirationDate: new Date(data.UserData.ExpirationDate), 
+                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                        trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                    });
 
-                setHebrewWords(data.HebrewWordsDictionary);
-                setEnglishWords(data.EnglishWordsDictionary);
-                setHebrewUserStatistics(data.HebrewUserStatistics);
-                setEnglishUserStatistics(data.EnglishUserStatistics);
+                        setHebrewWords(data.HebrewWordsDictionary);
+                        setEnglishWords(data.EnglishWordsDictionary);
+                        setHebrewUserStatistics(data.HebrewUserStatistics);
+                        setEnglishUserStatistics(data.EnglishUserStatistics);
 
-                setCanRedirect(true);
+                        setCanRedirect(true);
+                    }
+                } else {
+                    errorHandler();
+                }
+            } catch (err) {
+                console.error(err);
+                errorHandler();
             }
         } else {
-            Alert.alert('תקלה בהתחברות!');
-            navigation.replace(Screens.START);
+            errorHandler();
         }
+        
     }
 
     // handles calculating new words for hebrew - when full dict and statistics are updated in the context

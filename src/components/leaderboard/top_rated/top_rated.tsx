@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { IMAGES } from '../../../image_handler';
 import TopRatedStyle from './top_rated_style';
 
-import * as SecureStore from 'expo-secure-store';
-
 import LeaderboardCard from './card/card';
 
 import { useProfile } from '../../../context/general_context/profile_context';
@@ -14,12 +12,9 @@ import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../..
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 import { CONFIG } from '../../../config';
 
-
-
-
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
-    const {setStackIndexByName} = useStackManagerContext();
+    const {handleLogout, handleInactive} = useStackManagerContext();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -51,13 +46,17 @@ const TopRated = () => {
                         Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                 }
             } else {
-                Alert.alert('התחברות נכשלה!');
-                await authInstance.logout();
-                setStackIndexByName(StackNames.Auth);
+                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                handleLogout();
             }
         };
 
-        fetchLeaderboard();
+        if (profile.expirationDate <= new Date()) {
+            Alert.alert('תוקף המנוי נגמר');
+            handleInactive();
+        } else {
+            fetchLeaderboard();
+        }
     }, []);
 
     const isValidProfilePictureIndex = (index: number): index is keyof typeof IMAGES.profile_images => index >= CONFIG.min_profile_image && index <= CONFIG.max_profile_image;
