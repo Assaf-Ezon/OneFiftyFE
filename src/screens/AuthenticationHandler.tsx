@@ -45,7 +45,7 @@ export default class AuthenticationHandler {
             try {
                 await this.refresh();
             } catch (err) {
-                throw new Error('cant refresh tokens');
+                console.error(`error trying to refresh tokens: ${err}`);
             }
         }
 
@@ -208,7 +208,7 @@ export default class AuthenticationHandler {
         
         if (idToken && refreshToken && name) {
             let access_token_exp = new Date();
-            access_token_exp.setUTCMinutes(access_token_exp.getUTCMinutes() + 1);
+            access_token_exp.setUTCMinutes(access_token_exp.getUTCMinutes() + 30);
 
             await SecureStore.setItemAsync(CONFIG.access_token, idToken);
             await SecureStore.setItemAsync(CONFIG.access_token_exp, access_token_exp.toISOString());

@@ -19,8 +19,8 @@ enum ErrorType {
 }
 
 const ChangeProfileImagePopup = () => {
-    const {updateProfileImage} = useProfile();
-    const {setStackIndexByName} = useStackManagerContext();
+    const {profile, updateProfileImage} = useProfile();
+    const {setStackIndexByName, handleLogout} = useStackManagerContext();
     const {isProfileImageMenuOpen, toggleProfileImageMenu, imageIndex} = useProfileImageMenuContext();
 
     const authInstance = AuthenticationHandler.getInstance(); 
@@ -29,7 +29,11 @@ const ChangeProfileImagePopup = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const update = async () => {
-        if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
+        if (profile.expirationDate <= new Date()) {
+            Alert.alert('תוקף המנוי נגמר');
+            handleLogout();
+        }
+        else if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
             const name = await authInstance.getName();
             const access_token = await authInstance.getAccessToken();
 
