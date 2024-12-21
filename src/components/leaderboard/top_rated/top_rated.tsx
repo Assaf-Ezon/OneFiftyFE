@@ -46,7 +46,7 @@ const TopRated = () => {
                         Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                 }
             } else {
-                Alert.alert('התחברות נכשלה!');
+                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
                 handleLogout();
             }
         };

@@ -54,7 +54,7 @@ const PlansContainer = () => {
         
                 webviewRef.current.injectJavaScript(script);
             } else {
-                Alert.alert('התחברות נכשלה!');
+                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
                 await authInstance.logout();
                 setStackIndexByName(StackNames.Auth);
             }

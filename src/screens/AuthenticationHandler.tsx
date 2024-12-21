@@ -43,7 +43,7 @@ export default class AuthenticationHandler {
             try {
                 await this.refresh();
             } catch (err) {
-                console.error(`error trying to refresh tokens: ${err}`);
+                return '';
             }
         }
 

@@ -53,7 +53,7 @@ const ChangeProfileImagePopup = () => {
                 setLoading(false);
 
             } else {
-                Alert.alert('התחברות נכשלה!');
+                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
                 handleLogout();
             }
         } else {
