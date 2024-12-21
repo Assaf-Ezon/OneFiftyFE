@@ -22,13 +22,10 @@ const PlansContainer = () => {
 
     // contexts
     const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
-    const {setStackIndexByName} = useStackManagerContext();
+    const {setStackIndexByName, handleLogout} = useStackManagerContext();
 
     //auth instance
     const authInstance = AuthenticationHandler.getInstance();
-
-    // loading flag
-    const [loading, setLoading] = useState<boolean>(false);
 
     // reference to the webview
     const webviewRef = useRef<WebView | null>(null);
@@ -55,15 +52,13 @@ const PlansContainer = () => {
                 webviewRef.current.injectJavaScript(script);
             } else {
                 Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                await authInstance.logout();
-                setStackIndexByName(StackNames.Auth);
+                handleLogout();
             }
         }
     };
 
     return (
-        <View style={[{opacity: loading ? 0.2 : 1}, PlansContainerStyle.mainPage]}
-        pointerEvents={loading ? 'none' : 'auto'}>
+        <View style={PlansContainerStyle.mainPage}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} isRecommended={Plans.OneMonth.isRecommended} backgroundColor={Plans.OneMonth.backgroundColor} />
                 <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} isRecommended={Plans.TwoMonths.isRecommended} backgroundColor={Plans.TwoMonths.backgroundColor} />
@@ -91,7 +86,6 @@ const PlansContainer = () => {
                     </View>
                 : null
             }
-            {loading ? <View style={PlansContainerStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
         </View>
     );
 };
