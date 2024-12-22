@@ -155,16 +155,53 @@ class addPracticeWords {
         return wordsDict;
     }
 }
-
 class addSmartWords {
-    static add(key: number, amount_of_words: number, wordsDict: Words): Words {
+    static add(new_words: NewWords, statistics: UserStatistics, key: number, amount_of_words: number, wordsDict: Words): Words {
         // console.log("Adding smart words...");
 
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
 
+        addNewWords.add(new_words, key, amount_of_words / 2, wordsDict);
+
+        const left_to_fill = amount_of_words - Object.entries(wordsDict[key]).length;
+
+        const words: { [word: string]: WordStatisticsData } = {};
+
+        const listOfWords = statistics.WordsStatistics.Words[key];
+        for (const word in listOfWords) {
+            if (listOfWords[word].Successes == 0 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= addSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
+                words[word] = listOfWords[word]
+            }
+        }
+        console.log(words);
         return wordsDict;
+    }
+
+    static deltaDaysFromToday(date: string) {
+        const givenDate = new Date(date);
+        const today = new Date();
+
+        // Strip time portions for a calendar-day comparison
+        const givenDateMidnight = new Date(givenDate.getFullYear(), givenDate.getMonth(), givenDate.getDate());
+        const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+        // Difference in full days
+        let deltaInDays = Math.floor((todayMidnight.getTime() - givenDateMidnight.getTime()) / (1000 * 60 * 60 * 24));
+
+        // Only adjust for the current day if today is the same day or the following day
+        if (
+            deltaInDays === 0 || // Same day
+            (deltaInDays === 1 && ( // Following day
+                today.getHours() > givenDate.getHours() || 
+                (today.getHours() === givenDate.getHours() && today.getMinutes() >= givenDate.getMinutes())
+            ))
+        ) {
+            deltaInDays += 1;
+        }
+
+        return deltaInDays;
     }
 }
 
@@ -211,13 +248,12 @@ export default class createWordList {
 
     createList(): Words {
         try {
-            console.log(JSON.stringify(this._statistics));
             for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
                 if (typeof level_value == 'number' && level_value > 0) {
                     const amountList = this._divideNumber(level_value);
 
                     if (this._settings.newWords && amountList.length) { // add " && this.checkLevelExistsInNewList(parseInt(level_key))" to statement
-                        this._words = addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
+                        addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
                         // this._words = addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
@@ -231,8 +267,9 @@ export default class createWordList {
                         // addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.smartStudy && amountList.length) {
-                        addSmartWords.add(parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                    if (this._settings.smartStudy && amountList.length) { // add " && this.checkLevelExistsInNewList(parseInt(level_key)) && this.checkLevelExistsInStatisticsList(parseInt(level_key))" to statement
+                        addSmartWords.add(this._new_words, this._statistics, 0, amountList[amountList.length - 1], this._words);
+                        // addSmartWords.add(parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                 }
