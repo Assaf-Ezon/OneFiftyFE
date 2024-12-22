@@ -29,6 +29,9 @@ const Title = () => {
             <View style={TitleStyle.profileTitle}>
                 <Text style={TitleStyle.name}>{profile.name}</Text>
                 <Text style={TitleStyle.email}>{profile.email}</Text>
+                <Text style={TitleStyle.expiration}>
+                    תום תוקף משתמש: {profile.expirationDate.getDate()}/{profile.expirationDate.getMonth() + 1}/{profile.expirationDate.getFullYear()}
+                </Text>
             </View>
         </View>
     );

@@ -60,6 +60,12 @@ const TitleStyle = StyleSheet.create({
         textAlign: 'center',
         color: '#656565',
     },
+    expiration: {
+        textAlign: 'center',
+        color: '#656565',
+        fontSize: 12,
+        marginTop: 3,
+    },
 });
 
 export default TitleStyle;

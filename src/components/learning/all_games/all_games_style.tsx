@@ -28,9 +28,12 @@ const allGamesStyle = StyleSheet.create({
     },
     cardsContainer: {
         flexDirection: 'row',
-        width: '95%',
+        width: '100%',
         height: '100%',
         transform: [{ scaleX: -1 }],
+    },
+    blank: {
+        width: width * 0.04,
     },
 });
 

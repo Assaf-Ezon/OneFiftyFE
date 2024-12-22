@@ -6,6 +6,7 @@ import { IMAGES } from '../../../image_handler';
 import { Screens } from '../../../screen_names';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
+import { CONFIG } from '../../../config';
 
 const { width } = Dimensions.get('window');
 
@@ -68,7 +69,7 @@ const SideBar = () => {
             </View>
             <View style={barStyle.lowerPart}>
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={2} screenName={''} />
-                <Text style={barStyle.versionText}>Version 1.0.0</Text>
+                <Text style={barStyle.versionText}>Version {CONFIG.Version}</Text>
             </View>
         </Animated.View>
     );
