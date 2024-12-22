@@ -29,9 +29,12 @@ const learningPartStyle = StyleSheet.create({
     },
     cardsContainer: {
         flexDirection: 'row',
-        width: '95%',
+        width: '100%',
         height: '85%',
         transform: [{ scaleX: -1 }],
+    },
+    blank: {
+        width: width * 0.05,
     },
 });
 

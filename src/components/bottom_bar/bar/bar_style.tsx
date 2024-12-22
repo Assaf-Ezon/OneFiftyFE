@@ -17,6 +17,7 @@ const barStyle = StyleSheet.create({
         shadowRadius: 2,
         backgroundColor: 'white',
         zIndex: CONFIG.zIndexLevels.bottom_bar,
+        borderWidth: 0.2,
     },
 });
 

@@ -5,10 +5,6 @@ import { Screens } from './src/screen_names';
 import SplashScreen from './src/screens/splash/splash'
 import StartScreen from './src/screens/start/start';
 
-import SignupScreen from './src/screens/signup/signup';
-import LoginScreen from './src/screens/login/login';
-import ForgotPasswordScreen from './src/screens/forgot_password/forgot_password';
-
 import HomePage from './src/screens/home/home';
 import DictionaryPage from './src/screens/dictionary/dictionary';
 import LearningPage from './src/screens/learning/learning';
@@ -35,10 +31,6 @@ const AuthStack = () => {
     <Stack.Navigator initialRouteName={authStackInitialRouteName}>
       <Stack.Screen name={Screens.SPLASH} component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name={Screens.START} component={StartScreen} options={{ headerShown: false }} />
-
-        <Stack.Screen name={Screens.SIGNUP} component={SignupScreen} options={{ headerShown: false }} />
-        <Stack.Screen name={Screens.LOGIN} component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name={Screens.FORGOT_PASSWORD} component={ForgotPasswordScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };

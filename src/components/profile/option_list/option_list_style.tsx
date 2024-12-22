@@ -4,10 +4,13 @@ const { width, height } = Dimensions.get('window');
 
 const OptionListStyle = StyleSheet.create({
     container: {
+        marginTop: 15,
         width: width,
+        height: height * 0.5,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
+        //backgroundColor: 'red',
     },
     line: {
         height: 1,

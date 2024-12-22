@@ -15,6 +15,7 @@ const AllGamesPart: FC = () => {
             </View>
             <View style={allGamesStyle.cardsContainerConatiner}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
+                <View style={allGamesStyle.blank} />
                 {
                     GAMES.map(game => {
                         return (

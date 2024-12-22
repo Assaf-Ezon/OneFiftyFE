@@ -1,21 +1,28 @@
-import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { IMAGES } from '../../../image_handler';
+import { View } from 'react-native';
 
 import PagePartStyle from './page_part_style';
 
 import Title from '../title/title';
 import OptionList from '../option_list/option_list';
 
-import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const PagePart = () => {
-    const {profile} = useProfile();
+    const navigation = useNavigation();
+
     const {isOpen} = useSidebarContext();
     const {isProfileImageMenuOpen} = useProfileImageMenuContext();
     const {isContactFormOpen} = useContactUsFormContext();
+
+    useEffect(() => {
+        navigation.setOptions({
+          gestureEnabled: !isProfileImageMenuOpen,
+        });
+    }, [isProfileImageMenuOpen])
 
     return (
         <View pointerEvents={ isOpen || isProfileImageMenuOpen || isContactFormOpen ? 'none' : 'auto' } 

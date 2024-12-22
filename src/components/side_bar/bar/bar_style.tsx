@@ -74,7 +74,7 @@ const barStyle = StyleSheet.create({
         alignItems: 'center',
     },
     versionText: {
-        paddingBottom: 5,
+        paddingBottom: 10,
         color: '#656565',
     },
     line: {

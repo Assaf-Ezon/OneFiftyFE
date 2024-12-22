@@ -15,7 +15,7 @@ export const IMAGES = {
         11: require('../assets/profile image icons/11.png'),
     },
 
-    small_logo: require('../assets/login icons/small_logo.png'),
+    small_logo: require('../assets/login icons/old_small_logo.png'),
     logo: require('../assets/login icons/logo.png'),
     start_screen: require('../assets/login icons/open_screen2.png'),
 

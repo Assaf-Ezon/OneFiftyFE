@@ -13,7 +13,6 @@ const OptionList = () => {
     return (
         <View style={OptionListStyle.container}>
             <OptionCard title='ערוך פרופיל' image={IMAGES.unused_profile} screenName='' isActive={true} />
-            <OptionCard title='אפס סיסמא' image={IMAGES.reset_password} screenName='' isActive={true} />
             <OptionCard title='המנוי שלי' image={IMAGES.subscription} screenName='' isActive={true} />
             <OptionCard title='הגדרות' image={IMAGES.settings} screenName=''  isActive={true} />
             <OptionCard title='תשלום' image={IMAGES.payment} screenName={Screens.PAYMENT} isActive={profile.trial} />
