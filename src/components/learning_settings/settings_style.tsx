@@ -24,7 +24,7 @@ const SettingsStyle = StyleSheet.create({
         height: '10%',
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        alignItems: 'center',
+        alignItems: 'flex-end',
     },
     title: {
         fontSize: 25,

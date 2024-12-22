@@ -118,12 +118,39 @@ class addWrongWords {
 }
 
 class addPracticeWords {
-    static add(contextDict: UserStatistics | {}, key: number, amount_of_words: number, wordsDict: Words): Words {
+    static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: Words): Words {
         // console.log(`mode: practice, key: ${key}, amount: ${amount_of_words}`);
 
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
+
+        const words: { [word: string]: WordStatisticsData } = {};
+
+        const listOfWords = contextDict.WordsStatistics.Words[key];
+        for (const word in listOfWords) {
+            if (listOfWords[word].Successes !== 0) {
+                words[word] = listOfWords[word]
+            }
+        }
+
+        const wordsArray = Object.entries(words);
+
+        for (let i = wordsArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
+        }
+
+        const selectedWords = wordsArray.slice(0, amount_of_words);
+
+        selectedWords.forEach(([word, word_info]) => {
+            wordsDict[key][word] = {
+                FullWord: word_info.Word.FullWord,
+                Meanings: word_info.Word.Meanings,
+                Group: word_info.Word.Group,
+                Type: 'תרגול'   
+            };
+        });
 
         return wordsDict;
     }
@@ -184,6 +211,7 @@ export default class createWordList {
 
     createList(): Words {
         try {
+            console.log(JSON.stringify(this._statistics));
             for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
                 if (typeof level_value == 'number' && level_value > 0) {
                     const amountList = this._divideNumber(level_value);
@@ -198,8 +226,9 @@ export default class createWordList {
                         // addWrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.practiceWords && amountList.length   && this.checkLevelExistsInStatisticsList(parseInt(level_key))) {
-                        addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                    if (this._settings.practiceWords && amountList.length) { // add " && this.checkLevelExistsInStatisticsList(parseInt(level_key))" to statement
+                        addPracticeWords.add(this._statistics, 0, Math.min(Object.entries(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
+                        // addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.smartStudy && amountList.length) {
