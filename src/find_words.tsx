@@ -52,21 +52,24 @@ interface UserStatistics {
 
 class addNewWords {
     static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: Words): Words {
-        // console.log(`mode: new, key: ${key}, amount: ${amount_of_words}`);
-        
+        // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
 
+        // converting to array - so that I can shuffle
         const wordsArray = Object.entries(contextDict[key]);
 
+        // shuffling the array of the potential "new" words
         for (let i = wordsArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); 
             [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
         }
 
+        // takes only the amount of words I need from the potential words
         const selectedWords = wordsArray.slice(0, amount_of_words);
 
+        // adding them to the wordsDict
         selectedWords.forEach(([word, word_info]) => {
             wordsDict[key][word] = {
                 ...word_info, 
@@ -80,14 +83,15 @@ class addNewWords {
 
 class addWrongWords {
     static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: Words): Words {
-        // console.log(`mode: wrong, key: ${key}, amount: ${amount_of_words}`);
-
+        // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
 
+        // dict of the words that are considered "wrong words"
         const words: { [word: string]: WordStatisticsData } = {};
 
+        // filters only the words that are considered "wrong"
         const listOfWords = contextDict.WordsStatistics.Words[key];
         for (const word in listOfWords) {
             if (listOfWords[word].Successes == 0 && listOfWords[word].Failures !== 0) {
@@ -95,15 +99,19 @@ class addWrongWords {
             }
         }
 
+        // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
 
+        // shuffling the array of the potential "wrong" words
         for (let i = wordsArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); 
             [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
         }
 
+        // takes only the amount of words I need from the potential words
         const selectedWords = wordsArray.slice(0, amount_of_words);
 
+        // adding them to the wordsDict
         selectedWords.forEach(([word, word_info]) => {
             wordsDict[key][word] = {
                 FullWord: word_info.Word.FullWord,
@@ -119,14 +127,15 @@ class addWrongWords {
 
 class addPracticeWords {
     static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: Words): Words {
-        // console.log(`mode: practice, key: ${key}, amount: ${amount_of_words}`);
-
+        // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
 
+        // dict of the words that are considered "practice words"
         const words: { [word: string]: WordStatisticsData } = {};
 
+        // filters only the words that are considered "pracrice"
         const listOfWords = contextDict.WordsStatistics.Words[key];
         for (const word in listOfWords) {
             if (listOfWords[word].Successes !== 0) {
@@ -134,8 +143,10 @@ class addPracticeWords {
             }
         }
 
+        // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
 
+        // shuffling the array of the potential "practice" words
         for (let i = wordsArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); 
             [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
@@ -157,33 +168,40 @@ class addPracticeWords {
 }
 class addSmartWords {
     static add(new_words: NewWords, statistics: UserStatistics, key: number, amount_of_words: number, wordsDict: Words): Words {
-        // console.log("Adding smart words...");
-
+        // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
 
+        // adding the new words part
         addNewWords.add(new_words, key, Math.min(Object.entries(new_words[key]).length, amount_of_words / 2), wordsDict);
+        // how much it needs to fill from the smart practice words
         const left_to_fill = amount_of_words - Object.entries(wordsDict[key]).length;
 
+        // dict of the words that are considered "smart practice words"
         const words: { [word: string]: WordStatisticsData } = {};
 
-        const listOfWords = statistics.WordsStatistics.Words[key];
+        const listOfWords = statistics.WordsStatistics.Words[key]; // the part of the statistics dict that you need to search for "smart practice words"
+        // filters only the words that are considered "smart pracrice"
         for (const word in listOfWords) {
             if (listOfWords[word].Successes == 0 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= addSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
                 words[word] = listOfWords[word]
             }
         }
 
+        // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
 
+        // shuffling the array of the potential "smart practice" words
         for (let i = wordsArray.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1)); 
             [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
         }
 
+        // takes only the amount of words I need from the potential words
         const selectedWords = wordsArray.slice(0, Math.min(wordsArray.length, left_to_fill));
         
+        // adding them to the wordsDict
         selectedWords.forEach(([word, word_info]) => {
             wordsDict[key][word] = {
                 FullWord: word_info.Word.FullWord,
@@ -193,7 +211,6 @@ class addSmartWords {
             };
         });
 
-        console.log(words);
         return wordsDict;
     }
 
