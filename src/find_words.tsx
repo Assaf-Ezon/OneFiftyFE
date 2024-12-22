@@ -163,8 +163,7 @@ class addSmartWords {
             wordsDict[key] = {};
         }
 
-        addNewWords.add(new_words, key, amount_of_words / 2, wordsDict);
-
+        addNewWords.add(new_words, key, Math.min(Object.entries(new_words[key]).length, amount_of_words / 2), wordsDict);
         const left_to_fill = amount_of_words - Object.entries(wordsDict[key]).length;
 
         const words: { [word: string]: WordStatisticsData } = {};
@@ -175,6 +174,25 @@ class addSmartWords {
                 words[word] = listOfWords[word]
             }
         }
+
+        const wordsArray = Object.entries(words);
+
+        for (let i = wordsArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
+        }
+
+        const selectedWords = wordsArray.slice(0, Math.min(wordsArray.length, left_to_fill));
+        
+        selectedWords.forEach(([word, word_info]) => {
+            wordsDict[key][word] = {
+                FullWord: word_info.Word.FullWord,
+                Meanings: word_info.Word.Meanings,
+                Group: word_info.Word.Group,
+                Type: 'תרגול (חכם)'   
+            };
+        });
+
         console.log(words);
         return wordsDict;
     }
@@ -254,7 +272,7 @@ export default class createWordList {
 
                     if (this._settings.newWords && amountList.length) { // add " && this.checkLevelExistsInNewList(parseInt(level_key))" to statement
                         addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
-                        // this._words = addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                        // addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.incorrectWords && amountList.length) { // add "&& this.checkLevelExistsInStatisticsList(parseInt(level_key))" to statement"
