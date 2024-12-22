@@ -173,11 +173,6 @@ class addSmartWords {
             wordsDict[key] = {};
         }
 
-        // adding the new words part
-        addNewWords.add(new_words, key, Math.min(Object.entries(new_words[key]).length, amount_of_words / 2), wordsDict);
-        // how much it needs to fill from the smart practice words
-        const left_to_fill = amount_of_words - Object.entries(wordsDict[key]).length;
-
         // dict of the words that are considered "smart practice words"
         const words: { [word: string]: WordStatisticsData } = {};
 
@@ -189,6 +184,12 @@ class addSmartWords {
             }
         }
 
+        // splits the amount of words asked for to "new" words and "smart practice" words
+        const amounts = addSmartWords.splitNumberBetweenLists(amount_of_words, key, new_words, words);
+
+        // adding the new words part
+        addNewWords.add(new_words, key, amounts.newWordsAmount, wordsDict);
+
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
 
@@ -199,7 +200,7 @@ class addSmartWords {
         }
 
         // takes only the amount of words I need from the potential words
-        const selectedWords = wordsArray.slice(0, Math.min(wordsArray.length, left_to_fill));
+        const selectedWords = wordsArray.slice(0, Math.min(wordsArray.length, amounts.statisticsAmount));
         
         // adding them to the wordsDict
         selectedWords.forEach(([word, word_info]) => {
@@ -238,6 +239,43 @@ class addSmartWords {
 
         return deltaInDays;
     }
+
+    static splitNumberBetweenLists(amount: number, key: number, new_words: NewWords, statistics: { [word: string]: WordStatisticsData }): { newWordsAmount: number; statisticsAmount: number } {
+        const newWordsArray = Object.entries(new_words[key]);
+        const statisticsArray = Object.entries(statistics);
+
+        const totalCapacity = newWordsArray.length + statisticsArray.length;
+      
+        // If the total capacity is less than the number, use all capacity
+        if (totalCapacity <= amount) {
+          return { newWordsAmount: newWordsArray.length, statisticsAmount: statisticsArray.length };
+        }
+      
+        // Ideal split: 50/50
+        const idealSplit = Math.floor(amount / 2);
+      
+        let newWordsAmount = Math.min(idealSplit, newWordsArray.length);
+        let statisticsAmount = Math.min(idealSplit, statisticsArray.length);
+      
+        // Adjust for leftover if one list can't fully handle its portion
+        const remaining = amount - (newWordsAmount + statisticsAmount);
+      
+        if (remaining > 0) {
+          if (newWordsArray.length > newWordsAmount) {
+            const extraForList1 = Math.min(remaining, newWordsArray.length - newWordsAmount);
+            newWordsAmount += extraForList1;
+          }
+      
+          const stillRemaining = amount - (newWordsAmount + statisticsAmount);
+      
+          if (stillRemaining > 0 && statisticsArray.length > statisticsAmount) {
+            const extraForList2 = Math.min(stillRemaining, statisticsArray.length - statisticsAmount);
+            statisticsAmount += extraForList2;
+          }
+        }
+      
+        return { newWordsAmount, statisticsAmount };
+      }
 }
 
 
