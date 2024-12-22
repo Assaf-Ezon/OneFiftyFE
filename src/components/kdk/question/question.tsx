@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Animated } from 'react-native';
+import { Text, View, TouchableOpacity, Animated, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import QuestionStyle from './question_style';
@@ -8,8 +8,13 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { useWords } from '../../../context/general_context/words_context';
+
 import createWordList from '../../../find_words';
+
+import AuthenticationHandler from '../../../screens/AuthenticationHandler';
+import updateUserStatistics from '../../../requests/update_stats_request';
 
 interface Meaning {
     Meaning: string;
@@ -23,15 +28,40 @@ interface Word {
     Type: string;
 }
 
+
+interface WordDetails {
+    FullWord: string;
+    Meanings: Meaning[];
+    Group: number;
+}
+
 const Question = () => {
     // Navigation
     const navigation = useNavigation();
 
+    // auth instance
+    const authInstance = AuthenticationHandler.getInstance();
+
     // Contexts
     const { settings } = useLearningSettingsContext();
-    const { hebrewUserStatistics, englishUserStatistics, hebrewNewWords, englishNewWords } = useWords();
+    const { handleLogout } = useStackManagerContext();
+    const {hebrewWords, 
+        setHebrewWords, 
+        englishWords, 
+        setEnglishWords, 
+        hebrewUserStatistics, 
+        setHebrewUserStatistics, 
+        englishUserStatistics, 
+        setEnglishUserStatistics, 
+        hebrewNewWords, 
+        updateNewHebrewWords, 
+        englishNewWords, 
+        updateNewEnglishWords} = useWords();
 
     // State
+    const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
+    const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
+
     const [words, setWords] = useState<[string, { [word: string]: Word }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
@@ -99,10 +129,38 @@ const Question = () => {
     }, [words]);
 
     // Word change logic
-    const changeWord = () => {
+    const changeWord = async () => {
         if ((wordPerLevelCount + 1) === amountInLevel) {
             if ((listPointer + 1) === words.length) {
-                navigation.goBack();
+                const name = await authInstance.getName();
+                const token = await authInstance.getAccessToken();
+
+                if (name && token) {
+                    const lang = settings.language;
+                    if (lang) {
+                        try {
+                            const userStatistics = await updateUserStatistics(name, token, correctAnswers, wrongAnswers, lang);
+                            switch (settings.language) {
+                                case "Hebrew":
+                                    setHebrewUserStatistics(userStatistics.UserStatistics);
+                                    break;
+                                case "English":
+                                    setEnglishUserStatistics(userStatistics.UserStatistics);
+                                    break;
+                            }
+                        } catch (err) {
+                            Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                        }
+                    } else {
+                        Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                    }
+
+                    navigation.goBack();
+                } else {
+                    Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                    handleLogout();
+                }
+                
             } else {
                 const nextPointer = listPointer + 1;
                 const nextLevel = parseInt(words[nextPointer][0]);
@@ -138,8 +196,48 @@ const Question = () => {
         }
     };
 
+    // handles calculating new words for hebrew - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(hebrewWords).length > 0 && Object.keys(hebrewUserStatistics).length > 0) {
+            updateNewHebrewWords();
+        }
+    }, [hebrewWords, hebrewUserStatistics]);
+
+    // handles calculating new words for english - when full dict and statistics are updated in the context
+    useEffect(() => {
+        if (Object.keys(englishWords).length > 0 && Object.keys(englishUserStatistics).length > 0) {
+            updateNewEnglishWords();
+        }
+    }, [englishWords, englishUserStatistics]);
+
     const setIfAnswerCorrect = (isCorrect: boolean) => {
-        /* Handle answer logic */
+        const currectWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
+        const currectWordValue = words[listPointer][1][currectWordKey];
+
+        const currectWordToAdd: WordDetails = {
+            FullWord: currectWordValue.FullWord,
+            Meanings: currectWordValue.Meanings,
+            Group: currectWordValue.Group,
+        }
+
+        if (isCorrect) {
+            setCorrectAnswers((prevAnswers) => {
+                if (Array.isArray(prevAnswers)) {
+                    return [...prevAnswers, currectWordToAdd]; 
+                } else {
+                    return [currectWordToAdd]; 
+                }
+            });
+        } else {
+            setWrongAnswers((prevAnswers) => {
+                if (Array.isArray(prevAnswers)) {
+                    return [...prevAnswers, currectWordToAdd]; 
+                } else {
+                    return [currectWordToAdd]; 
+                }
+            });
+        }
+
         setAnswer(3);
     };
 

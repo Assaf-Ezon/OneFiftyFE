@@ -152,8 +152,10 @@ class addPracticeWords {
             [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
         }
 
+        // takes only the amount of words I need from the potential words
         const selectedWords = wordsArray.slice(0, amount_of_words);
 
+        // adding them to the wordsDict
         selectedWords.forEach(([word, word_info]) => {
             wordsDict[key][word] = {
                 FullWord: word_info.Word.FullWord,
