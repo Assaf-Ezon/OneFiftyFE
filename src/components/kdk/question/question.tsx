@@ -16,6 +16,12 @@ import createWordList from '../../../find_words';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 import updateUserStatistics from '../../../requests/update_stats_request';
 
+enum ButtonState {
+    ShowAnswer = 1,
+    ChooseAnswer = 2,
+    Continue = 3,
+}
+
 interface Meaning {
     Meaning: string;
     Source: string;
@@ -46,9 +52,7 @@ const Question = () => {
     const { settings } = useLearningSettingsContext();
     const { handleLogout } = useStackManagerContext();
     const {hebrewWords, 
-        setHebrewWords, 
         englishWords, 
-        setEnglishWords, 
         hebrewUserStatistics, 
         setHebrewUserStatistics, 
         englishUserStatistics, 
@@ -75,7 +79,7 @@ const Question = () => {
     const [pirush, setPirush] = useState<string>("");
     const [type, setType] = useState<string>("");
 
-    const [answer, setAnswer] = useState<number>(1); // Button states
+    const [answer, setAnswer] = useState<number>(ButtonState.ShowAnswer); // Button states
 
     const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
     const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
@@ -192,7 +196,7 @@ const Question = () => {
             setPirush(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
             setType(nextWord.Type);
 
-            setAnswer(1);
+            setAnswer(ButtonState.ShowAnswer);
         }
     };
 
@@ -238,7 +242,7 @@ const Question = () => {
             });
         }
 
-        setAnswer(3);
+        setAnswer(ButtonState.Continue);
     };
 
     // Animations
@@ -277,13 +281,13 @@ const Question = () => {
                     </View>
                 </LinearGradient>
             </View>
-            {answer == 1 ? (
+            {answer == ButtonState.ShowAnswer ? (
                 <Animated.View style={{ opacity: btnFadeAnim }}>
-                    <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() =>{setAnswer(2)}}>
+                    <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() =>{setAnswer(ButtonState.ChooseAnswer)}}>
                         <Text style={QuestionStyle.btnText}>הצג תשובה</Text>
                     </TouchableOpacity>
                 </Animated.View>
-            ) : answer == 2 ? (
+            ) : answer == ButtonState.ChooseAnswer ? (
                 <View style={QuestionStyle.btns}>
                     <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIfAnswerCorrect(false)}>
                         <Text style={QuestionStyle.btnText}>לא ידעתי</Text>
@@ -292,7 +296,7 @@ const Question = () => {
                         <Text style={QuestionStyle.btnText}>ידעתי</Text>
                     </TouchableOpacity>
                 </View>
-            ) : answer == 3 ? (
+            ) : answer == ButtonState.Continue ? (
                 <Animated.View style={{ opacity: btnFadeAnim }}>
                     <TouchableOpacity style={QuestionStyle.nextBtn} onPress={changeWord}>
                         <Text style={QuestionStyle.btnText}>המשך</Text>
