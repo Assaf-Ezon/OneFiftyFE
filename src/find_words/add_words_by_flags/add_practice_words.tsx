@@ -21,24 +21,30 @@ export default class AddPracticeWords {
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
 
-        // shuffling the array of the potential "practice" words
-        for (let i = wordsArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1)); 
-            [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
+        // contains the "used" indexes
+        const takenWordsindexList: number[] = [];
+
+        // loop the amount requested for
+        for (let i = 0; i < amount_of_words; i++) {
+            // random index
+            let randomIndex = Math.floor(Math.random() * wordsArray.length); 
+            
+            // continues to create random indexes if already inside
+            while (takenWordsindexList.includes(randomIndex)) {
+                randomIndex = Math.floor(Math.random() * wordsArray.length); 
+            }
+            console.log(JSON.stringify(wordsArray[randomIndex]));
+            // adding the random words to the wordsDict
+            wordsDict[key][wordsArray[randomIndex][0]] = {
+                FullWord: wordsArray[randomIndex][1].Word.FullWord,
+                Meanings: wordsArray[randomIndex][1].Word.Meanings,
+                Group: wordsArray[randomIndex][1].Word.Group,
+                Type: 'תרגול'  
+            }
+            
+            // adds the index to the "used" indexes
+            takenWordsindexList.push(randomIndex);
         }
-
-        // takes only the amount of words I need from the potential words
-        const selectedWords = wordsArray.slice(0, amount_of_words);
-
-        // adding them to the wordsDict
-        selectedWords.forEach(([word, word_info]) => {
-            wordsDict[key][word] = {
-                FullWord: word_info.Word.FullWord,
-                Meanings: word_info.Word.Meanings,
-                Group: word_info.Word.Group,
-                Type: 'תרגול'   
-            };
-        });
 
         return wordsDict;
     }

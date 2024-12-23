@@ -9,26 +9,31 @@ export default class AddNewWords {
 
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(contextDict[key]);
-        
-        // TODO: bad logic... very compute wasteful... shuffle random integer in the range {0 .. (wordsArray.Length-1)} and select unselected words until your "budget" is full.
-        // TODO: In my opinion the "shuffle and select" code section should be a function in a shared parent for these classes rather than repeated.
 
-        // shuffling the array of the potential "new" words
-        for (let i = wordsArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1)); 
-            [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
+        // contains the "used" indexes
+        const takenWordsindexList: number[] = [];
+
+        // loop the amount requested for
+        for (let i = 0; i < amount_of_words; i++) {
+            // random index
+            let randomIndex = Math.floor(Math.random() * wordsArray.length); 
+            
+            // continues to create random indexes if already inside
+            while (takenWordsindexList.includes(randomIndex)) {
+                randomIndex = Math.floor(Math.random() * wordsArray.length); 
+            }
+            
+            // adding the random words to the wordsDict
+            wordsDict[key][wordsArray[randomIndex][0]] = {
+                ...wordsArray[randomIndex][1],
+                Type: 'חדש'
+            }
+            
+            // adds the index to the "used" indexes
+            takenWordsindexList.push(randomIndex);
         }
 
-        // takes only the amount of words I need from the potential words
-        const selectedWords = wordsArray.slice(0, amount_of_words);
-
-        // adding them to the wordsDict
-        selectedWords.forEach(([word, word_info]) => {
-            wordsDict[key][word] = {
-                ...word_info, 
-                Type: 'חדש'   
-            };
-        });
+        // TODO: In my opinion the "shuffle and select" code section should be a function in a shared parent for these classes rather than repeated.
 
         return wordsDict;
     }

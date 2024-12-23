@@ -15,7 +15,8 @@ export default class AddSmartWords {
         // filters only the words that are considered "smart pracrice"
         for (const word in listOfWords) {
             // TODO: add a link to a document explaining the selection logic
-            if (listOfWords[word].ConsecutiveSuccesses == 0 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= AddSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
+            if ((listOfWords[word].ConsecutiveSuccesses == 0 && 1 <= AddSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen))
+                 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= AddSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
                 words[word] = listOfWords[word]
             }
         }
@@ -29,24 +30,31 @@ export default class AddSmartWords {
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
 
-        // shuffling the array of the potential "smart practice" words
-        for (let i = wordsArray.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1)); 
-            [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
-        }
 
-        // takes only the amount of words I need from the potential words
-        const selectedWords = wordsArray.slice(0, Math.min(wordsArray.length, amounts.statisticsAmount));
-        
-        // adding them to the wordsDict
-        selectedWords.forEach(([word, word_info]) => {
-            wordsDict[key][word] = {
-                FullWord: word_info.Word.FullWord,
-                Meanings: word_info.Word.Meanings,
-                Group: word_info.Word.Group,
-                Type: 'תרגול (חכם)'   
-            };
-        });
+        // contains the "used" indexes
+        const takenWordsindexList: number[] = [];
+
+        // loop the amount requested for
+        for (let i = 0; i < Math.min(wordsArray.length, amounts.statisticsAmount); i++) {
+            // random index
+            let randomIndex = Math.floor(Math.random() * wordsArray.length); 
+            
+            // continues to create random indexes if already inside
+            while (takenWordsindexList.includes(randomIndex)) {
+                randomIndex = Math.floor(Math.random() * wordsArray.length); 
+            }
+            
+            // adding the random words to the wordsDict
+            wordsDict[key][wordsArray[randomIndex][0]] = {
+                FullWord: wordsArray[randomIndex][1].Word.FullWord,
+                Meanings: wordsArray[randomIndex][1].Word.Meanings,
+                Group: wordsArray[randomIndex][1].Word.Group,
+                Type: 'תרגול (חכם)'
+            }
+            
+            // adds the index to the "used" indexes
+            takenWordsindexList.push(randomIndex);
+        }
 
         return wordsDict;
     }

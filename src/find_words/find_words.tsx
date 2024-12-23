@@ -1,4 +1,4 @@
-import AddWordsClassesHandler from "./add_words_by_flags/add_words_classes_handler";
+import AddWordsClassesHandler from "./add_words_by_flags/classes_handler";
 
 //interfaces for word list
 interface Meaning {
