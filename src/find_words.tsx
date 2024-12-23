@@ -49,7 +49,7 @@ interface UserStatistics {
 }
 
 
-
+// TODO: abstract class - better naming, extract to files
 class addNewWords {
     static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: Words): Words {
         // creates the level in the wordsDict if doesn't exist
@@ -59,6 +59,9 @@ class addNewWords {
 
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(contextDict[key]);
+        
+        // TODO: bad logic... very compute wasteful... shuffle random integer in the range {0 .. (wordsArray.Length-1)} and select unselected words until your "budget" is full.
+        // TODO: In my opinion the "shuffle and select" code section should be a function in a shared parent for these classes rather than repeated.
 
         // shuffling the array of the potential "new" words
         for (let i = wordsArray.length - 1; i > 0; i--) {
@@ -181,7 +184,8 @@ class addSmartWords {
         const listOfWords = statistics.WordsStatistics.Words[key]; // the part of the statistics dict that you need to search for "smart practice words"
         // filters only the words that are considered "smart pracrice"
         for (const word in listOfWords) {
-            if (listOfWords[word].Successes == 0 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= addSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
+            // TODO: add a link to a document explaining the selection logic
+            if (listOfWords[word].ConsecutiveSuccesses == 0 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= addSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
                 words[word] = listOfWords[word]
             }
         }
@@ -243,6 +247,7 @@ class addSmartWords {
     }
 
     static splitNumberBetweenLists(amount: number, key: number, new_words: NewWords, statistics: { [word: string]: WordStatisticsData }): { newWordsAmount: number; statisticsAmount: number } {
+        // TODO: why did you turn these two into arrays? hold the lengths
         const newWordsArray = Object.entries(new_words[key]);
         const statisticsArray = Object.entries(statistics);
 
@@ -261,7 +266,8 @@ class addSmartWords {
       
         // Adjust for leftover if one list can't fully handle its portion
         const remaining = amount - (newWordsAmount + statisticsAmount);
-      
+        
+        // TODO: add a comment explaining what are you doing
         if (remaining > 0) {
           if (newWordsArray.length > newWordsAmount) {
             const extraForList1 = Math.min(remaining, newWordsArray.length - newWordsAmount);
@@ -281,11 +287,11 @@ class addSmartWords {
 }
 
 
-// Settings interface
+// Settings interface - TODO: FUCKING GIVE IT A PROPER NEW CreateWordsListSettings
 interface Settings {
-    newWords: boolean;
-    incorrectWords: boolean;
-    practiceWords: boolean;
+    newWords: boolean; // shouldIncludeNewWords
+    incorrectWords: boolean; // shouldIncludeIncorrectWords
+    practiceWords: boolean; // you are good with excel - pull it down
     smartStudy: boolean;
     language: string | null;
     levels: { [key: number]: number };
@@ -293,7 +299,7 @@ interface Settings {
 
 export default class createWordList {
     private _settings: Settings;
-    private _booleans_count: number;
+    private _booleans_count: number; // TODO: REMOVE AND ALSO SHOULD BE NAMED _flags_count
     private _words: Words;
 
     private _new_words: NewWords;
@@ -305,7 +311,7 @@ export default class createWordList {
 
         const booleanList: string[] = ["newWords", "incorrectWords", "practiceWords", "smartStudy"];
 
-        for (const [key, value] of Object.entries(this._settings)) {
+        for (const [key, value] of Object.entries(this._settings)) { // TODO: MAKE SETTINGS "INTERFACE" INTO A FUCKING CLASS AND MOVE THIS SHIT THERE - REMOVE THE _BOOLEANS_COUNT SHIT
             if (typeof value === "boolean" && value && booleanList.includes(key)) {
                 this._booleans_count += 1;
             }
@@ -324,10 +330,12 @@ export default class createWordList {
     createList(): Words {
         try {
             for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
-                if (typeof level_value == 'number' && level_value > 0) {
-                    const amountList = this._divideNumber(level_value);
+                if (typeof level_value == 'number' && level_value > 0) { // TODO: Validate that also under 100
+                    const amountList = this._divideNumber(level_value); // TODO: level_value -> level_word_count
 
-                    if (this._settings.newWords && amountList.length) { // add " && this.checkLevelExistsInNewList(parseInt(level_key))" to statement
+                    if (this._settings.newWords && amountList.length) { 
+                        // TODO: Make the validation that you would like to see in the end. in the relevant methods - fix the logic up to take level 0 into account and change it later.
+                        // add " && this.checkLevelExistsInNewList(parseInt(level_key))" to statement
                         addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
                         // addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
@@ -359,12 +367,13 @@ export default class createWordList {
         return {};
     }
 
-    private _divideNumber(amount: number): number[] {
+    private _divideNumber(amount: number): number[] { // TODO: amount -> word_count
         const baseValue = Math.floor(amount / this._booleans_count); 
         const remainder = amount % this._booleans_count; 
 
         const result = Array(this._booleans_count).fill(baseValue);
-
+        
+        // TODO: i = 0; i < reminder - result[this._booleans_count - i]
         for (let i = this._booleans_count - remainder; i < this._booleans_count; i++) {
             result[i] += 1;
         }
@@ -385,121 +394,3 @@ export default class createWordList {
         console.log(this._words);
     }
 }
-
-// Test the implementation
-const settings: Settings = {
-    newWords: true,
-    incorrectWords: true,
-    practiceWords: true,
-    smartStudy: false,
-    language: "Hebrew",
-    levels: {
-        1: 4,
-        2: 4,
-    },
-};
-
-const new_words: NewWords = {
-    1: {
-        "הֲגַם שֶׁ...": {
-            "FullWord":"הֲגַם שֶׁ...",
-            "Meanings": [
-                {
-                    "Meaning":"אף על פי",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
-        },
-        "איסטניס": {
-            "FullWord":"הֲגַם שֶׁ...",
-            "Meanings": [
-                {
-                    "Meaning":"אף על פי",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
-        },
-        "פרקדן": {
-            "FullWord":"הֲגַם שֶׁ...",
-            "Meanings": [
-                {
-                    "Meaning":"אף על פי",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
-        },
-    },
-    2: {
-        "אֵבוּס": {
-            "FullWord":"אֵבוּס",
-            "Meanings": [
-                {
-                    "Meaning":"כלי צר ומוארך הפתוח בחלקו העליון ובו משאירים מזון לבהמות",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
-        },
-        "אֲבוּקָה": {
-            "FullWord":"אֲבוּקָה",
-            "Meanings": [
-                {
-                    "Meaning":"לפיד",
-                    "Source":""
-                }
-            ],
-            "Group": 0,
-        },
-    },
-}
-
-const stats: UserStatistics = {
-    "WordsStatistics": {
-        "WordCount": 2,
-        "Words": {
-            1: {
-                "אָבַד עָלָיו הַכֶּלַח": {
-                    "Word": {
-                        "FullWord": "אָבַד עָלָיו הַכֶּלַח",
-                        "Meanings": [
-                            {
-                                "Meaning": "התיישן, עבר זמנו", 
-                                "Source": ""
-                            },
-                        ],
-                        "Group": 1,
-                    },
-                    "ConsecutiveSuccesses": 2,
-                    "LastSeen": "2024-11-22T10:09:59.7948609Z",
-                    "Successes": 2,
-                    "Failures": 0
-                },
-            },
-            2: {  
-                "אַבְדָּאִי": {
-                    "Word": {
-                        "FullWord":  "אַבְדָּאִי",
-                        "Meanings": [
-                            {
-                                "Meaning":"גבר חזק ותקיף, בריון",
-                                "Source":"ויקימילון"
-                            },
-                        ],
-                        "Group": 2,
-                    },
-                    "ConsecutiveSuccesses": 0,
-                    "LastSeen": "2024-11-22T10:09:59.794862Z",
-                    "Successes": 0,
-                    "Failures": 2
-                },
-            },
-        },
-    },
-}
-
-// const c = new createWordList(settings, new_words, stats);
-// c.createList();
-// c.printWords();

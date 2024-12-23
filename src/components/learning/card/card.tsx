@@ -19,15 +19,15 @@ const LearningCard: FC<LearningCardProp> = ({ id, image, title, gameName }) => {
     const handlePress = async () => {
         try {
             const games = await AsyncStorage.getItem('games');
-            const parsedGames = games ? JSON.parse(games) : {};
-
+            const parsedGames = games ? JSON.parse(games) : [];
+            
             const updatedGames = parsedGames.includes(id) ? parsedGames : [...parsedGames, id];
             await AsyncStorage.setItem('games',  JSON.stringify(updatedGames));
         } catch (error) {
             console.error('Error adding game: ', error);
         }
 
-        navigation.navigate(gameName);
+        navigation.navigate(gameName as never);
     };
 
     return (
