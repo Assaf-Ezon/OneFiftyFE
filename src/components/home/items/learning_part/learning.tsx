@@ -15,7 +15,7 @@ const LearningPartHome: FC = () => {
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
-                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEARNING)}}><Text style={learningPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEARNING as never)}}><Text style={learningPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={learningPartStyle.title}>לומדות מילים</Text>   
             </View>
             <View style={learningPartStyle.cardsContainerContainer}>

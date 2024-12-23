@@ -14,7 +14,7 @@ const LeaderboardPart: FC = () => {
     return (
         <View style={leaderboardPartStyle.container}>
             <View style={leaderboardPartStyle.titleContainer}>
-                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEADERBOARD)}}><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEADERBOARD as never)}}><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={leaderboardPartStyle.title}>מובילים</Text>   
             </View>
             <View style={leaderboardPartStyle.selfScore}>

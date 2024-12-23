@@ -18,7 +18,7 @@ const OptionCard: FC<LearningCardProp> = ({ image, title, screenName, isActive }
         <View style={{opacity: isActive ? 1 : 0.6}}
         pointerEvents={isActive ? 'auto' : 'none'}>        
             <View style={cardStyle.line} />
-            <TouchableOpacity style={cardStyle.container} onPress={() => {navigation.navigate(screenName)}}>
+            <TouchableOpacity style={cardStyle.container} onPress={() => {navigation.navigate(screenName as never)}}>
                 <Text style={cardStyle.text}>{title}</Text>
                 <Image source={image} />
             </TouchableOpacity>

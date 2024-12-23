@@ -1,4 +1,5 @@
 import { Image, Text, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import React from 'react';
 import { FC } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
@@ -26,7 +27,7 @@ const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressAc
 
     const navigateToPage = () => {
         toggleMenu();
-        navigation.navigate(screenName);
+        navigation.navigate(screenName as never);
     };
 
     const openContactUsForm = () => {

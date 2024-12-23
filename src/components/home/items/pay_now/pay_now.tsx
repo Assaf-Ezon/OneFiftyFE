@@ -39,7 +39,7 @@ const PayNow = () => {
                 </Text>
             </View>
             <View style={PayNowStyle.PayBtnContainer}>
-                <TouchableOpacity style={PayNowStyle.PayBtn} onPress={() => {navigation.navigate(Screens.PAYMENT)}}>
+                <TouchableOpacity style={PayNowStyle.PayBtn} onPress={() => {navigation.navigate(Screens.PAYMENT as never)}}>
                     <Text style={[{color: currentPlan.backgroundColor}, PayNowStyle.PayBtnText]}>למעבר לתשלום</Text>
                 </TouchableOpacity>
                 <Text style={PayNowStyle.Price}>{currentPlan.Price} ₪</Text> 

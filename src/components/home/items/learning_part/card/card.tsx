@@ -21,7 +21,7 @@ const LearningCard: FC<LearningCardProp> = ({ image, title, description, gameNam
             <View style={cardStyle.textContainer}>
                 <Text style={cardStyle.titleText}>{title}</Text>
                 <Text style={cardStyle.descriptionText}>{description}</Text>
-                <TouchableOpacity style={cardStyle.btn} onPress={() => {navigation.navigate(gameName)}}>
+                <TouchableOpacity style={cardStyle.btn} onPress={() => {navigation.navigate(gameName as never)}}>
                     <Text style={cardStyle.btnText}>התחל משחק</Text>
                 </TouchableOpacity>
             </View>
