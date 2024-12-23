@@ -129,7 +129,7 @@ const LearningSettings = () => {
                                     <CheckBox value={incorrectWordsChecbox} onValueChange={() => {setIncorrectWordsChecbox(prev => !prev)}} />
                                 </View>
                                 <View style={SettingsStyle.SmartStudy}>
-                                    <Text style={SettingsStyle.RegularStudyText}>מילים לתרגול נוסף</Text>
+                                    <Text style={SettingsStyle.RegularStudyText}>מילים שתרגלתי</Text>
                                     <CheckBox value={practiceWordsChecbox} onValueChange={() => {setPracticeWordsChecbox(prev => !prev)}} />
                                 </View>
                             </View>

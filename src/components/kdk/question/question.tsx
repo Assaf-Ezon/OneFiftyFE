@@ -11,7 +11,7 @@ import { useLearningSettingsContext } from '../../../context/settings_context/le
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { useWords } from '../../../context/general_context/words_context';
 
-import createWordList from '../../../find_words';
+import CreateWordList from '../../../find_words/find_words';
 
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 import updateUserStatistics from '../../../requests/update_stats_request';
@@ -90,11 +90,11 @@ const Question = () => {
 
         switch (settings.language) {
             case "Hebrew":
-                const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics, getFlagsCount());
+                const heCreateGame = new CreateWordList(settings, hebrewNewWords, hebrewUserStatistics, getFlagsCount());
                 wordsList = Object.entries(heCreateGame.createList());
                 break;
             case "English":
-                const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics, getFlagsCount());
+                const enCreateGame = new CreateWordList(settings, englishNewWords, englishUserStatistics, getFlagsCount());
                 wordsList = Object.entries(enCreateGame.createList());
                 break;
         }

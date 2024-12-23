@@ -1,0 +1,45 @@
+import { UserStatistics, Words, WordStatisticsData } from './types';
+
+export default class AddPracticeWords {
+    static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: Words): Words {
+        // creates the level in the wordsDict if doesn't exist
+        if (!wordsDict[key]) {
+            wordsDict[key] = {};
+        }
+
+        // dict of the words that are considered "practice words"
+        const words: { [word: string]: WordStatisticsData } = {};
+
+        // filters only the words that are considered "pracrice"
+        const listOfWords = contextDict.WordsStatistics.Words[key];
+        for (const word in listOfWords) {
+            if (listOfWords[word].Successes !== 0) {
+                words[word] = listOfWords[word]
+            }
+        }
+
+        // converting to array - so that I can shuffle
+        const wordsArray = Object.entries(words);
+
+        // shuffling the array of the potential "practice" words
+        for (let i = wordsArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
+        }
+
+        // takes only the amount of words I need from the potential words
+        const selectedWords = wordsArray.slice(0, amount_of_words);
+
+        // adding them to the wordsDict
+        selectedWords.forEach(([word, word_info]) => {
+            wordsDict[key][word] = {
+                FullWord: word_info.Word.FullWord,
+                Meanings: word_info.Word.Meanings,
+                Group: word_info.Word.Group,
+                Type: 'תרגול'   
+            };
+        });
+
+        return wordsDict;
+    }
+}
