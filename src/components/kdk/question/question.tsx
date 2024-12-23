@@ -49,7 +49,7 @@ const Question = () => {
     const authInstance = AuthenticationHandler.getInstance();
 
     // Contexts
-    const { settings } = useLearningSettingsContext();
+    const { settings, getFlagsCount } = useLearningSettingsContext();
     const { handleLogout } = useStackManagerContext();
     const {hebrewWords, 
         englishWords, 
@@ -90,11 +90,11 @@ const Question = () => {
 
         switch (settings.language) {
             case "Hebrew":
-                const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics);
+                const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics, getFlagsCount());
                 wordsList = Object.entries(heCreateGame.createList());
                 break;
             case "English":
-                const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics);
+                const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics, getFlagsCount());
                 wordsList = Object.entries(enCreateGame.createList());
                 break;
         }

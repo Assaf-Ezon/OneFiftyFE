@@ -247,75 +247,72 @@ class addSmartWords {
     }
 
     static splitNumberBetweenLists(amount: number, key: number, new_words: NewWords, statistics: { [word: string]: WordStatisticsData }): { newWordsAmount: number; statisticsAmount: number } {
-        // TODO: why did you turn these two into arrays? hold the lengths
-        const newWordsArray = Object.entries(new_words[key]);
-        const statisticsArray = Object.entries(statistics);
+        // gets the length of newWordsDict and statisticsDict
+        const newWordsLength = Object.keys(new_words[key]).length;
+        const statisticsLength = Object.keys(statistics).length;
 
-        const totalCapacity = newWordsArray.length + statisticsArray.length;
+        // the sum of the words both dicts can "give"
+        const totalCapacity = newWordsLength + statisticsLength;
       
         // If the total capacity is less than the number, use all capacity
         if (totalCapacity <= amount) {
-          return { newWordsAmount: newWordsArray.length, statisticsAmount: statisticsArray.length };
+          return { newWordsAmount: newWordsLength, statisticsAmount: statisticsLength };
         }
       
         // Ideal split: 50/50
         const idealSplit = Math.floor(amount / 2);
       
-        let newWordsAmount = Math.min(idealSplit, newWordsArray.length);
-        let statisticsAmount = Math.min(idealSplit, statisticsArray.length);
+        // how much newWordsDict and statisticsDict can give - either half or less (as much as it can)
+        let newWordsAmount = Math.min(idealSplit, newWordsLength);
+        let statisticsAmount = Math.min(idealSplit, statisticsLength);
       
         // Adjust for leftover if one list can't fully handle its portion
         const remaining = amount - (newWordsAmount + statisticsAmount);
         
-        // TODO: add a comment explaining what are you doing
+        // checks if there are remaining words to add (if newWords or statistics was under the idealSplit)
         if (remaining > 0) {
-          if (newWordsArray.length > newWordsAmount) {
-            const extraForList1 = Math.min(remaining, newWordsArray.length - newWordsAmount);
-            newWordsAmount += extraForList1;
-          }
-      
-          const stillRemaining = amount - (newWordsAmount + statisticsAmount);
-      
-          if (stillRemaining > 0 && statisticsArray.length > statisticsAmount) {
-            const extraForList2 = Math.min(stillRemaining, statisticsArray.length - statisticsAmount);
-            statisticsAmount += extraForList2;
-          }
+            // case if the newWords has more words to "give" from it
+            if (newWordsLength > newWordsAmount) {
+                // adds to newWordsAmount how much remains to add/the amount that remains of the newWordsDict 
+                const extraForNewWords = Math.min(remaining, newWordsLength - newWordsAmount);
+                newWordsAmount += extraForNewWords;
+            }
+        
+            // updates how much left to fill after the first segment of the if statement
+            const stillRemaining = amount - (newWordsAmount + statisticsAmount);
+        
+            // case if the statistics has more words to "give" from it
+            if (stillRemaining > 0 && statisticsLength > statisticsAmount) {
+                // adds to statisticsAmount how much remains to add/the amount that remains of the statisticsDict 
+                const extraForStatistics = Math.min(stillRemaining, statisticsLength - statisticsAmount);
+                statisticsAmount += extraForStatistics;
+            }
         }
-      
+        
         return { newWordsAmount, statisticsAmount };
-      }
+    }
 }
 
-
-// Settings interface - TODO: FUCKING GIVE IT A PROPER NEW CreateWordsListSettings
 interface Settings {
-    newWords: boolean; // shouldIncludeNewWords
-    incorrectWords: boolean; // shouldIncludeIncorrectWords
-    practiceWords: boolean; // you are good with excel - pull it down
-    smartStudy: boolean;
+    shouldIncludeNewWords: boolean; 
+    shouldIncludeIncorrectWords: boolean; 
+    shouldIncludePracticeWords: boolean; 
+    shouldIncludeSmartStudy: boolean;
     language: string | null;
     levels: { [key: number]: number };
 }
 
 export default class createWordList {
     private _settings: Settings;
-    private _booleans_count: number; // TODO: REMOVE AND ALSO SHOULD BE NAMED _flags_count
+    private _flags_count: number; 
     private _words: Words;
 
     private _new_words: NewWords;
     private _statistics: UserStatistics; 
 
-    constructor(settings: Settings, new_words: NewWords, statistics: UserStatistics) { 
+    constructor(settings: Settings, new_words: NewWords, statistics: UserStatistics, flags_count: number) { 
         this._settings = settings;
-        this._booleans_count = 0;
-
-        const booleanList: string[] = ["newWords", "incorrectWords", "practiceWords", "smartStudy"];
-
-        for (const [key, value] of Object.entries(this._settings)) { // TODO: MAKE SETTINGS "INTERFACE" INTO A FUCKING CLASS AND MOVE THIS SHIT THERE - REMOVE THE _BOOLEANS_COUNT SHIT
-            if (typeof value === "boolean" && value && booleanList.includes(key)) {
-                this._booleans_count += 1;
-            }
-        }
+        this._flags_count = flags_count;
 
         this._words = {};
 
@@ -329,28 +326,35 @@ export default class createWordList {
 
     createList(): Words {
         try {
-            for (const [level_key, level_value] of Object.entries(this._settings.levels)) {
-                if (typeof level_value == 'number' && level_value > 0) { // TODO: Validate that also under 100
-                    const amountList = this._divideNumber(level_value); // TODO: level_value -> level_word_count
+            for (const [level_key, level_word_count] of Object.entries(this._settings.levels)) {
+                if (typeof level_word_count == 'number' && level_word_count > 0 && level_word_count <= 100) { 
+                    const amountList = this._divideNumber(level_word_count); 
 
-                    if (this._settings.newWords && amountList.length) { 
-                        // TODO: Make the validation that you would like to see in the end. in the relevant methods - fix the logic up to take level 0 into account and change it later.
-                        // add " && this.checkLevelExistsInNewList(parseInt(level_key))" to statement
+                    if (this._settings.shouldIncludeNewWords && 
+                        amountList.length && 
+                        this.checkLevelExistsInNewList(parseInt(level_key))) { 
                         addNewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
                         // addNewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.incorrectWords && amountList.length) { // add "&& this.checkLevelExistsInStatisticsList(parseInt(level_key))" to statement"
+                    if (this._settings.shouldIncludeIncorrectWords && 
+                        amountList.length && 
+                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
                         addWrongWords.add(this._statistics, 0, Math.min(Object.entries(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
                         // addWrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.practiceWords && amountList.length) { // add " && this.checkLevelExistsInStatisticsList(parseInt(level_key))" to statement
+                    if (this._settings.shouldIncludePracticeWords && 
+                        amountList.length && 
+                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
                         addPracticeWords.add(this._statistics, 0, Math.min(Object.entries(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
                         // addPracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.smartStudy && amountList.length) { // add " && this.checkLevelExistsInNewList(parseInt(level_key)) && this.checkLevelExistsInStatisticsList(parseInt(level_key))" to statement
+                    if (this._settings.shouldIncludeSmartStudy && 
+                        amountList.length && 
+                        this.checkLevelExistsInNewList(parseInt(level_key)) && 
+                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
                         addSmartWords.add(this._new_words, this._statistics, 0, amountList[amountList.length - 1], this._words);
                         // addSmartWords.add(parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
@@ -367,25 +371,26 @@ export default class createWordList {
         return {};
     }
 
-    private _divideNumber(amount: number): number[] { // TODO: amount -> word_count
-        const baseValue = Math.floor(amount / this._booleans_count); 
-        const remainder = amount % this._booleans_count; 
+    private _divideNumber(word_count: number): number[] { 
+        const baseValue = Math.floor(word_count / this._flags_count); 
+        const remainder = word_count % this._flags_count; 
 
-        const result = Array(this._booleans_count).fill(baseValue);
+        const result = Array(this._flags_count).fill(baseValue);
         
-        // TODO: i = 0; i < reminder - result[this._booleans_count - i]
-        for (let i = this._booleans_count - remainder; i < this._booleans_count; i++) {
-            result[i] += 1;
+        for (let i = 0; i < remainder; i++) {
+            result[this._flags_count - i - 1] += 1;
         }
 
         return result;
     }
 
     checkLevelExistsInNewList(level: number): boolean {
+        return true;
         return level in this._new_words;
     }
 
     checkLevelExistsInStatisticsList(level: number): boolean {
+        return true;
         return level in this._statistics.WordsStatistics.Words;
     }
 

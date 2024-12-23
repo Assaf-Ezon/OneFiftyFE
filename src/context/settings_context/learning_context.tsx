@@ -1,10 +1,10 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 interface Settings {
-    newWords: boolean;
-    incorrectWords: boolean;
-    practiceWords: boolean;
-    smartStudy: boolean;
+    shouldIncludeNewWords: boolean;
+    shouldIncludeIncorrectWords: boolean;
+    shouldIncludePracticeWords: boolean;
+    shouldIncludeSmartStudy: boolean;
     language: string | null;
     levels: { [key: number]: number };
 }
@@ -17,6 +17,7 @@ interface LearningSettingsContextProps {
     updateLevel: (level: number, value: number) => void;
     updateLanguage: (lang: string | null) => void;
     generateRandomNumbers: () => void;
+    getFlagsCount : () => number;
 }
 
 const LearningSettingsContext = createContext<LearningSettingsContextProps | undefined>(undefined);
@@ -31,7 +32,7 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
     };
 
     // use state of the settings
-    const [settings, setSettings] = useState<Settings>({newWords: false, incorrectWords: false, practiceWords: false, smartStudy: false, language: null,
+    const [settings, setSettings] = useState<Settings>({shouldIncludeNewWords: false, shouldIncludeIncorrectWords: false, shouldIncludePracticeWords: false, shouldIncludeSmartStudy: false, language: null,
         levels: {
             1: 0,
             2: 0,
@@ -50,10 +51,10 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
     const updateCheckboxes = (smart: boolean, n: boolean, incorect: boolean, practice: boolean) => {
         setSettings((prevState: Settings) => ({
             ...prevState, 
-            smartStudy: smart,
-            newWords: n,
-            incorrectWords: incorect,
-            practiceWords: practice,
+            shouldIncludeSmartStudy: smart,
+            shouldIncludeNewWords: n,
+            shouldIncludeIncorrectWords: incorect,
+            shouldIncludePracticeWords: practice,
         }));
     };
 
@@ -102,8 +103,19 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         }));
     };
 
+    const getFlagsCount = () => {
+        let count = 0;
+
+        count += settings.shouldIncludeNewWords ? 1 : 0;
+        count += settings.shouldIncludeIncorrectWords ? 1 : 0;
+        count += settings.shouldIncludePracticeWords ? 1 : 0;
+        count += settings.shouldIncludeSmartStudy ? 1 : 0;
+
+        return count;
+    }
+
     return (
-        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage, generateRandomNumbers }}>
+        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage, generateRandomNumbers, getFlagsCount }}>
             {children}
         </LearningSettingsContext.Provider>
     );

@@ -13,12 +13,12 @@ const LearningSettings = () => {
     const {isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLanguage, generateRandomNumbers} = useLearningSettingsContext();
 
     // state handling for smart study checkbox
-    const [smartStudy, setSmartStudy] = useState<boolean>(settings.smartStudy);
+    const [smartStudy, setSmartStudy] = useState<boolean>(settings.shouldIncludeSmartStudy);
 
     // state handling for regular study checkbox
-    const [newWordsChecbox, setNewWordsChecbox] = useState<boolean>(settings.newWords);
-    const [incorrectWordsChecbox, setIncorrectWordsChecbox] = useState<boolean>(settings.incorrectWords);
-    const [practiceWordsChecbox, setPracticeWordsChecbox] = useState<boolean>(settings.practiceWords);
+    const [newWordsChecbox, setNewWordsChecbox] = useState<boolean>(settings.shouldIncludeNewWords);
+    const [incorrectWordsChecbox, setIncorrectWordsChecbox] = useState<boolean>(settings.shouldIncludeIncorrectWords);
+    const [practiceWordsChecbox, setPracticeWordsChecbox] = useState<boolean>(settings.shouldIncludePracticeWords);
 
     const isRegularPracticeOn = () => {
         return newWordsChecbox || incorrectWordsChecbox || practiceWordsChecbox;
