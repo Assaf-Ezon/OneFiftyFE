@@ -1,54 +1,5 @@
 import AddWordsClassesHandler from "./add_words_by_flags/classes_handler";
-
-//interfaces for word list
-interface Meaning {
-    Meaning: string;
-    Source: string;
-}
-
-interface WordListDetails {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-    Type: string;
-}
-
-interface Words {
-    [key: string]: {
-        [word: string]: WordListDetails;
-    };
-}
-
-// new words dictionaries interface
-interface WordDetails {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-}
-
-interface NewWords {
-    [groupId: number]: { 
-        [word: string]: WordDetails 
-    }
-}
-
-// interfaces for statistics
-interface WordStatisticsData {
-    Word: WordDetails;                 
-    ConsecutiveSuccesses: number; 
-    LastSeen: string;           
-    Successes: number;          
-    Failures: number;            
-}
-
-interface WordsStatistics {
-    WordCount: number;
-    Words: { [groupId: number]: { [word: string]: WordStatisticsData } };
-}
-
-interface UserStatistics {
-    WordsStatistics: WordsStatistics; 
-}
+import { Words, NewWords, UserStatistics } from '../types/words_types';
 
 interface Settings {
     shouldIncludeNewWords: boolean; 
@@ -90,22 +41,22 @@ export default class CreateWordList {
                     if (this._settings.shouldIncludeNewWords && 
                         amountList.length && 
                         this.checkLevelExistsInNewList(parseInt(level_key))) { 
-                            AddWordsClassesHandler.NewWords.add(this._new_words, 0, Math.min(Object.entries(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
-                        // AddWordsClassesHandler.NewWords.add(this._new_words, parseInt(level_key), Math.min(Object.entries(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                            AddWordsClassesHandler.NewWords.add(this._new_words, 0, Math.min(Object.keys(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
+                        // AddWordsClassesHandler.NewWords.add(this._new_words, parseInt(level_key), Math.min(Object.keys(this._new_words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeIncorrectWords && 
                         amountList.length && 
                         this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
-                            AddWordsClassesHandler.WrongWords.add(this._statistics, 0, Math.min(Object.entries(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
-                        // AddWordsClassesHandler.WrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                            AddWordsClassesHandler.WrongWords.add(this._statistics, 0, Math.min(Object.keys(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
+                        // AddWordsClassesHandler.WrongWords.add(this._statistics, parseInt(level_key), Math.min(Object.keys(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludePracticeWords && 
                         amountList.length && 
                         this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
-                            AddWordsClassesHandler.PracticeWords.add(this._statistics, 0, Math.min(Object.entries(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
-                        // AddWordsClassesHandler.PracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                            AddWordsClassesHandler.PracticeWords.add(this._statistics, 0, Math.min(Object.keys(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
+                        // AddWordsClassesHandler.PracticeWords.add(this._statistics, parseInt(level_key), Math.min(Object.keys(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeSmartStudy && 
@@ -113,7 +64,7 @@ export default class CreateWordList {
                         this.checkLevelExistsInNewList(parseInt(level_key)) && 
                         this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
                             AddWordsClassesHandler.SmartWords.add(this._new_words, this._statistics, 0, amountList[amountList.length - 1], this._words);
-                        // AddWordsClassesHandler.SmartWords.add(parseInt(level_key), Math.min(Object.entries(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
+                        // AddWordsClassesHandler.SmartWords.add(parseInt(level_key), Math.min(Object.keys(this._statistics.WordsStatistics.Words[parseInt(level_key)]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                 }
@@ -149,10 +100,5 @@ export default class CreateWordList {
     checkLevelExistsInStatisticsList(level: number): boolean {
         return true; // to be removed
         return level in this._statistics.WordsStatistics.Words;
-    }
-
-
-    printWords() {
-        console.log(this._words);
     }
 }

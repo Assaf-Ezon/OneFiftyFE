@@ -11,7 +11,9 @@ export default class AddSmartWords {
         // dict of the words that are considered "smart practice words"
         const words: { [word: string]: WordStatisticsData } = {};
 
-        const listOfWords = statistics.WordsStatistics.Words[key]; // the part of the statistics dict that you need to search for "smart practice words"
+        // the part of the statistics dict that you need to search for "smart practice words"
+        const listOfWords = statistics.WordsStatistics.Words[key]; 
+        
         // filters only the words that are considered "smart pracrice"
         for (const word in listOfWords) {
             // TODO: add a link to a document explaining the selection logic

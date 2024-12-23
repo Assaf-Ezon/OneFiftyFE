@@ -20,12 +20,12 @@ export default class AddWrongWords {
 
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
-
+        
         // contains the "used" indexes
         const takenWordsindexList: number[] = [];
 
         // loop the amount requested for
-        for (let i = 0; i < amount_of_words; i++) {
+        for (let i = 0; i < Math.min(amount_of_words, wordsArray.length); i++) {
             // random index
             let randomIndex = Math.floor(Math.random() * wordsArray.length); 
             
@@ -45,27 +45,7 @@ export default class AddWrongWords {
             // adds the index to the "used" indexes
             takenWordsindexList.push(randomIndex);
         }
-
-
-        // shuffling the array of the potential "wrong" words
-        // for (let i = wordsArray.length - 1; i > 0; i--) {
-        //     const j = Math.floor(Math.random() * (i + 1)); 
-        //     [wordsArray[i], wordsArray[j]] = [wordsArray[j], wordsArray[i]]; 
-        // }
-
-        // takes only the amount of words I need from the potential words
-        // const selectedWords = wordsArray.slice(0, amount_of_words);
-
-        // adding them to the wordsDict
-        // selectedWords.forEach(([word, word_info]) => {
-        //     wordsDict[key][word] = {
-        //         FullWord: word_info.Word.FullWord,
-        //         Meanings: word_info.Word.Meanings,
-        //         Group: word_info.Word.Group,
-        //         Type: 'טעות'   
-        //     };
-        // });
-
+        
         return wordsDict;
     }
 }

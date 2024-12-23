@@ -25,7 +25,7 @@ export default class AddPracticeWords {
         const takenWordsindexList: number[] = [];
 
         // loop the amount requested for
-        for (let i = 0; i < amount_of_words; i++) {
+        for (let i = 0; i < Math.min(amount_of_words, wordsArray.length); i++) {
             // random index
             let randomIndex = Math.floor(Math.random() * wordsArray.length); 
             
@@ -33,7 +33,7 @@ export default class AddPracticeWords {
             while (takenWordsindexList.includes(randomIndex)) {
                 randomIndex = Math.floor(Math.random() * wordsArray.length); 
             }
-            console.log(JSON.stringify(wordsArray[randomIndex]));
+            
             // adding the random words to the wordsDict
             wordsDict[key][wordsArray[randomIndex][0]] = {
                 FullWord: wordsArray[randomIndex][1].Word.FullWord,

@@ -14,7 +14,7 @@ export default class AddNewWords {
         const takenWordsindexList: number[] = [];
 
         // loop the amount requested for
-        for (let i = 0; i < amount_of_words; i++) {
+        for (let i = 0; i < Math.min(amount_of_words, wordsArray.length); i++) {
             // random index
             let randomIndex = Math.floor(Math.random() * wordsArray.length); 
             
