@@ -1,16 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-
-interface Payment {
-    name: string,
-    price: string,
-};
-
-interface PaymentContextProps {
-    details: Payment;
-    setDetails: (details: Payment) => void;
-    isPaymentWebViewOpen: boolean;
-    setIsPaymentWebViewOpen: (isPaymentWebViewOpen: boolean) => void;
-};
+import { Payment, PaymentContextProps } from '../../types_and_interfaces/context/payment_context';
 
 export const PaymentContext = createContext<PaymentContextProps | undefined>(undefined);
 

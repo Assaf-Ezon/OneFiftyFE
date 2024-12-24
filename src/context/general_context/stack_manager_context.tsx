@@ -1,20 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { Screens } from '../../screen_names';
 import AuthenticationHandler from '../../screens/AuthenticationHandler';
+import { StackMangerContextProps, StackNames } from '../../types_and_interfaces/context/stack_manager_context';
 
-export enum StackNames {
-    Auth = 1,
-    Main = 2,
-    Inactive = 3,
-}
-
-interface StackMangerContextProps {
-    stackIndex: number;
-    setStackIndexByName: (name: StackNames) => void;
-    authStackInitialRouteName: string;
-    handleLogout: () => void;
-    handleInactive: () => void;
-}
+export {StackNames};
 
 const StackManagerContext = createContext<StackMangerContextProps | undefined>(undefined);
 

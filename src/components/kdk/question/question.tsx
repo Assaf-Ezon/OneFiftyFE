@@ -15,30 +15,12 @@ import CreateWordList from '../../../find_words/find_words';
 
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 import updateUserStatistics from '../../../requests/update_stats_request';
+import { WordDetails, WordListDetails } from '../../../types_and_interfaces/words_types';
 
 enum ButtonState {
     ShowAnswer = 1,
     ChooseAnswer = 2,
     Continue = 3,
-}
-
-interface Meaning {
-    Meaning: string;
-    Source: string;
-}
-
-interface Word {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-    Type: string;
-}
-
-
-interface WordDetails {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
 }
 
 const Question = () => {
@@ -66,7 +48,7 @@ const Question = () => {
     const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
     const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
 
-    const [words, setWords] = useState<[string, { [word: string]: Word }][]>([]);
+    const [words, setWords] = useState<[string, { [word: string]: WordListDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
     const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
@@ -86,7 +68,7 @@ const Question = () => {
     
     // Update the words list based on settings.language
     useEffect(() => {
-        let wordsList: [string, { [word: string]: Word }][] = [];
+        let wordsList: [string, { [word: string]: WordListDetails }][] = [];
 
         switch (settings.language) {
             case "Hebrew":

@@ -4,24 +4,13 @@ import WordsStyle from './words_style';
 import Word from './word/word';
 
 import { useSettings } from '../../../context/dictionary_context/settings_context';
-import { useProfile } from '../../../context/general_context/profile_context';
 import { useWords } from '../../../context/general_context/words_context';
+import { WordDetails } from '../../../types_and_interfaces/words_types';
 
 const Words = () => {
     const { settings } = useSettings();
     const { englishWords, hebrewWords } = useWords();
     
-    interface Meaning {
-        Meaning: string;
-        Source: string;
-    }
-    
-    interface WordDetails {
-        FullWord: string;
-        Meanings: Meaning[];
-        Group: number;
-    }
-
     let words: { [word: string]: WordDetails } = {};
     try {
         if (settings.level in hebrewWords.Words && settings.level in englishWords.Words) {

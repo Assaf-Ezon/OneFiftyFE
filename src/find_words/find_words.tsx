@@ -1,19 +1,11 @@
 import AddWordsClassesHandler from "./add_words_by_flags/classes_handler";
-import { Words, NewWords, UserStatistics } from '../types/words_types';
-
-interface Settings {
-    shouldIncludeNewWords: boolean; 
-    shouldIncludeIncorrectWords: boolean; 
-    shouldIncludePracticeWords: boolean; 
-    shouldIncludeSmartStudy: boolean;
-    language: string | null;
-    levels: { [key: number]: number };
-}
+import { GameWords, NewWords, UserStatistics } from '../types_and_interfaces/words_types';
+import { Settings } from "../types_and_interfaces/context/game_settings_context";
 
 export default class CreateWordList {
     private _settings: Settings;
     private _flags_count: number; 
-    private _words: Words;
+    private _words: GameWords;
 
     private _new_words: NewWords;
     private _statistics: UserStatistics; 
@@ -32,7 +24,7 @@ export default class CreateWordList {
         this._settings = settings;
     }
 
-    createList(): Words {
+    createList(): GameWords {
         try {
             for (const [level_key, level_word_count] of Object.entries(this._settings.levels)) {
                 if (typeof level_word_count == 'number' && level_word_count > 0 && level_word_count <= 100) { 

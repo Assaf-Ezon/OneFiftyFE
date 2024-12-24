@@ -1,84 +1,18 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-
-//interfaces for dictionaries
-interface Meaning {
-    Meaning: string;
-    Source: string;
-}
-
-interface WordDetails {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-}
-
-interface Words {
-    [key: string]: {
-        [word: string]: WordDetails;
-    };
-}
-
-interface WordsDictionary {
-    WordCount: number;
-    Words: Words;
-}
-
-// interfaces for statistics
-interface WordStatisticsData {
-    Word: WordDetails;                 
-    ConsecutiveSuccesses: number; 
-    LastSeen: string;           
-    Successes: number;          
-    Failures: number;            
-}
-
-interface WordsStatistics {
-    WordCount: number;
-    Words: { [groupId: number]: { [word: string]: WordStatisticsData } };
-}
-
-interface UserStatistics {
-    WordsStatistics: WordsStatistics; 
-}
-
-// new words dictionaries interface
-interface NewWords {
-    [groupId: number]: { 
-        [word: string]: WordDetails 
-    }
-}
-
-interface WordsContextProps {
-    hebrewWords: WordsDictionary,
-    setHebrewWords: (words: WordsDictionary) => void;
-
-    englishWords: WordsDictionary,
-    setEnglishWords: (words: WordsDictionary) => void;
-
-    hebrewUserStatistics: UserStatistics,
-    setHebrewUserStatistics: (words: UserStatistics) => void;
-
-    englishUserStatistics: UserStatistics,
-    setEnglishUserStatistics: (words: UserStatistics) => void;
-
-    hebrewNewWords: NewWords;
-    updateNewHebrewWords: () => void;
-
-    englishNewWords: NewWords;
-    updateNewEnglishWords: () => void;
-};
+import { WordsContextProps } from '../../types_and_interfaces/context/words_context';
+import { FullWordsDictionary, UserStatistics, WordDetails, NewWords } from '../../types_and_interfaces/words_types';
 
 export const WordsContext = createContext<WordsContextProps | undefined>(undefined);
 
 export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [hebrewWords, setHebrewWords] = useState<WordsDictionary>({} as WordsDictionary);
-    const [englishWords, setEnglishWords] = useState<WordsDictionary>({} as WordsDictionary);
+    const [hebrewWords, setHebrewWords] = useState<FullWordsDictionary>({} as FullWordsDictionary);
+    const [englishWords, setEnglishWords] = useState<FullWordsDictionary>({} as FullWordsDictionary);
 
     const [hebrewUserStatistics, setHebrewUserStatistics] = useState<UserStatistics>({} as UserStatistics);
     const [englishUserStatistics, setEnglishUserStatistics] = useState<UserStatistics>({} as UserStatistics);
 
     // remaining new words calculation
-    const _getNewWords = (fullDict: WordsDictionary, statistics: UserStatistics): { [groupId: number]: { [word: string]: WordDetails } } => {
+    const _getNewWords = (fullDict: FullWordsDictionary, statistics: UserStatistics): { [groupId: number]: { [word: string]: WordDetails } } => {
         const newWords: { [groupId: number]: { [word: string]: WordDetails } } = {}; 
         
         for (const [groupKey, groupValue] of Object.entries(fullDict.Words)) {

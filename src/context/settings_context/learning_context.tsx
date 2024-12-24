@@ -1,24 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-
-interface Settings {
-    shouldIncludeNewWords: boolean;
-    shouldIncludeIncorrectWords: boolean;
-    shouldIncludePracticeWords: boolean;
-    shouldIncludeSmartStudy: boolean;
-    language: string | null;
-    levels: { [key: number]: number };
-}
-
-interface LearningSettingsContextProps {
-    isLearningSettingOpen: boolean;
-    toggleLearningSettings: () => void;
-    settings: Settings;
-    updateCheckboxes: (smart: boolean, n: boolean, incorect: boolean, practice: boolean) => void
-    updateLevel: (level: number, value: number) => void;
-    updateLanguage: (lang: string | null) => void;
-    generateRandomNumbers: () => void;
-    getFlagsCount : () => number;
-}
+import { Settings, LearningSettingsContextProps } from '../../types_and_interfaces/context/game_settings_context';
 
 const LearningSettingsContext = createContext<LearningSettingsContextProps | undefined>(undefined);
 

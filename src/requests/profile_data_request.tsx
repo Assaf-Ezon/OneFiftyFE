@@ -2,57 +2,9 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-// dictionaries interfaces
-interface Meaning {
-    Meaning: string;
-    Source: string;
-}
+import { UserStatistics, WordsDictionary } from '../types_and_interfaces/words_types';
+import { UserData } from '../types_and_interfaces/requests/profile_data_request';
 
-interface WordDetails {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-}
-
-interface WordsDictionary {
-    [key: string]: {
-        [word: string]: WordDetails;
-    };
-}
-
-// statistics interfaces
-interface WordStatisticsData {
-    Word: WordDetails;                 
-    ConsecutiveSuccesses: number; 
-    LastSeen: string;           
-    Successes: number;          
-    Failures: number;            
-}
-
-interface WordsStatistics {
-    WordCount: number;
-    Words: { [groupId: number]: { [word: string]: WordStatisticsData } };
-}
-
-interface UserStatistics {
-    WordsStatistics: WordsStatistics; 
-}
-
-interface UserData {
-    AuthProvider: number;
-    DateJoined: string;
-    DisplayName: string;
-    ETag: string;
-    Email: string;
-    ExpirationDate: string;
-    IsActive: boolean;
-    OrderId: string;
-    PartitionKey: string;
-    ProfilePicture: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
-    RowKey: string;
-    Score: number;
-    Timestamp: string;
-}
 
 interface ApiResponse {
     EnglishUserStatistics: UserStatistics,

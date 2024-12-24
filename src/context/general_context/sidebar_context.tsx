@@ -1,9 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import { SidebarContextProps } from '../../types_and_interfaces/context/sidebar_context';
 
-interface SidebarContextProps {
-    isOpen: boolean;
-    toggleMenu: () => void;
-}
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 

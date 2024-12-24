@@ -1,30 +1,12 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../image_handler';
+import { Profile, ProfileContextProps } from '../../types_and_interfaces/context/profile_context';
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
-
-interface Profile {
-    name: string,
-    email: string,
-    rank: number,
-    score: number,
-    dateJoined: Date,
-    expirationDate: Date,
-    profileImage: ImageSourcePropType,
-    trial: boolean,
-};
-
-interface ProfileContextProps {
-    profile: Profile;
-    setProfile: (profile: Profile) => void;
-    updateProfileImage: (newImage: ImageSourcePropType) => void;
-    updateRank: (rank: number) => void;
-    IsInTrail: (dateJoined: string, expirationDate: string) => boolean;
-};
 
 export const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
 

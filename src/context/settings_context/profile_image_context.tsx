@@ -1,11 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-
-interface ProfileImageContextProps {
-    isProfileImageMenuOpen: boolean;
-    toggleProfileImageMenu: () => void;
-    imageIndex: number | null;
-    setImageIndex: (image: number) => void;
-}
+import { ProfileImageContextProps } from '../../types_and_interfaces/context/profile_image_context';
 
 const ProfileImageContext = createContext<ProfileImageContextProps | undefined>(undefined);
 

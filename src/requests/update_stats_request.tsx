@@ -2,35 +2,7 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-// dictionaries interfaces
-interface Meaning {
-    Meaning: string;
-    Source: string;
-}
-
-interface WordDetails {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-}
-
-// statistics interfaces
-interface WordStatisticsData {
-    Word: WordDetails;                 
-    ConsecutiveSuccesses: number; 
-    LastSeen: string;           
-    Successes: number;          
-    Failures: number;            
-}
-
-interface WordsStatistics {
-    WordCount: number;
-    Words: { [groupId: number]: { [word: string]: WordStatisticsData } };
-}
-
-interface UserStatistics {
-    WordsStatistics: WordsStatistics; 
-}
+import { UserStatistics, WordDetails } from '../types_and_interfaces/words_types';
 
 interface ApiResponse {
     UserStatistics: UserStatistics,

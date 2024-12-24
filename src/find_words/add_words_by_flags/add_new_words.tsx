@@ -1,7 +1,7 @@
-import { NewWords, Words } from './types';
+import { NewWords, GameWords } from '../../types_and_interfaces/words_types';
 
 export default class AddNewWords {
-    static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: Words): Words {
+    static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
         // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};

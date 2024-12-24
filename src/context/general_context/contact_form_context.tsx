@@ -1,9 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-
-interface ContactUsFormContextProps {
-    isContactFormOpen: boolean;
-    toggleOpenContactUsForm: () => void;
-}
+import { ContactUsFormContextProps } from '../../types_and_interfaces/context/contact_us_context';
 
 const ContactUsFormContext = createContext<ContactUsFormContextProps | undefined>(undefined);
 
