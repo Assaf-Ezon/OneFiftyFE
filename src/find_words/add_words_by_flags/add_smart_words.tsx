@@ -16,7 +16,8 @@ export default class AddSmartWords {
         
         // filters only the words that are considered "smart pracrice"
         for (const word in listOfWords) {
-            // TODO: add a link to a document explaining the selection logic
+            // https://docs.google.com/document/d/1bqHCz86ZslXG_MxHGOBIxr1OJxB6c5YJC2EdA8N_D9M/edit?tab=t.0
+            // in page 3, under "filters by models"
             if ((listOfWords[word].ConsecutiveSuccesses == 0 && 1 <= AddSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen))
                  || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= AddSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
                 words[word] = listOfWords[word]
