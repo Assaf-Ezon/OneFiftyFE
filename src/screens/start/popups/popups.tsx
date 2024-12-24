@@ -1,4 +1,5 @@
 import { View, Text, Modal, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
 
 import PopupsStyle from './popups_style';
 import { IMAGES } from '../../../image_handler';
