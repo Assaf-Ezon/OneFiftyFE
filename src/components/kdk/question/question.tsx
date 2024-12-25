@@ -16,11 +16,11 @@ import WordsDictCreator from '../../../find_words/WordsDictCreator';
 import { useWords } from '../../../context/general_context/words_context';
 import { useEndGameContext } from '../../../context/game_context/end_game_context';
 
-import { WordDetails } from '../../../Data objects/Words/BasicDataObjects/WordDetails';
-import { GameWordListDetails } from '../../../Data objects/Words/GameDataObjects/GameWordListDetails';
-import { ButtonState } from '../../../Data objects/Enums/KdkGameButtonState/ButtonState';
-import { NewWords } from '../../../Data objects/Words/NewWordsDict/NewWords';
-import { UserStatistics } from '../../../Data objects/Words/Statistics/UserStatistics';
+import { WordDetails } from '../../../Dataobjects/Words/BasicDataObjects/WordDetails';
+import { GameWordDictDetails } from '../../../Dataobjects/Words/GameDataObjects/GameWordDictDetails';
+import { ButtonState } from '../../../Dataobjects/Enums/KdkGameButtonState/ButtonState';
+import { NewWords } from '../../../Dataobjects/Words/NewWordsDict/NewWords';
+import { UserStatistics } from '../../../Dataobjects/Words/Statistics/UserStatistics';
 
 const Question = () => {
     // Navigation
@@ -39,7 +39,7 @@ const Question = () => {
     const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
     const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
 
-    const [words, setWords] = useState<[string, { [word: string]: GameWordListDetails }][]>([]);
+    const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
     const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
@@ -78,7 +78,7 @@ const Question = () => {
         }
         
         const CreateGame = new WordsDictCreator(settings, NewWords, UserStatistics, getFlagsCount());
-        let wordsList: [string, { [word: string]: GameWordListDetails }][] = Object.entries(CreateGame.createList());
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(CreateGame.createList());
 
         Object.keys(wordsList).length === 0 ? navigation.goBack() : null;
 

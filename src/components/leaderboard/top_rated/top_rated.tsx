@@ -12,7 +12,7 @@ import { useStackManagerContext } from '../../../context/general_context/stack_m
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 
-import { Score } from '../../../Data objects/Requests/LeaderboardData/Score';
+import { Score } from '../../../Dataobjects/Requests/LeaderboardData/Score';
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();

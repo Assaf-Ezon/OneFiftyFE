@@ -1,9 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import { FullWordsDictionary } from '../../Data objects/Words/DIctionary/FullWordsDictionary';
-import { UserStatistics } from '../../Data objects/Words/Statistics/UserStatistics';
-import { WordDetails } from '../../Data objects/Words/BasicDataObjects/WordDetails';
-import { NewWords } from '../../Data objects/Words/NewWordsDict/NewWords';
+import { FullWordsDictionary } from '../../Dataobjects/Words/DIctionary/FullWordsDictionary';
+import { UserStatistics } from '../../Dataobjects/Words/Statistics/UserStatistics';
+import { WordDetails } from '../../Dataobjects/Words/BasicDataObjects/WordDetails';
+import { NewWords } from '../../Dataobjects/Words/NewWordsDict/NewWords';
 import { WordsContextProps } from '../../Config/Contexts/WordsContextProps';
 
 

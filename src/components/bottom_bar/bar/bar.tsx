@@ -9,8 +9,8 @@ import { useSidebarContext } from '../../../context/general_context/sidebar_cont
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 
-import { Screens } from '../../../Data objects/Enums/Screens/Screens';
-import { BottomBarProp } from '../../../Data objects/ComponentsProp/General/BottomBarProp';
+import { Screens } from '../../../Dataobjects/Enums/Screens/Screens';
+import { BottomBarProp } from '../../../Dataobjects/ComponentsProp/General/BottomBarProp';
 
 const BottomBar: FC<BottomBarProp> = ({ homePath, dictionaryPath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
     const {isOpen} = useSidebarContext();

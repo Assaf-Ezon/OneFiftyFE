@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { PaymentContextProps } from '../../Config/Contexts/PaymentContextProps';
-import { PaymentDetails } from '../../Data objects/Contexts/PaymentDetails';
+import { PaymentDetails } from '../../Dataobjects/Contexts/PaymentDetails';
 
 export const PaymentContext = createContext<PaymentContextProps | undefined>(undefined);
 

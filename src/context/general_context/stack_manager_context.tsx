@@ -1,8 +1,8 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 import AuthenticationHandler from '../../screens/AuthenticationHandler';
-import { Screens } from '../../Data objects/Enums/Screens/Screens';
-import { StackNames } from '../../Data objects/Contexts/StackNames';
+import { Screens } from '../../Dataobjects/Enums/Screens/Screens';
+import { StackNames } from '../../Dataobjects/Contexts/StackNames';
 import { StackMangerContextProps } from '../../Config/Contexts/StackMangerContextProps';
 
 export {StackNames};

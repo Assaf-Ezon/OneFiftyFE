@@ -1,5 +1,5 @@
 import { ImageSourcePropType } from "react-native";
-import { ProfileData } from "../../Data objects/Contexts/ProfileData";
+import { ProfileData } from "../../Dataobjects/Contexts/ProfileData";
 
 export interface ProfileContextProps {
     profile: ProfileData;

@@ -1,7 +1,7 @@
-import { WordStatisticsData } from '../../Data objects/Words/BasicDataObjects/WordStatisticsData';
-import { GameWords } from '../../Data objects/Words/GameDataObjects/GameWords';
-import { NewWords } from '../../Data objects/Words/NewWordsDict/NewWords';
-import { UserStatistics } from '../../Data objects/Words/Statistics/UserStatistics';
+import { WordStatisticsData } from '../../Dataobjects/Words/BasicDataObjects/WordStatisticsData';
+import { GameWords } from '../../Dataobjects/Words/GameDataObjects/GameWords';
+import { NewWords } from '../../Dataobjects/Words/NewWordsDict/NewWords';
+import { UserStatistics } from '../../Dataobjects/Words/Statistics/UserStatistics';
 
 import NewWordsHandler from './NewWordsHandler';
 

@@ -2,8 +2,8 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-import { WordDetails } from '../Data objects/Words/BasicDataObjects/WordDetails';
-import { UpdateUserStatsResponse } from '../Data objects/Requests/UpdataUserStats/UpdateUserStatsResponse';
+import { WordDetails } from '../Dataobjects/Words/BasicDataObjects/WordDetails';
+import { UpdateUserStatsResponse } from '../Dataobjects/Requests/UpdataUserStats/UpdateUserStatsResponse';
 
 const updateUserStatistics = async (name: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], LanguageOption: string): Promise<UpdateUserStatsResponse> => {
     const updateUserStatisticsRequest = async () => {

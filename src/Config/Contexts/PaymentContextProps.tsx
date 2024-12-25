@@ -1,4 +1,4 @@
-import { PaymentDetails } from "../../Data objects/Contexts/PaymentDetails";
+import { PaymentDetails } from "../../Dataobjects/Contexts/PaymentDetails";
 
 export interface PaymentContextProps {
     details: PaymentDetails;

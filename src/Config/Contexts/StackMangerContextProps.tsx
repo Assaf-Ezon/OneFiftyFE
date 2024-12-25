@@ -1,4 +1,4 @@
-import { StackNames } from "../../Data objects/Contexts/StackNames";
+import { StackNames } from "../../Dataobjects/Contexts/StackNames";
 
 export interface StackMangerContextProps {
     stackIndex: number;

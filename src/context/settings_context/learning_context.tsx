@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
 import { GameSettingsContextProps } from '../../Config/Contexts/GameSettingsContextProps';
-import { Settings } from '../../Data objects/Contexts/GameSettings';
+import { Settings } from '../../Dataobjects/Contexts/GameSettings';
 
 const LearningSettingsContext = createContext<GameSettingsContextProps | undefined>(undefined);
 

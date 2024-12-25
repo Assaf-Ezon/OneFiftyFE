@@ -1,4 +1,4 @@
-import { Settings } from "../../Data objects/Contexts/GameSettings";
+import { Settings } from "../../Dataobjects/Contexts/GameSettings";
 
 export interface GameSettingsContextProps {
     isLearningSettingOpen: boolean;

@@ -2,8 +2,8 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-import { LeaderboardDataResponse } from '../Data objects/Requests/LeaderboardData/LeaderboardDataResponse';
-import { Score } from '../Data objects/Requests/LeaderboardData/Score';
+import { LeaderboardDataResponse } from '../Dataobjects/Requests/LeaderboardData/LeaderboardDataResponse';
+import { Score } from '../Dataobjects/Requests/LeaderboardData/Score';
 
 export const getLeaderboardData = async (name: string, token: string, type: string, partial: boolean): Promise<LeaderboardDataResponse | null> => {
     const leaderboardDataRequest = async () => {

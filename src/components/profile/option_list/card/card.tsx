@@ -3,7 +3,7 @@ import { FC } from 'react';
 import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { ProfileOptionsProp } from '../../../../Data objects/ComponentsProp/ProfilePage/ProfileOptionsProp';
+import { ProfileOptionsProp } from '../../../../Dataobjects/ComponentsProp/ProfilePage/ProfileOptionsProp';
 
 const OptionCard: FC<ProfileOptionsProp> = ({ image, title, screenName, isActive }) => {
     const navigation = useNavigation();

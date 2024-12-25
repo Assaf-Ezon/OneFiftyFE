@@ -4,7 +4,7 @@ import { FC } from 'react';
 import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { HomePageLearningCardProp } from '../../../../../Data objects/ComponentsProp/HomePage/HomePageLearningCardProp';
+import { HomePageLearningCardProp } from '../../../../../Dataobjects/ComponentsProp/HomePage/HomePageLearningCardProp';
 
 const LearningCard: FC<HomePageLearningCardProp> = ({ image, title, description, gameName }) => {
     const navigation = useNavigation();

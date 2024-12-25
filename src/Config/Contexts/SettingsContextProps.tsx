@@ -1,4 +1,4 @@
-import { DictionarySettings } from "../../Data objects/Contexts/DictionaryPageSettings";
+import { DictionarySettings } from "../../Dataobjects/Contexts/DictionaryPageSettings";
 
 export interface SettingsContextProps {
     settings: DictionarySettings;

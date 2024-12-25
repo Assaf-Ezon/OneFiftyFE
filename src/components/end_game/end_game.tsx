@@ -11,7 +11,7 @@ import { useWords } from '../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 
 import updateUserStatistics from '../../requests/update_stats_request';
-import { EndGamePopupProps } from '../../Data objects/ComponentsProp/Games/EndGamePopupProps';
+import { EndGamePopupProps } from '../../Dataobjects/ComponentsProp/Games/EndGamePopupProps';
 
 const EndGame: FC<EndGamePopupProps> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();

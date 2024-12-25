@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 
-import KDKGamePageStyle from './KDKGamePageStyle';
+import KDKGamePageStyle from './kdk_game_page_style';
 
 import { useNavigation } from '@react-navigation/native';
 import Question from '../question/question';

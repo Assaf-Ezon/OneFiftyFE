@@ -1,6 +1,6 @@
-import { FullWordsDictionary } from "../../Data objects/Words/DIctionary/FullWordsDictionary";
-import { NewWords } from "../../Data objects/Words/NewWordsDict/NewWords";
-import { UserStatistics } from "../../Data objects/Words/Statistics/UserStatistics";
+import { FullWordsDictionary } from "../../Dataobjects/Words/DIctionary/FullWordsDictionary";
+import { NewWords } from "../../Dataobjects/Words/NewWordsDict/NewWords";
+import { UserStatistics } from "../../Dataobjects/Words/Statistics/UserStatistics";
 
 export interface WordsContextProps {
     hebrewWords: FullWordsDictionary,

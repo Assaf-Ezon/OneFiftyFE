@@ -2,7 +2,7 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-import { ProfileDataResponse } from '../Data objects/Requests/ProfileData/ProfileDataResponse';
+import { ProfileDataResponse } from '../Dataobjects/Requests/ProfileData/ProfileDataResponse';
 
 const getProfileData = async (name: string, token: string): Promise<ProfileDataResponse | null> => {
     const getProfileDataRequest = async () => {

@@ -4,7 +4,7 @@ import { FC, useState } from "react";
 import WordStyle from "./word_style";
 
 import { IMAGES } from '../../../../image_handler';;
-import { DictionaryWordProp } from "../../../../Data objects/ComponentsProp/DictionaryPage/DictionaryWordProp";
+import { DictionaryWordProp } from "../../../../Dataobjects/ComponentsProp/DictionaryPage/DictionaryWordProp";
 
 const { height } = Dimensions.get('window');
 

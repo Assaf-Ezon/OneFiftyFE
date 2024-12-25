@@ -2,7 +2,7 @@ import { Text, View, Image } from 'react-native';
 import { FC } from 'react';
 
 import LeaderboardCardStyle from './card_style';
-import { LeaderBoardCardProp } from '../../../../Data objects/ComponentsProp/LeaderboardPage/LeaderBoardCardProp';
+import { LeaderBoardCardProp } from '../../../../Dataobjects/ComponentsProp/LeaderboardPage/LeaderBoardCardProp';
 
 const LeaderboardCard: FC<LeaderBoardCardProp> = ({ name, score, rank, image }) => {
 

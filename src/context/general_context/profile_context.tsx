@@ -3,7 +3,7 @@ import { ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
 import { ProfileContextProps } from '../../Config/Contexts/ProfileContextProps';
-import { ProfileData } from '../../Data objects/Contexts/ProfileData';
+import { ProfileData } from '../../Dataobjects/Contexts/ProfileData';
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;

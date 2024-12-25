@@ -2,7 +2,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { IMAGES } from '../../../../image_handler';
-import { Screens } from '../../../../Data objects/Enums/Screens/Screens';
+import { Screens } from '../../../../Dataobjects/Enums/Screens/Screens';
 
 import leaderboardPartStyle from './leaderboard_style';
 import { useProfile } from '../../../../context/general_context/profile_context';
