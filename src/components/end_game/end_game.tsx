@@ -4,7 +4,6 @@ import { FC, useEffect, useState } from 'react';
 import EndGameStyle from './end_game_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { WordDetails } from '../../types_and_interfaces/words_types';
 import AuthenticationHandler from '../../screens/AuthenticationHandler';
 
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
@@ -12,6 +11,7 @@ import { useWords } from '../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 
 import updateUserStatistics from '../../requests/update_stats_request';
+import { WordDetails } from '../../Data objects/Words/BasicDataObjects/WordDetails';
 
 interface EndGameProps {
     correctAnswers: WordDetails[];

@@ -1,4 +1,8 @@
-import { NewWords, UserStatistics, GameWords, WordStatisticsData } from '../../types_and_interfaces/words_types';
+import { WordStatisticsData } from '../../Data objects/Words/BasicDataObjects/WordStatisticsData';
+import { GameWords } from '../../Data objects/Words/GameDataObjects/GameWords';
+import { NewWords } from '../../Data objects/Words/NewWordsDict/NewWords';
+import { UserStatistics } from '../../Data objects/Words/Statistics/UserStatistics';
+
 import NewWordsHandler from './NewWordsHandler';
 
 export default class SmartWordsHandler {

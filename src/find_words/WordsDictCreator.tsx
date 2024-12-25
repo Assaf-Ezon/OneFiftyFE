@@ -3,8 +3,10 @@ import IncorrectWordsHandler from "./GameBuildersByLogic/IncorrectWordsHandler";
 import PracticeWordsHandler from "./GameBuildersByLogic/PracticeWordsHandler";
 import SmartWordsHandler from "./GameBuildersByLogic/SmartWordsHandler";
 
-import { GameWords, NewWords, UserStatistics } from '../types_and_interfaces/words_types';
 import { Settings } from "../types_and_interfaces/context/game_settings_context";
+import { NewWords } from "../Data objects/Words/NewWordsDict/NewWords";
+import { UserStatistics } from "../Data objects/Words/Statistics/UserStatistics";
+import { GameWords } from "../Data objects/Words/GameDataObjects/GameWords";
 
 export default class WordsDictCreator {
     private _settings: Settings;

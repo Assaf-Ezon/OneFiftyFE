@@ -1,4 +1,5 @@
-import { NewWords, GameWords } from '../../types_and_interfaces/words_types';
+import { GameWords } from "../../Data objects/Words/GameDataObjects/GameWords";
+import { NewWords } from "../../Data objects/Words/NewWordsDict/NewWords";
 
 export default class NewWordsHandler {
     static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {

@@ -5,7 +5,7 @@ import Word from './word/word';
 
 import { useSettings } from '../../../context/dictionary_context/settings_context';
 import { useWords } from '../../../context/general_context/words_context';
-import { WordDetails } from '../../../types_and_interfaces/words_types';
+import { WordDetails } from '../../../Data objects/Words/BasicDataObjects/WordDetails';
 
 const Words = () => {
     const { settings } = useSettings();

@@ -2,7 +2,8 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-import { UserStatistics, WordDetails } from '../types_and_interfaces/words_types';
+import { UserStatistics } from '../Data objects/Words/Statistics/UserStatistics';
+import { WordDetails } from '../Data objects/Words/BasicDataObjects/WordDetails';
 
 interface ApiResponse {
     UserStatistics: UserStatistics,

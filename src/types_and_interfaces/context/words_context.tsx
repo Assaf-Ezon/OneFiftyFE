@@ -1,4 +1,6 @@
-import { FullWordsDictionary, UserStatistics, NewWords } from '../words_types';
+import { FullWordsDictionary } from "../../Data objects/Words/DIctionary/FullWordsDictionary";
+import { NewWords } from "../../Data objects/Words/NewWordsDict/NewWords";
+import { UserStatistics } from "../../Data objects/Words/Statistics/UserStatistics";
 
 export interface WordsContextProps {
     hebrewWords: FullWordsDictionary,

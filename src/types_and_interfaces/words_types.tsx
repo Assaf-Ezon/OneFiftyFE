@@ -5,7 +5,7 @@ export type Meaning = {
 }
 
 // the data inside a word in the dict that is used in games 
-export type WordListDetails = {
+export type GameWordListDetails = {
     FullWord: string;
     Meanings: Meaning[];
     Group: number;
@@ -15,7 +15,7 @@ export type WordListDetails = {
 // type of dicts that are used in games
 export type GameWords = {
     [key: string]: {
-        [word: string]: WordListDetails;
+        [word: string]: GameWordListDetails;
     };
 }
 

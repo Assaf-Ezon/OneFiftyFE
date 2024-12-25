@@ -1,6 +1,11 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { WordsContextProps } from '../../types_and_interfaces/context/words_context';
-import { FullWordsDictionary, UserStatistics, WordDetails, NewWords } from '../../types_and_interfaces/words_types';
+
+import { FullWordsDictionary } from '../../Data objects/Words/DIctionary/FullWordsDictionary';
+import { UserStatistics } from '../../Data objects/Words/Statistics/UserStatistics';
+import { WordDetails } from '../../Data objects/Words/BasicDataObjects/WordDetails';
+import { NewWords } from '../../Data objects/Words/NewWordsDict/NewWords';
+
 
 export const WordsContext = createContext<WordsContextProps | undefined>(undefined);
 

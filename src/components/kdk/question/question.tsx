@@ -13,9 +13,11 @@ import { useLearningSettingsContext } from '../../../context/settings_context/le
 
 import WordsDictCreator from '../../../find_words/WordsDictCreator';
 
-import { WordDetails, WordListDetails } from '../../../types_and_interfaces/words_types';
 import { useWords } from '../../../context/general_context/words_context';
 import { useEndGameContext } from '../../../context/game_context/end_game_context';
+
+import { WordDetails } from '../../../Data objects/Words/BasicDataObjects/WordDetails';
+import { GameWordListDetails } from '../../../Data objects/Words/GameDataObjects/GameWordListDetails';
 
 enum ButtonState {
     ShowAnswer = 1,
@@ -40,7 +42,7 @@ const Question = () => {
     const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
     const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
 
-    const [words, setWords] = useState<[string, { [word: string]: WordListDetails }][]>([]);
+    const [words, setWords] = useState<[string, { [word: string]: GameWordListDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
     const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
@@ -64,7 +66,7 @@ const Question = () => {
             gestureEnabled: false,
         });
 
-        let wordsList: [string, { [word: string]: WordListDetails }][] = [];
+        let wordsList: [string, { [word: string]: GameWordListDetails }][] = [];
 
         switch (settings.language) {
             case "Hebrew":

@@ -2,8 +2,9 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-import { UserStatistics, WordsDictionary } from '../types_and_interfaces/words_types';
 import { UserData } from '../types_and_interfaces/requests/profile_data_request';
+import { WordsDictionary } from '../Data objects/Words/DIctionary/WordsDictionary';
+import { UserStatistics } from '../Data objects/Words/Statistics/UserStatistics';
 
 
 interface ApiResponse {
