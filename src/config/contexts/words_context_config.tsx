@@ -1,6 +1,6 @@
-import { FullWordsDictionary } from "../../data_objects/Words/dIctionary/full_words_dictionary";
-import { NewWords } from "../../data_objects/Words/new_words_dict/new_words";
-import { UserStatistics } from "../../data_objects/Words/statistics/user_statistics";
+import { FullWordsDictionary } from "../../data_objects/words/dictionary/full_words_dictionary";
+import { NewWords } from "../../data_objects/words/new_words_dict/new_words";
+import { UserStatistics } from "../../data_objects/words/statistics/user_statistics";
 
 export interface WordsContextConfig {
     hebrewWords: FullWordsDictionary,

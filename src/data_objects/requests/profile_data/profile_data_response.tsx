@@ -1,5 +1,5 @@
-import { WordsDictionary } from "../../Words/dIctionary/words_dictionary";
-import { UserStatistics } from "../../Words/statistics/user_statistics";
+import { WordsDictionary } from "../../words/dictionary/words_dictionary";
+import { UserStatistics } from "../../words/statistics/user_statistics";
 import { UserData } from "./user_data";
 
 export type ProfileDataResponse = {

@@ -4,9 +4,9 @@ import PracticeWordsHandler from "./game_builders_by_logic/practice_words_handle
 import SmartWordsHandler from "./game_builders_by_logic/smart_words_handler";
 
 import { Settings } from "../data_objects/contexts/game_settings";
-import { NewWords } from "../data_objects/Words/new_words_dict/new_words";
-import { UserStatistics } from "../data_objects/Words/statistics/user_statistics";
-import { GameWords } from "../data_objects/Words/game_data_objects/game_words";
+import { NewWords } from "../data_objects/words/new_words_dict/new_words";
+import { UserStatistics } from "../data_objects/words/statistics/user_statistics";
+import { GameWords } from "../data_objects/words/game_data_objects/game_words";
 
 export default class WordsDictCreator {
     private _settings: Settings;

@@ -1,6 +1,6 @@
-import { WordStatisticsData } from "../../data_objects/Words/basic_data_objects/word_statistics_data";
-import { GameWords } from "../../data_objects/Words/game_data_objects/game_words";
-import { UserStatistics } from "../../data_objects/Words/statistics/user_statistics";
+import { WordStatisticsData } from "../../data_objects/words/basic_data_objects/word_statistics_data";
+import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
+import { UserStatistics } from "../../data_objects/words/statistics/user_statistics";
 
 export default class PracticeWordsHandler {
     static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {

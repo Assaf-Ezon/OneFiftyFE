@@ -1,4 +1,4 @@
-import { Screens } from "./data_objects/enums/Screens/Screens";
+import { Screens } from "./data_objects/enums/screens/screens";
 
 export const GAMES = [
     {

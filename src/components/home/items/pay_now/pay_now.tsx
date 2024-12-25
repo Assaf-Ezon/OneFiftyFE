@@ -5,7 +5,7 @@ import { Plans, PlanType, findPlanByName } from '../../../../payment_plans';
 import PayNowStyle from './pay_now_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { Screens } from '../../../../data_objects/enums/Screens/Screens';
+import { Screens } from '../../../../data_objects/enums/screens/screens';
 
 import { useProfile } from '../../../../context/general_context/profile_context';
 

@@ -16,11 +16,11 @@ import WordsDictCreator from '../../../find_words/words_dict_creator';
 import { useWords } from '../../../context/general_context/words_context';
 import { useEndGameContext } from '../../../context/game_context/end_game_context';
 
-import { WordDetails } from '../../../data_objects/Words/basic_data_objects/word_details';
-import { GameWordDictDetails } from '../../../data_objects/Words/game_data_objects/game_word_dict_details';
+import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
+import { GameWordDictDetails } from '../../../data_objects/words/game_data_objects/game_word_dict_details';
 import { ButtonState } from '../../../data_objects/enums/kdk_game_button_state/button_state';
-import { NewWords } from '../../../data_objects/Words/new_words_dict/new_words';
-import { UserStatistics } from '../../../data_objects/Words/statistics/user_statistics';
+import { NewWords } from '../../../data_objects/words/new_words_dict/new_words';
+import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
 
 const Question = () => {
     // Navigation

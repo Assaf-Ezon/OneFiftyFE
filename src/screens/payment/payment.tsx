@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import PlansContainer from '../../components/payment/plans_container';
 
 import { IMAGES } from '../../image_handler';
-import { Screens } from '../../data_objects/enums/Screens/Screens';
+import { Screens } from '../../data_objects/enums/screens/screens';
 
 import PaymentScreenStyle from './payment_style';
 
