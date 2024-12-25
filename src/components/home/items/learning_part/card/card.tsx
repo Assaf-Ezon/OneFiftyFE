@@ -1,18 +1,12 @@
-import { View, Text, TouchableOpacity, ImageSourcePropType, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { FC } from 'react';
 
 import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
+import { HomePageLearningCardProp } from '../../../../../Data objects/ComponentsProp/HomePage/HomePageLearningCardProp';
 
-interface LearningCardProp {
-    image: ImageSourcePropType;
-    title: string;
-    description: string;
-    gameName: string;
-}
-
-const LearningCard: FC<LearningCardProp> = ({ image, title, description, gameName }) => {
+const LearningCard: FC<HomePageLearningCardProp> = ({ image, title, description, gameName }) => {
     const navigation = useNavigation();
 
     return (

@@ -1,19 +1,14 @@
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import { FC, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
 
 import WordStyle from "./word_style";
 
-import { IMAGES } from '../../../../image_handler';
-import { Dimensions } from 'react-native';
+import { IMAGES } from '../../../../image_handler';;
+import { DictionaryWordProp } from "../../../../Data objects/ComponentsProp/DictionaryPage/DictionaryWordProp";
 
 const { height } = Dimensions.get('window');
 
-interface WordProp {
-    word: string;
-    meaning: string;
-}
-
-const Word: FC<WordProp> = ({ word, meaning }) => {
+const Word: FC<DictionaryWordProp> = ({ word, meaning }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (

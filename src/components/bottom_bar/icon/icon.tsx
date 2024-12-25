@@ -1,18 +1,12 @@
-import { View, Image, Text, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
 
 import iconStyle from './icon_style';
 
 import { useNavigation } from '@react-navigation/native';
+import { BottomBarIconProp } from '../../../Data objects/ComponentsProp/General/bottomBarIconProp';
 
-interface bottomBarIconProp {
-    iconPath: ImageSourcePropType;
-    iconText: string;
-    activeScreen: boolean;
-    screenName: string;
-};
-
-const BottomBarIcon: FC<bottomBarIconProp> = ({ iconPath, iconText, activeScreen, screenName }) => {
+const BottomBarIcon: FC<BottomBarIconProp> = ({ iconPath, iconText, activeScreen, screenName }) => {
     const navigation = useNavigation();
 
     return (

@@ -11,14 +11,9 @@ import { useWords } from '../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 
 import updateUserStatistics from '../../requests/update_stats_request';
-import { WordDetails } from '../../Data objects/Words/BasicDataObjects/WordDetails';
+import { EndGamePopupProps } from '../../Data objects/ComponentsProp/Games/EndGamePopupProps';
 
-interface EndGameProps {
-    correctAnswers: WordDetails[];
-    wrongAnswers: WordDetails[];
-};
-
-const EndGame: FC<EndGameProps> = ({ correctAnswers, wrongAnswers }) => {
+const EndGame: FC<EndGamePopupProps> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
 
     const authInstance = AuthenticationHandler.getInstance();

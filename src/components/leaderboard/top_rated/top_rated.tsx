@@ -1,6 +1,7 @@
 import { Text, View, Image, Alert, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 
+import { CONFIG } from '../../../config';
 import { IMAGES } from '../../../image_handler';
 import TopRatedStyle from './top_rated_style';
 
@@ -10,19 +11,14 @@ import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
-import { CONFIG } from '../../../config';
+
+import { Score } from '../../../Data objects/Requests/LeaderboardData/Score';
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
     const {handleLogout, handleInactive} = useStackManagerContext();
 
     const authInstance = AuthenticationHandler.getInstance();
-
-    interface Score {
-        DisplayName: string;
-        Score: number;
-        ProfilePicture: number;
-    }
 
     const [leaderboardData, setLeaderboardData] = useState<Score[] | null>(null);
     const [loading, setLoading] = useState<boolean>(false);

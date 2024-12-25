@@ -1,4 +1,4 @@
-import { Image, Text, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { Image, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { FC } from 'react';
 
@@ -9,16 +9,9 @@ import iconStyle from './icon_style';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
+import { SideBarIconProp } from '../../../Data objects/ComponentsProp/General/SideBarIconProp';
 
-interface sideBarIconProp {
-    iconPath: ImageSourcePropType;
-    iconText: string;
-    isRed: boolean;
-    onPressActionIndex: number;
-    screenName: string;   
-};
-
-const SideBarIcon: FC<sideBarIconProp> = ({ iconPath, iconText, isRed, onPressActionIndex, screenName }) => {
+const SideBarIcon: FC<SideBarIconProp> = ({ iconPath, iconText, isRed, onPressActionIndex, screenName }) => {
     const navigation = useNavigation();
 
     const {toggleMenu} = useSidebarContext();

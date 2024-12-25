@@ -1,6 +1,5 @@
-import { View, ImageSourcePropType } from 'react-native';
+import { View } from 'react-native';
 import { FC } from 'react';
-import { Screens } from '../../../Data objects/Enums/Screens/Screens';
 
 import barStyle from './bar_style';
 
@@ -10,16 +9,10 @@ import { useSidebarContext } from '../../../context/general_context/sidebar_cont
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 
-interface bottomBarProp {
-    activeScreen: string;
-    homePath: ImageSourcePropType;
-    dictionaryPath: ImageSourcePropType;
-    learningPath: ImageSourcePropType;
-    leaderboardPath: ImageSourcePropType;
-    profilePath: ImageSourcePropType;
-};
+import { Screens } from '../../../Data objects/Enums/Screens/Screens';
+import { BottomBarProp } from '../../../Data objects/ComponentsProp/General/BottomBarProp';
 
-const BottomBar: FC<bottomBarProp> = ({ homePath, dictionaryPath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
+const BottomBar: FC<BottomBarProp> = ({ homePath, dictionaryPath, learningPath, leaderboardPath, profilePath, activeScreen }) => {
     const {isOpen} = useSidebarContext();
     const {isLearningSettingOpen} = useLearningSettingsContext();
     const {isProfileImageMenuOpen} = useProfileImageMenuContext();
