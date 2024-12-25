@@ -19,6 +19,8 @@ import { useEndGameContext } from '../../../context/game_context/end_game_contex
 import { WordDetails } from '../../../Data objects/Words/BasicDataObjects/WordDetails';
 import { GameWordListDetails } from '../../../Data objects/Words/GameDataObjects/GameWordListDetails';
 import { ButtonState } from '../../../Data objects/Enums/KdkGameButtonState/ButtonState';
+import { NewWords } from '../../../Data objects/Words/NewWordsDict/NewWords';
+import { UserStatistics } from '../../../Data objects/Words/Statistics/UserStatistics';
 
 const Question = () => {
     // Navigation
@@ -61,19 +63,23 @@ const Question = () => {
             gestureEnabled: false,
         });
 
-        let wordsList: [string, { [word: string]: GameWordListDetails }][] = [];
+        let NewWords: NewWords = {};
+        let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
 
         switch (settings.language) {
             case "Hebrew":
-                const heCreateGame = new WordsDictCreator(settings, hebrewNewWords, hebrewUserStatistics, getFlagsCount());
-                wordsList = Object.entries(heCreateGame.createList());
+                NewWords = hebrewNewWords;
+                UserStatistics = hebrewUserStatistics;
                 break;
             case "English":
-                const enCreateGame = new WordsDictCreator(settings, englishNewWords, englishUserStatistics, getFlagsCount());
-                wordsList = Object.entries(enCreateGame.createList());
+                NewWords = englishNewWords;
+                UserStatistics = englishUserStatistics;
                 break;
         }
         
+        const CreateGame = new WordsDictCreator(settings, NewWords, UserStatistics, getFlagsCount());
+        let wordsList: [string, { [word: string]: GameWordListDetails }][] = Object.entries(CreateGame.createList());
+
         Object.keys(wordsList).length === 0 ? navigation.goBack() : null;
 
         setWords(wordsList);

@@ -92,7 +92,7 @@ export default class WordsDictCreator {
     }
 
     checkLevelExistsInStatisticsList(level: number): boolean {
-        return true; // TODO: remove
+        return true; // TODO: remove. As for now, if there is no validation over if the level exist or not them it might throw an error 
         return level in this._statistics.WordsStatistics.Words;
     }
 }

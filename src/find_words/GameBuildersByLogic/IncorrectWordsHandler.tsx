@@ -9,10 +9,10 @@ export default class IncorrectWordsHandler {
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
-
+    
         // dict of the words that are considered "wrong words"
         const words: { [word: string]: WordStatisticsData } = {};
-
+    
         // filters only the words that are considered "wrong"
         const listOfWords = contextDict.WordsStatistics.Words[key];
         for (const word in listOfWords) {
@@ -20,7 +20,7 @@ export default class IncorrectWordsHandler {
                 words[word] = listOfWords[word]
             }
         }
-
+        
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
         
