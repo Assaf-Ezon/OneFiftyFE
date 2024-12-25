@@ -5,7 +5,7 @@ import PopupsStyle from './popups_style';
 import { IMAGES } from '../../../image_handler';
 
 import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
-import { AuthErrorType } from '../../../Dataobjects/Enums/AuthErrorType/AuthErrorType';
+import { AuthErrorType } from '../../../data_objects/enums/auth_error_type/auth_error_type';
 
 const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(

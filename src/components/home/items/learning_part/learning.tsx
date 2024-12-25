@@ -7,7 +7,7 @@ import LearningCard from './card/card';
 
 import { IMAGES } from '../../../../image_handler';
 import { GAMES } from '../../../../game_objects';
-import { Screens } from '../../../../Dataobjects/Enums/Screens/Screens';
+import { Screens } from '../../../../data_objects/enums/Screens/Screens';
 
 const LearningPartHome: FC = () => {
     const navigation = useNavigation();

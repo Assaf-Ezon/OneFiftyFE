@@ -4,11 +4,11 @@ import { FC, useState } from "react";
 import WordStyle from "./word_style";
 
 import { IMAGES } from '../../../../image_handler';;
-import { DictionaryWordProp } from "../../../../Dataobjects/ComponentsProp/DictionaryPage/DictionaryWordProp";
+import { DictionaryWordConfig } from "../../../../data_objects/components_config/dictionary_page/dictionary_word_config";
 
 const { height } = Dimensions.get('window');
 
-const Word: FC<DictionaryWordProp> = ({ word, meaning }) => {
+const Word: FC<DictionaryWordConfig> = ({ word, meaning }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (

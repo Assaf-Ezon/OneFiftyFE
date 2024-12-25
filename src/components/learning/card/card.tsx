@@ -5,9 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { LearningPageLearningCardProp } from '../../../Dataobjects/ComponentsProp/LearningPage/LearningPageLearningCardProp';
+import { LearningPageLearningCardConfig } from '../../../data_objects/components_config/learning_page/learning_page_learning_card_config';
 
-const LearningCard: FC<LearningPageLearningCardProp> = ({ id, image, title, gameName }) => {
+const LearningCard: FC<LearningPageLearningCardConfig> = ({ id, image, title, gameName }) => {
     const navigation = useNavigation();
 
     const handlePress = async () => {

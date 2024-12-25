@@ -9,9 +9,9 @@ import iconStyle from './icon_style';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
-import { SideBarIconProp } from '../../../Dataobjects/ComponentsProp/General/SideBarIconProp';
+import { SideBarIconConfig } from '../../../data_objects/components_config/general/sidebar_icon_config';
 
-const SideBarIcon: FC<SideBarIconProp> = ({ iconPath, iconText, isRed, onPressActionIndex, screenName }) => {
+const SideBarIcon: FC<SideBarIconConfig> = ({ iconPath, iconText, isRed, onPressActionIndex, screenName }) => {
     const navigation = useNavigation();
 
     const {toggleMenu} = useSidebarContext();

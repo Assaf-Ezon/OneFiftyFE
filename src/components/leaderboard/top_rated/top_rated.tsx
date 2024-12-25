@@ -10,9 +10,9 @@ import LeaderboardCard from './card/card';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
-import AuthenticationHandler from '../../../screens/AuthenticationHandler';
+import AuthenticationHandler from '../../../screens/authentication_handler';
 
-import { Score } from '../../../Dataobjects/Requests/LeaderboardData/Score';
+import { Score } from '../../../data_objects/requests/leaderboard_data/score';
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();

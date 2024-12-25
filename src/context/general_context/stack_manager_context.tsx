@@ -1,13 +1,13 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import AuthenticationHandler from '../../screens/AuthenticationHandler';
-import { Screens } from '../../Dataobjects/Enums/Screens/Screens';
-import { StackNames } from '../../Dataobjects/Contexts/StackNames';
-import { StackMangerContextProps } from '../../Config/Contexts/StackMangerContextProps';
+import AuthenticationHandler from '../../screens/authentication_handler';
+import { Screens } from '../../data_objects/enums/Screens/Screens';
+import { StackNames } from '../../data_objects/contexts/stack_names';
+import { StackMangerContextConfig } from '../../config/contexts/stack_manger_context_config';
 
 export {StackNames};
 
-const StackManagerContext = createContext<StackMangerContextProps | undefined>(undefined);
+const StackManagerContext = createContext<StackMangerContextConfig | undefined>(undefined);
 
 export const StackManagerProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const authInstance = AuthenticationHandler.getInstance();

@@ -5,9 +5,9 @@ import SplashScreenStyle from './splash_style';
 
 import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
-import { Screens } from '../../Dataobjects/Enums/Screens/Screens';
+import { Screens } from '../../data_objects/enums/Screens/Screens';
 
-import AuthenticationHandler from '../AuthenticationHandler';
+import AuthenticationHandler from '../authentication_handler';
 
 import { StackNames, useStackManagerContext } from '../../context/general_context/stack_manager_context';
 import { useProfile } from '../../context/general_context/profile_context';

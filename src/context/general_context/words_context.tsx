@@ -1,13 +1,13 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import { FullWordsDictionary } from '../../Dataobjects/Words/DIctionary/FullWordsDictionary';
-import { UserStatistics } from '../../Dataobjects/Words/Statistics/UserStatistics';
-import { WordDetails } from '../../Dataobjects/Words/BasicDataObjects/WordDetails';
-import { NewWords } from '../../Dataobjects/Words/NewWordsDict/NewWords';
-import { WordsContextProps } from '../../Config/Contexts/WordsContextProps';
+import { FullWordsDictionary } from '../../data_objects/Words/dIctionary/full_words_dictionary';
+import { UserStatistics } from '../../data_objects/Words/statistics/user_statistics';
+import { WordDetails } from '../../data_objects/Words/basic_data_objects/word_details';
+import { NewWords } from '../../data_objects/Words/new_words_dict/new_words';
+import { WordsContextConfig } from '../../config/contexts/words_context_config';
 
 
-export const WordsContext = createContext<WordsContextProps | undefined>(undefined);
+export const WordsContext = createContext<WordsContextConfig | undefined>(undefined);
 
 export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [hebrewWords, setHebrewWords] = useState<FullWordsDictionary>({} as FullWordsDictionary);

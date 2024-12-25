@@ -4,9 +4,9 @@ import { FC } from 'react';
 import iconStyle from './icon_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { BottomBarIconProp } from '../../../Dataobjects/ComponentsProp/General/bottomBarIconProp';
+import { BottomBarIconConfig } from '../../../data_objects/components_config/general/bottom_bar_icon_config';
 
-const BottomBarIcon: FC<BottomBarIconProp> = ({ iconPath, iconText, activeScreen, screenName }) => {
+const BottomBarIcon: FC<BottomBarIconConfig> = ({ iconPath, iconText, activeScreen, screenName }) => {
     const navigation = useNavigation();
 
     return (

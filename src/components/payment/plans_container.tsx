@@ -12,7 +12,7 @@ import { Plans } from '../../payment_plans';
 import { CONFIG } from '../../config';
 
 import { usePaymentContext } from '../../context/payment_context/payment_context';
-import AuthenticationHandler from '../../screens/AuthenticationHandler';
+import AuthenticationHandler from '../../screens/authentication_handler';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 

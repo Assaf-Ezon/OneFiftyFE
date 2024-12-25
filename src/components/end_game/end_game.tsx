@@ -4,16 +4,16 @@ import { FC, useEffect, useState } from 'react';
 import EndGameStyle from './end_game_style';
 
 import { useNavigation } from '@react-navigation/native';
-import AuthenticationHandler from '../../screens/AuthenticationHandler';
+import AuthenticationHandler from '../../screens/authentication_handler';
 
 import { useStackManagerContext } from '../../context/general_context/stack_manager_context';
 import { useWords } from '../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 
 import updateUserStatistics from '../../requests/update_stats_request';
-import { EndGamePopupProps } from '../../Dataobjects/ComponentsProp/Games/EndGamePopupProps';
+import { EndGamePopupConfig } from '../../data_objects/components_config/games/end_game_popup_config';
 
-const EndGame: FC<EndGamePopupProps> = ({ correctAnswers, wrongAnswers }) => {
+const EndGame: FC<EndGamePopupConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
 
     const authInstance = AuthenticationHandler.getInstance();

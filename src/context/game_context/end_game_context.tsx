@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { EndGameContextProps } from '../../Config/Contexts/EndGameContextProps';
+import { EndGameContextConfig } from '../../config/contexts/end_game_context_config';
 
-const EndGameContext = createContext<EndGameContextProps | undefined>(undefined);
+const EndGameContext = createContext<EndGameContextConfig | undefined>(undefined);
 
 export const EndGameProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isEndGame, setIsEndGame] = useState<boolean>(false);

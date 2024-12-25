@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { ProfileImageContextProps } from '../../Config/Contexts/ProfileImageContextProps';
+import { ProfileImageContextConfig } from '../../config/contexts/profile_image_context_config';
 
-const ProfileImageContext = createContext<ProfileImageContextProps | undefined>(undefined);
+const ProfileImageContext = createContext<ProfileImageContextConfig | undefined>(undefined);
 
 export const ProfileImageProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isProfileImageMenuOpen, setIsProfileImageMenuOpen] = useState<boolean>(false);

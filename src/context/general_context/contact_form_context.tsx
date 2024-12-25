@@ -1,7 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { ContactUsFormContextProps } from '../../Config/Contexts/ContactUsFormContextProps';
+import { ContactUsFormContextConfig } from '../../config/contexts/contact_us_form_context_config';
 
-const ContactUsFormContext = createContext<ContactUsFormContextProps | undefined>(undefined);
+const ContactUsFormContext = createContext<ContactUsFormContextConfig | undefined>(undefined);
 
 export const ContactUsFormProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isContactFormOpen, setIsContactFormOpen] = useState<boolean>(false);
