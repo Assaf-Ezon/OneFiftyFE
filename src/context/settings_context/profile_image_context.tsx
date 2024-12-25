@@ -1,5 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { ProfileImageContextProps } from '../../types_and_interfaces/context/profile_image_context';
+import { ProfileImageContextProps } from '../../Config/Contexts/ProfileImageContextProps';
 
 const ProfileImageContext = createContext<ProfileImageContextProps | undefined>(undefined);
 

@@ -2,14 +2,10 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-import { UserStatistics } from '../Data objects/Words/Statistics/UserStatistics';
 import { WordDetails } from '../Data objects/Words/BasicDataObjects/WordDetails';
+import { UpdateUserStatsResponse } from '../Data objects/Requests/UpdataUserStats/UpdateUserStatsResponse';
 
-interface ApiResponse {
-    UserStatistics: UserStatistics,
-}
-
-const updateUserStatistics = async (name: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], LanguageOption: string): Promise<ApiResponse> => {
+const updateUserStatistics = async (name: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], LanguageOption: string): Promise<UpdateUserStatsResponse> => {
     const updateUserStatisticsRequest = async () => {
         try {
             const response = await axios.post(CONFIG.endpoints.update_words, {

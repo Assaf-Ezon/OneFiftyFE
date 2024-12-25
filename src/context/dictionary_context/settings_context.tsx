@@ -1,5 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { DictionarySettings, SettingsContextProps } from '../../types_and_interfaces/context/dictionary_context';
+
+import { SettingsContextProps } from '../../Config/Contexts/SettingsContextProps';
+import { DictionarySettings } from '../../Data objects/Contexts/DictionaryPageSettings';
 
 export const SettingsContext = createContext<SettingsContextProps | undefined>(undefined);
 

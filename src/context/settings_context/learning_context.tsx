@@ -1,7 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { Settings, LearningSettingsContextProps } from '../../types_and_interfaces/context/game_settings_context';
 
-const LearningSettingsContext = createContext<LearningSettingsContextProps | undefined>(undefined);
+import { GameSettingsContextProps } from '../../Config/Contexts/GameSettingsContextProps';
+import { Settings } from '../../Data objects/Contexts/GameSettings';
+
+const LearningSettingsContext = createContext<GameSettingsContextProps | undefined>(undefined);
 
 export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // popup open flag

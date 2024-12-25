@@ -2,27 +2,9 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-import { UserData } from '../types_and_interfaces/requests/profile_data_request';
-import { WordsDictionary } from '../Data objects/Words/DIctionary/WordsDictionary';
-import { UserStatistics } from '../Data objects/Words/Statistics/UserStatistics';
+import { ProfileDataResponse } from '../Data objects/Requests/ProfileData/ProfileDataResponse';
 
-
-interface ApiResponse {
-    EnglishUserStatistics: UserStatistics,
-    EnglishWordsDictionary: {
-        WordCount: number;
-        Words: WordsDictionary;
-    };
-    HebrewUserStatistics: UserStatistics,
-    HebrewWordsDictionary: {
-        WordCount: number;
-        Words: WordsDictionary;
-    };
-    UserData: UserData;
-    Version: string;
-}
-
-const getProfileData = async (name: string, token: string): Promise<ApiResponse | null> => {
+const getProfileData = async (name: string, token: string): Promise<ProfileDataResponse | null> => {
     const getProfileDataRequest = async () => {
         try {
             const response = await axios.post(CONFIG.endpoints.login, {

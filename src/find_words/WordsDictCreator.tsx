@@ -3,7 +3,7 @@ import IncorrectWordsHandler from "./GameBuildersByLogic/IncorrectWordsHandler";
 import PracticeWordsHandler from "./GameBuildersByLogic/PracticeWordsHandler";
 import SmartWordsHandler from "./GameBuildersByLogic/SmartWordsHandler";
 
-import { Settings } from "../types_and_interfaces/context/game_settings_context";
+import { Settings } from "../Data objects/Contexts/GameSettings";
 import { NewWords } from "../Data objects/Words/NewWordsDict/NewWords";
 import { UserStatistics } from "../Data objects/Words/Statistics/UserStatistics";
 import { GameWords } from "../Data objects/Words/GameDataObjects/GameWords";

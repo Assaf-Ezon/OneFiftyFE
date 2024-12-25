@@ -1,8 +1,4 @@
-export enum StackNames {
-    Auth = 1,
-    Main = 2,
-    Inactive = 3,
-}
+import { StackNames } from "../../Data objects/Contexts/StackNames";
 
 export interface StackMangerContextProps {
     stackIndex: number;

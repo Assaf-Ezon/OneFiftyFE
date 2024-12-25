@@ -9,7 +9,7 @@ import { Screens } from '../../screen_names';
 
 import AuthenticationHandler from '../AuthenticationHandler';
 
-import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
+import { StackNames, useStackManagerContext } from '../../context/general_context/stack_manager_context';
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 

@@ -7,7 +7,7 @@ import TopRatedStyle from './top_rated_style';
 import LeaderboardCard from './card/card';
 
 import { useProfile } from '../../../context/general_context/profile_context';
-import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 import { CONFIG } from '../../../config';

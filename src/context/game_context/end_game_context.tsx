@@ -1,5 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { EndGameContextProps } from '../../types_and_interfaces/context/end_game_context';
+import { EndGameContextProps } from '../../Config/Contexts/EndGameContextProps';
 
 const EndGameContext = createContext<EndGameContextProps | undefined>(undefined);
 

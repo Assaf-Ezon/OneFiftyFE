@@ -8,7 +8,7 @@ import ProfileImageOption from './image/image';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
-import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { setProfilePicture } from '../../../requests/change_profile_picture_request';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
 

@@ -1,5 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { ContactUsFormContextProps } from '../../types_and_interfaces/context/contact_us_context';
+import { ContactUsFormContextProps } from '../../Config/Contexts/ContactUsFormContextProps';
 
 const ContactUsFormContext = createContext<ContactUsFormContextProps | undefined>(undefined);
 

@@ -1,13 +1,6 @@
-export type Settings = {
-    shouldIncludeNewWords: boolean;
-    shouldIncludeIncorrectWords: boolean;
-    shouldIncludePracticeWords: boolean;
-    shouldIncludeSmartStudy: boolean;
-    language: string | null;
-    levels: { [key: number]: number };
-}
+import { Settings } from "../../Data objects/Contexts/GameSettings";
 
-export interface LearningSettingsContextProps {
+export interface GameSettingsContextProps {
     isLearningSettingOpen: boolean;
     toggleLearningSettings: () => void;
     settings: Settings;

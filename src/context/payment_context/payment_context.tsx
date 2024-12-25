@@ -1,10 +1,11 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { Payment, PaymentContextProps } from '../../types_and_interfaces/context/payment_context';
+import { PaymentContextProps } from '../../Config/Contexts/PaymentContextProps';
+import { PaymentDetails } from '../../Data objects/Contexts/PaymentDetails';
 
 export const PaymentContext = createContext<PaymentContextProps | undefined>(undefined);
 
 export const PaymentProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [details, setDetails] = useState<Payment>({
+    const [details, setDetails] = useState<PaymentDetails>({
         name: '',
         price: '00.00',
     });

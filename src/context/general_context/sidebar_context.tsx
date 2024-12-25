@@ -1,6 +1,5 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
-import { SidebarContextProps } from '../../types_and_interfaces/context/sidebar_context';
-
+import { SidebarContextProps } from '../../Config/Contexts/SidebarContextProps';
 
 const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
 
