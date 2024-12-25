@@ -12,14 +12,14 @@ import { useEffect, useState } from 'react';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 
 import WordsDictCreator from '../../../find_words/words_dict_creator';
-
+import { Words } from '../../../data_objects/words/basic_data_objects/words';
 import { useWords } from '../../../context/general_context/words_context';
 import { useEndGameContext } from '../../../context/game_context/end_game_context';
 
 import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
 import { GameWordDictDetails } from '../../../data_objects/words/game_data_objects/game_word_dict_details';
 import { ButtonState } from '../../../data_objects/enums/kdk_game_button_state/button_state';
-import { NewWords } from '../../../data_objects/words/new_words_dict/new_words';
+
 import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
 
 const Question = () => {
@@ -63,7 +63,7 @@ const Question = () => {
             gestureEnabled: false,
         });
 
-        let NewWords: NewWords = {};
+        let NewWords: Words = {};
         let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
 
         switch (settings.language) {

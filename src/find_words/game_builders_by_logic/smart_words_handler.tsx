@@ -1,12 +1,12 @@
 import { WordStatisticsData } from '../../data_objects/words/basic_data_objects/word_statistics_data';
+import { Words } from '../../data_objects/words/basic_data_objects/words';
 import { GameWords } from '../../data_objects/words/game_data_objects/game_words';
-import { NewWords } from '../../data_objects/words/new_words_dict/new_words';
 import { UserStatistics } from '../../data_objects/words/statistics/user_statistics';
 
 import NewWordsHandler from './new_words_handler';
 
 export default class SmartWordsHandler {
-    static add(new_words: NewWords, statistics: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
+    static add(new_words: Words, statistics: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
         // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};
@@ -91,7 +91,7 @@ export default class SmartWordsHandler {
         return deltaInDays;
     }
 
-    static splitNumberBetweenLists(amount: number, key: number, new_words: NewWords, statistics: { [word: string]: WordStatisticsData }): { newWordsAmount: number; statisticsAmount: number } {
+    static splitNumberBetweenLists(amount: number, key: number, new_words: Words, statistics: { [word: string]: WordStatisticsData }): { newWordsAmount: number; statisticsAmount: number } {
         // gets the length of newWordsDict and statisticsDict
         const newWordsLength = Object.keys(new_words[key]).length;
         const statisticsLength = Object.keys(statistics).length;

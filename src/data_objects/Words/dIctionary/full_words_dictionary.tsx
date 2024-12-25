@@ -1,7 +1,7 @@
-import { WordsDictionary } from "./words_dictionary";
+import { Words } from "../basic_data_objects/words";
 
 // 'dictionary' dict
 export type FullWordsDictionary = {
     WordCount: number;
-    Words: WordsDictionary;
+    Words: Words;
 }

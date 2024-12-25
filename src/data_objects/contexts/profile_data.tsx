@@ -8,5 +8,5 @@ export type ProfileData = {
     dateJoined: Date,
     expirationDate: Date,
     profileImage: ImageSourcePropType,
-    trial: boolean,
+    isTrial: boolean,
 };

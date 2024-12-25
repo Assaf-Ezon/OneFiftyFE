@@ -21,7 +21,7 @@ const HomeScrollView = () => {
                     showsVerticalScrollIndicator={false}>
             <ProfilePartHome />
             <WordOfTheDay />
-            {profile.trial ? <PayNow /> : null}
+            {profile.isTrial ? <PayNow /> : null}
             <LearningPartHome />
             <LeaderboardPart/>
             <View style={HomeScrollViewStyle.blankSpace}></View>

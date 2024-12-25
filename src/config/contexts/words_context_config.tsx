@@ -1,5 +1,5 @@
+import { Words } from "../../data_objects/words/basic_data_objects/words";
 import { FullWordsDictionary } from "../../data_objects/words/dictionary/full_words_dictionary";
-import { NewWords } from "../../data_objects/words/new_words_dict/new_words";
 import { UserStatistics } from "../../data_objects/words/statistics/user_statistics";
 
 export interface WordsContextConfig {
@@ -15,9 +15,9 @@ export interface WordsContextConfig {
     englishUserStatistics: UserStatistics,
     setEnglishUserStatistics: (words: UserStatistics) => void;
 
-    hebrewNewWords: NewWords;
+    hebrewNewWords: Words;
     updateNewHebrewWords: () => void;
 
-    englishNewWords: NewWords;
+    englishNewWords: Words;
     updateNewEnglishWords: () => void;
 };

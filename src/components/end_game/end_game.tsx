@@ -11,9 +11,9 @@ import { useWords } from '../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 
 import updateUserStatistics from '../../requests/update_stats_request';
-import { EndGamePopupConfig } from '../../data_objects/components_config/games/end_game_popup_config';
+import { EndGamesStatisticsConfig } from '../../data_objects/components_config/games/end_game_popup_config';
 
-const EndGame: FC<EndGamePopupConfig> = ({ correctAnswers, wrongAnswers }) => {
+const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
 
     const authInstance = AuthenticationHandler.getInstance();

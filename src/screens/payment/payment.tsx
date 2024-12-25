@@ -17,7 +17,7 @@ const PaymentPage = ({ navigation }: {navigation: any}) => {
     const isActive = (stackIndex == StackNames.Main);
 
     useEffect(() => {
-        if (isActive && !profile.trial) {
+        if (isActive && !profile.isTrial) {
             navigation.navigate(Screens.HOME);
         } 
     }, []);

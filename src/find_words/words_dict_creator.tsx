@@ -4,7 +4,7 @@ import PracticeWordsHandler from "./game_builders_by_logic/practice_words_handle
 import SmartWordsHandler from "./game_builders_by_logic/smart_words_handler";
 
 import { Settings } from "../data_objects/contexts/game_settings";
-import { NewWords } from "../data_objects/words/new_words_dict/new_words";
+import { Words } from "../data_objects/words/basic_data_objects/words";
 import { UserStatistics } from "../data_objects/words/statistics/user_statistics";
 import { GameWords } from "../data_objects/words/game_data_objects/game_words";
 
@@ -13,10 +13,10 @@ export default class WordsDictCreator {
     private _flags_count: number; 
     private _words: GameWords;
 
-    private _new_words: NewWords;
+    private _new_words: Words;
     private _statistics: UserStatistics; 
 
-    constructor(settings: Settings, new_words: NewWords, statistics: UserStatistics, flags_count: number) { 
+    constructor(settings: Settings, new_words: Words, statistics: UserStatistics, flags_count: number) { 
         this._settings = settings;
         this._flags_count = flags_count;
 

@@ -21,7 +21,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         dateJoined: new Date('1900-01-01'), 
         expirationDate: new Date('1900-01-01'), 
         profileImage: IMAGES.profile_images[0],
-        trial: false,
+        isTrial: false,
     });
 
     const updateProfileImage = (newImage: ImageSourcePropType) => {

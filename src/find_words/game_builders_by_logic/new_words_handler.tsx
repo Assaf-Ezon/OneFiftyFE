@@ -1,8 +1,8 @@
+import { Words } from "../../data_objects/words/basic_data_objects/words";
 import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
-import { NewWords } from "../../data_objects/words/new_words_dict/new_words";
 
 export default class NewWordsHandler {
-    static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
+    static add(contextDict: Words, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
         // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};

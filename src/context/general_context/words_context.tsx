@@ -3,9 +3,8 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { FullWordsDictionary } from '../../data_objects/words/dictionary/full_words_dictionary';
 import { UserStatistics } from '../../data_objects/words/statistics/user_statistics';
 import { WordDetails } from '../../data_objects/words/basic_data_objects/word_details';
-import { NewWords } from '../../data_objects/words/new_words_dict/new_words';
+import { Words } from '../../data_objects/words/basic_data_objects/words';
 import { WordsContextConfig } from '../../config/contexts/words_context_config';
-
 
 export const WordsContext = createContext<WordsContextConfig | undefined>(undefined);
 
@@ -17,35 +16,35 @@ export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [englishUserStatistics, setEnglishUserStatistics] = useState<UserStatistics>({} as UserStatistics);
 
     // remaining new words calculation
-    const _getNewWords = (fullDict: FullWordsDictionary, statistics: UserStatistics): { [groupId: number]: { [word: string]: WordDetails } } => {
-        const newWords: { [groupId: number]: { [word: string]: WordDetails } } = {}; 
+    const _getNewWords = (fullDict: FullWordsDictionary, statistics: UserStatistics): { [key: number]: { [word: string]: WordDetails } } => {
+        const newWords: { [key: number]: { [word: string]: WordDetails } } = {}; 
         
         for (const [groupKey, groupValue] of Object.entries(fullDict.Words)) {
             const newGroupWords: { [word: string]: WordDetails } = {};
             
-            const groupId = Number(groupKey);
+            const key = Number(groupKey);
     
-            if (groupId in statistics.WordsStatistics.Words) {
+            if (key in statistics.WordsStatistics.Words) {
                 for (const [wordsKey, wordsValue] of Object.entries(groupValue)) {
-                    if (!(wordsKey in statistics.WordsStatistics.Words[groupId])) {
+                    if (!(wordsKey in statistics.WordsStatistics.Words[key])) {
                         newGroupWords[wordsKey] = wordsValue;
                     }
                 }
-                newWords[groupId] = newGroupWords;
+                newWords[key] = newGroupWords;
             } else {
-                newWords[groupId] = groupValue;
+                newWords[key] = groupValue;
             }
         }
         return newWords;
     };
 
-    const [hebrewNewWords, setHebrewNewWords] = useState<NewWords>({} as NewWords);
+    const [hebrewNewWords, setHebrewNewWords] = useState<Words>({} as Words);
 
     const updateNewHebrewWords = () => {
         setHebrewNewWords(_getNewWords(hebrewWords, hebrewUserStatistics));
     };
 
-    const [englishNewWords, setEnglishNewWords] = useState<NewWords>({} as NewWords);
+    const [englishNewWords, setEnglishNewWords] = useState<Words>({} as Words);
 
     const updateNewEnglishWords = () => {
         setEnglishNewWords(_getNewWords(englishWords, englishUserStatistics));
