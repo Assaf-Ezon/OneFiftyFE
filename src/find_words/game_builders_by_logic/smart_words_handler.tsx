@@ -4,8 +4,9 @@ import { GameWords } from '../../data_objects/words/game_data_objects/game_words
 import { UserStatistics } from '../../data_objects/words/statistics/user_statistics';
 
 import NewWordsHandler from './new_words_handler';
+import UtilsForGameBuilders from './utils_for_game_builders';
 
-export default class SmartWordsHandler {
+export default class SmartWordsHandler extends UtilsForGameBuilders {
     static add(new_words: Words, statistics: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
         // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
@@ -37,33 +38,34 @@ export default class SmartWordsHandler {
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);
 
-
         // contains the "used" indexes
-        const takenWordsindexList: number[] = [];
+        // const takenWordsindexList: number[] = [];
 
         // loop the amount requested for
-        for (let i = 0; i < Math.min(wordsArray.length, amounts.statisticsAmount); i++) {
-            // random index
-            let randomIndex = Math.floor(Math.random() * wordsArray.length); 
+        // for (let i = 0; i < Math.min(wordsArray.length, amounts.statisticsAmount); i++) {
+        //     // random index
+        //     let randomIndex = Math.floor(Math.random() * wordsArray.length); 
             
-            // continues to create random indexes if already inside
-            while (takenWordsindexList.includes(randomIndex)) {
-                randomIndex = Math.floor(Math.random() * wordsArray.length); 
-            }
+        //     // continues to create random indexes if already inside
+        //     while (takenWordsindexList.includes(randomIndex)) {
+        //         randomIndex = Math.floor(Math.random() * wordsArray.length); 
+        //     }
             
-            // adding the random words to the wordsDict
-            wordsDict[key][wordsArray[randomIndex][0]] = {
-                FullWord: wordsArray[randomIndex][1].Word.FullWord,
-                Meanings: wordsArray[randomIndex][1].Word.Meanings,
-                Group: wordsArray[randomIndex][1].Word.Group,
-                Type: 'תרגול (חכם)'
-            }
+        //     // adding the random words to the wordsDict
+        //     wordsDict[key][wordsArray[randomIndex][0]] = {
+        //         FullWord: wordsArray[randomIndex][1].Word.FullWord,
+        //         Meanings: wordsArray[randomIndex][1].Word.Meanings,
+        //         Group: wordsArray[randomIndex][1].Word.Group,
+        //         Type: 'תרגול (חכם)'
+        //     }
             
-            // adds the index to the "used" indexes
-            takenWordsindexList.push(randomIndex);
-        }
+        //     // adds the index to the "used" indexes
+        //     takenWordsindexList.push(randomIndex);
+        // }
 
-        return wordsDict;
+        // return wordsDict;
+
+        return SmartWordsHandler.create_shuffled_dict_for_statistics(key, wordsArray, amounts.statisticsAmount, wordsDict, 'תרגול (חכם)');
     }
 
     static deltaDaysFromToday(date: string) {
