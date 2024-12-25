@@ -1,10 +1,10 @@
 import { View, ImageSourcePropType } from 'react-native';
 import { FC } from 'react';
+import { Screens } from '../../../Data objects/Enums/Screens/Screens';
 
 import barStyle from './bar_style';
 
 import BottomBarIcon from '../icon/icon';
-import { Screens } from '../../../screen_names';
 
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';

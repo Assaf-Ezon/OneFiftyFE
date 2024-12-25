@@ -5,7 +5,7 @@ import SplashScreenStyle from './splash_style';
 
 import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
-import { Screens } from '../../screen_names';
+import { Screens } from '../../Data objects/Enums/Screens/Screens';
 
 import AuthenticationHandler from '../AuthenticationHandler';
 

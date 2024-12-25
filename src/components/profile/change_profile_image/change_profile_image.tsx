@@ -11,12 +11,8 @@ import { useProfileImageMenuContext } from '../../../context/settings_context/pr
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { setProfilePicture } from '../../../requests/change_profile_picture_request';
 import AuthenticationHandler from '../../../screens/AuthenticationHandler';
+import { ErrorType } from '../../../Data objects/Enums/ChangeProfileImageErrorType/ChangeProfileImageErrorType';
 
-enum ErrorType {
-    None = 0,
-    Error = 1,
-    NoImage = 2,
-}
 
 const ChangeProfileImagePopup = () => {
     const {profile, updateProfileImage} = useProfile();

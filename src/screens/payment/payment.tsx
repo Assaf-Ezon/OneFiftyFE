@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import PlansContainer from '../../components/payment/plans_container';
 
 import { IMAGES } from '../../image_handler';
+import { Screens } from '../../Data objects/Enums/Screens/Screens';
 
 import PaymentScreenStyle from './payment_style';
-import { Screens } from '../../screen_names';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 import { PaymentProvider } from '../../context/payment_context/payment_context';

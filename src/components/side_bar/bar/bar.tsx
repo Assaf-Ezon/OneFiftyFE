@@ -3,7 +3,7 @@ import { useRef, useEffect } from 'react';
 import barStyle from './bar_style';
 import SideBarIcon from '../icon/icon';
 import { IMAGES } from '../../../image_handler';
-import { Screens } from '../../../screen_names';
+import { Screens } from '../../../Data objects/Enums/Screens/Screens';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { CONFIG } from '../../../config';

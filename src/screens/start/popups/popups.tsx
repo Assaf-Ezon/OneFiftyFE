@@ -5,6 +5,7 @@ import PopupsStyle from './popups_style';
 import { IMAGES } from '../../../image_handler';
 
 import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
+import { AuthErrorType } from '../../../Data objects/Enums/AuthErrorType/AuthErrorType';
 
 const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(
@@ -58,12 +59,6 @@ const InactivePopup = () => {
         </Modal>
     );
 };
-
-export enum AuthErrorType {
-    None = 0,
-    Error = 1,
-    Inactive = 2,
-}
 
 const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const popupsHandler: { [key: number]: JSX.Element | null } = {

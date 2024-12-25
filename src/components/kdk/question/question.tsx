@@ -18,12 +18,7 @@ import { useEndGameContext } from '../../../context/game_context/end_game_contex
 
 import { WordDetails } from '../../../Data objects/Words/BasicDataObjects/WordDetails';
 import { GameWordListDetails } from '../../../Data objects/Words/GameDataObjects/GameWordListDetails';
-
-enum ButtonState {
-    ShowAnswer = 1,
-    ChooseAnswer = 2,
-    Continue = 3,
-}
+import { ButtonState } from '../../../Data objects/Enums/KdkGameButtonState/ButtonState';
 
 const Question = () => {
     // Navigation

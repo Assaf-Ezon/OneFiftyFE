@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 import { IMAGES } from '../../../image_handler';
-import { Screens } from '../../../screen_names';
+import { Screens } from '../../../Data objects/Enums/Screens/Screens';
 
 import OptionListStyle from './option_list_style';
 

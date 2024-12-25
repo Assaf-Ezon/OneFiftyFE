@@ -1,6 +1,7 @@
 import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import Popup, {AuthErrorType} from './popups/popups';
+import Popup from './popups/popups';
+import { AuthErrorType } from '../../Data objects/Enums/AuthErrorType/AuthErrorType';
 
 import StartScreenStyle from './start_style';
 

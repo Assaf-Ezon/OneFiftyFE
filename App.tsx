@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { Screens } from './src/screen_names';
+import { Screens } from './src/Data objects/Enums/Screens/Screens';
 
 import SplashScreen from './src/screens/splash/splash'
 import StartScreen from './src/screens/start/start';
