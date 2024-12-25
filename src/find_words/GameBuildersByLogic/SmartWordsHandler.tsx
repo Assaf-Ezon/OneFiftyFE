@@ -1,7 +1,7 @@
 import { NewWords, UserStatistics, GameWords, WordStatisticsData } from '../../types_and_interfaces/words_types';
-import AddNewWords from './add_new_words';
+import NewWordsHandler from './NewWordsHandler';
 
-export default class AddSmartWords {
+export default class SmartWordsHandler {
     static add(new_words: NewWords, statistics: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
         // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
@@ -18,17 +18,17 @@ export default class AddSmartWords {
         for (const word in listOfWords) {
             // https://docs.google.com/document/d/1bqHCz86ZslXG_MxHGOBIxr1OJxB6c5YJC2EdA8N_D9M/edit?tab=t.0
             // in page 3, under "filters by models"
-            if ((listOfWords[word].ConsecutiveSuccesses == 0 && 1 <= AddSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen))
-                 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= AddSmartWords.deltaDaysFromToday(listOfWords[word].LastSeen)) {
+            if ((listOfWords[word].ConsecutiveSuccesses == 0 && 1 <= SmartWordsHandler.deltaDaysFromToday(listOfWords[word].LastSeen))
+                 || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= SmartWordsHandler.deltaDaysFromToday(listOfWords[word].LastSeen)) {
                 words[word] = listOfWords[word]
             }
         }
 
         // splits the amount of words asked for to "new" words and "smart practice" words
-        const amounts = AddSmartWords.splitNumberBetweenLists(amount_of_words, key, new_words, words);
+        const amounts = SmartWordsHandler.splitNumberBetweenLists(amount_of_words, key, new_words, words);
 
         // adding the new words part
-        AddNewWords.add(new_words, key, amounts.newWordsAmount, wordsDict);
+        NewWordsHandler.add(new_words, key, amounts.newWordsAmount, wordsDict);
 
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(words);

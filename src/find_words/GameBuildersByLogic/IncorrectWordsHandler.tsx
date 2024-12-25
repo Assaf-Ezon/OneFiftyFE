@@ -1,6 +1,6 @@
 import { UserStatistics, GameWords, WordStatisticsData } from '../../types_and_interfaces/words_types';
 
-export default class AddWrongWords {
+export default class IncorrectWordsHandler {
     static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
         // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {

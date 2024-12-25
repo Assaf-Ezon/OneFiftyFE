@@ -1,25 +1,14 @@
-import { UserStatistics, GameWords, WordStatisticsData } from '../../types_and_interfaces/words_types';
+import { NewWords, GameWords } from '../../types_and_interfaces/words_types';
 
-export default class AddPracticeWords {
-    static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
+export default class NewWordsHandler {
+    static add(contextDict: NewWords, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
         // creates the level in the wordsDict if doesn't exist
         if (!wordsDict[key]) {
             wordsDict[key] = {};
         }
 
-        // dict of the words that are considered "practice words"
-        const words: { [word: string]: WordStatisticsData } = {};
-
-        // filters only the words that are considered "pracrice"
-        const listOfWords = contextDict.WordsStatistics.Words[key];
-        for (const word in listOfWords) {
-            if (listOfWords[word].Successes !== 0) {
-                words[word] = listOfWords[word]
-            }
-        }
-
         // converting to array - so that I can shuffle
-        const wordsArray = Object.entries(words);
+        const wordsArray = Object.entries(contextDict[key]);
 
         // contains the "used" indexes
         const takenWordsindexList: number[] = [];
@@ -36,15 +25,15 @@ export default class AddPracticeWords {
             
             // adding the random words to the wordsDict
             wordsDict[key][wordsArray[randomIndex][0]] = {
-                FullWord: wordsArray[randomIndex][1].Word.FullWord,
-                Meanings: wordsArray[randomIndex][1].Word.Meanings,
-                Group: wordsArray[randomIndex][1].Word.Group,
-                Type: 'תרגול'  
+                ...wordsArray[randomIndex][1],
+                Type: 'חדש'
             }
             
             // adds the index to the "used" indexes
             takenWordsindexList.push(randomIndex);
         }
+
+        // TODO: In my opinion the "shuffle and select" code section should be a function in a shared parent for these classes rather than repeated.
 
         return wordsDict;
     }

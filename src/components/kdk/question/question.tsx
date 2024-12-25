@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 
-import CreateWordList from '../../../find_words/find_words';
+import WordsDictCreator from '../../../find_words/WordsDictCreator';
 
 import { WordDetails, WordListDetails } from '../../../types_and_interfaces/words_types';
 import { useWords } from '../../../context/general_context/words_context';
@@ -68,11 +68,11 @@ const Question = () => {
 
         switch (settings.language) {
             case "Hebrew":
-                const heCreateGame = new CreateWordList(settings, hebrewNewWords, hebrewUserStatistics, getFlagsCount());
+                const heCreateGame = new WordsDictCreator(settings, hebrewNewWords, hebrewUserStatistics, getFlagsCount());
                 wordsList = Object.entries(heCreateGame.createList());
                 break;
             case "English":
-                const enCreateGame = new CreateWordList(settings, englishNewWords, englishUserStatistics, getFlagsCount());
+                const enCreateGame = new WordsDictCreator(settings, englishNewWords, englishUserStatistics, getFlagsCount());
                 wordsList = Object.entries(enCreateGame.createList());
                 break;
         }
@@ -150,7 +150,7 @@ const Question = () => {
         }
     };
 
-    const setIfAnswerCorrect = (isCorrect: boolean) => {
+    const setIsAnswerCorrect = (isCorrect: boolean) => {
         const currectWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
         const currectWordValue = words[listPointer][1][currectWordKey];
 
@@ -226,10 +226,10 @@ const Question = () => {
                     </Animated.View>
                 ) : answer == ButtonState.ChooseAnswer ? (
                     <View style={QuestionStyle.btns}>
-                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIfAnswerCorrect(false)}>
+                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIsAnswerCorrect(false)}>
                             <Text style={QuestionStyle.btnText}>לא ידעתי</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIfAnswerCorrect(true)}>
+                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIsAnswerCorrect(true)}>
                             <Text style={QuestionStyle.btnText}>ידעתי</Text>
                         </TouchableOpacity>
                     </View>

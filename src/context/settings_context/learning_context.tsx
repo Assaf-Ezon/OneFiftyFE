@@ -87,10 +87,10 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
     const getFlagsCount = () => {
         let count = 0;
 
-        count += settings.shouldIncludeNewWords ? 1 : 0;
-        count += settings.shouldIncludeIncorrectWords ? 1 : 0;
-        count += settings.shouldIncludePracticeWords ? 1 : 0;
-        count += settings.shouldIncludeSmartStudy ? 1 : 0;
+        count += Number(settings.shouldIncludeNewWords);
+        count += Number(settings.shouldIncludeIncorrectWords);
+        count += Number(settings.shouldIncludePracticeWords);
+        count += Number(settings.shouldIncludeSmartStudy);
 
         return count;
     }
