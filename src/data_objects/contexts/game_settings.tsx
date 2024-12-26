@@ -1,7 +1,7 @@
-export type Settings = {
+export type GameSettings = {
     shouldIncludeNewWords: boolean;
     shouldIncludeIncorrectWords: boolean;
-    shouldIncludePracticeWords: boolean;
+    shouldIncludePracticedwords: boolean;
     shouldIncludeSmartStudy: boolean;
     language: string | null;
     levels: { [key: number]: number };

@@ -3,7 +3,7 @@ import { ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
 import { ProfileContextConfig } from '../../config/contexts/profile_context_config';
-import { ProfileData } from '../../data_objects/contexts/profile_data';
+import { ContextProfileData } from '../../data_objects/contexts/profile_data';
 
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
@@ -13,7 +13,7 @@ const DAY = 24 * HOUR;
 export const ProfileContext = createContext<ProfileContextConfig | undefined>(undefined);
 
 export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [profile, setProfile] = useState<ProfileData>({
+    const [profile, setProfile] = useState<ContextProfileData>({
         name: '', 
         email: '', 
         rank: 0, 

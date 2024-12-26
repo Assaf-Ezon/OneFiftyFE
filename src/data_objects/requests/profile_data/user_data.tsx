@@ -1,4 +1,4 @@
-export type UserData = {
+export type UserDataInRequest = {
     AuthProvider: number;
     DateJoined: string;
     DisplayName: string;

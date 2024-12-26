@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from "react-native";
 
-export type ProfileData = {
+export type ContextProfileData = {
     name: string,
     email: string,
     rank: number,

@@ -12,31 +12,6 @@ export default class NewWordsHandler extends UtilsForGameBuilders {
         // converting to array - so that I can shuffle
         const wordsArray = Object.entries(contextDict[key]);
 
-        // contains the "used" indexes
-        // const takenWordsindexList: number[] = [];
-
-        // loop the amount requested for
-        // for (let i = 0; i < Math.min(amount_of_words, wordsArray.length); i++) {
-        //     // random index
-        //     let randomIndex = Math.floor(Math.random() * wordsArray.length); 
-            
-        //     // continues to create random indexes if already inside
-        //     while (takenWordsindexList.includes(randomIndex)) {
-        //         randomIndex = Math.floor(Math.random() * wordsArray.length); 
-        //     }
-            
-        //     // adding the random words to the wordsDict
-        //     wordsDict[key][wordsArray[randomIndex][0]] = {
-        //         ...wordsArray[randomIndex][1],
-        //         Type: 'חדש'
-        //     }
-            
-        //     // adds the index to the "used" indexes
-        //     takenWordsindexList.push(randomIndex);
-        // }
-
-        // return wordsDict;
-
-        return NewWordsHandler.create_shuffled_dict_for_new_dict(key, wordsArray, amount_of_words, wordsDict, 'חדש');
+        return NewWordsHandler.createShuffledDictForNewDict(key, wordsArray, amount_of_words, wordsDict, 'חדש');
     }
 }

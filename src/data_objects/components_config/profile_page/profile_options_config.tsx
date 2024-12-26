@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from "react-native";
 
-export type ProfileOptionsConfig = {
+export type ProfileMenuConfig = {
     image: ImageSourcePropType;
     title: string;
     screenName: string;

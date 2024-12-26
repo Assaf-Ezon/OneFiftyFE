@@ -18,7 +18,7 @@ const LearningSettings = () => {
     // state handling for regular study checkbox
     const [newWordsChecbox, setNewWordsChecbox] = useState<boolean>(settings.shouldIncludeNewWords);
     const [incorrectWordsChecbox, setIncorrectWordsChecbox] = useState<boolean>(settings.shouldIncludeIncorrectWords);
-    const [practiceWordsChecbox, setPracticeWordsChecbox] = useState<boolean>(settings.shouldIncludePracticeWords);
+    const [practiceWordsChecbox, setPracticeWordsChecbox] = useState<boolean>(settings.shouldIncludePracticedwords);
 
     const isRegularPracticeOn = () => {
         return newWordsChecbox || incorrectWordsChecbox || practiceWordsChecbox;

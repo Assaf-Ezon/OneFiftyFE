@@ -1,9 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import { SettingsContextConfig } from '../../config/contexts/settings_context_config';
+import { DictionaryConfigContextConfig } from '../../config/contexts/settings_context_config';
 import { DictionarySettings } from '../../data_objects/contexts/dictionary_page_settings';
 
-export const SettingsContext = createContext<SettingsContextConfig | undefined>(undefined);
+export const SettingsContext = createContext<DictionaryConfigContextConfig | undefined>(undefined);
 
 export const SettingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [settings, setSettings] = useState<DictionarySettings>({language: '', level: -1});

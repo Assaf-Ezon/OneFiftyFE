@@ -3,9 +3,9 @@ import { FC } from 'react';
 import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { ProfileOptionsConfig } from '../../../../data_objects/components_config/profile_page/profile_options_config';
+import { ProfileMenuConfig } from '../../../../data_objects/components_config/profile_page/profile_options_config';
 
-const OptionCard: FC<ProfileOptionsConfig> = ({ image, title, screenName, isActive }) => {
+const OptionCard: FC<ProfileMenuConfig> = ({ image, title, screenName, isActive }) => {
     const navigation = useNavigation();
 
     return (

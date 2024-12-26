@@ -1,6 +1,6 @@
 import { ImageSourcePropType } from "react-native";
 
-export type ProfileImagePopupOptionConfig = {
+export type ChangeProfileImagePopupConfig = {
     id: number,
     image: ImageSourcePropType,
 }

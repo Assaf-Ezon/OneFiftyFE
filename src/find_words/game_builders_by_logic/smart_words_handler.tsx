@@ -13,59 +13,32 @@ export default class SmartWordsHandler extends UtilsForGameBuilders {
             wordsDict[key] = {};
         }
 
-        // dict of the words that are considered "smart practice words"
-        const words: { [word: string]: WordStatisticsData } = {};
-
         // the part of the statistics dict that you need to search for "smart practice words"
         const listOfWords = statistics.WordsStatistics.Words[key]; 
         
+        // dict of the words that are considered "smart practice words"
+        const wordsMatchingToFilter: { [word: string]: WordStatisticsData } = {};
+
         // filters only the words that are considered "smart pracrice"
         for (const word in listOfWords) {
             // https://docs.google.com/document/d/1bqHCz86ZslXG_MxHGOBIxr1OJxB6c5YJC2EdA8N_D9M/edit?tab=t.0
-            // in page 3, under "filters by models"
+            // in page 3, under "filters by models" - an explanation about the following "if" statement and what does it do
             if ((listOfWords[word].ConsecutiveSuccesses == 0 && 1 <= SmartWordsHandler.deltaDaysFromToday(listOfWords[word].LastSeen))
                  || 2 ** (listOfWords[word].ConsecutiveSuccesses - 1) <= SmartWordsHandler.deltaDaysFromToday(listOfWords[word].LastSeen)) {
-                words[word] = listOfWords[word]
+                    wordsMatchingToFilter[word] = listOfWords[word]
             }
         }
 
         // splits the amount of words asked for to "new" words and "smart practice" words
-        const amounts = SmartWordsHandler.splitNumberBetweenLists(amount_of_words, key, new_words, words);
+        const amounts = SmartWordsHandler.splitNumberBetweenLists(amount_of_words, key, new_words, wordsMatchingToFilter);
 
         // adding the new words part
         NewWordsHandler.add(new_words, key, amounts.newWordsAmount, wordsDict);
 
         // converting to array - so that I can shuffle
-        const wordsArray = Object.entries(words);
+        const wordsArray = Object.entries(wordsMatchingToFilter);
 
-        // contains the "used" indexes
-        // const takenWordsindexList: number[] = [];
-
-        // loop the amount requested for
-        // for (let i = 0; i < Math.min(wordsArray.length, amounts.statisticsAmount); i++) {
-        //     // random index
-        //     let randomIndex = Math.floor(Math.random() * wordsArray.length); 
-            
-        //     // continues to create random indexes if already inside
-        //     while (takenWordsindexList.includes(randomIndex)) {
-        //         randomIndex = Math.floor(Math.random() * wordsArray.length); 
-        //     }
-            
-        //     // adding the random words to the wordsDict
-        //     wordsDict[key][wordsArray[randomIndex][0]] = {
-        //         FullWord: wordsArray[randomIndex][1].Word.FullWord,
-        //         Meanings: wordsArray[randomIndex][1].Word.Meanings,
-        //         Group: wordsArray[randomIndex][1].Word.Group,
-        //         Type: 'תרגול (חכם)'
-        //     }
-            
-        //     // adds the index to the "used" indexes
-        //     takenWordsindexList.push(randomIndex);
-        // }
-
-        // return wordsDict;
-
-        return SmartWordsHandler.create_shuffled_dict_for_statistics(key, wordsArray, amounts.statisticsAmount, wordsDict, 'תרגול (חכם)');
+        return SmartWordsHandler.createShuffledDictForStatistics(key, wordsArray, amounts.statisticsAmount, wordsDict, 'תרגול (חכם)');
     }
 
     static deltaDaysFromToday(date: string) {

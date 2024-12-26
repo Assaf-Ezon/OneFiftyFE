@@ -20,7 +20,11 @@ const updateUserStatistics = async (name: string, token: string, WordsSuccess: W
                 }
             });
 
-            return response.data;
+            if (response.status >= 200 && response.status < 300) {
+                return response.data;
+            } else {
+                throw new Error(`Request failed with status code: ${response.status}`);
+            }
             
         } catch (error) {
             throw new Error();

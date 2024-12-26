@@ -3,20 +3,20 @@ import IncorrectWordsHandler from "./game_builders_by_logic/incorrect_words_hand
 import PracticeWordsHandler from "./game_builders_by_logic/practice_words_handler";
 import SmartWordsHandler from "./game_builders_by_logic/smart_words_handler";
 
-import { Settings } from "../data_objects/contexts/game_settings";
+import { GameSettings } from "../data_objects/contexts/game_settings";
 import { Words } from "../data_objects/words/basic_data_objects/words";
 import { UserStatistics } from "../data_objects/words/statistics/user_statistics";
 import { GameWords } from "../data_objects/words/game_data_objects/game_words";
 
 export default class WordsDictCreator {
-    private _settings: Settings;
+    private _settings: GameSettings;
     private _flags_count: number; 
     private _words: GameWords;
 
     private _new_words: Words;
     private _statistics: UserStatistics; 
 
-    constructor(settings: Settings, new_words: Words, statistics: UserStatistics, flags_count: number) { 
+    constructor(settings: GameSettings, new_words: Words, statistics: UserStatistics, flags_count: number) { 
         this._settings = settings;
         this._flags_count = flags_count;
 
@@ -26,7 +26,7 @@ export default class WordsDictCreator {
         this._statistics = statistics;
     }
 
-    setSettings(settings: Settings): void {
+    setSettings(settings: GameSettings): void {
         this._settings = settings;
     }
 
@@ -38,26 +38,30 @@ export default class WordsDictCreator {
                     // TODO: change all "add" methods to handle all levels and not only 0
                     if (this._settings.shouldIncludeNewWords && 
                         amountList.length && 
-                        this.checkLevelExistsInNewList(parseInt(level_key))) { 
+                        this.checkLevelExistsInNewList(parseInt(level_key))) 
+                    { 
                         NewWordsHandler.add(this._new_words, 0, Math.min(Object.keys(this._new_words[0]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeIncorrectWords && 
                         amountList.length && 
-                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
+                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) 
+                    { 
                         IncorrectWordsHandler.add(this._statistics, 0, Math.min(Object.keys(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
-                    if (this._settings.shouldIncludePracticeWords && 
+                    if (this._settings.shouldIncludePracticedwords && 
                         amountList.length && 
-                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
+                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) 
+                    { 
                         PracticeWordsHandler.add(this._statistics, 0, Math.min(Object.keys(this._statistics.WordsStatistics.Words[0]).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeSmartStudy && 
                         amountList.length && 
                         this.checkLevelExistsInNewList(parseInt(level_key)) && 
-                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) { 
+                        this.checkLevelExistsInStatisticsList(parseInt(level_key))) 
+                    { 
                         SmartWordsHandler.add(this._new_words, this._statistics, 0, amountList[amountList.length - 1], this._words);
                         amountList.pop();
                     }

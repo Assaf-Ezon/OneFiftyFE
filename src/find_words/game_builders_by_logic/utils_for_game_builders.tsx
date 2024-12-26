@@ -4,7 +4,7 @@ import { GameWords } from "../../data_objects/words/game_data_objects/game_words
 
 export default class UtilsForGameBuilders {
     // wordsArray - list of valid new words/statistics words
-    static create_shuffled_dict_for_new_dict (key: number, wordsArray: [string, WordDetails][], amount_of_words: number, wordsDict: GameWords, word_type: string): GameWords {
+    static createShuffledDictForNewDict (key: number, wordsArray: [string, WordDetails][], amount_of_words: number, wordsDict: GameWords, word_type: string): GameWords {
         // contains the "used" indexes
         const takenWordsindexList: number[] = [];
 
@@ -31,7 +31,7 @@ export default class UtilsForGameBuilders {
         return wordsDict;
     }
 
-    static create_shuffled_dict_for_statistics (key: number, wordsArray: [string, WordStatisticsData][], amount_of_words: number, wordsDict: GameWords, word_type: string): GameWords {
+    static createShuffledDictForStatistics (key: number, wordsArray: [string, WordStatisticsData][], amount_of_words: number, wordsDict: GameWords, word_type: string): GameWords {
         // contains the "used" indexes
         const takenWordsindexList: number[] = [];
 
