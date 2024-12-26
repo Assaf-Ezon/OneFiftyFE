@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import PlansContainerStyle from './plans_container_style';
 
-import { Plans } from '../../data_objects/enums/payment_plans/payment_plans';
+import { Plans } from '../../data_objects/enums/payment_plans';
 
 import { CONFIG } from '../../config';
 

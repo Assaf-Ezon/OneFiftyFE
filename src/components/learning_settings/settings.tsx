@@ -7,7 +7,7 @@ import NumericInput from './numeric_input/numeric_input';
 import SettingsStyle from './settings_style';
 
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
-import { Languages } from '../../data_objects/enums/language/language';
+import { Languages } from '../../data_objects/enums/language';
 
 const LearningSettings = () => {
     // settings context

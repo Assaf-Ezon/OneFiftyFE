@@ -9,7 +9,7 @@ import { useSidebarContext } from '../../../context/general_context/sidebar_cont
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 
-import { Screens } from '../../../data_objects/enums/screens/screens';
+import { Screens } from '../../../data_objects/enums/screens';
 import { BottomBarConfig } from '../../../data_objects/components_config/general/bottom_bar_config';
 
 const BottomBar: FC<BottomBarConfig> = ({ homePath, dictionaryPath, learningPath, leaderboardPath, profilePath, activeScreen }) => {

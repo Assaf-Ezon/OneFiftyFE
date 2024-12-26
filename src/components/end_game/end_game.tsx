@@ -12,7 +12,7 @@ import { useLearningSettingsContext } from '../../context/settings_context/learn
 
 import updateUserStatistics from '../../requests/update_stats_request';
 import { EndGamesStatisticsConfig } from '../../data_objects/components_config/games/end_game_popup_config';
-import { Languages } from '../../data_objects/enums/language/language';
+import { Languages } from '../../data_objects/enums/language';
 
 const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();

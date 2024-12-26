@@ -1,12 +1,12 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import { findPlanByName } from '../../../../payment_plans';
-import { Plans } from '../../../../data_objects/enums/payment_plans/payment_plans';
+import { Plans } from '../../../../data_objects/enums/payment_plans';
 import { PlanType } from '../../../../data_objects/general/plan_type';
 import PayNowStyle from './pay_now_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { Screens } from '../../../../data_objects/enums/screens/screens';
+import { Screens } from '../../../../data_objects/enums/screens';
 
 import { useProfile } from '../../../../context/general_context/profile_context';
 

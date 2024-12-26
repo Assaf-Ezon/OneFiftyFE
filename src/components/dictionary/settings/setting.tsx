@@ -6,7 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import SettingsStyle from "./settings_style";
 
 import { useSettings } from '../../../context/dictionary_context/settings_context';
-import { Languages } from "../../../data_objects/enums/language/language";
+import { Languages } from "../../../data_objects/enums/language";
 
 const Settings = () => {
     const { setSettings } = useSettings();

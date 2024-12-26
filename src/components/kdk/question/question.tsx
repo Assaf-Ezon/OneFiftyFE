@@ -18,10 +18,10 @@ import { useEndGameContext } from '../../../context/game_context/end_game_contex
 
 import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
 import { GameWordDictDetails } from '../../../data_objects/words/game_data_objects/game_word_dict_details';
-import { ButtonState } from '../../../data_objects/enums/kdk_game_button_state/button_state';
+import { ButtonState } from '../../../data_objects/enums/button_state';
 
 import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
-import { Languages } from '../../../data_objects/enums/language/language';
+import { Languages } from '../../../data_objects/enums/language';
 
 const Question = () => {
     // Navigation
