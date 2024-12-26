@@ -7,6 +7,7 @@ import NumericInput from './numeric_input/numeric_input';
 import SettingsStyle from './settings_style';
 
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
+import { Languages } from '../../data_objects/enums/language/language';
 
 const LearningSettings = () => {
     // settings context
@@ -36,8 +37,8 @@ const LearningSettings = () => {
 
     // the options for the dropdown menu
     const [langItems, setLangItems] = useState<LangItemsType[]>([
-        {label: 'אנגלית', value: 'English'},
-        {label: 'עברית', value: 'Hebrew'},
+        {label: 'אנגלית', value: Languages.English},
+        {label: 'עברית', value: Languages.Hebrew},
     ]);
     
     // update settings in context

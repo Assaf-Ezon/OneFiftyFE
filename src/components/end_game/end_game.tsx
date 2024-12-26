@@ -12,6 +12,7 @@ import { useLearningSettingsContext } from '../../context/settings_context/learn
 
 import updateUserStatistics from '../../requests/update_stats_request';
 import { EndGamesStatisticsConfig } from '../../data_objects/components_config/games/end_game_popup_config';
+import { Languages } from '../../data_objects/enums/language/language';
 
 const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
@@ -46,10 +47,10 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                     const userStatistics = await updateUserStatistics(name, token, correctAnswers, wrongAnswers, lang);
 
                     switch (settings.language) {
-                        case "Hebrew":
+                        case Languages.Hebrew:
                             setHebrewUserStatistics(userStatistics.UserStatistics);
                             break;
-                        case "English":
+                        case Languages.English:
                             setEnglishUserStatistics(userStatistics.UserStatistics);
                             break;
                     }

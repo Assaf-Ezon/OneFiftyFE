@@ -6,6 +6,7 @@ import Word from './word/word';
 import { useSettings } from '../../../context/dictionary_context/settings_context';
 import { useWords } from '../../../context/general_context/words_context';
 import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
+import { Languages } from '../../../data_objects/enums/language/language';
 
 const Words = () => {
     const { settings } = useSettings();
@@ -15,10 +16,10 @@ const Words = () => {
     try {
         if (settings.level in hebrewWords.Words && settings.level in englishWords.Words) {
             switch (settings.language) {
-                case 'Hebrew':
+                case Languages.Hebrew:
                     words = hebrewWords.Words[settings.level];
                     break;
-                case 'English':
+                case Languages.English:
                     words = englishWords.Words[settings.level];
                     break;
             }

@@ -4,5 +4,5 @@ export type GameSettings = {
     shouldIncludePracticedwords: boolean;
     shouldIncludeSmartStudy: boolean;
     language: string | null;
-    levels: { [key: number]: number };
+    levels: { [groupId: number]: number };
 }

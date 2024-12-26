@@ -1,13 +1,13 @@
 import { Words } from "../../data_objects/words/basic_data_objects/words";
-import { FullWordsDictionary } from "../../data_objects/words/dictionary/full_words_dictionary";
+import { WordsDictionary } from "../../data_objects/words/dIctionary/words_dictionary";
 import { UserStatistics } from "../../data_objects/words/statistics/user_statistics";
 
 export interface WordsContextConfig {
-    hebrewWords: FullWordsDictionary,
-    setHebrewWords: (words: FullWordsDictionary) => void;
+    hebrewWords: WordsDictionary,
+    setHebrewWords: (words: WordsDictionary) => void;
 
-    englishWords: FullWordsDictionary,
-    setEnglishWords: (words: FullWordsDictionary) => void;
+    englishWords: WordsDictionary,
+    setEnglishWords: (words: WordsDictionary) => void;
 
     hebrewUserStatistics: UserStatistics,
     setHebrewUserStatistics: (words: UserStatistics) => void;

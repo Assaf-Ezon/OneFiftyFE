@@ -87,7 +87,7 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
             levels: Object.keys(prevState.levels).reduce((acc, key) => {
                 acc[Number(key)] = 0;
                 return acc;
-            }, {} as { [key: number]: number }),
+            }, {} as { [groupId: number]: number }),
         }));
     };
 

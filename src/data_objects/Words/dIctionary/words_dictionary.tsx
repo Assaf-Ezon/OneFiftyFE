@@ -1,8 +1,7 @@
-import { WordDetails } from "../basic_data_objects/word_details";
+import { Words } from "../basic_data_objects/words";
 
-// the words in 'dictionary' dicts
+// 'dictionary' dict
 export type WordsDictionary = {
-    [key: string]: {
-        [word: string]: WordDetails;
-    };
+    WordCount: number;
+    Words: Words;
 }

@@ -105,7 +105,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
                         isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
                     });
-
+                        
                         setHebrewWords(data.HebrewWordsDictionary);
                         setEnglishWords(data.EnglishWordsDictionary);
                         setHebrewUserStatistics(data.HebrewUserStatistics);

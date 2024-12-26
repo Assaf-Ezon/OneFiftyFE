@@ -1,23 +1,23 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import { FullWordsDictionary } from '../../data_objects/words/dictionary/full_words_dictionary';
 import { UserStatistics } from '../../data_objects/words/statistics/user_statistics';
 import { WordDetails } from '../../data_objects/words/basic_data_objects/word_details';
 import { Words } from '../../data_objects/words/basic_data_objects/words';
 import { WordsContextConfig } from '../../config/contexts/words_context_config';
+import { WordsDictionary } from '../../data_objects/words/dIctionary/words_dictionary';
 
 export const WordsContext = createContext<WordsContextConfig | undefined>(undefined);
 
 export const WordsProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [hebrewWords, setHebrewWords] = useState<FullWordsDictionary>({} as FullWordsDictionary);
-    const [englishWords, setEnglishWords] = useState<FullWordsDictionary>({} as FullWordsDictionary);
+    const [hebrewWords, setHebrewWords] = useState<WordsDictionary>({} as WordsDictionary);
+    const [englishWords, setEnglishWords] = useState<WordsDictionary>({} as WordsDictionary);
 
     const [hebrewUserStatistics, setHebrewUserStatistics] = useState<UserStatistics>({} as UserStatistics);
     const [englishUserStatistics, setEnglishUserStatistics] = useState<UserStatistics>({} as UserStatistics);
 
     // remaining new words calculation
-    const _getNewWords = (fullDict: FullWordsDictionary, statistics: UserStatistics): { [key: number]: { [word: string]: WordDetails } } => {
-        const newWords: { [key: number]: { [word: string]: WordDetails } } = {}; 
+    const _getNewWords = (fullDict: WordsDictionary, statistics: UserStatistics): { [groupId: number]: { [word: string]: WordDetails } } => {
+        const newWords: { [groupId: number]: { [word: string]: WordDetails } } = {}; 
         
         for (const [groupKey, groupValue] of Object.entries(fullDict.Words)) {
             const newGroupWords: { [word: string]: WordDetails } = {};

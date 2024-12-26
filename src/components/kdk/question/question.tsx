@@ -21,6 +21,7 @@ import { GameWordDictDetails } from '../../../data_objects/words/game_data_objec
 import { ButtonState } from '../../../data_objects/enums/kdk_game_button_state/button_state';
 
 import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
+import { Languages } from '../../../data_objects/enums/language/language';
 
 const Question = () => {
     // Navigation
@@ -67,16 +68,16 @@ const Question = () => {
         let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
 
         switch (settings.language) {
-            case "Hebrew":
+            case Languages.Hebrew:
                 NewWords = hebrewNewWords;
                 UserStatistics = hebrewUserStatistics;
                 break;
-            case "English":
+            case Languages.English:
                 NewWords = englishNewWords;
                 UserStatistics = englishUserStatistics;
                 break;
         }
-        
+
         const CreateGame = new WordsDictCreator(settings, NewWords, UserStatistics, getFlagsCount());
         let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(CreateGame.createList());
 
