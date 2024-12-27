@@ -1,8 +1,5 @@
-import { ImageSourcePropType } from "react-native";
+import { LearningCardConfig } from "../learning_card_config";
 
-export type LearningPageLearningCardConfig = {
+export type LearningPageLearningCardConfig = LearningCardConfig & {
     id: number;
-    image: ImageSourcePropType;
-    title: string;
-    gameName: string;
 }
