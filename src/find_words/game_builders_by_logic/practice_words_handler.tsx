@@ -1,29 +1,38 @@
+import { WordDetails } from "../../data_objects/words/basic_data_objects/word_details";
 import { WordStatisticsData } from "../../data_objects/words/basic_data_objects/word_statistics_data";
-import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
-import { UserStatistics } from "../../data_objects/words/statistics/user_statistics";
-import UtilsForGameBuilders from "./utils_for_game_builders";
+import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/game_word_dict_details";
+import BaseWordsSelector from "./base_words_selector";
 
-export default class PracticeWordsHandler extends UtilsForGameBuilders {
-    static add(contextDict: UserStatistics, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
-        // creates the level in the wordsDict if doesn't exist
-        if (!wordsDict[key]) {
-            wordsDict[key] = {};
-        }
-
-        // dict of the words that are considered "practice words"
-        const wordsMatchingToFilter: { [word: string]: WordStatisticsData } = {};
-
-        // filters only the words that are considered "pracrice"
-        const listOfWords = contextDict.WordsStatistics.Words[key];
-        for (const word in listOfWords) {
-            if (listOfWords[word].Successes !== 0) {
-                wordsMatchingToFilter[word] = listOfWords[word]
+export default class PracticeWordsHandler extends BaseWordsSelector {
+    selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
+        // dict of the words that are considered "wrong words"
+        const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
+    
+        // filters only the words that are considered "wrong"
+        for (const word in practicedWords) {
+            if (practicedWords[word].Successes !== 0) {
+                const WordDetails: GameWordDictDetails = {
+                    FullWord: practicedWords[word].Word.FullWord,
+                    Meanings: practicedWords[word].Word.Meanings,
+                    Group: practicedWords[word].Word.Group,
+                    Type: "תרגול"
+                }
+                wordsMatchingToFilter[word] = WordDetails;
             }
         }
+        
+        return wordsMatchingToFilter;
+    }
 
-        // converting to array - so that I can shuffle
-        const wordsArray = Object.entries(wordsMatchingToFilter);
+    selectNewInternal(newWords: { [word: string]: WordDetails }): { [word: string]: GameWordDictDetails } {
+        // dict of the words that are considered "wrong words"
+        const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
+        return wordsMatchingToFilter;
+    }
 
-        return PracticeWordsHandler.createShuffledDictForStatistics(key, wordsArray, amount_of_words, wordsDict, 'תרגול');
+    getSplit(totalAmount: number, newWords: { [word: string]: WordDetails; }, practicedWords: { [word: string]: WordStatisticsData; }): { newWordsAmount: number; practicedAmount: number; } {
+        const newWordsAmount = 0;
+        const practicedAmount = totalAmount;
+        return { newWordsAmount , practicedAmount };
     }
 }

@@ -1,17 +1,33 @@
-import { Words } from "../../data_objects/words/basic_data_objects/words";
-import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
-import UtilsForGameBuilders from "./utils_for_game_builders";
+import { WordDetails } from "../../data_objects/words/basic_data_objects/word_details";
+import { WordStatisticsData } from "../../data_objects/words/basic_data_objects/word_statistics_data";
+import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/game_word_dict_details";
+import BaseWordsSelector from "./base_words_selector";
 
-export default class NewWordsHandler extends UtilsForGameBuilders {
-    static add(contextDict: Words, key: number, amount_of_words: number, wordsDict: GameWords): GameWords {
-        // creates the level in the wordsDict if doesn't exist
-        if (!wordsDict[key]) {
-            wordsDict[key] = {};
+export default class NewWordsSelector extends BaseWordsSelector {
+    selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
+        const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
+        return wordsMatchingToFilter;
+    }
+    
+    selectNewInternal(newWords: { [word: string]: WordDetails }): { [word: string]: GameWordDictDetails } {
+        // dict of the words that are considered "wrong words"
+        const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
+        for (const word in newWords){
+            const WordDetails: GameWordDictDetails = {
+                FullWord: newWords[word].FullWord,
+                Meanings: newWords[word].Meanings,
+                Group: newWords[word].Group,
+                Type: "חדש"
+            }
+            wordsMatchingToFilter[word] = WordDetails;
         }
 
-        // converting to array - so that I can shuffle
-        const wordsArray = Object.entries(contextDict[key]);
+        return wordsMatchingToFilter;
+    }
 
-        return NewWordsHandler.createShuffledDictForNewDict(key, wordsArray, amount_of_words, wordsDict, 'חדש');
+    getSplit(totalAmount: number, newWords: { [word: string]: WordDetails; }, practicedWords: { [word: string]: WordStatisticsData; }): { newWordsAmount: number; practicedAmount: number; } {
+        const practicedAmount = 0;
+        const newWordsAmount = totalAmount;
+        return { newWordsAmount , practicedAmount };
     }
 }

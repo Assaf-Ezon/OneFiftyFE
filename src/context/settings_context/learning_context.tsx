@@ -91,19 +91,8 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         }));
     };
 
-    const getFlagsCount = () => {
-        let count = 0;
-
-        count += Number(settings.shouldIncludeNewWords);
-        count += Number(settings.shouldIncludeIncorrectWords);
-        count += Number(settings.shouldIncludePracticedwords);
-        count += Number(settings.shouldIncludeSmartStudy);
-
-        return count;
-    }
-
     return (
-        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage, generateRandomNumbers, getFlagsCount }}>
+        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage, generateRandomNumbers }}>
             {children}
         </LearningSettingsContext.Provider>
     );

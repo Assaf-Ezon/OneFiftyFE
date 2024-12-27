@@ -8,5 +8,4 @@ export interface GameSettingsContextConfig {
     updateLevel: (level: number, value: number) => void;
     updateLanguage: (lang: string | null) => void;
     generateRandomNumbers: () => void;
-    getFlagsCount : () => number;
 }

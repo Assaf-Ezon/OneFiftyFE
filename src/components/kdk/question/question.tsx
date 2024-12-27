@@ -30,7 +30,7 @@ const Question = () => {
     // Contexts
     const { isEndGame, toggleEndGameMenu } = useEndGameContext();
     
-    const { settings, getFlagsCount } = useLearningSettingsContext();
+    const { settings } = useLearningSettingsContext();
     const {hebrewUserStatistics,  
         englishUserStatistics,  
         hebrewNewWords,  
@@ -78,8 +78,8 @@ const Question = () => {
                 break;
         }
 
-        const CreateGame = new WordsDictCreator(settings, NewWords, UserStatistics, getFlagsCount());
-        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(CreateGame.createList());
+        const createGame = new WordsDictCreator(settings, NewWords, UserStatistics);
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(createGame.createList());
 
         Object.keys(wordsList).length === 0 ? navigation.goBack() : null;
 
