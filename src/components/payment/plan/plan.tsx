@@ -5,17 +5,9 @@ import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
 import { usePaymentContext } from '../../../context/payment_context/payment_context';
+import { PaymnetPlanConfig } from '../../../data_objects/components_config/payment_page/payment_plan_config';
 
-interface PlanProps {
-    name: string,
-    title: string,
-    description: string,
-    price: string,
-    isRecommended: boolean,
-    backgroundColor: string,
-}
-
-const Plan: FC<PlanProps> = ({ name, title, description, price, isRecommended, backgroundColor }) => {
+const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecommended, backgroundColor }) => {
     const {setDetails, setIsPaymentWebViewOpen} = usePaymentContext(); 
 
     const openWebView = () => {     

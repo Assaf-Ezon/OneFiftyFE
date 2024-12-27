@@ -5,11 +5,11 @@ import SplashScreenStyle from './splash_style';
 
 import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
-import { Screens } from '../../screen_names';
+import { Screens } from '../../data_objects/enums/screens';
 
-import AuthenticationHandler from '../AuthenticationHandler';
+import AuthenticationHandler from '../authentication_handler';
 
-import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
+import { StackNames, useStackManagerContext } from '../../context/general_context/stack_manager_context';
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 
@@ -103,9 +103,9 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                        isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
                     });
-
+                        
                         setHebrewWords(data.HebrewWordsDictionary);
                         setEnglishWords(data.EnglishWordsDictionary);
                         setHebrewUserStatistics(data.HebrewUserStatistics);

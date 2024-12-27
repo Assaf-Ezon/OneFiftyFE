@@ -1,25 +1,9 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-interface Settings {
-    newWords: boolean;
-    incorrectWords: boolean;
-    practiceWords: boolean;
-    smartStudy: boolean;
-    language: string | null;
-    levels: { [key: number]: number };
-}
+import { GameSettingsContextConfig } from '../../config/contexts/game_settings_context_config';
+import { GameSettings } from '../../data_objects/contexts/game_settings';
 
-interface LearningSettingsContextProps {
-    isLearningSettingOpen: boolean;
-    toggleLearningSettings: () => void;
-    settings: Settings;
-    updateCheckboxes: (smart: boolean, n: boolean, incorect: boolean, practice: boolean) => void
-    updateLevel: (level: number, value: number) => void;
-    updateLanguage: (lang: string | null) => void;
-    generateRandomNumbers: () => void;
-}
-
-const LearningSettingsContext = createContext<LearningSettingsContextProps | undefined>(undefined);
+const LearningSettingsContext = createContext<GameSettingsContextConfig | undefined>(undefined);
 
 export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // popup open flag
@@ -31,7 +15,12 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
     };
 
     // use state of the settings
-    const [settings, setSettings] = useState<Settings>({newWords: false, incorrectWords: false, practiceWords: false, smartStudy: false, language: null,
+    const [settings, setSettings] = useState<GameSettings>({
+        shouldIncludeNewWords: false, 
+        shouldIncludeIncorrectWords: false, 
+        shouldIncludePracticedwords: false, 
+        shouldIncludeSmartStudy: false, 
+        language: null,
         levels: {
             1: 0,
             2: 0,
@@ -47,19 +36,19 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
     });
 
     //update checkboxes
-    const updateCheckboxes = (smart: boolean, n: boolean, incorect: boolean, practice: boolean) => {
-        setSettings((prevState: Settings) => ({
+    const updateCheckboxes = (shouldIncludeSmartCheckbox: boolean, shouldIncludeNewCheckbox: boolean, shouldIncludeIncorrectCheckbox: boolean, shouldIncludePracticeCheckbox: boolean) => {
+        setSettings((prevState: GameSettings) => ({
             ...prevState, 
-            smartStudy: smart,
-            newWords: n,
-            incorrectWords: incorect,
-            practiceWords: practice,
+            shouldIncludeSmartStudy: shouldIncludeSmartCheckbox,
+            shouldIncludeNewWords: shouldIncludeNewCheckbox,
+            shouldIncludeIncorrectWords: shouldIncludeIncorrectCheckbox,
+            shouldIncludePracticedwords: shouldIncludePracticeCheckbox,
         }));
     };
 
     //update levels
     const updateLevel = (level: number, value: number) => {
-        setSettings((prevState: Settings) => ({
+        setSettings((prevState: GameSettings) => ({
             ...prevState, 
             levels: {
                 ...prevState.levels,
@@ -70,7 +59,7 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
 
     //update language
     const updateLanguage = (lang: string | null) => {
-        setSettings((prevState: Settings) => ({
+        setSettings((prevState: GameSettings) => ({
             ...prevState, 
             language: lang,
         }));
@@ -93,12 +82,12 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
     }
 
     const _resetLevels = () => {
-        setSettings((prevState: Settings) => ({
+        setSettings((prevState: GameSettings) => ({
             ...prevState,
             levels: Object.keys(prevState.levels).reduce((acc, key) => {
                 acc[Number(key)] = 0;
                 return acc;
-            }, {} as { [key: number]: number }),
+            }, {} as { [groupId: number]: number }),
         }));
     };
 

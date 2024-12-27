@@ -4,15 +4,9 @@ import { FC } from 'react';
 import ProfileImageOptionStyle from './image_style';
 
 import { useProfileImageMenuContext } from '../../../../context/settings_context/profile_image_context';
+import { ChangeProfileImagePopupConfig } from '../../../../data_objects/components_config/profile_page/profile_image_popup_option_config';
 
-
-
-interface ProfileImageOption {
-    id: number,
-    image: ImageSourcePropType,
-}
-
-const ProfileImageOption: FC<ProfileImageOption> = ({ id, image }) => {
+const ProfileImageOption: FC<ChangeProfileImagePopupConfig> = ({ id, image }) => {
     const {imageIndex, setImageIndex} = useProfileImageMenuContext();
 
     return (

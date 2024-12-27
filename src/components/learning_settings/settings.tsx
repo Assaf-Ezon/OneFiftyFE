@@ -7,18 +7,19 @@ import NumericInput from './numeric_input/numeric_input';
 import SettingsStyle from './settings_style';
 
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
+import { Languages } from '../../data_objects/enums/language';
 
 const LearningSettings = () => {
     // settings context
     const {isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLanguage, generateRandomNumbers} = useLearningSettingsContext();
 
     // state handling for smart study checkbox
-    const [smartStudy, setSmartStudy] = useState<boolean>(settings.smartStudy);
+    const [smartStudy, setSmartStudy] = useState<boolean>(settings.shouldIncludeSmartStudy);
 
     // state handling for regular study checkbox
-    const [newWordsChecbox, setNewWordsChecbox] = useState<boolean>(settings.newWords);
-    const [incorrectWordsChecbox, setIncorrectWordsChecbox] = useState<boolean>(settings.incorrectWords);
-    const [practiceWordsChecbox, setPracticeWordsChecbox] = useState<boolean>(settings.practiceWords);
+    const [newWordsChecbox, setNewWordsChecbox] = useState<boolean>(settings.shouldIncludeNewWords);
+    const [incorrectWordsChecbox, setIncorrectWordsChecbox] = useState<boolean>(settings.shouldIncludeIncorrectWords);
+    const [practiceWordsChecbox, setPracticeWordsChecbox] = useState<boolean>(settings.shouldIncludePracticedwords);
 
     const isRegularPracticeOn = () => {
         return newWordsChecbox || incorrectWordsChecbox || practiceWordsChecbox;
@@ -36,8 +37,8 @@ const LearningSettings = () => {
 
     // the options for the dropdown menu
     const [langItems, setLangItems] = useState<LangItemsType[]>([
-        {label: 'אנגלית', value: 'English'},
-        {label: 'עברית', value: 'Hebrew'},
+        {label: 'אנגלית', value: Languages.English},
+        {label: 'עברית', value: Languages.Hebrew},
     ]);
     
     // update settings in context
@@ -129,7 +130,7 @@ const LearningSettings = () => {
                                     <CheckBox value={incorrectWordsChecbox} onValueChange={() => {setIncorrectWordsChecbox(prev => !prev)}} />
                                 </View>
                                 <View style={SettingsStyle.SmartStudy}>
-                                    <Text style={SettingsStyle.RegularStudyText}>מילים לתרגול נוסף</Text>
+                                    <Text style={SettingsStyle.RegularStudyText}>מילים שתרגלתי</Text>
                                     <CheckBox value={practiceWordsChecbox} onValueChange={() => {setPracticeWordsChecbox(prev => !prev)}} />
                                 </View>
                             </View>

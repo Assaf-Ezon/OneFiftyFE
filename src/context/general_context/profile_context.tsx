@@ -2,34 +2,18 @@ import { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../image_handler';
 
+import { ProfileContextConfig } from '../../config/contexts/profile_context_config';
+import { ContextProfileData } from '../../data_objects/contexts/profile_data';
+
 const SECOND = 1000;
 const MINUTE = 60 * SECOND;
 const HOUR = 60 * MINUTE;
 const DAY = 24 * HOUR;
 
-interface Profile {
-    name: string,
-    email: string,
-    rank: number,
-    score: number,
-    dateJoined: Date,
-    expirationDate: Date,
-    profileImage: ImageSourcePropType,
-    trial: boolean,
-};
-
-interface ProfileContextProps {
-    profile: Profile;
-    setProfile: (profile: Profile) => void;
-    updateProfileImage: (newImage: ImageSourcePropType) => void;
-    updateRank: (rank: number) => void;
-    IsInTrail: (dateJoined: string, expirationDate: string) => boolean;
-};
-
-export const ProfileContext = createContext<ProfileContextProps | undefined>(undefined);
+export const ProfileContext = createContext<ProfileContextConfig | undefined>(undefined);
 
 export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
-    const [profile, setProfile] = useState<Profile>({
+    const [profile, setProfile] = useState<ContextProfileData>({
         name: '', 
         email: '', 
         rank: 0, 
@@ -37,7 +21,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         dateJoined: new Date('1900-01-01'), 
         expirationDate: new Date('1900-01-01'), 
         profileImage: IMAGES.profile_images[0],
-        trial: false,
+        isTrial: false,
     });
 
     const updateProfileImage = (newImage: ImageSourcePropType) => {

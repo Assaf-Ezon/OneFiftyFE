@@ -5,29 +5,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
+import { LearningPageLearningCardConfig } from '../../../data_objects/components_config/learning_page/learning_page_learning_card_config';
 
-interface LearningCardProp {
-    id: number;
-    image: ImageSourcePropType;
-    title: string;
-    gameName: string;
-}
-
-const LearningCard: FC<LearningCardProp> = ({ id, image, title, gameName }) => {
+const LearningCard: FC<LearningPageLearningCardConfig> = ({ id, image, title, gameName }) => {
     const navigation = useNavigation();
 
     const handlePress = async () => {
         try {
             const games = await AsyncStorage.getItem('games');
-            const parsedGames = games ? JSON.parse(games) : {};
-
+            const parsedGames = games ? JSON.parse(games) : [];
+            
             const updatedGames = parsedGames.includes(id) ? parsedGames : [...parsedGames, id];
             await AsyncStorage.setItem('games',  JSON.stringify(updatedGames));
         } catch (error) {
             console.error('Error adding game: ', error);
         }
 
-        navigation.navigate(gameName);
+        navigation.navigate(gameName as never);
     };
 
     return (

@@ -1,11 +1,7 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
+import { SidebarContextConfig } from '../../config/contexts/sidebar_context_config';
 
-interface SidebarContextProps {
-    isOpen: boolean;
-    toggleMenu: () => void;
-}
-
-const SidebarContext = createContext<SidebarContextProps | undefined>(undefined);
+const SidebarContext = createContext<SidebarContextConfig | undefined>(undefined);
 
 export const SidebarProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);

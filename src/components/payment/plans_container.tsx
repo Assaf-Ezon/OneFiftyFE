@@ -7,12 +7,12 @@ import { useNavigation } from '@react-navigation/native';
 
 import PlansContainerStyle from './plans_container_style';
 
-import { Plans } from '../../payment_plans';
+import { Plans } from '../../data_objects/enums/payment_plans';
 
 import { CONFIG } from '../../config';
 
 import { usePaymentContext } from '../../context/payment_context/payment_context';
-import AuthenticationHandler from '../../screens/AuthenticationHandler';
+import AuthenticationHandler from '../../screens/authentication_handler';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
@@ -63,6 +63,7 @@ const PlansContainer = () => {
                 <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} isRecommended={Plans.OneMonth.isRecommended} backgroundColor={Plans.OneMonth.backgroundColor} />
                 <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} isRecommended={Plans.TwoMonths.isRecommended} backgroundColor={Plans.TwoMonths.backgroundColor} />
                 <Plan name={Plans.ThreeMonths.Plan} title={Plans.ThreeMonths.Title} description={Plans.ThreeMonths.Description} price={Plans.ThreeMonths.Price} isRecommended={Plans.ThreeMonths.isRecommended} backgroundColor={Plans.ThreeMonths.backgroundColor} />
+                <Plan name={Plans.SixMonths.Plan} title={Plans.SixMonths.Title} description={Plans.SixMonths.Description} price={Plans.SixMonths.Price} isRecommended={Plans.SixMonths.isRecommended} backgroundColor={Plans.SixMonths.backgroundColor} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
             {

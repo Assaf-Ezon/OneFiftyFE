@@ -1,10 +1,13 @@
 import KdkStyle from './kdk_style';
 
-import PagePart from '../../components/kdk/page_part/page_part';
+import KDKGamePage from '../../components/kdk/kdk_game_page/kdk_game_page';
+import { EndGameProvider } from '../../context/game_context/end_game_context';
 
 const KdkPage = ({ navigation }: {navigation: any}) => {
     return (
-        <PagePart />
+        <EndGameProvider>
+            <KDKGamePage />
+        </EndGameProvider>
     );
 };
 

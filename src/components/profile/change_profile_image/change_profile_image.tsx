@@ -8,15 +8,11 @@ import ProfileImageOption from './image/image';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
-import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
+import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { setProfilePicture } from '../../../requests/change_profile_picture_request';
-import AuthenticationHandler from '../../../screens/AuthenticationHandler';
+import AuthenticationHandler from '../../../screens/authentication_handler';
+import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
 
-enum ErrorType {
-    None = 0,
-    Error = 1,
-    NoImage = 2,
-}
 
 const ChangeProfileImagePopup = () => {
     const {profile, updateProfileImage} = useProfile();

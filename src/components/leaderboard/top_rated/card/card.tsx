@@ -1,18 +1,10 @@
-import { Text, View, Image, ImageSourcePropType } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { FC } from 'react';
-import { IMAGES } from '../../../../image_handler';
 
 import LeaderboardCardStyle from './card_style';
-import profile from '../../../home/items/profile_part/profile';
+import { LeaderBoardCardConfig } from '../../../../data_objects/components_config/leaderboard_page/leaderboard_card_config';
 
-interface LeaderBoardCardProp {
-    name: string,
-    score: number,
-    rank: number,
-    image: ImageSourcePropType;
-};
-
-const LeaderboardCard: FC<LeaderBoardCardProp> = ({ name, score, rank, image }) => {
+const LeaderboardCard: FC<LeaderBoardCardConfig> = ({ name, score, rank, image }) => {
 
     return (
         <View style={LeaderboardCardStyle.profileScore}>

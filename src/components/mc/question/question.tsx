@@ -1,4 +1,5 @@
 import { Text, View, TouchableOpacity, Image, Animated } from 'react-native';
+import React from 'react';
 import { IMAGES } from '../../../image_handler';
 
 import QuestionStyle from './question_style';

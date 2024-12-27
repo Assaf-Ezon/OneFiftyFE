@@ -1,9 +1,11 @@
 import { View, Text, Modal, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
 
 import PopupsStyle from './popups_style';
 import { IMAGES } from '../../../image_handler';
 
 import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
+import { AuthErrorType } from '../../../data_objects/enums/auth_error_type';
 
 const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(
@@ -57,12 +59,6 @@ const InactivePopup = () => {
         </Modal>
     );
 };
-
-export enum AuthErrorType {
-    None = 0,
-    Error = 1,
-    Inactive = 2,
-}
 
 const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const popupsHandler: { [key: number]: JSX.Element | null } = {

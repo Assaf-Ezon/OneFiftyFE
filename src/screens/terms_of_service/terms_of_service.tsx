@@ -1,3 +1,4 @@
+import React from 'react';
 import { IMAGES } from '../../image_handler';
 
 import TermsOfServiceStyle from './terms_of_service_style';

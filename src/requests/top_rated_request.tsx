@@ -2,18 +2,10 @@ import axios from 'axios';
 import retry from 'p-retry';
 import { CONFIG } from '../config';
 
-interface Score {
-    DisplayName: string;
-    Score: number;
-    ProfilePicture: number;
-}
+import { LeaderboardDataResponse } from '../data_objects/requests/leaderboard_data/leaderboard_data_response';
+import { Score } from '../data_objects/requests/leaderboard_data/score';
 
-interface ApiResponse {
-    PlayerScore: number;
-    Scores: Score[];
-}
-
-export const getLeaderboardData = async (name: string, token: string, type: string, partial: boolean): Promise<ApiResponse | null> => {
+export const getLeaderboardData = async (name: string, token: string, type: string, partial: boolean): Promise<LeaderboardDataResponse | null> => {
     const leaderboardDataRequest = async () => {
         try {
             const response = await axios.post(CONFIG.endpoints.leaderboard, {

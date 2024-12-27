@@ -2,7 +2,7 @@ import { View, Image, Text, TouchableOpacity } from 'react-native';
 import { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { IMAGES } from '../../../../image_handler';
-import { Screens } from '../../../../screen_names';
+import { Screens } from '../../../../data_objects/enums/screens';
 
 import leaderboardPartStyle from './leaderboard_style';
 import { useProfile } from '../../../../context/general_context/profile_context';
@@ -14,7 +14,7 @@ const LeaderboardPart: FC = () => {
     return (
         <View style={leaderboardPartStyle.container}>
             <View style={leaderboardPartStyle.titleContainer}>
-                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEADERBOARD)}}><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEADERBOARD as never)}}><Text style={leaderboardPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
                 <Text style={leaderboardPartStyle.title}>מובילים</Text>   
             </View>
             <View style={leaderboardPartStyle.selfScore}>

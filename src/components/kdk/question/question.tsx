@@ -1,5 +1,7 @@
 import { Text, View, TouchableOpacity, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import EndGame from '../../end_game/end_game';
+import React from 'react';
 
 import QuestionStyle from './question_style';
 import { fadeIn } from '../../../animations/fade_animations';
@@ -8,31 +10,37 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+
+import WordsDictCreator from '../../../find_words/words_dict_creator';
+import { Words } from '../../../data_objects/words/basic_data_objects/words';
 import { useWords } from '../../../context/general_context/words_context';
-import createWordList from '../../../find_words';
+import { useEndGameContext } from '../../../context/game_context/end_game_context';
 
-interface Meaning {
-    Meaning: string;
-    Source: string;
-}
+import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
+import { GameWordDictDetails } from '../../../data_objects/words/game_data_objects/game_word_dict_details';
+import { ButtonState } from '../../../data_objects/enums/button_state';
 
-interface Word {
-    FullWord: string;
-    Meanings: Meaning[];
-    Group: number;
-    Type: string;
-}
+import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
+import { Languages } from '../../../data_objects/enums/language';
 
 const Question = () => {
     // Navigation
     const navigation = useNavigation();
 
     // Contexts
+    const { isEndGame, toggleEndGameMenu } = useEndGameContext();
+    
     const { settings } = useLearningSettingsContext();
-    const { hebrewUserStatistics, englishUserStatistics, hebrewNewWords, englishNewWords } = useWords();
+    const {hebrewUserStatistics,  
+        englishUserStatistics,  
+        hebrewNewWords,  
+        englishNewWords } = useWords();
 
     // State
-    const [words, setWords] = useState<[string, { [word: string]: Word }][]>([]);
+    const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
+    const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
+
+    const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
     const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
@@ -45,26 +53,34 @@ const Question = () => {
     const [pirush, setPirush] = useState<string>("");
     const [type, setType] = useState<string>("");
 
-    const [answer, setAnswer] = useState<number>(1); // Button states
+    const [answer, setAnswer] = useState<number>(ButtonState.ShowAnswer); // Button states
 
     const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
     const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
     
     // Update the words list based on settings.language
     useEffect(() => {
-        let wordsList: [string, { [word: string]: Word }][] = [];
+        navigation.setOptions({
+            gestureEnabled: false,
+        });
+
+        let NewWords: Words = {};
+        let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
 
         switch (settings.language) {
-            case "Hebrew":
-                const heCreateGame = new createWordList(settings, hebrewNewWords, hebrewUserStatistics);
-                wordsList = Object.entries(heCreateGame.createList());
+            case Languages.Hebrew:
+                NewWords = hebrewNewWords;
+                UserStatistics = hebrewUserStatistics;
                 break;
-            case "English":
-                const enCreateGame = new createWordList(settings, englishNewWords, englishUserStatistics);
-                wordsList = Object.entries(enCreateGame.createList());
+            case Languages.English:
+                NewWords = englishNewWords;
+                UserStatistics = englishUserStatistics;
                 break;
         }
-        
+
+        const createGame = new WordsDictCreator(settings, NewWords, UserStatistics);
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(createGame.createList());
+
         Object.keys(wordsList).length === 0 ? navigation.goBack() : null;
 
         setWords(wordsList);
@@ -99,10 +115,10 @@ const Question = () => {
     }, [words]);
 
     // Word change logic
-    const changeWord = () => {
+    const changeWord = async () => {
         if ((wordPerLevelCount + 1) === amountInLevel) {
             if ((listPointer + 1) === words.length) {
-                navigation.goBack();
+                toggleEndGameMenu();
             } else {
                 const nextPointer = listPointer + 1;
                 const nextLevel = parseInt(words[nextPointer][0]);
@@ -134,13 +150,39 @@ const Question = () => {
             setPirush(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
             setType(nextWord.Type);
 
-            setAnswer(1);
+            setAnswer(ButtonState.ShowAnswer);
         }
     };
 
-    const setIfAnswerCorrect = (isCorrect: boolean) => {
-        /* Handle answer logic */
-        setAnswer(3);
+    const setIsAnswerCorrect = (isCorrect: boolean) => {
+        const currectWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
+        const currectWordValue = words[listPointer][1][currectWordKey];
+
+        const currectWordToAdd: WordDetails = {
+            FullWord: currectWordValue.FullWord,
+            Meanings: currectWordValue.Meanings,
+            Group: currectWordValue.Group,
+        }
+
+        if (isCorrect) {
+            setCorrectAnswers((prevAnswers) => {
+                if (Array.isArray(prevAnswers)) {
+                    return [...prevAnswers, currectWordToAdd]; 
+                } else {
+                    return [currectWordToAdd]; 
+                }
+            });
+        } else {
+            setWrongAnswers((prevAnswers) => {
+                if (Array.isArray(prevAnswers)) {
+                    return [...prevAnswers, currectWordToAdd]; 
+                } else {
+                    return [currectWordToAdd]; 
+                }
+            });
+        }
+
+        setAnswer(ButtonState.Continue);
     };
 
     // Animations
@@ -156,52 +198,55 @@ const Question = () => {
         }
     }, [answer, btnFadeAnim]);
 
-    // JSX
     return (
-        <Animated.View style={[QuestionStyle.question, { opacity: fadeAnim }]}>
-                        <View style={QuestionStyle.wordSection}>
-                <Text style={QuestionStyle.word}>{word}</Text>
-            </View>
-            <View style={QuestionStyle.texts}>  
-                <Text style={QuestionStyle.wordCounter}>סוג: {type}</Text>
-                <Text style={QuestionStyle.wordCounter}>רמה: {level}</Text>
-                <Text style={QuestionStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
-            </View>
-            <View style={QuestionStyle.interpretation}>
-                <LinearGradient
-                    colors={['#F27155', '#EA7B30']}
-                    start={{ x: 1, y: 0.5 }}
-                    end={{ x: 0, y: 0.5 }}
-                    style={QuestionStyle.color}
-                >
-                    <View style={QuestionStyle.meaningContainer}>
-                        {answer != 1 ? <Text style={QuestionStyle.meaning}>{pirush}</Text> : null}
-                    </View>
-                </LinearGradient>
-            </View>
-            {answer == 1 ? (
-                <Animated.View style={{ opacity: btnFadeAnim }}>
-                    <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() =>{setAnswer(2)}}>
-                        <Text style={QuestionStyle.btnText}>הצג תשובה</Text>
-                    </TouchableOpacity>
-                </Animated.View>
-            ) : answer == 2 ? (
-                <View style={QuestionStyle.btns}>
-                    <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIfAnswerCorrect(false)}>
-                        <Text style={QuestionStyle.btnText}>לא ידעתי</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIfAnswerCorrect(true)}>
-                        <Text style={QuestionStyle.btnText}>ידעתי</Text>
-                    </TouchableOpacity>
+        <>
+            <Animated.View style={[QuestionStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
+                pointerEvents={isEndGame ? 'none' : 'auto'}>
+                            <View style={QuestionStyle.wordSection}>
+                    <Text style={QuestionStyle.word}>{word}</Text>
                 </View>
-            ) : answer == 3 ? (
-                <Animated.View style={{ opacity: btnFadeAnim }}>
-                    <TouchableOpacity style={QuestionStyle.nextBtn} onPress={changeWord}>
-                        <Text style={QuestionStyle.btnText}>המשך</Text>
-                    </TouchableOpacity>
-                </Animated.View>
-            ) : null}
-        </Animated.View>
+                <View style={QuestionStyle.texts}>  
+                    <Text style={QuestionStyle.wordCounter}>סוג: {type}</Text>
+                    <Text style={QuestionStyle.wordCounter}>רמה: {level}</Text>
+                    <Text style={QuestionStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
+                </View>
+                <View style={QuestionStyle.interpretation}>
+                    <LinearGradient
+                        colors={['#F27155', '#EA7B30']}
+                        start={{ x: 1, y: 0.5 }}
+                        end={{ x: 0, y: 0.5 }}
+                        style={QuestionStyle.color}
+                    >
+                        <View style={QuestionStyle.meaningContainer}>
+                            {answer != 1 ? <Text style={QuestionStyle.meaning}>{pirush}</Text> : null}
+                        </View>
+                    </LinearGradient>
+                </View>
+                {answer == ButtonState.ShowAnswer ? (
+                    <Animated.View style={{ opacity: btnFadeAnim }}>
+                        <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() =>{setAnswer(ButtonState.ChooseAnswer)}}>
+                            <Text style={QuestionStyle.btnText}>הצג תשובה</Text>
+                        </TouchableOpacity>
+                    </Animated.View>
+                ) : answer == ButtonState.ChooseAnswer ? (
+                    <View style={QuestionStyle.btns}>
+                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIsAnswerCorrect(false)}>
+                            <Text style={QuestionStyle.btnText}>לא ידעתי</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIsAnswerCorrect(true)}>
+                            <Text style={QuestionStyle.btnText}>ידעתי</Text>
+                        </TouchableOpacity>
+                    </View>
+                ) : answer == ButtonState.Continue ? (
+                    <Animated.View style={{ opacity: btnFadeAnim }}>
+                        <TouchableOpacity style={QuestionStyle.nextBtn} onPress={changeWord}>
+                            <Text style={QuestionStyle.btnText}>המשך</Text>
+                        </TouchableOpacity>
+                    </Animated.View>
+                ) : null}
+            </Animated.View>
+            {isEndGame ? <EndGame correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} /> : null}
+        </>
     );
 };
 

@@ -4,12 +4,9 @@ import { FC, useEffect, useState } from 'react';
 import NumbericInputStyle from './numeric_input_style';
 
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { GameSettingsNumericInputConfig } from '../../../data_objects/components_config/learning_page/game_settings_numeric_input_config';
 
-interface NumericInputInterface {
-    level: number;
-}
-
-const NumericInput: FC<NumericInputInterface> = ({ level }) => {
+const NumericInput: FC<GameSettingsNumericInputConfig> = ({ level }) => {
     // settings context
     const {settings, updateLevel} = useLearningSettingsContext();
 

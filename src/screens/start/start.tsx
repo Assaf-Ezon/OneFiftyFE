@@ -1,6 +1,7 @@
 import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import Popup, {AuthErrorType} from './popups/popups';
+import Popup from './popups/popups';
+import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
 
 import StartScreenStyle from './start_style';
 
@@ -10,7 +11,7 @@ import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
-import AuthenticationHandler from '../AuthenticationHandler';
+import AuthenticationHandler from '../authentication_handler';
 
 import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
@@ -118,7 +119,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 
                         profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        trial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                        isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
                     });
 
                         setHebrewWords(data.HebrewWordsDictionary);

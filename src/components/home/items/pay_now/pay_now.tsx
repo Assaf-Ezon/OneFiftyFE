@@ -1,11 +1,12 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { Plans, PlanType, findPlanByName } from '../../../../payment_plans';
-
+import { findPlanByName } from '../../../../payment_plans';
+import { Plans } from '../../../../data_objects/enums/payment_plans';
+import { PlanType } from '../../../../data_objects/general/plan_type';
 import PayNowStyle from './pay_now_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { Screens } from '../../../../screen_names';
+import { Screens } from '../../../../data_objects/enums/screens';
 
 import { useProfile } from '../../../../context/general_context/profile_context';
 
@@ -39,7 +40,7 @@ const PayNow = () => {
                 </Text>
             </View>
             <View style={PayNowStyle.PayBtnContainer}>
-                <TouchableOpacity style={PayNowStyle.PayBtn} onPress={() => {navigation.navigate(Screens.PAYMENT)}}>
+                <TouchableOpacity style={PayNowStyle.PayBtn} onPress={() => {navigation.navigate(Screens.PAYMENT as never)}}>
                     <Text style={[{color: currentPlan.backgroundColor}, PayNowStyle.PayBtnText]}>למעבר לתשלום</Text>
                 </TouchableOpacity>
                 <Text style={PayNowStyle.Price}>{currentPlan.Price} ₪</Text> 
