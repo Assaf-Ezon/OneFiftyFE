@@ -1,7 +1,7 @@
-import NewWordsSelector from "./game_builders_by_logic/new_words_handler";
-import IncorrectWordsHandler from "./game_builders_by_logic/incorrect_words_handler";
-import PracticeWordsHandler from "./game_builders_by_logic/practice_words_handler";
-import SmartWordsHandler from "./game_builders_by_logic/smart_words_handler";
+import NewWordsSelector from "./word_selectors/new_words_selector";
+import IncorrectWordsHandler from "./word_selectors/incorrect_words_selector";
+import PracticeWordsHandler from "./word_selectors/practice_words_selector";
+import SmartWordsHandler from "./word_selectors/smart_words_selector";
 
 import { GameSettings } from "../data_objects/contexts/game_settings";
 import { Words } from "../data_objects/words/basic_data_objects/words";

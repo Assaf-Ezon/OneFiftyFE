@@ -3,7 +3,7 @@ import { Words } from '../../data_objects/words/basic_data_objects/words';
 import { GameWords } from '../../data_objects/words/game_data_objects/game_words';
 import { UserStatistics } from '../../data_objects/words/statistics/user_statistics';
 
-import NewWordsSelector from './new_words_handler';
+import NewWordsSelector from './new_words_selector';
 import BaseWordsSelector from './base_words_selector';
 import { WordDetails } from '../../data_objects/words/basic_data_objects/word_details';
 import { GameWordDictDetails } from '../../data_objects/words/game_data_objects/game_word_dict_details';
@@ -78,56 +78,10 @@ export default class SmartWordsHandler extends BaseWordsSelector {
                 practicedAmount += extraForStatistics;
             }
         }
-        
+
         return { newWordsAmount, practicedAmount };
     }
-
-    static splitNumberBetweenLists(amount: number, key: number, new_words: Words, statistics: { [word: string]: WordStatisticsData }): { newWordsAmount: number; statisticsAmount: number } {
-        // gets the length of newWordsDict and statisticsDict
-        const newWordsLength = Object.keys(new_words[key]).length;
-        const statisticsLength = Object.keys(statistics).length;
-
-        // the sum of the words both dicts can "give"
-        const totalCapacity = newWordsLength + statisticsLength;
-      
-        // If the total capacity is less than the number, use all capacity
-        if (totalCapacity <= amount) {
-          return { newWordsAmount: newWordsLength, statisticsAmount: statisticsLength };
-        }
-      
-        // Ideal split: 50/50
-        const idealSplit = Math.floor(amount / 2);
-      
-        // how much newWordsDict and statisticsDict can give - either half or less (as much as it can)
-        let newWordsAmount = Math.min(idealSplit, newWordsLength);
-        let statisticsAmount = Math.min(idealSplit, statisticsLength);
-      
-        // Adjust for leftover if one list can't fully handle its portion
-        const remaining = amount - (newWordsAmount + statisticsAmount);
-        
-        // checks if there are remaining words to add (if newWords or statistics was under the idealSplit)
-        if (remaining > 0) {
-            // case if the newWords has more words to "give" from it
-            if (newWordsLength > newWordsAmount) {
-                // adds to newWordsAmount how much remains to add/the amount that remains of the newWordsDict 
-                const extraForNewWords = Math.min(remaining, newWordsLength - newWordsAmount);
-                newWordsAmount += extraForNewWords;
-            }
-        
-            // updates how much left to fill after the first segment of the if statement
-            const stillRemaining = amount - (newWordsAmount + statisticsAmount);
-        
-            // case if the statistics has more words to "give" from it
-            if (stillRemaining > 0 && statisticsLength > statisticsAmount) {
-                // adds to statisticsAmount how much remains to add/the amount that remains of the statisticsDict 
-                const extraForStatistics = Math.min(stillRemaining, statisticsLength - statisticsAmount);
-                statisticsAmount += extraForStatistics;
-            }
-        }
-        
-        return { newWordsAmount, statisticsAmount };
-    }
-
+    
     deltaDaysFromToday(date: string) {
         const givenDate = new Date(date);
         const today = new Date();
