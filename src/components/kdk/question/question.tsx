@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import EndGame from '../../end_game/end_game';
+import EndGame from '../../games/end_game/end_game';
 import React from 'react';
 
 import QuestionStyle from './question_style';
