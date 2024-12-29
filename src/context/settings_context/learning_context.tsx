@@ -91,8 +91,22 @@ export const LearningSettingsProvider: FC<{ children: ReactNode }> = ({ children
         }));
     };
 
+    const isSettingsFilled = () => {
+        if (!settings.shouldIncludeNewWords && !settings.shouldIncludeIncorrectWords && !settings.shouldIncludePracticedwords && !settings.shouldIncludeSmartStudy) {
+            return false;
+        }
+        if (!settings.language) {
+            return false;
+        }
+        if (Object.values(settings.levels).every(value => value === 0)) {
+            return false;
+        }
+
+        return true;
+    };
+
     return (
-        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage, generateRandomNumbers }}>
+        <LearningSettingsContext.Provider value={{ isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLevel, updateLanguage, generateRandomNumbers, isSettingsFilled }}>
             {children}
         </LearningSettingsContext.Provider>
     );

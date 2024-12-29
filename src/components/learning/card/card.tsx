@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ImageSourcePropType, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { FC } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -6,10 +6,14 @@ import cardStyle from './card_style';
 
 import { useNavigation } from '@react-navigation/native';
 import { LearningPageLearningCardConfig } from '../../../data_objects/components_config/learning_page/learning_page_learning_card_config';
+import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { Screens } from '../../../data_objects/enums/screens';
 
 const LearningCard: FC<LearningPageLearningCardConfig> = ({ id, image, title, gameName }) => {
     const navigation = useNavigation();
-
+    
+    const { toggleLearningSettings, isSettingsFilled } = useLearningSettingsContext();
+    
     const handlePress = async () => {
         try {
             const games = await AsyncStorage.getItem('games');
@@ -21,6 +25,12 @@ const LearningCard: FC<LearningPageLearningCardConfig> = ({ id, image, title, ga
             console.error('Error adding game: ', error);
         }
 
+        if (isSettingsFilled()) {
+            navigation.navigate(gameName as never);
+        } else {
+            toggleLearningSettings();
+            navigation.navigate(Screens.LEARNING as never);
+        }
         navigation.navigate(gameName as never);
     };
 
