@@ -53,7 +53,7 @@ export default class WordsDictCreator {
                     if (this.checkLevelExistsInNewList(parseInt(groupId))){ // TODO: revert to group id
                         newWords = this._newWords[0]
                     }
-
+                    
                     var practicedWords: { [word: string]: WordStatisticsData } = {}
                     if (this.checkLevelExistsInStatisticsList(parseInt(groupId))){
                         practicedWords = this._statistics.WordsStatistics.Words[0]; // TODO: revert to group id
@@ -82,8 +82,8 @@ export default class WordsDictCreator {
                 }
             }
 
-            return this._words;
-
+            return Object.fromEntries(Object.entries(this._words).filter(([key, value]) => Object.keys(value).length !== 0));
+            
         } catch (error) {
             console.error(`error: ${error}`);
         }

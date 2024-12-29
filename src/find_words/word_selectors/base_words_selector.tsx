@@ -12,7 +12,7 @@ export default abstract class BaseWordsSelector {
         const split = this.getSplit(totalAmount, newWords, practicedWords);
         const relevantNewWordsArray = Object.entries(this._selectInternal(newWords, practicedWords, true));
         const relevantPracticedWordsArray = Object.entries(this._selectInternal(newWords, practicedWords, false));
-        
+
         this.addRandomWordsToGameWords(relevantNewWordsArray, split.newWordsAmount, wordsDict, groupId);
         this.addRandomWordsToGameWords(relevantPracticedWordsArray, split.practicedAmount, wordsDict, groupId);
 
@@ -23,7 +23,7 @@ export default abstract class BaseWordsSelector {
     addRandomWordsToGameWords(relevantWordsArray: [string, GameWordDictDetails][], amountToAdd: number, wordsDict: GameWords, groupId: number){
         // contains the "used" indexes
         const takenWordsindexList: number[] = [];
-
+        
         // loop the amount requested for
         for (let i = 0; i < Math.min(amountToAdd, relevantWordsArray.length); i++) {
             // random index

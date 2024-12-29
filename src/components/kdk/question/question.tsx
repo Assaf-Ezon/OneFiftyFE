@@ -95,7 +95,7 @@ const Question = () => {
             
             const firstWordKey = Object.keys(words[initialPointer][1])[0];
             const firstWordMeaning = words[initialPointer][1][firstWordKey];
-            
+
             setListPointer(0);
             setLevel(initialLevel);
             setAmountInLevel(initialAmount);
