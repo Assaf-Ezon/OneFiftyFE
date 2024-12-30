@@ -31,7 +31,7 @@ const Question = () => {
     // Contexts
     const { isEndGame, toggleEndGameMenu } = useEndGameContext();
     const { toggleErrorGameMenu } = useErrorGameContext()
-    const { settings } = useLearningSettingsContext();
+    const { settings, isSettingsFilled } = useLearningSettingsContext();
     const {hebrewUserStatistics,  
         englishUserStatistics,  
         hebrewNewWords,  
@@ -64,6 +64,8 @@ const Question = () => {
         navigation.setOptions({
             gestureEnabled: false,
         });
+
+        isSettingsFilled() ? null : navigation.goBack();
 
         let NewWords: Words = {};
         let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
