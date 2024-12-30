@@ -31,7 +31,6 @@ const LearningCard: FC<LearningPageLearningCardConfig> = ({ id, image, title, ga
             toggleLearningSettings();
             navigation.navigate(Screens.LEARNING as never);
         }
-        navigation.navigate(gameName as never);
     };
 
     return (

@@ -15,6 +15,7 @@ import WordsDictCreator from '../../../find_words/words_dict_creator';
 import { Words } from '../../../data_objects/words/basic_data_objects/words';
 import { useWords } from '../../../context/general_context/words_context';
 import { useEndGameContext } from '../../../context/game_context/end_game_context';
+import { useErrorGameContext } from '../../../context/game_context/error_game_context';
 
 import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
 import { GameWordDictDetails } from '../../../data_objects/words/game_data_objects/game_word_dict_details';
@@ -29,7 +30,7 @@ const Question = () => {
 
     // Contexts
     const { isEndGame, toggleEndGameMenu } = useEndGameContext();
-    
+    const { toggleErrorGameMenu } = useErrorGameContext()
     const { settings } = useLearningSettingsContext();
     const {hebrewUserStatistics,  
         englishUserStatistics,  
@@ -81,7 +82,7 @@ const Question = () => {
         const createGame = new WordsDictCreator(settings, NewWords, UserStatistics);
         let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(createGame.createList());
 
-        Object.keys(wordsList).length === 0 ? navigation.goBack() : null;
+        Object.keys(wordsList).length === 0 ? toggleErrorGameMenu() : null;
 
         setWords(wordsList);
     }, []);
