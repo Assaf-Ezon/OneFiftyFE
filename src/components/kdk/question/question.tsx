@@ -15,7 +15,7 @@ import WordsDictCreator from '../../../find_words/words_dict_creator';
 import { Words } from '../../../data_objects/words/basic_data_objects/words';
 import { useWords } from '../../../context/general_context/words_context';
 import { useEndGameContext } from '../../../context/game_context/end_game_context';
-import { useErrorGameContext } from '../../../context/game_context/error_game_context';
+import { useGameErrorContext } from '../../../context/game_context/game_error_context';
 
 import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
 import { GameWordDictDetails } from '../../../data_objects/words/game_data_objects/game_word_dict_details';
@@ -23,6 +23,7 @@ import { ButtonState } from '../../../data_objects/enums/button_state';
 
 import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
 import { Languages } from '../../../data_objects/enums/language';
+import { Screens } from '../../../data_objects/enums/screens';
 
 const Question = () => {
     // Navigation
@@ -30,7 +31,8 @@ const Question = () => {
 
     // Contexts
     const { isEndGame, toggleEndGameMenu } = useEndGameContext();
-    const { toggleErrorGameMenu } = useErrorGameContext()
+    const { toggleGameErrorMenu } = useGameErrorContext()
+    const { toggleLearningSettings } = useLearningSettingsContext();
     const { settings, isSettingsFilled } = useLearningSettingsContext();
     const {hebrewUserStatistics,  
         englishUserStatistics,  
@@ -65,7 +67,10 @@ const Question = () => {
             gestureEnabled: false,
         });
 
-        isSettingsFilled() ? null : navigation.goBack();
+        if (isSettingsFilled()) {
+            toggleLearningSettings();
+            navigation.navigate(Screens.LEARNING as never);
+        }
 
         let NewWords: Words = {};
         let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
@@ -84,7 +89,7 @@ const Question = () => {
         const createGame = new WordsDictCreator(settings, NewWords, UserStatistics);
         let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(createGame.createList());
 
-        Object.keys(wordsList).length === 0 ? toggleErrorGameMenu() : null;
+        Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
 
         setWords(wordsList);
     }, []);

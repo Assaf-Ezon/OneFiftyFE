@@ -13,7 +13,7 @@ const LeaveGame = () => {
     return (
         <View style={LeaveGameStyle.container}>
             <View style={LeaveGameStyle.textContainer}>
-                <Text style={LeaveGameStyle.title}>הנך עומד/ת לעזוב את המשחק</Text>
+                <Text style={LeaveGameStyle.title}>ההתקדמות שצברת במשחק לא תשמר</Text>
                 <Text style={LeaveGameStyle.desc}>האם את/ה בטוח/ה שאת/ה רוצה לצאת מהמשחק?</Text>
             </View>
             <View style={LeaveGameStyle.btnsContainer}>

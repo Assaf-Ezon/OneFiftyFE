@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const ErrorGameStyle = StyleSheet.create({
+const GameErrorStyle = StyleSheet.create({
     container: {
         justifyContent: 'space-evenly',
         alignItems: 'center',
@@ -70,4 +70,4 @@ const ErrorGameStyle = StyleSheet.create({
     },
 });
 
-export default ErrorGameStyle;
+export default GameErrorStyle;

@@ -6,15 +6,15 @@ import KDKGamePageStyle from './kdk_game_page_style';
 
 import Question from '../question/question';
 import LeaveGame from '../../games/leave_game/leave_game';
-import ErrorGame from '../../games/error_game/error_game';
+import GameError from '../../games/game_error/game_error';
 import { useLeaveGameContext } from '../../../context/game_context/leave_game_context';
-import { useErrorGameContext } from '../../../context/game_context/error_game_context';
+import { useGameErrorContext } from '../../../context/game_context/game_error_context';
 import { useEndGameContext } from '../../../context/game_context/end_game_context';
 
 const KDKGamePage = () => {
     const { isEndGame } = useEndGameContext();
     const { isLeaveGame, toggleLeaveGameMenu } = useLeaveGameContext();
-    const { isErrorGame } = useErrorGameContext();
+    const { isGameError } = useGameErrorContext();
 
     const handleBackPress = () => {
         isEndGame ? null : toggleLeaveGameMenu();
@@ -22,8 +22,8 @@ const KDKGamePage = () => {
 
     return (
         <>
-            <View style={[{opacity: isLeaveGame || isErrorGame ? 0.6 : 1}, KDKGamePageStyle.container]}
-            pointerEvents={isLeaveGame || isErrorGame ? 'none' : 'auto'}>
+            <View style={[{opacity: isLeaveGame || isGameError ? 0.6 : 1}, KDKGamePageStyle.container]}
+            pointerEvents={isLeaveGame || isGameError ? 'none' : 'auto'}>
                 <View style={KDKGamePageStyle.topPart}>
                     <View style={[{opacity: isEndGame ? 0.6 : 1}, KDKGamePageStyle.topPartText]}>
                         <TouchableOpacity onPress={() => {handleBackPress()}}>
@@ -34,7 +34,7 @@ const KDKGamePage = () => {
                 </View>
                 <Question />
             </View>
-            {isErrorGame ? <ErrorGame /> : null}
+            {isGameError ? <GameError /> : null}
             {isLeaveGame ? <LeaveGame /> : null}
         </>
     );
