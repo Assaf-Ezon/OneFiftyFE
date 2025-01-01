@@ -77,6 +77,9 @@ const WordOfTheDay = () => {
                     randomWord = parsedCurrentWord.word;
                     randomMeaning = parsedCurrentWord.meaning;
                 }
+                else {
+                    throw new Error();
+                }
 
                 setWord(randomWord);
                 setMeaning(randomMeaning);
