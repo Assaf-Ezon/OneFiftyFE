@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {LinearGradient} from 'expo-linear-gradient';
 
 import wordOfTheDayStyle from './word_of_the_day_style';
@@ -8,9 +8,38 @@ import { useWords } from '../../../../context/general_context/words_context';
 
 import { Languages } from '../../../../data_objects/enums/language';
 import { WordDetails } from '../../../../data_objects/words/basic_data_objects/word_details';
+import { WordsDictionary } from '../../../../data_objects/words/dIctionary/words_dictionary';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const WordOfTheDay: FC = () => {
+const generateDailyWord = (hebrewWords: WordsDictionary, englishWords: WordsDictionary) => {
+    // random language and level
+    const randomLanguage = Math.random() < 0.5 ? Languages.Hebrew : Languages.English;
+    const randomLevel = 0; // TODO: change level 0 to random 1-10/5-10
+
+    let randomLanguageWordsDict: { [word: string]: WordDetails } = {};
+    
+    // handle the selection of the correct dict by random language
+    switch (randomLanguage) {
+        case Languages.Hebrew:
+            randomLanguageWordsDict = hebrewWords.Words[randomLevel];
+            break;
+        case Languages.English:
+            randomLanguageWordsDict = englishWords.Words[randomLevel];
+            break;
+    }
+
+    // gets all the keys (words) of the random language and level
+    const randomLanguageWords = Object.keys(randomLanguageWordsDict);
+    // picks a random word
+    const randomWord = randomLanguageWords[Math.floor(Math.random() * randomLanguageWords.length)];
+    
+    // creates the meanings string
+    const randomMeaning = randomLanguageWordsDict[randomWord].Meanings.map((meaning) => meaning.Meaning).join("\n");
+
+    return {word: randomWord, meaning: randomMeaning};
+}
+
+const WordOfTheDay = () => {
     const { hebrewWords, englishWords } = useWords();
 
     const [word, setWord] = useState<string>('');
@@ -20,9 +49,9 @@ const WordOfTheDay: FC = () => {
         const RandomWord = async () => {
             try {
                 // get the last daily word
-                const currecntWord = await AsyncStorage.getItem('daily_word');
+                const currentWord = await AsyncStorage.getItem('daily_word');
                 // if there is data then parsing over it
-                const parsedCurrentWord = currecntWord ? JSON.parse(currecntWord) : {};
+                const parsedCurrentWord = currentWord ? JSON.parse(currentWord) : {};
                 
                 let randomWord = '';
                 let randomMeaning = '';
@@ -30,31 +59,11 @@ const WordOfTheDay: FC = () => {
                 // date of today
                 const today = new Date().toISOString().slice(0, 10);
                 
-                // if there is no data about last daily word/the last daily word wasn't today
-                if (!currecntWord || (Object.keys(parsedCurrentWord).length > 0 && new Date(parsedCurrentWord.date).toISOString() !== new Date(today).toISOString())) {
-                    // random language and level
-                    const randomLanguage = Math.random() < 0.5 ? Languages.Hebrew : Languages.English;
-                    const randomLevel = 0; // TODO: change level 0 to random 1-10/5-10
-            
-                    let randomLanguageWordsDict: { [word: string]: WordDetails } = {};
-                    
-                    // handle the selection of the correct dict by random language
-                    switch (randomLanguage) {
-                        case Languages.Hebrew:
-                            randomLanguageWordsDict = hebrewWords.Words[randomLevel];
-                            break;
-                        case Languages.English:
-                            randomLanguageWordsDict = englishWords.Words[randomLevel];
-                            break;
-                    }
-            
-                    // gets all the keys (words) of the random language and level
-                    const randomLanguageWords = Object.keys(randomLanguageWordsDict);
-                    // picks a random word
-                    randomWord = randomLanguageWords[Math.floor(Math.random() * randomLanguageWords.length)];
-                    
-                    // creates the meanings string
-                    randomMeaning = randomLanguageWordsDict[randomWord].Meanings.map((meaning) => meaning.Meaning).join("\n");
+                // if there is no data about last daily word/the last time a daily word was generated was not today
+                if (!currentWord || (Object.keys(parsedCurrentWord).length > 0 && new Date(parsedCurrentWord.date).toISOString() !== new Date(today).toISOString())) {
+                    const fullWord = generateDailyWord(hebrewWords, englishWords);
+                    randomWord = fullWord.word;
+                    randomMeaning = fullWord.meaning;
 
                     // updates the last daily word data
                     await AsyncStorage.setItem('daily_word', JSON.stringify({
@@ -71,6 +80,7 @@ const WordOfTheDay: FC = () => {
 
                 setWord(randomWord);
                 setMeaning(randomMeaning);
+
             } catch (err) {
                 setMeaning('תקלה');
             }
