@@ -39,6 +39,17 @@ const generateDailyWord = (hebrewWords: WordsDictionary, englishWords: WordsDict
     return {word: randomWord, meaning: randomMeaning};
 }
 
+const getDateToday = () => {
+    const today = new Date();
+
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); 
+    const day = String(today.getDate()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+}
+
 const WordOfTheDay = () => {
     const { hebrewWords, englishWords } = useWords();
 
@@ -57,7 +68,7 @@ const WordOfTheDay = () => {
                 let randomMeaning = '';
                 
                 // date of today
-                const today = new Date().toISOString().slice(0, 10);
+                const today = getDateToday();
                 
                 // if there is no data about last daily word/the last time a daily word was generated was not today
                 if (!currentWord || (Object.keys(parsedCurrentWord).length > 0 && new Date(parsedCurrentWord.date).toISOString() !== new Date(today).toISOString())) {
