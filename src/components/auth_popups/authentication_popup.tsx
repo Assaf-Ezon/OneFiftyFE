@@ -1,11 +1,14 @@
 import { View, Text, Modal, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
 
-import PopupsStyle from './popups_style';
-import { IMAGES } from '../../../image_handler';
+import PopupsStyle from './authentication_popup_style';
+import { IMAGES } from '../../image_handler';
 
-import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
-import { AuthErrorType } from '../../../data_objects/enums/auth_error_type';
+import { useNavigation } from '@react-navigation/native';
+
+import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
+import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
+import { Screens } from '../../data_objects/enums/screens';
 
 const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(
@@ -31,9 +34,36 @@ const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetSt
     );
 };
 
-const InactivePopup = () => {
+const IncorrectVersionPopup = () => {
+    return (
+        <Modal animationType="fade"
+        transparent={true}
+        visible={true}>
+            <View style={PopupsStyle.versionPopupContainer}>
+                <View style={PopupsStyle.versionPopupTitleContainer}>
+                    <Text style={PopupsStyle.versionPopupTitle}>עדכן גרסה</Text>
+                </View>
+                <View style={PopupsStyle.versionPopupMainContainer}>
+                    <Text style={PopupsStyle.versionExplanationText}>
+                        גרסה המותקנת על מכשירך אינה העדכנית ביותר. {'\n'}
+                        אנא עדכן את הגרסה על מנת להמשיך להשתמש באפליקציה{'\n'}
+                    </Text>
+                </View>
+            </View>
+        </Modal>
+    )
+}
+
+const InactivePopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
+    const navigation = useNavigation();
+
     const {setStackIndexByName} = useStackManagerContext();
     
+    const redirectToStartPage = () => {
+        setPopupIndex(AuthErrorType.None);
+        navigation.navigate(Screens.START as never);
+    }
+
     return(
         <Modal animationType="fade"
         transparent={true}
@@ -52,19 +82,25 @@ const InactivePopup = () => {
                         (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
                     </Text>
                 </View>
-                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
-                        <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
-                </TouchableOpacity>
+                <View style={PopupsStyle.btnsContainer}>
+                        <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
+                                <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => redirectToStartPage()}>
+                                <Text style={PopupsStyle.inactivePopupBtnText}>למסך התחברות</Text>
+                        </TouchableOpacity>
+                </View>
             </View>
         </Modal>
     );
 };
 
-const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
+const AuthenticationPopup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const popupsHandler: { [key: number]: JSX.Element | null } = {
         0: null,
         1: <ErrorPopup setPopupIndex={setPopupIndex} />,
-        2: <InactivePopup />,
+        2: <InactivePopup setPopupIndex={setPopupIndex} />,
+        3: <IncorrectVersionPopup />,
     }
 
     return(
@@ -74,4 +110,4 @@ const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Disp
     );
 };
 
-export default Popup;
+export default AuthenticationPopup;

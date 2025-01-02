@@ -1,20 +1,21 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { FC } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import cardStyle from './card_style';
+import GameCardStyle from './game_card_style';
 
 import { useNavigation } from '@react-navigation/native';
-import { LearningPageLearningCardConfig } from '../../../data_objects/components_config/learning_page/learning_page_learning_card_config';
-import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
-import { Screens } from '../../../data_objects/enums/screens';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LearningCard: FC<LearningPageLearningCardConfig> = ({ id, image, title, gameName }) => {
+import { GameCardConfig } from '../../data_objects/components_config/game_card_config';
+import { Screens } from '../../data_objects/enums/screens';
+import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
+
+const GameCard: FC<GameCardConfig> = ({ id, image, title, description, gameName }) => {
     const navigation = useNavigation();
-    
+
     const { toggleLearningSettings, isSettingsFilled } = useLearningSettingsContext();
     
-    const handlePress = async () => {
+    const goToGamePage = async () => {
         try {
             const games = await AsyncStorage.getItem('games');
             const parsedGames = games ? JSON.parse(games) : [];
@@ -34,16 +35,17 @@ const LearningCard: FC<LearningPageLearningCardConfig> = ({ id, image, title, ga
     };
 
     return (
-        <View style={cardStyle.container}>
-            <Image source={image} style={cardStyle.cardImage} />
-            <View style={cardStyle.textContainer}>
-                <Text style={cardStyle.titleText}>{title}</Text>
-                <TouchableOpacity style={cardStyle.btn} onPress={() => {handlePress()}}>
-                    <Text style={cardStyle.btnText}>התחל משחק</Text>
+        <View style={GameCardStyle.container}>
+            <Image source={image} style={GameCardStyle.cardImage} />
+            <View style={GameCardStyle.textContainer}>
+                <Text style={GameCardStyle.titleText}>{title}</Text>
+                <Text style={GameCardStyle.descriptionText}>{description}</Text>
+                <TouchableOpacity style={GameCardStyle.btn} onPress={() => {goToGamePage()}}>
+                    <Text style={GameCardStyle.btnText}>התחל משחק</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 };
 
-export default LearningCard;
+export default GameCard;

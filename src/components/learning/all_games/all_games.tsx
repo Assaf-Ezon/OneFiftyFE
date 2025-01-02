@@ -5,7 +5,7 @@ import { GAMES } from '../../../game_objects';
 
 import allGamesStyle from './all_games_style';
 
-import LearningCard from '../card/card';
+import GameCard from '../../game_card/game_card';
 
 const AllGamesPart: FC = () => {
     return (
@@ -19,11 +19,12 @@ const AllGamesPart: FC = () => {
                 {
                     GAMES.map(game => {
                         return (
-                            <LearningCard id={game.id}
+                            <GameCard key={game.id}
+                                id={game.id}
                                 image={IMAGES.profile_image} 
                                 title={game.name} 
+                                description={game.description}
                                 gameName={game.page_name}
-                                key={game.id}
                             />
                         );
                     })

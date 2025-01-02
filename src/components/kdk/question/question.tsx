@@ -67,7 +67,7 @@ const Question = () => {
             gestureEnabled: false,
         });
 
-        if (isSettingsFilled()) {
+        if (!isSettingsFilled()) {
             toggleLearningSettings();
             navigation.navigate(Screens.LEARNING as never);
         }

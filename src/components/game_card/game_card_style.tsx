@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const cardStyle = StyleSheet.create({
+const GameCardStyle = StyleSheet.create({
     container: {
         transform: [{ scaleX: -1 }],
         flexDirection: 'column',
@@ -10,6 +10,7 @@ const cardStyle = StyleSheet.create({
         borderWidth: 0.2,
         borderRadius: 20,
         width: width * 0.7,
+        height: height * 0.33,
         marginRight: 15,
     },
     cardImage: {
@@ -56,4 +57,4 @@ const cardStyle = StyleSheet.create({
     },
 });
 
-export default cardStyle;
+export default GameCardStyle;
