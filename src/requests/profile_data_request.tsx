@@ -4,7 +4,7 @@ import { CONFIG } from '../config';
 
 import { ProfileDataResponse } from '../data_objects/requests/profile_data/profile_data_response';
 
-const getProfileData = async (name: string, token: string): Promise<ProfileDataResponse | null> => {
+const getProfileData = async (name: string, token: string): Promise<ProfileDataResponse> => {
     const getProfileDataRequest = async () => {
         try {
             const response = await axios.post(CONFIG.endpoints.login, {

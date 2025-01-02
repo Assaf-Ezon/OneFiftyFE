@@ -3,7 +3,6 @@ import retry from 'p-retry';
 import { CONFIG } from '../config';
 
 export const setProfilePicture = async (name: string, token: string, index: number | null) => {
-
     const setProfilePictureRequest = async () => {
         try {
             if (index === null) {
