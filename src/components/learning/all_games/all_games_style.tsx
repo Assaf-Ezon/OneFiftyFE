@@ -6,7 +6,7 @@ const allGamesStyle = StyleSheet.create({
     container: {
         marginTop: 20,
         width: '100%',
-        height: height * 0.35,
+        height: height * 0.4,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',

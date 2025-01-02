@@ -57,8 +57,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     const success = await authInstance.refresh();
 
                     if (!success) {
-                        Alert.alert('תקלה בהתחברות!');
-                        navigation.replace(Screens.START);
+                        errorHandler();
                     }
                 
                 await handleUserData();

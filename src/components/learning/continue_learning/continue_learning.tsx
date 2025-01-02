@@ -47,7 +47,8 @@ const ContinueLearningPart: FC = () => {
                                 }
 
                                 return (
-                                    <GameCard id={game.id}
+                                    <GameCard key={game.id}
+                                        id={game.id}
                                         image={game.image_route} 
                                         title={game.name}
                                         description={game.description}

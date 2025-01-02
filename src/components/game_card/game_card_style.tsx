@@ -10,6 +10,7 @@ const GameCardStyle = StyleSheet.create({
         borderWidth: 0.2,
         borderRadius: 20,
         width: width * 0.7,
+        height: height * 0.33,
         marginRight: 15,
     },
     cardImage: {

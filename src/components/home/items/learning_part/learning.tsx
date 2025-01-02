@@ -25,7 +25,8 @@ const LearningPartHome: FC = () => {
                     {
                         GAMES.map(game => {
                             return (
-                                <GameCard id={game.id}
+                                <GameCard key={game.id}
+                                    id={game.id}
                                     image={IMAGES.profile_image} 
                                     title={game.name} 
                                     description={game.description}

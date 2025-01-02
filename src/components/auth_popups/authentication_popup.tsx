@@ -54,10 +54,16 @@ const IncorrectVersionPopup = () => {
     )
 }
 
-const InactivePopup = () => {
-    const {setStackIndexByName} = useStackManagerContext();
+const InactivePopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const navigation = useNavigation();
+
+    const {setStackIndexByName} = useStackManagerContext();
     
+    const redirectToStartPage = () => {
+        setPopupIndex(AuthErrorType.None);
+        navigation.navigate(Screens.START as never);
+    }
+
     return(
         <Modal animationType="fade"
         transparent={true}
@@ -80,7 +86,7 @@ const InactivePopup = () => {
                         <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
                                 <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => navigation.navigate(Screens.START as never)}>
+                        <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => redirectToStartPage()}>
                                 <Text style={PopupsStyle.inactivePopupBtnText}>למסך התחברות</Text>
                         </TouchableOpacity>
                 </View>
@@ -93,7 +99,7 @@ const AuthenticationPopup = ({index, setPopupIndex}: {index: number, setPopupInd
     const popupsHandler: { [key: number]: JSX.Element | null } = {
         0: null,
         1: <ErrorPopup setPopupIndex={setPopupIndex} />,
-        2: <InactivePopup />,
+        2: <InactivePopup setPopupIndex={setPopupIndex} />,
         3: <IncorrectVersionPopup />,
     }
 
