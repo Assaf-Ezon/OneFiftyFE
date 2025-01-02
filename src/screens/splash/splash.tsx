@@ -1,5 +1,6 @@
 import { View, Image, Modal, TouchableOpacity, Text, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
+import AuthenticationPopup from '../../components/auth_popups/authentication_popup';
 
 import SplashScreenStyle from './splash_style';
 
@@ -15,6 +16,7 @@ import { useWords } from '../../context/general_context/words_context';
 
 import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
+import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
     const {setStackIndexByName} = useStackManagerContext();
@@ -34,8 +36,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
     const authInstance = AuthenticationHandler.getInstance();
 
-    const [isVersionIncorrect, setIsVersionIncorrect] = useState<boolean>(false);
-    const [isNotActiveOpen, setIsNotActiveOpen] = useState<boolean>(false);
+    const [popupIndex, setPopupIndex] = useState<number>(AuthErrorType.None);
 
     const [canRedirect, setCanRedirect] = useState<boolean>(false);
 
@@ -79,12 +80,12 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 if (data && 'UserData' in data) { 
                     // the version is latest
                     if (data.Version != CONFIG.Version) {
-                        setIsVersionIncorrect(true);
+                        setPopupIndex(AuthErrorType.IncorrectVersion);
                     } 
                     // the user is active
                     else if (!data.UserData.IsActive) {         
                         await authInstance.logout();
-                        setIsNotActiveOpen(true);
+                        setPopupIndex(AuthErrorType.Inactive);
                     } else {
                         const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
 
@@ -150,56 +151,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     return(
       <View style={{backgroundColor: "#FAF0E6", flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <Image source={IMAGES.logo} />
-          {
-            isNotActiveOpen ? 
-            <Modal animationType="fade"
-            transparent={true}
-            visible={true}>
-                <View style={SplashScreenStyle.inactivePopup}>
-                    <View style={SplashScreenStyle.inactivePopupTitleContainer}>
-                        <Text style={SplashScreenStyle.inactivePopupTitle}>משתמש לא בתוקף</Text>
-                    </View>
-                    <View style={SplashScreenStyle.inactivePopupMainContainer}>
-                        <Text style={SplashScreenStyle.inactiveExplanationText}>
-                            חשבונך הינו פג תוקף מאחת מהסיבות הבאות: {'\n'}
-                                1. תקופת המנוי של המשתמש נגמרה{'\n'}
-                                2. תקופת הניסיון של המשתמש נגמרה{'\n'}{'\n'}{'\n'}
-                                
-                            על מנת להמשיך את השימוש באפליקציה, עליך לרכוש מנוי. על מנת לרכוש מנוי, לחץ על הכפתור.{'\n'}{'\n'}
-                            (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
-                        </Text>
-                    </View>
-                    <View style={SplashScreenStyle.btnsContainer}>
-                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
-                                <Text style={SplashScreenStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={SplashScreenStyle.inactivePopupBtn} onPress={() => navigation.replace(Screens.START)}>
-                                <Text style={SplashScreenStyle.inactivePopupBtnText}>למסך התחברות</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </Modal>  
-            : null
-        }
-        {
-            isVersionIncorrect ?
-            <Modal animationType="fade"
-            transparent={true}
-            visible={true}>
-                <View style={SplashScreenStyle.versionPopupContainer}>
-                    <View style={SplashScreenStyle.versionPopupTitleContainer}>
-                        <Text style={SplashScreenStyle.versionPopupTitle}>עדכן גרסה</Text>
-                    </View>
-                    <View style={SplashScreenStyle.versionPopupMainContainer}>
-                        <Text style={SplashScreenStyle.versionExplanationText}>
-                            גרסה המותקנת על מכשירך אינה העדכנית ביותר. {'\n'}
-                            אנא עדכן את הגרסה על מנת להמשיך להשתמש באפליקציה{'\n'}
-                        </Text>
-                    </View>
-                </View>
-            </Modal>
-            : null 
-        }
+          <AuthenticationPopup index={popupIndex} setPopupIndex={setPopupIndex} />
       </View>
     );
 };

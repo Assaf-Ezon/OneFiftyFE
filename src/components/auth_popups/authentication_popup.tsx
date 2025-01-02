@@ -1,11 +1,11 @@
 import { View, Text, Modal, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
 
-import PopupsStyle from './popups_style';
-import { IMAGES } from '../../../image_handler';
+import PopupsStyle from './authentication_popup_style';
+import { IMAGES } from '../../image_handler';
 
-import { useStackManagerContext, StackNames } from '../../../context/general_context/stack_manager_context';
-import { AuthErrorType } from '../../../data_objects/enums/auth_error_type';
+import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
+import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
 
 const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(
@@ -30,6 +30,26 @@ const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetSt
         </Modal>
     );
 };
+
+const IncorrectVersionPopup = () => {
+    return (
+        <Modal animationType="fade"
+        transparent={true}
+        visible={true}>
+            <View style={PopupsStyle.versionPopupContainer}>
+                <View style={PopupsStyle.versionPopupTitleContainer}>
+                    <Text style={PopupsStyle.versionPopupTitle}>עדכן גרסה</Text>
+                </View>
+                <View style={PopupsStyle.versionPopupMainContainer}>
+                    <Text style={PopupsStyle.versionExplanationText}>
+                        גרסה המותקנת על מכשירך אינה העדכנית ביותר. {'\n'}
+                        אנא עדכן את הגרסה על מנת להמשיך להשתמש באפליקציה{'\n'}
+                    </Text>
+                </View>
+            </View>
+        </Modal>
+    )
+}
 
 const InactivePopup = () => {
     const {setStackIndexByName} = useStackManagerContext();
@@ -60,11 +80,12 @@ const InactivePopup = () => {
     );
 };
 
-const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
+const AuthenticationPopup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const popupsHandler: { [key: number]: JSX.Element | null } = {
         0: null,
         1: <ErrorPopup setPopupIndex={setPopupIndex} />,
         2: <InactivePopup />,
+        3: <IncorrectVersionPopup />,
     }
 
     return(
@@ -74,4 +95,4 @@ const Popup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Disp
     );
 };
 
-export default Popup;
+export default AuthenticationPopup;

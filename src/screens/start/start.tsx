@@ -1,11 +1,12 @@
 import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
-import Popup from './popups/popups';
+import AuthenticationPopup from '../../components/auth_popups/authentication_popup';
 import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
 
 import StartScreenStyle from './start_style';
 
 import { IMAGES } from '../../image_handler';
+import { CONFIG } from '../../config';
 
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
@@ -15,7 +16,6 @@ import AuthenticationHandler from '../authentication_handler';
 
 import getProfileData from '../../requests/profile_data_request';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
-
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
@@ -95,9 +95,13 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 const data = await getProfileData(name, token);
 
                 // the user data is what we need
-                if (data && 'UserData' in data) { 
+                if (data && 'UserData' in data) {
+                    // if version is correct
+                    if (data.Version != CONFIG.Version) {
+                        setPopupIndex(AuthErrorType.IncorrectVersion);
+                    }  
                     // the version is latest
-                    if (!data.UserData.IsActive) {
+                    else if (!data.UserData.IsActive) {
                         setPopupIndex(AuthErrorType.Inactive);
                     } 
                     // the user is active
@@ -177,7 +181,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         </View>
 
         {loading ? <View style={StartScreenStyle.loadingContainer}><ActivityIndicator size="large" color="#0000ff" style={StartScreenStyle.loading} /></View> : null}   
-        <Popup index={popupIndex} setPopupIndex={setPopupIndex} />
+        <AuthenticationPopup index={popupIndex} setPopupIndex={setPopupIndex} />
 
         <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.textContainer]} 
         pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
