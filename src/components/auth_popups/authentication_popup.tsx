@@ -4,8 +4,11 @@ import React from 'react';
 import PopupsStyle from './authentication_popup_style';
 import { IMAGES } from '../../image_handler';
 
+import { useNavigation } from '@react-navigation/native';
+
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
+import { Screens } from '../../data_objects/enums/screens';
 
 const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     return(
@@ -53,6 +56,7 @@ const IncorrectVersionPopup = () => {
 
 const InactivePopup = () => {
     const {setStackIndexByName} = useStackManagerContext();
+    const navigation = useNavigation();
     
     return(
         <Modal animationType="fade"
@@ -72,9 +76,14 @@ const InactivePopup = () => {
                         (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
                     </Text>
                 </View>
-                <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
-                        <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
-                </TouchableOpacity>
+                <View style={PopupsStyle.btnsContainer}>
+                        <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
+                                <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => navigation.navigate(Screens.START as never)}>
+                                <Text style={PopupsStyle.inactivePopupBtnText}>למסך התחברות</Text>
+                        </TouchableOpacity>
+                </View>
             </View>
         </Modal>
     );

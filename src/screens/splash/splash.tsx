@@ -84,7 +84,6 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     } 
                     // the user is active
                     else if (!data.UserData.IsActive) {         
-                        await authInstance.logout();
                         setPopupIndex(AuthErrorType.Inactive);
                     } else {
                         const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);

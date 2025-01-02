@@ -81,12 +81,13 @@ const PopupsStyle = StyleSheet.create({
     },
     btnsContainer: {
         flexDirection: 'row',
+        justifyContent: 'space-evenly',
         width: '100%',
-
+        height: '10%',
     },
     inactivePopupBtn: {
-        width: '50%',
-        height: '10%',
+        width: '40%',
+        height: '90%',
         backgroundColor: '#7F5CA6',
         borderRadius: 60,
         alignItems: 'center',
