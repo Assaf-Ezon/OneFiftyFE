@@ -6,7 +6,7 @@ import { IMAGES } from '../../../image_handler';
 import { GAMES } from '../../../game_objects';
 
 import learningPartStyle from './continue_learning_style';
-import LearningCard from '../card/card';
+import GameCard from '../../game_card/game_card';
 
 
 const ContinueLearningPart: FC = () => {
@@ -47,11 +47,11 @@ const ContinueLearningPart: FC = () => {
                                 }
 
                                 return (
-                                    <LearningCard id={game.id}
+                                    <GameCard id={game.id}
                                         image={game.image_route} 
                                         title={game.name}
+                                        description={game.description}
                                         gameName={game.page_name}
-                                        key={game.id}
                                     />  
                                 )
                             })

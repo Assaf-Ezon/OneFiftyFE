@@ -3,11 +3,12 @@ import { FC } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import learningPartStyle from './learning_style';
-import LearningCard from './card/card';
 
 import { IMAGES } from '../../../../image_handler';
 import { GAMES } from '../../../../game_objects';
 import { Screens } from '../../../../data_objects/enums/screens';
+
+import GameCard from '../../../game_card/game_card';
 
 const LearningPartHome: FC = () => {
     const navigation = useNavigation();
@@ -24,11 +25,11 @@ const LearningPartHome: FC = () => {
                     {
                         GAMES.map(game => {
                             return (
-                                <LearningCard image={IMAGES.profile_image} 
+                                <GameCard id={game.id}
+                                    image={IMAGES.profile_image} 
                                     title={game.name} 
                                     description={game.description}
                                     gameName={game.page_name}
-                                    key={game.id}
                                 />
                             );
                         })
