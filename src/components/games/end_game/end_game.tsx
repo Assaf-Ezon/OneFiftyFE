@@ -10,9 +10,10 @@ import { useStackManagerContext } from '../../../context/general_context/stack_m
 import { useWords } from '../../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 
-import updateUserStatistics from '../../../requests/update_stats_request';
-import { EndGamesStatisticsConfig } from '../../../data_objects/components_config/games/end_game_popup_config';
 import { Languages } from '../../../data_objects/enums/language';
+import { UpdateUserStatsResponse } from '../../../data_objects/requests/update_user_stats/update_user_stats_response';
+import { EndGamesStatisticsConfig } from '../../../data_objects/components_config/end_game_popup_config';
+import UpdateUserStatisticsRequestHandler from '../../../requests/requests_handlers/update_user_statistics_request_handler';
 
 const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
@@ -44,7 +45,13 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
             const lang = settings.language;
             if (lang) {
                 try {
-                    const userStatistics = await updateUserStatistics(name, token, correctAnswers, wrongAnswers, lang);
+                    const userStatistics: UpdateUserStatsResponse = await new UpdateUserStatisticsRequestHandler().post({
+                        DisplayName: name, 
+                        token: token, 
+                        WordsSuccess: correctAnswers,
+                        WordsFailure: wrongAnswers,
+                        LanguageOption: lang
+                    });
 
                     switch (settings.language) {
                         case Languages.Hebrew:

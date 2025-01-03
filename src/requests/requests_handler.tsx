@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from "axios";
 export default abstract class RequestsHandler {
     protected abstract validateParams(params: any): void;
 
-    protected abstract getEndpoint(params: any): string;
+    protected abstract getEndpoint(): string;
 
     public async get(params: any): Promise<any> {
         this.validateParams(params);
@@ -14,7 +14,7 @@ export default abstract class RequestsHandler {
 
         const retryRequest = async () => {
             try {
-                const response = await axios.get(this.getEndpoint(paramsWithoutToken), {
+                const response = await axios.get(this.getEndpoint(), {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export default abstract class RequestsHandler {
 
         const retryRequest = async () => {
             try {
-                const response = await axios.post(this.getEndpoint(params), JSON.stringify(paramsWithoutToken), 
+                const response = await axios.post(this.getEndpoint(), JSON.stringify(paramsWithoutToken), 
                 {
                     headers: {
                         'Authorization': `Bearer ${token}`,

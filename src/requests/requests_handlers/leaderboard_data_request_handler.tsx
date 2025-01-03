@@ -7,7 +7,7 @@ export default class LeaderboardDataRequestHandler extends RequestsHandler {
         this._checkNameAndToken(params.DisplayName, params.token);
     }
 
-    protected getEndpoint(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean }): string {
+    protected getEndpoint(): string {
         console.log(`the endpoint is ${CONFIG.endpoints.leaderboard}`);
         return CONFIG.endpoints.leaderboard;
     }

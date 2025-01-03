@@ -6,7 +6,7 @@ export default class ProfileDataRequestHandler extends RequestsHandler {
         this._checkNameAndToken(params.DisplayName, params.token);
     }
 
-    protected getEndpoint(params: { DisplayName: string, token: string }): string {
+    protected getEndpoint(): string {
         console.log(`the endpoint is ${CONFIG.endpoints.login}`);
         return CONFIG.endpoints.login;
     }

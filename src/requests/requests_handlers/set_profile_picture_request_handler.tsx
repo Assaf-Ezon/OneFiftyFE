@@ -10,7 +10,7 @@ export default class SetProfilePictureRequestHandler extends RequestsHandler {
         }
     }
 
-    protected getEndpoint(params: { DisplayName: string, token: string, ProfilePicture: number | null }): string {
+    protected getEndpoint(): string {
         return CONFIG.endpoints.profile_picture;
     }
 }
