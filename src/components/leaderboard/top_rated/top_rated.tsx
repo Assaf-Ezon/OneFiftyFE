@@ -71,9 +71,7 @@ const TopRated = () => {
                 <Image source={profile.profileImage} style={TopRatedStyle.profileImage} />
                 <Text style={TopRatedStyle.textName}>{profile.name}</Text>
                 <View style={TopRatedStyle.selfStatsContainer}>
-                    <Text style={TopRatedStyle.scoreText}>ניקוד: {profile.score}</Text>
-                    <View style={TopRatedStyle.line} />
-                    <Text style={TopRatedStyle.rankText}>מקום: {profile.rank}</Text> 
+                    <Text style={TopRatedStyle.scoreText}>מקום: {profile.rank} {'\n'}  ניקוד: {profile.score}</Text>
                 </View>
             </View>
             {loading ? <View style={TopRatedStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
