@@ -9,10 +9,11 @@ import ProfileImageOption from './image/image';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
-import { setProfilePicture } from '../../../requests/change_profile_picture_request';
-import AuthenticationHandler from '../../../screens/authentication_handler';
-import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
 
+import ChangeProfilePictureRequestHandler from '../../../requests/requests_handlers/change_profile_picture_request_handler';
+import AuthenticationHandler from '../../../screens/authentication_handler';
+
+import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
 
 const ChangeProfileImagePopup = () => {
     const {profile, updateProfileImage} = useProfile();
@@ -37,7 +38,12 @@ const ChangeProfileImagePopup = () => {
                 setLoading(true);
 
                 try {
-                    await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
+                    // await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
+                    await new ChangeProfilePictureRequestHandler().post({
+                        DisplayName: name, 
+                        token: access_token, 
+                        ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images
+                    });
                     
                     setErrorType(ErrorType.None);
                     updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
