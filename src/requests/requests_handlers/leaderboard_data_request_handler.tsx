@@ -3,11 +3,12 @@ import { Score } from "../../data_objects/requests/leaderboard_data/score";
 import RequestsHandler from "../requests_handler";
 
 export default class LeaderboardDataRequestHandler extends RequestsHandler {
-    protected validateParams(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean }): void {
+    validateParams(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean }): void {
         this._checkNameAndToken(params.DisplayName, params.token);
+        this._checkInternetCoonection();
     }
 
-    protected getEndpoint(): string {
+    getEndpoint(): string {
         return CONFIG.endpoints.leaderboard;
     }
 }

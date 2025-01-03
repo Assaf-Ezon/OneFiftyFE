@@ -3,11 +3,12 @@ import { WordDetails } from "../../data_objects/words/basic_data_objects/word_de
 import RequestsHandler from "../requests_handler";
 
 export default class UpdateUserStatisticsRequestHandler extends RequestsHandler {
-    protected validateParams(params: { DisplayName: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], Language: string }): void {
+    validateParams(params: { DisplayName: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], Language: string }): void {
         this._checkNameAndToken(params.DisplayName, params.token);
+        this._checkInternetCoonection();
     }
 
-    protected getEndpoint(): string {
+    getEndpoint(): string {
         return CONFIG.endpoints.update_words;
     }
 }

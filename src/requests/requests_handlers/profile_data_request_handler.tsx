@@ -2,11 +2,12 @@ import { CONFIG } from "../../config";
 import RequestsHandler from "../requests_handler";
 
 export default class ProfileDataRequestHandler extends RequestsHandler {
-    protected validateParams(params: { DisplayName: string, token: string }): void {
+    validateParams(params: { DisplayName: string, token: string }): void {
         this._checkNameAndToken(params.DisplayName, params.token);
+        this._checkInternetCoonection();
     }
 
-    protected getEndpoint(): string {
+    getEndpoint(): string {
         return CONFIG.endpoints.login;
     }
 }

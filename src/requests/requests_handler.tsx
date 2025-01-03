@@ -1,13 +1,14 @@
 import retry from 'p-retry';
+import * as Network from 'expo-network';
 import { CONFIG } from '../config';
 import axios, { AxiosResponse } from "axios";
 
 export default abstract class RequestsHandler {
-    protected abstract validateParams(params: any): void;
+    abstract validateParams(params: any): void;
 
-    protected abstract getEndpoint(): string;
+    abstract getEndpoint(): string;
 
-    public async get(params: any): Promise<any> {
+    async get(params: any): Promise<any> {
         this.validateParams(params);
 
         const { token, ...paramsWithoutToken } = params;
@@ -41,7 +42,7 @@ export default abstract class RequestsHandler {
         }
     }
 
-    public async post(params: any): Promise<any> {
+    async post(params: any): Promise<any> {
         this.validateParams(params); 
 
         const { token, ...paramsWithoutToken } = params;
@@ -88,6 +89,14 @@ export default abstract class RequestsHandler {
     _checkNameAndToken (name: string, token: string) {
         if (!name && !token) {
             throw new Error();
+        }
+    }
+
+    async _checkInternetCoonection () {
+        const networkState = await Network.getNetworkStateAsync();
+        
+        if (!networkState.isConnected) {
+            throw new Error('No internet connection');
         }
     }
 }
