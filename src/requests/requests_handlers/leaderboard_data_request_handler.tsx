@@ -8,7 +8,6 @@ export default class LeaderboardDataRequestHandler extends RequestsHandler {
     }
 
     protected getEndpoint(): string {
-        console.log(`the endpoint is ${CONFIG.endpoints.leaderboard}`);
         return CONFIG.endpoints.leaderboard;
     }
 }

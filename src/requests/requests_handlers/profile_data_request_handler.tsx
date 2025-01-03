@@ -7,7 +7,6 @@ export default class ProfileDataRequestHandler extends RequestsHandler {
     }
 
     protected getEndpoint(): string {
-        console.log(`the endpoint is ${CONFIG.endpoints.login}`);
         return CONFIG.endpoints.login;
     }
 }

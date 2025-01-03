@@ -50,7 +50,7 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                         token: token, 
                         WordsSuccess: correctAnswers,
                         WordsFailure: wrongAnswers,
-                        LanguageOption: lang
+                        Language: lang
                     });
 
                     switch (settings.language) {

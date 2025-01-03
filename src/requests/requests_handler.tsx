@@ -55,7 +55,7 @@ export default abstract class RequestsHandler {
                         'Content-Type': 'application/json',
                     }
                 });
-                console.log(`the response is ${response.data}`);
+
                 return this.handleResponse(response);
                 
             } catch {
@@ -79,7 +79,6 @@ export default abstract class RequestsHandler {
 
     private async handleResponse(response: AxiosResponse): Promise<any> {
         if (response.status >= 200 && response.status < 300) {
-            console.log(`the response status is ok: ${response.status}`);
             return response.data;
         } else {
             throw new Error(`Request failed with status code: ${response.status}`);
@@ -90,6 +89,5 @@ export default abstract class RequestsHandler {
         if (!name && !token) {
             throw new Error();
         }
-        console.log('name and token are validated');
     }
 }
