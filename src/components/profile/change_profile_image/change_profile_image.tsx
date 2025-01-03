@@ -32,16 +32,15 @@ const ChangeProfileImagePopup = () => {
         }
         else if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
             const name = await authInstance.getName();
-            const access_token = await authInstance.getAccessToken();
+            const token = await authInstance.getAccessToken();
 
-            if (name && access_token) {
+            if (name && token) {
                 setLoading(true);
 
                 try {
-                    // await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
                     await new ChangeProfilePictureRequestHandler().post({
                         DisplayName: name, 
-                        token: access_token, 
+                        token: token, 
                         ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images
                     });
                     

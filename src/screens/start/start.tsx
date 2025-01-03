@@ -14,8 +14,9 @@ import { useStackManagerContext, StackNames } from '../../context/general_contex
 
 import AuthenticationHandler from '../authentication_handler';
 
-import getProfileData from '../../requests/profile_data_request';
+import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';
 import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
+import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
@@ -92,8 +93,11 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
         if (name && token) {
             try {
-                const data = await getProfileData(name, token);
-
+                const data: ProfileDataResponse = await new ProfileDataRequestHandler().post({
+                    DisplayName: name, 
+                    token: token, 
+                });
+                
                 // the user data is what we need
                 if (data && 'UserData' in data) {
                     // if version is correct
@@ -116,15 +120,15 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         } 
                         
                         setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: userRank,
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
-                    });
+                            name: data.UserData.DisplayName,
+                            email: data.UserData.Email,
+                            rank: userRank,
+                            score: data.UserData.Score,
+                            dateJoined: new Date(data.UserData.DateJoined), 
+                            expirationDate: new Date(data.UserData.ExpirationDate), 
+                            profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                            isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                        });
 
                         setHebrewWords(data.HebrewWordsDictionary);
                         setEnglishWords(data.EnglishWordsDictionary);
