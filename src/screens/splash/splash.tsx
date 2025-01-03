@@ -14,10 +14,11 @@ import { StackNames, useStackManagerContext } from '../../context/general_contex
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 
-import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
 import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';
 import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
+import { LeaderboardDataResponse } from '../../data_objects/requests/leaderboard_data/leaderboard_data_response';
+import LeaderboardDataRequestHandler, { getUserRankByName } from '../../requests/requests_handlers/leaderboard_data_request_handler';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
     const {setStackIndexByName} = useStackManagerContext();
@@ -89,19 +90,17 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     else if (!data.UserData.IsActive) {         
                         setPopupIndex(AuthErrorType.Inactive);
                     } else {
-                        const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
-
-                        var userRank = 0;
-                        
-                        if (leaderboardData && 'Scores' in leaderboardData) {
-                            const name = await authInstance.getName();
-                            var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
-                        } 
+                        const leaderboardData: LeaderboardDataResponse = await new LeaderboardDataRequestHandler().post({
+                            DisplayName: name,
+                            token: token,
+                            LeaderboardType: 'OverallScore',
+                            PartialList: false,
+                        });
                         
                         setProfile({
                         name: data.UserData.DisplayName,
                         email: data.UserData.Email,
-                        rank: userRank,
+                        rank: getUserRankByName(leaderboardData.Scores, name),
                         score: data.UserData.Score,
                         dateJoined: new Date(data.UserData.DateJoined), 
                         expirationDate: new Date(data.UserData.ExpirationDate), 

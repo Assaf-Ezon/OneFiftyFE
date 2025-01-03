@@ -9,10 +9,11 @@ import LeaderboardCard from './card/card';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
-import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
+import LeaderboardDataRequestHandler, { getTopUsersByScore, getUserRankByName } from '../../../requests/requests_handlers/leaderboard_data_request_handler';
 import AuthenticationHandler from '../../../screens/authentication_handler';
 
 import { Score } from '../../../data_objects/requests/leaderboard_data/score';
+import { LeaderboardDataResponse } from '../../../data_objects/requests/leaderboard_data/leaderboard_data_response';
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
@@ -25,26 +26,33 @@ const TopRated = () => {
     
     useEffect(() => {
         const fetchLeaderboard = async () => {
-            const name = await authInstance.getName();
-            const access_token = await authInstance.getAccessToken();
-
-            if (name && access_token) {
                 setLoading(true);
-                const leaderboardData = await getLeaderboardData(name, access_token, 'OverallScore', false);
-                setLoading(false);
-                
-                if (leaderboardData && 'Scores' in leaderboardData) {
-                    setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
-                
+
+                try {
                     const name = await authInstance.getName();
-                    updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
-                } else {
-                        Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
+                    const token = await authInstance.getAccessToken();
+        
+                    if (name && token) {
+                        const leaderboardData: LeaderboardDataResponse = await new LeaderboardDataRequestHandler().post({
+                            DisplayName: name,
+                            token: token,
+                            LeaderboardType: 'OverallScore',
+                            PartialList: false,
+                        });
+
+                        setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
+                    
+                        updateRank(getUserRankByName(leaderboardData.Scores, name));
+                    } else {
+                        Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                        handleLogout();
+                    }
+
+                } catch {
+                    Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                 }
-            } else {
-                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                handleLogout();
-            }
+                
+                setLoading(false);
         };
 
         if (profile.expirationDate <= new Date()) {

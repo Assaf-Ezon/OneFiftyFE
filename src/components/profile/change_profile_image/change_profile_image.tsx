@@ -10,7 +10,7 @@ import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 
-import ChangeProfilePictureRequestHandler from '../../../requests/requests_handlers/change_profile_picture_request_handler';
+import SetProfilePictureRequestHandler from '../../../requests/requests_handlers/set_profile_picture_request_handler';
 import AuthenticationHandler from '../../../screens/authentication_handler';
 
 import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
@@ -38,7 +38,7 @@ const ChangeProfileImagePopup = () => {
                 setLoading(true);
 
                 try {
-                    await new ChangeProfilePictureRequestHandler().post({
+                    await new SetProfilePictureRequestHandler().post({
                         DisplayName: name, 
                         token: token, 
                         ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images

@@ -14,9 +14,10 @@ import { useStackManagerContext, StackNames } from '../../context/general_contex
 
 import AuthenticationHandler from '../authentication_handler';
 
-import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';
-import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
+import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';
+import { LeaderboardDataResponse } from '../../data_objects/requests/leaderboard_data/leaderboard_data_response';
+import LeaderboardDataRequestHandler, { getUserRankByName } from '../../requests/requests_handlers/leaderboard_data_request_handler';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
@@ -110,19 +111,17 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                     } 
                     // the user is active
                     else {
-                        const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
-
-                        var userRank = 0;
-
-                        if (leaderboardData && 'Scores' in leaderboardData) {
-                            const name = await authInstance.getName();
-                            var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
-                        } 
+                        const leaderboardData: LeaderboardDataResponse = await new LeaderboardDataRequestHandler().post({
+                            DisplayName: name,
+                            token: token,
+                            LeaderboardType: 'OverallScore',
+                            PartialList: false,
+                        });
                         
                         setProfile({
                             name: data.UserData.DisplayName,
                             email: data.UserData.Email,
-                            rank: userRank,
+                            rank: getUserRankByName(leaderboardData.Scores, name),
                             score: data.UserData.Score,
                             dateJoined: new Date(data.UserData.DateJoined), 
                             expirationDate: new Date(data.UserData.ExpirationDate), 
