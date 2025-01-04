@@ -114,6 +114,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                     token: token,
                     LeaderboardType: 'OverallScore',
                     PartialList: false,
+                    expirationDate: data.UserData.ExpirationDate,
                 });
                 
                 setProfile({
@@ -143,7 +144,10 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                         setPopupIndex(AuthErrorType.Error);
                         break;
                     case RequestsError.InternetError:
-                        setPopupIndex(AuthErrorType.Error);
+                        setPopupIndex(AuthErrorType.InternetConnection);
+                        break;
+                    case RequestsError.UserExpiredError:
+                        setPopupIndex(AuthErrorType.Inactive);
                         break;
                 }
             } 

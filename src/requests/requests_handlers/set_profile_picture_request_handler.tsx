@@ -13,9 +13,10 @@ export default class SetProfilePictureRequestHandler extends RequestsHandler {
         return SetProfilePictureRequestHandler.instance;
     }
 
-    async validateParams(params: { DisplayName: string, token: string, ProfilePicture: number | null }): Promise<void> {
-        this._checkNameAndToken(params.DisplayName, params.token);
-        await this._checkInternetConnection();
+    async validateParams(params: { DisplayName: string, token: string, ProfilePicture: number | null, expirationDate: Date }): Promise<void> {
+        this._isNameAndToken(params.DisplayName, params.token);
+        await this._isInternetConnection();
+        this._isUserExpired(params.expirationDate);
 
         if (params.ProfilePicture == null ||
             !(typeof params.ProfilePicture === 'number' && params.ProfilePicture >= CONFIG.min_profile_image && params.ProfilePicture <= CONFIG.max_profile_image)) 

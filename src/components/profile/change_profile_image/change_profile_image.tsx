@@ -27,48 +27,47 @@ const ChangeProfileImagePopup = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const update = async () => {
-        if (profile.expirationDate <= new Date()) {
-            Alert.alert('תוקף המנוי נגמר');
-            handleInactive();
-        }
-        else if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
-            setLoading(true);
+        setLoading(true);
 
-            try {
-                const name = await authInstance.getName();
-                const token = await authInstance.getAccessToken();
+        try {
+            const name = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
 
-                await SetProfilePictureRequestHandler.getInstance().post({
-                    DisplayName: name, 
-                    token: token, 
-                    ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images
-                });
-                
-                setErrorType(ErrorType.None);
-                updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
-                toggleProfileImageMenu();
+            await SetProfilePictureRequestHandler.getInstance().post({
+                DisplayName: name, 
+                token: token, 
+                ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images,
+                expirationDate: profile.expirationDate,
+            });
+            
+            setErrorType(ErrorType.None);
+            updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
+            toggleProfileImageMenu();
 
-            } catch (err) {
-                if (err instanceof Error) {
-                    switch (err.name) {
-                        case RequestsError.CredentialsError:
-                            Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                            handleLogout();
-                            break;
-                        case RequestsError.InternetError:
-                            Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
-                            break;
-                        case RequestsError.IndexError:
-                            setErrorType(ErrorType.NoImage);
-                            break;
-                    }
-                } else {
-                    setErrorType(ErrorType.Error);
+        } catch (err) {
+            if (err instanceof Error) {
+                switch (err.name) {
+                    case RequestsError.CredentialsError:
+                        Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                        handleLogout();
+                        break;
+                    case RequestsError.InternetError:
+                        Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
+                        break;
+                    case RequestsError.IndexError:
+                        setErrorType(ErrorType.NoImage);
+                        break;
+                    case RequestsError.UserExpiredError:
+                        Alert.alert('תוקף המנוי נגמר');
+                        handleInactive();
+                        break;
                 }
+            } else {
+                setErrorType(ErrorType.Error);
             }
+        }
 
-            setLoading(false);
-        } 
+        setLoading(false);
     }   
 
     return (

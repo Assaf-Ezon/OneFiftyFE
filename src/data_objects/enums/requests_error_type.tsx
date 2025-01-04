@@ -3,4 +3,5 @@ export const RequestsError = {
     CredentialsError: 'CredentialsError',
     IndexError: 'IndexError',
     LanguageError: 'LanguageError',
+    UserExpiredError: 'UserExpiredError',
 } as const;

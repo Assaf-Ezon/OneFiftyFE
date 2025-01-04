@@ -14,9 +14,10 @@ export default class LeaderboardDataRequestHandler extends RequestsHandler {
         return LeaderboardDataRequestHandler.instance;
     }
 
-    async validateParams(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean }): Promise<void> {
-        this._checkNameAndToken(params.DisplayName, params.token);
-        await this._checkInternetConnection();
+    async validateParams(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean, expirationDate: Date }): Promise<void> {
+        this._isNameAndToken(params.DisplayName, params.token);
+        await this._isInternetConnection();
+        this._isUserExpired(params.expirationDate);
     }
 
     getEndpoint(): string {

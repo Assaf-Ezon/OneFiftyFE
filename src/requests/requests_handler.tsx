@@ -45,7 +45,7 @@ export default abstract class RequestsHandler {
     async post(params: any): Promise<any> {
         await this.validateParams(params); 
         
-        const { token, ...paramsWithoutToken } = params;
+        const { token, expirationDate, ...paramsWithoutToken } = params;
 
         const retryRequest = async () => {
             try {
@@ -56,7 +56,7 @@ export default abstract class RequestsHandler {
                         'Content-Type': 'application/json',
                     }
                 });
-
+                
                 return this.handleResponse(response);
                 
             } catch {
@@ -78,7 +78,7 @@ export default abstract class RequestsHandler {
         }
     }
 
-    private async handleResponse(response: AxiosResponse): Promise<any> {
+    private handleResponse(response: AxiosResponse): any {
         if (response.status >= 200 && response.status < 300) {
             return response.data;
         } else {
@@ -86,7 +86,7 @@ export default abstract class RequestsHandler {
         }
     }   
 
-    _checkNameAndToken (name: string, token: string) {
+    _isNameAndToken (name: string, token: string) {
         if (!name || !token) {
             const nameAndTokenError = new Error("name/token don't exist");
             nameAndTokenError.name = 'CredentialsError';
@@ -94,12 +94,20 @@ export default abstract class RequestsHandler {
         }
     }
 
-    async _checkInternetConnection () {
+    async _isInternetConnection () {
         const networkState = await Network.getNetworkStateAsync();
         
         if (!networkState.isConnected) {
             const internetConnectionError = new Error("No internet connection");
             internetConnectionError.name = 'InternetError';
+            throw internetConnectionError;
+        }
+    }
+
+    _isUserExpired (expirationDate: Date) {
+        if (expirationDate <= new Date()) {
+            const internetConnectionError = new Error("User expired");
+            internetConnectionError.name = 'UserExpiredError';
             throw internetConnectionError;
         }
     }

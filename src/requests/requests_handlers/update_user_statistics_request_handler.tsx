@@ -15,11 +15,12 @@ export default class UpdateUserStatisticsRequestHandler extends RequestsHandler 
         return UpdateUserStatisticsRequestHandler.instance;
     }
 
-    async validateParams(params: { DisplayName: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], Language: string }): Promise<void> {
-        this._checkNameAndToken(params.DisplayName, params.token);
-        await this._checkInternetConnection();
+    async validateParams(params: { DisplayName: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], Language: string, expirationDate: Date }): Promise<void> {
+        this._isNameAndToken(params.DisplayName, params.token);
+        await this._isInternetConnection();
+        this._isUserExpired(params.expirationDate);
 
-        if (params.Language || !(params.Language in Languages)) {
+        if (!params.Language || !(params.Language in Languages)) {
             const languageDoesntExistError = new Error("invalid language");
             languageDoesntExistError.name = 'LanguageError';
             throw languageDoesntExistError;

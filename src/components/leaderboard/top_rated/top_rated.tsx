@@ -27,49 +27,49 @@ const TopRated = () => {
     
     useEffect(() => {
         const fetchLeaderboard = async () => {
-                setLoading(true);
+            setLoading(true);
 
-                try {
-                    const name = await authInstance.getName();
-                    const token = await authInstance.getAccessToken();
+            try {
+                const name = await authInstance.getName();
+                const token = await authInstance.getAccessToken();
 
-                    const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
-                        DisplayName: name,
-                        token: token,
-                        LeaderboardType: 'OverallScore',
-                        PartialList: false,
-                    });
+                const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
+                    DisplayName: name,
+                    token: token,
+                    LeaderboardType: 'OverallScore',
+                    PartialList: false,
+                    expirationDate: profile.expirationDate,
+                });
 
-                    setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
-                
-                    updateRank(getUserRankByName(leaderboardData.Scores, name));
+                setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
+            
+                updateRank(getUserRankByName(leaderboardData.Scores, name));
 
-                } catch (err) {
-                    if (err instanceof Error) {
-                        switch (err.name) {
-                            case RequestsError.CredentialsError: 
-                                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                                handleLogout();
-                                break;
-                            case RequestsError.InternetError:
-                                Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
-                                break;
-                        }
-                    } 
-                    else {
-                        Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
+            } catch (err) {
+                if (err instanceof Error) {
+                    switch (err.name) {
+                        case RequestsError.CredentialsError: 
+                            Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                            handleLogout();
+                            break;
+                        case RequestsError.InternetError:
+                            Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
+                            break;
+                        case RequestsError.UserExpiredError:
+                            Alert.alert('תוקף המנוי נגמר');
+                            handleInactive();
+                            break;
                     }
+                } 
+                else {
+                    Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                 }
-                
-                setLoading(false);
+            }
+            
+            setLoading(false);
         };
 
-        if (profile.expirationDate <= new Date()) {
-            Alert.alert('תוקף המנוי נגמר');
-            handleInactive();
-        } else {
-            fetchLeaderboard();
-        }
+        fetchLeaderboard();
     }, []);
 
     const isValidProfilePictureIndex = (index: number): index is keyof typeof IMAGES.profile_images => index >= CONFIG.min_profile_image && index <= CONFIG.max_profile_image;

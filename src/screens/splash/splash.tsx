@@ -93,6 +93,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     token: token,
                     LeaderboardType: 'OverallScore',
                     PartialList: false,
+                    expirationDate: data.UserData.ExpirationDate,
                 });
                 
                 setProfile({
@@ -121,7 +122,10 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                         errorHandler();
                         break;
                     case RequestsError.InternetError:
-                        setPopupIndex(AuthErrorType.Error);
+                        setPopupIndex(AuthErrorType.InternetConnection);
+                        break;
+                    case RequestsError.UserExpiredError:
+                        setPopupIndex(AuthErrorType.Inactive);
                         break;
                 }
             } 

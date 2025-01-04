@@ -95,12 +95,32 @@ const InactivePopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.Se
     );
 };
 
+const InternetConnectionPopup = () => {
+    return (
+        <Modal animationType="fade"
+        transparent={true}
+        visible={true}>
+            <View style={PopupsStyle.internetPopupContainer}>
+                <View style={PopupsStyle.internetPopupTitleContainer}>
+                    <Text style={PopupsStyle.internetPopupTitle}>אינך מחובר לאינטרנט</Text>
+                </View>
+                <View style={PopupsStyle.internetPopupMainContainer}>
+                    <Text style={PopupsStyle.internetExplanationText}>
+                        אנא התחבר ונסה שוב{'\n'}
+                    </Text>
+                </View>
+            </View>
+        </Modal>
+    )
+}
+
 const AuthenticationPopup = ({index, setPopupIndex}: {index: number, setPopupIndex: React.Dispatch<React.SetStateAction<number>>}) => {
     const popupsHandler: { [key: number]: JSX.Element | null } = {
         0: null,
         1: <ErrorPopup setPopupIndex={setPopupIndex} />,
         2: <InactivePopup setPopupIndex={setPopupIndex} />,
         3: <IncorrectVersionPopup />,
+        4: <InternetConnectionPopup />,
     }
 
     return(

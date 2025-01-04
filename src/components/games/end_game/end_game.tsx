@@ -9,6 +9,7 @@ import AuthenticationHandler from '../../../screens/authentication_handler';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { useWords } from '../../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { useProfile } from '../../../context/general_context/profile_context';
 
 import { Languages } from '../../../data_objects/enums/language';
 import { UpdateUserStatsResponse } from '../../../data_objects/requests/update_user_stats/update_user_stats_response';
@@ -24,7 +25,8 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
     const [loading, setLoading] = useState<boolean>(false);
 
     const { settings } = useLearningSettingsContext();
-    const { handleLogout } = useStackManagerContext();
+    const { profile } = useProfile();
+    const { handleLogout, handleInactive } = useStackManagerContext();
     const {hebrewWords, 
         englishWords, 
         hebrewUserStatistics, 
@@ -50,7 +52,8 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                 token: token, 
                 WordsSuccess: correctAnswers,
                 WordsFailure: wrongAnswers,
-                Language: lang
+                Language: lang,
+                expirationDate: profile.expirationDate,
             });
 
             switch (settings.language) {
@@ -61,6 +64,11 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                     setEnglishUserStatistics(userStatistics.UserStatistics);
                     break;
             }
+
+            setTimeout(() => {
+                setLoading(false),
+                navigation.goBack();
+            }, 500); 
         } catch (err) {
             setLoading(false);
 
@@ -77,6 +85,10 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                         Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
                         navigation.goBack();
                         break;
+                    case RequestsError.UserExpiredError:
+                        Alert.alert('תוקף המנוי נגמר');
+                        handleInactive();
+                        break;
                 }
             } else {
                 Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
@@ -90,14 +102,14 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
         if (Object.keys(hebrewWords).length > 0 && Object.keys(hebrewUserStatistics).length > 0) {
             updateNewHebrewWords();
         }
-    }, [hebrewWords, hebrewUserStatistics]);
+    }, [hebrewUserStatistics]);
 
     // handles calculating new words for english - when full dict and statistics are updated in the context
     useEffect(() => {
         if (Object.keys(englishWords).length > 0 && Object.keys(englishUserStatistics).length > 0) {
             updateNewEnglishWords();
         }
-    }, [englishWords, englishUserStatistics]);
+    }, [englishUserStatistics]);
 
     return (
         <View style={EndGameStyle.container}
