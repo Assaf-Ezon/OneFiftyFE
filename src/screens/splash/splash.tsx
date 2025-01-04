@@ -19,6 +19,7 @@ import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_
 import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
 import { LeaderboardDataResponse } from '../../data_objects/requests/leaderboard_data/leaderboard_data_response';
 import LeaderboardDataRequestHandler, { getUserRankByName } from '../../requests/requests_handlers/leaderboard_data_request_handler';
+import { RequestsError } from '../../data_objects/enums/requests_error_type';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
     const {setStackIndexByName} = useStackManagerContext();
@@ -70,62 +71,64 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     }, []);
   
     const handleUserData = async () => {
-        const name = await authInstance.getName();
-        const token = await authInstance.getAccessToken();
+        try {
+            const name = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
 
-        if (name && token) {
-            try {
-                const data: ProfileDataResponse = await ProfileDataRequestHandler.getInstance().post({
-                    DisplayName: name, 
-                    token: token, 
+            const data: ProfileDataResponse = await ProfileDataRequestHandler.getInstance().post({
+                DisplayName: name, 
+                token: token, 
+            });
+
+            // the version is latest
+            if (data.Version != CONFIG.Version) {
+                setPopupIndex(AuthErrorType.IncorrectVersion);
+            } 
+            // the user is active
+            else if (!data.UserData.IsActive) {         
+                setPopupIndex(AuthErrorType.Inactive);
+            } else {
+                const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
+                    DisplayName: name,
+                    token: token,
+                    LeaderboardType: 'OverallScore',
+                    PartialList: false,
                 });
+                
+                setProfile({
+                    name: data.UserData.DisplayName,
+                    email: data.UserData.Email,
+                    rank: getUserRankByName(leaderboardData.Scores, name),
+                    score: data.UserData.Score,
+                    dateJoined: new Date(data.UserData.DateJoined), 
+                    expirationDate: new Date(data.UserData.ExpirationDate), 
+                    profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                    isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                });
+                
+                setHebrewWords(data.HebrewWordsDictionary);
+                setEnglishWords(data.EnglishWordsDictionary);
+                setHebrewUserStatistics(data.HebrewUserStatistics);
+                setEnglishUserStatistics(data.EnglishUserStatistics);
 
-                // the user data is what we need
-                if (data && 'UserData' in data) { 
-                    // the version is latest
-                    if (data.Version != CONFIG.Version) {
-                        setPopupIndex(AuthErrorType.IncorrectVersion);
-                    } 
-                    // the user is active
-                    else if (!data.UserData.IsActive) {         
-                        setPopupIndex(AuthErrorType.Inactive);
-                    } else {
-                        const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
-                            DisplayName: name,
-                            token: token,
-                            LeaderboardType: 'OverallScore',
-                            PartialList: false,
-                        });
-                        
-                        setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: getUserRankByName(leaderboardData.Scores, name),
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
-                    });
-                        
-                        setHebrewWords(data.HebrewWordsDictionary);
-                        setEnglishWords(data.EnglishWordsDictionary);
-                        setHebrewUserStatistics(data.HebrewUserStatistics);
-                        setEnglishUserStatistics(data.EnglishUserStatistics);
+                setCanRedirect(true);
+            }
+        } catch (err) {
 
-                        setCanRedirect(true);
-                    }
-                } else {
-                    errorHandler();
+            if (err instanceof Error) {
+                switch (err.name) {
+                    case RequestsError.CredentialsError:
+                        errorHandler();
+                        break;
+                    case RequestsError.InternetError:
+                        setPopupIndex(AuthErrorType.Error);
+                        break;
                 }
-            } catch (err) {
-                console.error(err);
+            } 
+            else {
                 errorHandler();
             }
-        } else {
-            errorHandler();
         }
-        
     }
 
     // handles calculating new words for hebrew - when full dict and statistics are updated in the context

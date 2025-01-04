@@ -88,7 +88,9 @@ export default abstract class RequestsHandler {
 
     _checkNameAndToken (name: string, token: string) {
         if (!name || !token) {
-            throw new Error();
+            const nameAndTokenError = new Error("name/token don't exist");
+            nameAndTokenError.name = 'CredentialsError';
+            throw nameAndTokenError;
         }
     }
 
@@ -96,7 +98,9 @@ export default abstract class RequestsHandler {
         const networkState = await Network.getNetworkStateAsync();
         
         if (!networkState.isConnected) {
-            throw new Error('No internet connection');
+            const internetConnectionError = new Error("No internet connection");
+            internetConnectionError.name = 'InternetError';
+            throw internetConnectionError;
         }
     }
 }

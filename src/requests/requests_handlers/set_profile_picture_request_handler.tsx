@@ -17,9 +17,14 @@ export default class SetProfilePictureRequestHandler extends RequestsHandler {
         this._checkNameAndToken(params.DisplayName, params.token);
         await this._checkInternetConnection();
 
-        if (params.ProfilePicture === null) {
-            throw new Error('index does not exist');
+        if (params.ProfilePicture == null ||
+            !(typeof params.ProfilePicture === 'number' && params.ProfilePicture >= CONFIG.min_profile_image && params.ProfilePicture <= CONFIG.max_profile_image)) 
+        {
+            const indexDoesntExistError = new Error("picture index doesn't exist");
+            indexDoesntExistError.name = 'IndexError';
+            throw indexDoesntExistError;
         }
+
     }
 
     getEndpoint(): string {

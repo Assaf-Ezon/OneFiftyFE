@@ -14,6 +14,7 @@ import AuthenticationHandler from '../../../screens/authentication_handler';
 
 import { Score } from '../../../data_objects/requests/leaderboard_data/score';
 import { LeaderboardDataResponse } from '../../../data_objects/requests/leaderboard_data/leaderboard_data_response';
+import { RequestsError } from '../../../data_objects/enums/requests_error_type';
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
@@ -31,25 +32,33 @@ const TopRated = () => {
                 try {
                     const name = await authInstance.getName();
                     const token = await authInstance.getAccessToken();
-        
-                    if (name && token) {
-                        const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
-                            DisplayName: name,
-                            token: token,
-                            LeaderboardType: 'OverallScore',
-                            PartialList: false,
-                        });
 
-                        setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
-                    
-                        updateRank(getUserRankByName(leaderboardData.Scores, name));
-                    } else {
-                        Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                        handleLogout();
+                    const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
+                        DisplayName: name,
+                        token: token,
+                        LeaderboardType: 'OverallScore',
+                        PartialList: false,
+                    });
+
+                    setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
+                
+                    updateRank(getUserRankByName(leaderboardData.Scores, name));
+
+                } catch (err) {
+                    if (err instanceof Error) {
+                        switch (err.name) {
+                            case RequestsError.CredentialsError: 
+                                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                                handleLogout();
+                                break;
+                            case RequestsError.InternetError:
+                                Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
+                                break;
+                        }
+                    } 
+                    else {
+                        Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                     }
-
-                } catch {
-                    Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                 }
                 
                 setLoading(false);

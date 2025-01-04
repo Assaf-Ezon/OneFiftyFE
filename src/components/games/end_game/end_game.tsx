@@ -14,6 +14,7 @@ import { Languages } from '../../../data_objects/enums/language';
 import { UpdateUserStatsResponse } from '../../../data_objects/requests/update_user_stats/update_user_stats_response';
 import { EndGamesStatisticsConfig } from '../../../data_objects/components_config/end_game_popup_config';
 import UpdateUserStatisticsRequestHandler from '../../../requests/requests_handlers/update_user_statistics_request_handler';
+import { RequestsError } from '../../../data_objects/enums/requests_error_type';
 
 const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
@@ -38,42 +39,49 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
     const finishGame = async () => {
         setLoading(true);
 
-        const name = await authInstance.getName();
-        const token = await authInstance.getAccessToken();
+        try {
+            const name = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
 
-        if (name && token) {
             const lang = settings.language;
-            if (lang) {
-                try {
-                    const userStatistics: UpdateUserStatsResponse = await UpdateUserStatisticsRequestHandler.getInstance().post({
-                        DisplayName: name, 
-                        token: token, 
-                        WordsSuccess: correctAnswers,
-                        WordsFailure: wrongAnswers,
-                        Language: lang
-                    });
 
-                    switch (settings.language) {
-                        case Languages.Hebrew:
-                            setHebrewUserStatistics(userStatistics.UserStatistics);
-                            break;
-                        case Languages.English:
-                            setEnglishUserStatistics(userStatistics.UserStatistics);
-                            break;
-                    }
-                } catch (err) {
-                    Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+            const userStatistics: UpdateUserStatsResponse = await UpdateUserStatisticsRequestHandler.getInstance().post({
+                DisplayName: name, 
+                token: token, 
+                WordsSuccess: correctAnswers,
+                WordsFailure: wrongAnswers,
+                Language: lang
+            });
+
+            switch (settings.language) {
+                case Languages.Hebrew:
+                    setHebrewUserStatistics(userStatistics.UserStatistics);
+                    break;
+                case Languages.English:
+                    setEnglishUserStatistics(userStatistics.UserStatistics);
+                    break;
+            }
+        } catch (err) {
+            setLoading(false);
+
+            if (err instanceof Error) {
+                switch (err.name) {
+                    case RequestsError.CredentialsError:
+                        Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                        handleLogout();
+                        break;
+                    case RequestsError.InternetError:
+                        Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
+                        break;
+                    case RequestsError.LanguageError:
+                        Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                        navigation.goBack();
+                        break;
                 }
             } else {
                 Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                navigation.goBack();
             }
-
-            setLoading(false);
-            navigation.goBack()
-        } else {
-            setLoading(false);
-            Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-            handleLogout();
         }
     }
 

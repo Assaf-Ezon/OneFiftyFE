@@ -1,4 +1,5 @@
 import { CONFIG } from "../../config";
+import { Languages } from "../../data_objects/enums/language";
 import { WordDetails } from "../../data_objects/words/basic_data_objects/word_details";
 import RequestsHandler from "../requests_handler";
 
@@ -17,6 +18,12 @@ export default class UpdateUserStatisticsRequestHandler extends RequestsHandler 
     async validateParams(params: { DisplayName: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], Language: string }): Promise<void> {
         this._checkNameAndToken(params.DisplayName, params.token);
         await this._checkInternetConnection();
+
+        if (params.Language || !(params.Language in Languages)) {
+            const languageDoesntExistError = new Error("invalid language");
+            languageDoesntExistError.name = 'LanguageError';
+            throw languageDoesntExistError;
+        }
     }
 
     getEndpoint(): string {

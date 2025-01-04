@@ -14,6 +14,7 @@ import SetProfilePictureRequestHandler from '../../../requests/requests_handlers
 import AuthenticationHandler from '../../../screens/authentication_handler';
 
 import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
+import { RequestsError } from '../../../data_objects/enums/requests_error_type';
 
 const ChangeProfileImagePopup = () => {
     const {profile, updateProfileImage} = useProfile();
@@ -31,35 +32,43 @@ const ChangeProfileImagePopup = () => {
             handleInactive();
         }
         else if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
-            const name = await authInstance.getName();
-            const token = await authInstance.getAccessToken();
+            setLoading(true);
 
-            if (name && token) {
-                setLoading(true);
+            try {
+                const name = await authInstance.getName();
+                const token = await authInstance.getAccessToken();
 
-                try {
-                    await SetProfilePictureRequestHandler.getInstance().post({
-                        DisplayName: name, 
-                        token: token, 
-                        ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images
-                    });
-                    
-                    setErrorType(ErrorType.None);
-                    updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
-                    toggleProfileImageMenu();
-                } catch (error) {
+                await SetProfilePictureRequestHandler.getInstance().post({
+                    DisplayName: name, 
+                    token: token, 
+                    ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images
+                });
+                
+                setErrorType(ErrorType.None);
+                updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
+                toggleProfileImageMenu();
+
+            } catch (err) {
+                if (err instanceof Error) {
+                    switch (err.name) {
+                        case RequestsError.CredentialsError:
+                            Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                            handleLogout();
+                            break;
+                        case RequestsError.InternetError:
+                            Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
+                            break;
+                        case RequestsError.IndexError:
+                            setErrorType(ErrorType.NoImage);
+                            break;
+                    }
+                } else {
                     setErrorType(ErrorType.Error);
                 }
-
-                setLoading(false);
-
-            } else {
-                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                handleLogout();
             }
-        } else {
-            setErrorType(ErrorType.NoImage);
-        }
+
+            setLoading(false);
+        } 
     }   
 
     return (
@@ -85,9 +94,9 @@ const ChangeProfileImagePopup = () => {
                     <Text style={ChangeProfileImageStyle.submitBtnText}>אישור</Text>
                 </TouchableOpacity>
                 {
-                    errorType == 1 ? 
+                    errorType == ErrorType.Error ? 
                     <Text style={ChangeProfileImageStyle.errorText}>תקלה קרתה, נסה שנית מאוחר יותר</Text> :
-                    errorType == 2 ?
+                    errorType == ErrorType.NoImage ?
                     <Text style={ChangeProfileImageStyle.errorText}>בחר תמונת פרופיל</Text> :
                     null
                 }
