@@ -45,7 +45,7 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
             const lang = settings.language;
             if (lang) {
                 try {
-                    const userStatistics: UpdateUserStatsResponse = await new UpdateUserStatisticsRequestHandler().post({
+                    const userStatistics: UpdateUserStatsResponse = await UpdateUserStatisticsRequestHandler.getInstance().post({
                         DisplayName: name, 
                         token: token, 
                         WordsSuccess: correctAnswers,

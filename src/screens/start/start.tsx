@@ -94,7 +94,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
         if (name && token) {
             try {
-                const data: ProfileDataResponse = await new ProfileDataRequestHandler().post({
+                const data: ProfileDataResponse = await ProfileDataRequestHandler.getInstance().post({
                     DisplayName: name, 
                     token: token, 
                 });
@@ -111,7 +111,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                     } 
                     // the user is active
                     else {
-                        const leaderboardData: LeaderboardDataResponse = await new LeaderboardDataRequestHandler().post({
+                        const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
                             DisplayName: name,
                             token: token,
                             LeaderboardType: 'OverallScore',

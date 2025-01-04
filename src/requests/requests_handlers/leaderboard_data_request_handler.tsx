@@ -3,6 +3,17 @@ import { Score } from "../../data_objects/requests/leaderboard_data/score";
 import RequestsHandler from "../requests_handler";
 
 export default class LeaderboardDataRequestHandler extends RequestsHandler {
+    private static instance: LeaderboardDataRequestHandler;
+
+    // singleton instance
+    public static getInstance(): LeaderboardDataRequestHandler {
+        if (!LeaderboardDataRequestHandler.instance) {
+            LeaderboardDataRequestHandler.instance = new LeaderboardDataRequestHandler();
+        }
+
+        return LeaderboardDataRequestHandler.instance;
+    }
+
     validateParams(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean }): void {
         this._checkNameAndToken(params.DisplayName, params.token);
         this._checkInternetCoonection();

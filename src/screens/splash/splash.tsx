@@ -75,7 +75,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
         if (name && token) {
             try {
-                const data: ProfileDataResponse = await new ProfileDataRequestHandler().post({
+                const data: ProfileDataResponse = await ProfileDataRequestHandler.getInstance().post({
                     DisplayName: name, 
                     token: token, 
                 });
@@ -90,7 +90,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     else if (!data.UserData.IsActive) {         
                         setPopupIndex(AuthErrorType.Inactive);
                     } else {
-                        const leaderboardData: LeaderboardDataResponse = await new LeaderboardDataRequestHandler().post({
+                        const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
                             DisplayName: name,
                             token: token,
                             LeaderboardType: 'OverallScore',

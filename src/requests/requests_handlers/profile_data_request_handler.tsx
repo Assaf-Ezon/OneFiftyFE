@@ -2,6 +2,17 @@ import { CONFIG } from "../../config";
 import RequestsHandler from "../requests_handler";
 
 export default class ProfileDataRequestHandler extends RequestsHandler {
+    private static instance: ProfileDataRequestHandler;
+
+    // singleton instance
+    public static getInstance(): ProfileDataRequestHandler {
+        if (!ProfileDataRequestHandler.instance) {
+            ProfileDataRequestHandler.instance = new ProfileDataRequestHandler();
+        }
+
+        return ProfileDataRequestHandler.instance;
+    }
+
     validateParams(params: { DisplayName: string, token: string }): void {
         this._checkNameAndToken(params.DisplayName, params.token);
         this._checkInternetCoonection();

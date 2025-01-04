@@ -38,7 +38,7 @@ const ChangeProfileImagePopup = () => {
                 setLoading(true);
 
                 try {
-                    await new SetProfilePictureRequestHandler().post({
+                    await SetProfilePictureRequestHandler.getInstance().post({
                         DisplayName: name, 
                         token: token, 
                         ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images

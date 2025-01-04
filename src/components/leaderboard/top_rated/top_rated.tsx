@@ -33,7 +33,7 @@ const TopRated = () => {
                     const token = await authInstance.getAccessToken();
         
                     if (name && token) {
-                        const leaderboardData: LeaderboardDataResponse = await new LeaderboardDataRequestHandler().post({
+                        const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
                             DisplayName: name,
                             token: token,
                             LeaderboardType: 'OverallScore',
