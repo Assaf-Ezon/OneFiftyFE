@@ -36,7 +36,7 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
         statistics = englishUserStatistics;
     }
 
-    let percentageeWordsSeen: string = (Object.keys(statistics.WordsStatistics.Words[level]).length/Object.keys(dictionary.Words[level]).length * 100).toFixed(1);
+    let percentageeWordsSeen: string = (Object.keys(statistics.WordsStatistics.Words[level] || {}).length/Object.keys(dictionary.Words[level]).length * 100).toFixed(1);
 
     return (
         <View style={[{height: isLevelOpen ? height * 0.25 : height * 0.1}, LevelProgressStyle.container]}>
@@ -46,6 +46,7 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
             </TouchableOpacity>
             {
                 isLevelOpen ?
+
                 null
 
                 : 
