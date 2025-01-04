@@ -15,11 +15,6 @@ const cardStyle = StyleSheet.create({
         fontSize: 18,
         color: '#656565',
     },
-    line: {
-        width: width * 0.9,
-        height: 1,
-        backgroundColor: '#C0C0C0', 
-    },
 });
 
 export default cardStyle;
