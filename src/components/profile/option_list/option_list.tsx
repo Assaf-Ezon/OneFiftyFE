@@ -14,7 +14,7 @@ const OptionList = () => {
     return (
         <View style={OptionListStyle.container}>
             <View style={OptionListStyle.line} />
-            <OptionCard title='התקדמות' image={IMAGES.unused_profile} onPressActionIndex={ProfilePageActionIndex.NavigateToPage} screenName='' isActive={true} />
+            <OptionCard title='התקדמות' image={IMAGES.unused_profile} onPressActionIndex={ProfilePageActionIndex.NavigateToPage} screenName={Screens.PROGRESS} isActive={true} />
             <View style={OptionListStyle.line} />
             <OptionCard title='המנוי שלי' image={IMAGES.subscription} onPressActionIndex={ProfilePageActionIndex.Subscription} screenName='' isActive={true} />
             <View style={OptionListStyle.line} />

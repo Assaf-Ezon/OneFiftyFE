@@ -11,6 +11,8 @@ import LearningPage from './src/screens/learning/learning';
 import LeaderboardPage from './src/screens/leaderboard/leaderboard';
 import ProfilePage from './src/screens/profile/profile';
 
+import ProgressPage from './src/screens/progress/progress';
+
 import TermsOfServicePage from './src/screens/terms_of_service/terms_of_service';
 import PaymentPage from './src/screens/payment/payment';
 
@@ -47,6 +49,8 @@ const MainAppStack = () => {
 
           <Stack.Screen name={Screens.TERMS} component={TermsOfServicePage} options={{ headerShown: false }} />
           <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
+
+          <Stack.Screen name={Screens.PROGRESS} component={ProgressPage} options={{ headerShown: false }} />
 
           <Stack.Screen name={Screens.KDK} component={KdkPage} options={{ headerShown: false }} />
           <Stack.Screen name={Screens.MC} component={McPage} options={{ headerShown: false }} />
