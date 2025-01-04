@@ -3,4 +3,5 @@ export enum AuthErrorType {
     Error = 1,
     Inactive = 2,
     IncorrectVersion = 3,
+    InternetConnection = 4,
 }

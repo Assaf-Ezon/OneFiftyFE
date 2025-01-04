@@ -9,10 +9,13 @@ import ProfileImageOption from './image/image';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
-import { setProfilePicture } from '../../../requests/change_profile_picture_request';
-import AuthenticationHandler from '../../../screens/authentication_handler';
-import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
 
+import SetProfilePictureRequestHandler from '../../../requests/requests_handlers/set_profile_picture_request_handler';
+import AuthenticationHandler from '../../../screens/authentication_handler';
+
+import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
+import { RequestsError } from '../../../data_objects/enums/requests_error_type';
+import AppRequestsErrors from '../../../requests/components_requests_errors/app_requests_errors';
 
 const ChangeProfileImagePopup = () => {
     const {profile, updateProfileImage} = useProfile();
@@ -25,36 +28,36 @@ const ChangeProfileImagePopup = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const update = async () => {
-        if (profile.expirationDate <= new Date()) {
-            Alert.alert('תוקף המנוי נגמר');
-            handleInactive();
-        }
-        else if (typeof imageIndex === 'number' && imageIndex >= CONFIG.min_profile_image && imageIndex <= CONFIG.max_profile_image) {
+        setLoading(true);
+
+        try {
             const name = await authInstance.getName();
-            const access_token = await authInstance.getAccessToken();
+            const token = await authInstance.getAccessToken();
 
-            if (name && access_token) {
-                setLoading(true);
+            await SetProfilePictureRequestHandler.getInstance().post({
+                DisplayName: name, 
+                token: token, 
+                ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images,
+                expirationDate: profile.expirationDate,
+            });
+            
+            setErrorType(ErrorType.None);
+            updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
+            toggleProfileImageMenu();
 
-                try {
-                    await setProfilePicture(name, access_token, imageIndex as keyof typeof IMAGES.profile_images);
-                    
-                    setErrorType(ErrorType.None);
-                    updateProfileImage(IMAGES.profile_images[imageIndex as keyof typeof IMAGES.profile_images]);
-                    toggleProfileImageMenu();
-                } catch (error) {
-                    setErrorType(ErrorType.Error);
+        } catch (err) {
+            if (err instanceof Error) {
+                if (err.name == RequestsError.IndexError) {
+                    setErrorType(ErrorType.NoImage);
                 }
 
-                setLoading(false);
-
+                AppRequestsErrors(err, handleLogout, handleInactive);
             } else {
-                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                handleLogout();
+                setErrorType(ErrorType.Error);
             }
-        } else {
-            setErrorType(ErrorType.NoImage);
         }
+
+        setLoading(false);
     }   
 
     return (
@@ -80,9 +83,9 @@ const ChangeProfileImagePopup = () => {
                     <Text style={ChangeProfileImageStyle.submitBtnText}>אישור</Text>
                 </TouchableOpacity>
                 {
-                    errorType == 1 ? 
+                    errorType == ErrorType.Error ? 
                     <Text style={ChangeProfileImageStyle.errorText}>תקלה קרתה, נסה שנית מאוחר יותר</Text> :
-                    errorType == 2 ?
+                    errorType == ErrorType.NoImage ?
                     <Text style={ChangeProfileImageStyle.errorText}>בחר תמונת פרופיל</Text> :
                     null
                 }

@@ -9,10 +9,13 @@ import LeaderboardCard from './card/card';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
-import { getLeaderboardData, getTopUsersByScore, getUserRankByName } from '../../../requests/top_rated_request';
+import LeaderboardDataRequestHandler, { getTopUsersByScore, getUserRankByName } from '../../../requests/requests_handlers/leaderboard_data_request_handler';
 import AuthenticationHandler from '../../../screens/authentication_handler';
 
 import { Score } from '../../../data_objects/requests/leaderboard_data/score';
+import { LeaderboardDataResponse } from '../../../data_objects/requests/leaderboard_data/leaderboard_data_response';
+import { RequestsError } from '../../../data_objects/enums/requests_error_type';
+import AppRequestsErrors from '../../../requests/components_requests_errors/app_requests_errors';
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
@@ -25,34 +28,37 @@ const TopRated = () => {
     
     useEffect(() => {
         const fetchLeaderboard = async () => {
-            const name = await authInstance.getName();
-            const access_token = await authInstance.getAccessToken();
+            setLoading(true);
 
-            if (name && access_token) {
-                setLoading(true);
-                const leaderboardData = await getLeaderboardData(name, access_token, 'OverallScore', false);
-                setLoading(false);
-                
-                if (leaderboardData && 'Scores' in leaderboardData) {
-                    setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
-                
-                    const name = await authInstance.getName();
-                    updateRank(getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : ''));
-                } else {
-                        Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
+            try {
+                const name = await authInstance.getName();
+                const token = await authInstance.getAccessToken();
+
+                const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
+                    DisplayName: name,
+                    token: token,
+                    LeaderboardType: 'OverallScore',
+                    PartialList: false,
+                    expirationDate: profile.expirationDate,
+                });
+
+                setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));
+            
+                updateRank(getUserRankByName(leaderboardData.Scores, name));
+
+            } catch (err) {
+                if (err instanceof Error) {
+                    AppRequestsErrors(err, handleLogout, handleInactive);
+                } 
+                else {
+                    Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
                 }
-            } else {
-                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                handleLogout();
             }
+            
+            setLoading(false);
         };
 
-        if (profile.expirationDate <= new Date()) {
-            Alert.alert('תוקף המנוי נגמר');
-            handleInactive();
-        } else {
-            fetchLeaderboard();
-        }
+        fetchLeaderboard();
     }, []);
 
     const isValidProfilePictureIndex = (index: number): index is keyof typeof IMAGES.profile_images => index >= CONFIG.min_profile_image && index <= CONFIG.max_profile_image;
@@ -63,9 +69,7 @@ const TopRated = () => {
                 <Image source={profile.profileImage} style={TopRatedStyle.profileImage} />
                 <Text style={TopRatedStyle.textName}>{profile.name}</Text>
                 <View style={TopRatedStyle.selfStatsContainer}>
-                    <Text style={TopRatedStyle.scoreText}>ניקוד: {profile.score}</Text>
-                    <View style={TopRatedStyle.line} />
-                    <Text style={TopRatedStyle.rankText}>מקום: {profile.rank}</Text> 
+                    <Text style={TopRatedStyle.scoreText}>מקום: {profile.rank} {'\n'}  ניקוד: {profile.score}</Text>
                 </View>
             </View>
             {loading ? <View style={TopRatedStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}

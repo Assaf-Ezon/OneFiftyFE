@@ -26,27 +26,18 @@ const TopRatedStyle = StyleSheet.create({
     textName: {
         fontSize: 22,
         fontWeight: 'bold',
-        marginBottom: 5,
     },
     selfStatsContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         width: '35%',
         marginTop: 10,
     },
-    rankText: {
-        fontSize: 18,
-        fontWeight: '400',
-    },
-    line: {
-        backgroundColor: 'black',
-        width: 1,
-        height: '90%',
-    },
     scoreText: {
         fontSize: 18,
         fontWeight: '400',
+        textAlign: 'center',
     },
     loadingContainer: {
         position: 'absolute',

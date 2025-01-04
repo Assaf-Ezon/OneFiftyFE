@@ -14,8 +14,12 @@ import { useStackManagerContext, StackNames } from '../../context/general_contex
 
 import AuthenticationHandler from '../authentication_handler';
 
-import getProfileData from '../../requests/profile_data_request';
-import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
+import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
+import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';
+import { LeaderboardDataResponse } from '../../data_objects/requests/leaderboard_data/leaderboard_data_response';
+import LeaderboardDataRequestHandler, { getUserRankByName } from '../../requests/requests_handlers/leaderboard_data_request_handler';
+import { RequestsError } from '../../data_objects/enums/requests_error_type';
+import AuthenticationRequestsErrors from '../../requests/components_requests_errors/authentication_requests_errors';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
@@ -87,67 +91,61 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     // sets profile and words context with fetched data
     const handleUserData = async () => {
-        const name = await authInstance.getName();
-        const token = await authInstance.getAccessToken();
+        try {
+            const name = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
 
-        if (name && token) {
-            try {
-                const data = await getProfileData(name, token);
+            const data: ProfileDataResponse = await ProfileDataRequestHandler.getInstance().post({
+                DisplayName: name, 
+                token: token, 
+            });
+            
+            // if version is correct
+            if (data.Version != CONFIG.Version) {
+                setPopupIndex(AuthErrorType.IncorrectVersion);
+            }  
+            // the version is latest
+            else if (!data.UserData.IsActive) {
+                setPopupIndex(AuthErrorType.Inactive);
+            } 
+            // the user is active
+            else {
+                const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
+                    DisplayName: name,
+                    token: token,
+                    LeaderboardType: 'OverallScore',
+                    PartialList: false,
+                    expirationDate: data.UserData.ExpirationDate,
+                });
+                
+                setProfile({
+                    name: data.UserData.DisplayName,
+                    email: data.UserData.Email,
+                    rank: getUserRankByName(leaderboardData.Scores, name),
+                    score: data.UserData.Score,
+                    dateJoined: new Date(data.UserData.DateJoined), 
+                    expirationDate: new Date(data.UserData.ExpirationDate), 
+                    profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                    isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                });
 
-                // the user data is what we need
-                if (data && 'UserData' in data) {
-                    // if version is correct
-                    if (data.Version != CONFIG.Version) {
-                        setPopupIndex(AuthErrorType.IncorrectVersion);
-                    }  
-                    // the version is latest
-                    else if (!data.UserData.IsActive) {
-                        setPopupIndex(AuthErrorType.Inactive);
-                    } 
-                    // the user is active
-                    else {
-                        const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
+                setHebrewWords(data.HebrewWordsDictionary);
+                setEnglishWords(data.EnglishWordsDictionary);
+                setHebrewUserStatistics(data.HebrewUserStatistics);
+                setEnglishUserStatistics(data.EnglishUserStatistics);
 
-                        var userRank = 0;
-
-                        if (leaderboardData && 'Scores' in leaderboardData) {
-                            const name = await authInstance.getName();
-                            var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
-                        } 
-                        
-                        setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: userRank,
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
-                    });
-
-                        setHebrewWords(data.HebrewWordsDictionary);
-                        setEnglishWords(data.EnglishWordsDictionary);
-                        setHebrewUserStatistics(data.HebrewUserStatistics);
-                        setEnglishUserStatistics(data.EnglishUserStatistics);
-
-                        setCanRedirect(true);
-                    }
-                } else {
-                    setLoading(false);
-
-                    setPopupIndex(AuthErrorType.Error);
-                }
-            } catch (err) {
-                console.error(err);
-                setLoading(false);
-
-                setPopupIndex(AuthErrorType.Error);
+                setCanRedirect(true);
             }
-        } else {
+        } catch (err) {
             setLoading(false);
 
-            setPopupIndex(AuthErrorType.Error);
+            if (err instanceof Error) {
+                err.name == RequestsError.CredentialsError ? setPopupIndex(AuthErrorType.Error) : null;
+                AuthenticationRequestsErrors(err, setPopupIndex);
+            } 
+            else {
+                setPopupIndex(AuthErrorType.Error);
+            }
         }
     };
 

@@ -1,4 +1,4 @@
-import { View, Image, Modal, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, Image, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import AuthenticationPopup from '../../components/auth_popups/authentication_popup';
 
@@ -14,9 +14,13 @@ import { StackNames, useStackManagerContext } from '../../context/general_contex
 import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 
-import getProfileData from '../../requests/profile_data_request';
-import { getLeaderboardData, getUserRankByName } from '../../requests/top_rated_request';
 import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
+import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';
+import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
+import { LeaderboardDataResponse } from '../../data_objects/requests/leaderboard_data/leaderboard_data_response';
+import LeaderboardDataRequestHandler, { getUserRankByName } from '../../requests/requests_handlers/leaderboard_data_request_handler';
+import { RequestsError } from '../../data_objects/enums/requests_error_type';
+import AuthenticationRequestsErrors from '../../requests/components_requests_errors/authentication_requests_errors';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
     const {setStackIndexByName} = useStackManagerContext();
@@ -68,61 +72,59 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     }, []);
   
     const handleUserData = async () => {
-        const name = await authInstance.getName();
-        const token = await authInstance.getAccessToken();
+        try {
+            const name = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
 
-        if (name && token) {
-            try {
-                const data = await getProfileData(name, token);
+            const data: ProfileDataResponse = await ProfileDataRequestHandler.getInstance().post({
+                DisplayName: name, 
+                token: token, 
+            });
 
-                // the user data is what we need
-                if (data && 'UserData' in data) { 
-                    // the version is latest
-                    if (data.Version != CONFIG.Version) {
-                        setPopupIndex(AuthErrorType.IncorrectVersion);
-                    } 
-                    // the user is active
-                    else if (!data.UserData.IsActive) {         
-                        setPopupIndex(AuthErrorType.Inactive);
-                    } else {
-                        const leaderboardData = await getLeaderboardData(await authInstance.getName(), await authInstance.getAccessToken(), 'OverallScore', false);
+            // the version is latest
+            if (data.Version != CONFIG.Version) {
+                setPopupIndex(AuthErrorType.IncorrectVersion);
+            } 
+            // the user is active
+            else if (!data.UserData.IsActive) {         
+                setPopupIndex(AuthErrorType.Inactive);
+            } else {
+                const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
+                    DisplayName: name,
+                    token: token,
+                    LeaderboardType: 'OverallScore',
+                    PartialList: false,
+                    expirationDate: data.UserData.ExpirationDate,
+                });
+                
+                setProfile({
+                    name: data.UserData.DisplayName,
+                    email: data.UserData.Email,
+                    rank: getUserRankByName(leaderboardData.Scores, name),
+                    score: data.UserData.Score,
+                    dateJoined: new Date(data.UserData.DateJoined), 
+                    expirationDate: new Date(data.UserData.ExpirationDate), 
+                    profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
+                    isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                });
+                
+                setHebrewWords(data.HebrewWordsDictionary);
+                setEnglishWords(data.EnglishWordsDictionary);
+                setHebrewUserStatistics(data.HebrewUserStatistics);
+                setEnglishUserStatistics(data.EnglishUserStatistics);
 
-                        var userRank = 0;
-                        
-                        if (leaderboardData && 'Scores' in leaderboardData) {
-                            const name = await authInstance.getName();
-                            var userRank = getUserRankByName(leaderboardData.Scores, typeof name === 'string' ? name : '');
-                        } 
-                        
-                        setProfile({
-                        name: data.UserData.DisplayName,
-                        email: data.UserData.Email,
-                        rank: userRank,
-                        score: data.UserData.Score,
-                        dateJoined: new Date(data.UserData.DateJoined), 
-                        expirationDate: new Date(data.UserData.ExpirationDate), 
-                        profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                        isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
-                    });
-                        
-                        setHebrewWords(data.HebrewWordsDictionary);
-                        setEnglishWords(data.EnglishWordsDictionary);
-                        setHebrewUserStatistics(data.HebrewUserStatistics);
-                        setEnglishUserStatistics(data.EnglishUserStatistics);
+                setCanRedirect(true);
+            }
+        } catch (err) {
 
-                        setCanRedirect(true);
-                    }
-                } else {
-                    errorHandler();
-                }
-            } catch (err) {
-                console.error(err);
+            if (err instanceof Error) {
+                err.name == RequestsError.CredentialsError ? errorHandler() : null;
+                AuthenticationRequestsErrors(err, setPopupIndex);
+            } 
+            else {
                 errorHandler();
             }
-        } else {
-            errorHandler();
         }
-        
     }
 
     // handles calculating new words for hebrew - when full dict and statistics are updated in the context

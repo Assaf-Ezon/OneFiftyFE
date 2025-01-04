@@ -9,10 +9,14 @@ import AuthenticationHandler from '../../../screens/authentication_handler';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { useWords } from '../../../context/general_context/words_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { useProfile } from '../../../context/general_context/profile_context';
 
-import updateUserStatistics from '../../../requests/update_stats_request';
-import { EndGamesStatisticsConfig } from '../../../data_objects/components_config/games/end_game_popup_config';
 import { Languages } from '../../../data_objects/enums/language';
+import { UpdateUserStatsResponse } from '../../../data_objects/requests/update_user_stats/update_user_stats_response';
+import { EndGamesStatisticsConfig } from '../../../data_objects/components_config/end_game_popup_config';
+import UpdateUserStatisticsRequestHandler from '../../../requests/requests_handlers/update_user_statistics_request_handler';
+import { RequestsError } from '../../../data_objects/enums/requests_error_type';
+import AppRequestsErrors from '../../../requests/components_requests_errors/app_requests_errors';
 
 const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
@@ -22,7 +26,8 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
     const [loading, setLoading] = useState<boolean>(false);
 
     const { settings } = useLearningSettingsContext();
-    const { handleLogout } = useStackManagerContext();
+    const { profile } = useProfile();
+    const { handleLogout, handleInactive } = useStackManagerContext();
     const {hebrewWords, 
         englishWords, 
         hebrewUserStatistics, 
@@ -37,36 +42,48 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
     const finishGame = async () => {
         setLoading(true);
 
-        const name = await authInstance.getName();
-        const token = await authInstance.getAccessToken();
+        try {
+            const name = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
 
-        if (name && token) {
             const lang = settings.language;
-            if (lang) {
-                try {
-                    const userStatistics = await updateUserStatistics(name, token, correctAnswers, wrongAnswers, lang);
 
-                    switch (settings.language) {
-                        case Languages.Hebrew:
-                            setHebrewUserStatistics(userStatistics.UserStatistics);
-                            break;
-                        case Languages.English:
-                            setEnglishUserStatistics(userStatistics.UserStatistics);
-                            break;
-                    }
-                } catch (err) {
-                    Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
-                }
-            } else {
-                Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+            const userStatistics: UpdateUserStatsResponse = await UpdateUserStatisticsRequestHandler.getInstance().post({
+                DisplayName: name, 
+                token: token, 
+                WordsSuccess: correctAnswers,
+                WordsFailure: wrongAnswers,
+                Language: lang,
+                expirationDate: profile.expirationDate,
+            });
+
+            switch (settings.language) {
+                case Languages.Hebrew:
+                    setHebrewUserStatistics(userStatistics.UserStatistics);
+                    break;
+                case Languages.English:
+                    setEnglishUserStatistics(userStatistics.UserStatistics);
+                    break;
             }
 
+            setTimeout(() => {
+                setLoading(false),
+                navigation.goBack();
+            }, 500); 
+        } catch (err) {
             setLoading(false);
-            navigation.goBack()
-        } else {
-            setLoading(false);
-            Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-            handleLogout();
+
+            if (err instanceof Error) {
+                    if (err.name == RequestsError.LanguageError) {
+                        Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                        navigation.goBack();                    
+                    }
+    
+                    AppRequestsErrors(err, handleLogout, handleInactive);
+            } else {
+                Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                navigation.goBack();
+            }
         }
     }
 
@@ -75,14 +92,14 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
         if (Object.keys(hebrewWords).length > 0 && Object.keys(hebrewUserStatistics).length > 0) {
             updateNewHebrewWords();
         }
-    }, [hebrewWords, hebrewUserStatistics]);
+    }, [hebrewUserStatistics]);
 
     // handles calculating new words for english - when full dict and statistics are updated in the context
     useEffect(() => {
         if (Object.keys(englishWords).length > 0 && Object.keys(englishUserStatistics).length > 0) {
             updateNewEnglishWords();
         }
-    }, [englishWords, englishUserStatistics]);
+    }, [englishUserStatistics]);
 
     return (
         <View style={EndGameStyle.container}
