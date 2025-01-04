@@ -16,6 +16,7 @@ import { UpdateUserStatsResponse } from '../../../data_objects/requests/update_u
 import { EndGamesStatisticsConfig } from '../../../data_objects/components_config/end_game_popup_config';
 import UpdateUserStatisticsRequestHandler from '../../../requests/requests_handlers/update_user_statistics_request_handler';
 import { RequestsError } from '../../../data_objects/enums/requests_error_type';
+import AppRequestsErrors from '../../../requests/components_requests_errors/app_requests_errors';
 
 const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers }) => {
     const navigation = useNavigation();
@@ -73,23 +74,12 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
             setLoading(false);
 
             if (err instanceof Error) {
-                switch (err.name) {
-                    case RequestsError.CredentialsError:
-                        Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                        handleLogout();
-                        break;
-                    case RequestsError.InternetError:
-                        Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
-                        break;
-                    case RequestsError.LanguageError:
+                    if (err.name == RequestsError.LanguageError) {
                         Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
-                        navigation.goBack();
-                        break;
-                    case RequestsError.UserExpiredError:
-                        Alert.alert('תוקף המנוי נגמר');
-                        handleInactive();
-                        break;
-                }
+                        navigation.goBack();                    
+                    }
+    
+                    AppRequestsErrors(err, handleLogout, handleInactive);
             } else {
                 Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
                 navigation.goBack();

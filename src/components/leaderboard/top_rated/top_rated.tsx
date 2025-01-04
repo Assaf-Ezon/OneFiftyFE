@@ -15,6 +15,7 @@ import AuthenticationHandler from '../../../screens/authentication_handler';
 import { Score } from '../../../data_objects/requests/leaderboard_data/score';
 import { LeaderboardDataResponse } from '../../../data_objects/requests/leaderboard_data/leaderboard_data_response';
 import { RequestsError } from '../../../data_objects/enums/requests_error_type';
+import AppRequestsErrors from '../../../requests/components_requests_errors/app_requests_errors';
 
 const TopRated = () => {
     const {profile, updateRank} = useProfile();
@@ -47,19 +48,7 @@ const TopRated = () => {
 
             } catch (err) {
                 if (err instanceof Error) {
-                    switch (err.name) {
-                        case RequestsError.CredentialsError: 
-                            Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                            handleLogout();
-                            break;
-                        case RequestsError.InternetError:
-                            Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
-                            break;
-                        case RequestsError.UserExpiredError:
-                            Alert.alert('תוקף המנוי נגמר');
-                            handleInactive();
-                            break;
-                    }
+                    AppRequestsErrors(err, handleLogout, handleInactive);
                 } 
                 else {
                     Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');

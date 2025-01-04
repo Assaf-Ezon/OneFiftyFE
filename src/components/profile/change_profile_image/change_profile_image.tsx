@@ -15,6 +15,7 @@ import AuthenticationHandler from '../../../screens/authentication_handler';
 
 import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
 import { RequestsError } from '../../../data_objects/enums/requests_error_type';
+import AppRequestsErrors from '../../../requests/components_requests_errors/app_requests_errors';
 
 const ChangeProfileImagePopup = () => {
     const {profile, updateProfileImage} = useProfile();
@@ -46,22 +47,11 @@ const ChangeProfileImagePopup = () => {
 
         } catch (err) {
             if (err instanceof Error) {
-                switch (err.name) {
-                    case RequestsError.CredentialsError:
-                        Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
-                        handleLogout();
-                        break;
-                    case RequestsError.InternetError:
-                        Alert.alert('אינך מחובר לאינטרנט, אנא התחבר ונסה שוב');
-                        break;
-                    case RequestsError.IndexError:
-                        setErrorType(ErrorType.NoImage);
-                        break;
-                    case RequestsError.UserExpiredError:
-                        Alert.alert('תוקף המנוי נגמר');
-                        handleInactive();
-                        break;
+                if (err.name == RequestsError.IndexError) {
+                    setErrorType(ErrorType.NoImage);
                 }
+
+                AppRequestsErrors(err, handleLogout, handleInactive);
             } else {
                 setErrorType(ErrorType.Error);
             }

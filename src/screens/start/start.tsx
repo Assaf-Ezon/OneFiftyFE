@@ -19,6 +19,7 @@ import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_
 import { LeaderboardDataResponse } from '../../data_objects/requests/leaderboard_data/leaderboard_data_response';
 import LeaderboardDataRequestHandler, { getUserRankByName } from '../../requests/requests_handlers/leaderboard_data_request_handler';
 import { RequestsError } from '../../data_objects/enums/requests_error_type';
+import AuthenticationRequestsErrors from '../../requests/components_requests_errors/authentication_requests_errors';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
@@ -139,17 +140,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             setLoading(false);
 
             if (err instanceof Error) {
-                switch (err.name) {
-                    case RequestsError.CredentialsError:
-                        setPopupIndex(AuthErrorType.Error);
-                        break;
-                    case RequestsError.InternetError:
-                        setPopupIndex(AuthErrorType.InternetConnection);
-                        break;
-                    case RequestsError.UserExpiredError:
-                        setPopupIndex(AuthErrorType.Inactive);
-                        break;
-                }
+                err.name == RequestsError.CredentialsError ? setPopupIndex(AuthErrorType.Error) : null;
+                AuthenticationRequestsErrors(err, setPopupIndex);
             } 
             else {
                 setPopupIndex(AuthErrorType.Error);
