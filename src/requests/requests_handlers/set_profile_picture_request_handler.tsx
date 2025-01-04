@@ -13,9 +13,9 @@ export default class SetProfilePictureRequestHandler extends RequestsHandler {
         return SetProfilePictureRequestHandler.instance;
     }
 
-    validateParams(params: { DisplayName: string, token: string, ProfilePicture: number | null }): void {
+    async validateParams(params: { DisplayName: string, token: string, ProfilePicture: number | null }): Promise<void> {
         this._checkNameAndToken(params.DisplayName, params.token);
-        this._checkInternetCoonection();
+        await this._checkInternetConnection();
 
         if (params.ProfilePicture === null) {
             throw new Error('index does not exist');

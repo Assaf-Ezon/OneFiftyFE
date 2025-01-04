@@ -13,9 +13,9 @@ export default class ProfileDataRequestHandler extends RequestsHandler {
         return ProfileDataRequestHandler.instance;
     }
 
-    validateParams(params: { DisplayName: string, token: string }): void {
+    async validateParams(params: { DisplayName: string, token: string }): Promise<void> {
         this._checkNameAndToken(params.DisplayName, params.token);
-        this._checkInternetCoonection();
+        await this._checkInternetConnection();
     }
 
     getEndpoint(): string {

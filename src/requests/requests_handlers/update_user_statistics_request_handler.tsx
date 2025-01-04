@@ -14,9 +14,9 @@ export default class UpdateUserStatisticsRequestHandler extends RequestsHandler 
         return UpdateUserStatisticsRequestHandler.instance;
     }
 
-    validateParams(params: { DisplayName: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], Language: string }): void {
+    async validateParams(params: { DisplayName: string, token: string, WordsSuccess: WordDetails[], WordsFailure: WordDetails[], Language: string }): Promise<void> {
         this._checkNameAndToken(params.DisplayName, params.token);
-        this._checkInternetCoonection();
+        await this._checkInternetConnection();
     }
 
     getEndpoint(): string {

@@ -43,8 +43,8 @@ export default abstract class RequestsHandler {
     }
 
     async post(params: any): Promise<any> {
-        this.validateParams(params); 
-
+        await this.validateParams(params); 
+        
         const { token, ...paramsWithoutToken } = params;
 
         const retryRequest = async () => {
@@ -87,12 +87,12 @@ export default abstract class RequestsHandler {
     }   
 
     _checkNameAndToken (name: string, token: string) {
-        if (!name && !token) {
+        if (!name || !token) {
             throw new Error();
         }
     }
 
-    async _checkInternetCoonection () {
+    async _checkInternetConnection () {
         const networkState = await Network.getNetworkStateAsync();
         
         if (!networkState.isConnected) {

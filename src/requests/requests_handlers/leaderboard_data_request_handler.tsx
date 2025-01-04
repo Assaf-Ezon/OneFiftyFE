@@ -14,9 +14,9 @@ export default class LeaderboardDataRequestHandler extends RequestsHandler {
         return LeaderboardDataRequestHandler.instance;
     }
 
-    validateParams(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean }): void {
+    async validateParams(params: { DisplayName: string, token: string, LeaderboardType: string, PartialList: boolean }): Promise<void> {
         this._checkNameAndToken(params.DisplayName, params.token);
-        this._checkInternetCoonection();
+        await this._checkInternetConnection();
     }
 
     getEndpoint(): string {
