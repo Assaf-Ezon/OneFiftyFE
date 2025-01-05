@@ -57,6 +57,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     // activated when there is a response
     useEffect(() => { 
+        navigation.setOptions({ gestureEnabled: false });
+        
         const processResponse = async () => {
             if (response && response.type == 'success') {
                 setLoading(true);

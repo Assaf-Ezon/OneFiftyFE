@@ -17,6 +17,8 @@ const PaymentPage = ({ navigation }: {navigation: any}) => {
     const isActive = (stackIndex == StackNames.Main);
 
     useEffect(() => {
+        navigation.setOptions({ gestureEnabled: false });
+
         if (isActive && !profile.isTrial) {
             navigation.navigate(Screens.HOME);
         } 

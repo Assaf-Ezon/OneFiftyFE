@@ -50,6 +50,8 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     }
 
     useEffect(() => {
+        navigation.setOptions({ gestureEnabled: false });
+        
         const validation = async () => {
             // checks if the refresh token is expired
             if (await authInstance.IsRefreshTokenExpired()) {

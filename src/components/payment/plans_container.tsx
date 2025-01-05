@@ -3,8 +3,6 @@ import { useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import Plan from './plan/plan';
 
-import { useNavigation } from '@react-navigation/native';
-
 import PlansContainerStyle from './plans_container_style';
 
 import { Plans } from '../../data_objects/enums/payment_plans';
@@ -17,9 +15,6 @@ import AuthenticationHandler from '../../screens/authentication_handler';
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
 const PlansContainer = () => {
-    // navigation handler
-    const navigation = useNavigation();
-
     // contexts
     const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
     const {setStackIndexByName, handleLogout} = useStackManagerContext();

@@ -41,9 +41,6 @@ const ContactForm = () => {
     useEffect(() => {
         setProblemTitle('');
         setProblemBody('');
-        navigation.setOptions({
-          gestureEnabled: !isContactFormOpen,
-        });
       }, [isContactFormOpen]);
 
       const sendEmail = () => {

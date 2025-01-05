@@ -63,10 +63,6 @@ const Question = () => {
     
     // Update the words list based on settings.language
     useEffect(() => {
-        navigation.setOptions({
-            gestureEnabled: false,
-        });
-
         if (!isSettingsFilled()) {
             toggleLearningSettings();
             navigation.navigate(Screens.LEARNING as never);
