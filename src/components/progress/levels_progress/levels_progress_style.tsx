@@ -44,6 +44,11 @@ const LevelsProgressStyle = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
     },
+    blank: {
+        backgroundColor: 'red',
+        width: '100%',
+        height: height * 0.2,
+    },
 });
 
 export default LevelsProgressStyle;

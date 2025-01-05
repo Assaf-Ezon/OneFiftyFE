@@ -40,6 +40,8 @@ const LevelsProgress = () => {
                         )
                     }) 
                 }
+
+                <View style={LevelsProgressStyle.blank} />
             </ScrollView>
         </View>
     );
