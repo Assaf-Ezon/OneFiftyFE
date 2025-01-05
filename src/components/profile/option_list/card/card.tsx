@@ -19,11 +19,7 @@ const OptionCard: FC<ProfileMenuConfig> = ({ image, title, onPressActionIndex, s
         toggleOpenContactUsForm();
     };
 
-    const subscription = async () => {
-
-    };
-
-    const onPressHandler = [navigateToPage, openContactUsForm, subscription];
+    const onPressHandler = [navigateToPage, openContactUsForm];
 
     return (
         <View style={{opacity: isActive ? 1 : 0.6}}
