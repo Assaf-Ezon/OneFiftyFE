@@ -19,8 +19,7 @@ const LeaderboardPart: FC = () => {
             </View>
             <View style={leaderboardPartStyle.selfScore}>
                 <View style={leaderboardPartStyle.score}>
-                    <Text style={leaderboardPartStyle.scoreText}>{profile?.score}</Text>
-                    <Image source={IMAGES.score_icon} />
+                    <Text style={leaderboardPartStyle.scoreText}>ניקוד: {profile.score}</Text>
                 </View>
                 <View style={leaderboardPartStyle.profileContainer}>
                     <View style={leaderboardPartStyle.profileDetailsContainer}>

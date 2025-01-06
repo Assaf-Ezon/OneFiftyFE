@@ -66,7 +66,7 @@ const leaderboardPartStyle = StyleSheet.create({
         marginLeft: 8,
     },
     scoreText: {
-        marginRight: 5,
+        marginLeft: 5,
         fontWeight: '500',
     },
 });

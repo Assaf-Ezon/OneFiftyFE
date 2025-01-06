@@ -40,7 +40,6 @@ export const IMAGES = {
     logout: require('../assets/generic icons/logout_icon.png'),
 
     side_menu: require('../assets/generic icons/side_menu_icon.png'),
-    score_icon: require('../assets/generic icons/score_icon.png'),
     back_icon: require('../assets/generic icons/back_icon.png'),
 
     change_profile_image: require('../assets/profile page icons/change_profile_image.png'),
