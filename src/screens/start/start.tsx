@@ -1,4 +1,4 @@
-import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
+import { View, Image, Text, Pressable, ActivityIndicator, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import AuthenticationPopup from '../../components/auth_popups/authentication_popup';
 import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
@@ -23,7 +23,7 @@ import AuthenticationRequestsErrors from '../../requests/components_requests_err
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
-    const {setProfile, IsInTrail} = useProfile();
+    const {profile, setProfile, IsInTrail} = useProfile();
     const {hebrewWords, 
         setHebrewWords, 
         englishWords, 
@@ -170,6 +170,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         if (canRedirect) {
             setLoading(false);
             setStackIndexByName(StackNames.Main);
+            profile.isTrial ? Alert.alert('יש לשים לב שהמנוי הינו בתקופת ניסיון של כ-3 ימים') : null;
+
         }
       }, [canRedirect]);
 

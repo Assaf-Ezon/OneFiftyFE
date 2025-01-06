@@ -36,7 +36,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       updateNewHebrewWords, 
       englishNewWords, 
       updateNewEnglishWords} = useWords();
-    const {setProfile, IsInTrail} = useProfile();
+    const {profile, setProfile, IsInTrail} = useProfile();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -147,6 +147,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
       if (canRedirect) {
         setStackIndexByName(StackNames.Main);
+        profile.isTrial ? Alert.alert('יש לשים לב שהמנוי הינו בתקופת ניסיון של כ-3 ימים') : null;
       }
     }, [canRedirect]);
 
