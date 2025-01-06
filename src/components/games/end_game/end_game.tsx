@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react';
 import EndGameStyle from './end_game_style';
 
 import { useNavigation } from '@react-navigation/native';
-import AuthenticationHandler from '../../../screens/authentication_handler';
+import AuthenticationHandler from '../../../authentication_handler';
 
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import { useWords } from '../../../context/general_context/words_context';

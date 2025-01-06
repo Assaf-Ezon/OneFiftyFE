@@ -12,7 +12,7 @@ import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
-import AuthenticationHandler from '../authentication_handler';
+import AuthenticationHandler from '../../authentication_handler';
 
 import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
 import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';

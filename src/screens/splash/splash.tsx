@@ -8,7 +8,7 @@ import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
 import { Screens } from '../../data_objects/enums/screens';
 
-import AuthenticationHandler from '../authentication_handler';
+import AuthenticationHandler from '../../authentication_handler';
 
 import { StackNames, useStackManagerContext } from '../../context/general_context/stack_manager_context';
 import { useProfile } from '../../context/general_context/profile_context';

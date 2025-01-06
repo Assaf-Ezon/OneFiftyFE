@@ -11,7 +11,7 @@ import { useProfileImageMenuContext } from '../../../context/settings_context/pr
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 
 import SetProfilePictureRequestHandler from '../../../requests/requests_handlers/set_profile_picture_request_handler';
-import AuthenticationHandler from '../../../screens/authentication_handler';
+import AuthenticationHandler from '../../../authentication_handler';
 
 import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
 import { RequestsError } from '../../../data_objects/enums/requests_error_type';
