@@ -1,5 +1,4 @@
 export const IMAGES = {
-    profile_image: require('../assets/profile image icons/profile_picture.jpg'),
     profile_images: {
         0: require('../assets/profile image icons/default.png'),
         1: require('../assets/profile image icons/1.png'),
