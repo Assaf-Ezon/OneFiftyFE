@@ -39,7 +39,6 @@ const LevelProgressStyle = StyleSheet.create({
         borderWidth: 0.2,
     },
     fullPartProgressBar: {
-        // backgroundColor: '#FF7518',
         borderRadius: 20,
         height: '99%',
         justifyContent: 'center',
