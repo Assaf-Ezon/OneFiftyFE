@@ -11,7 +11,7 @@ import { Languages } from '../../../../data_objects/enums/language';
 import { WordsDictionary } from '../../../../data_objects/words/dIctionary/words_dictionary';
 import { UserStatistics } from '../../../../data_objects/words/statistics/user_statistics';
 
-const { height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
     const { hebrewWords, 
@@ -20,6 +20,7 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
         englishUserStatistics } = useWords();
 
     const [isLevelOpen, setIsLevelOpen] = useState<boolean>(false);
+    const [fullProgressBarWidth, setFullProgressBarWidth] = useState<number>(0);
 
     let langName: string;
     let dictionary: WordsDictionary;
@@ -53,6 +54,19 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
         sumOfWordsPracticed += word.Failures;
     });
 
+    // Function to interpolate the color from #FF7518 to #50C878
+    const getBackgroundColor = (width: number) => {
+        const progressRatio = Number(percentageWordsSeen) / 100; 
+
+        const normalizedWidth = Math.min(Math.max(progressRatio, 0), 1);
+
+        const r = Math.round(255 - normalizedWidth * (255 - 80)); // Red: 255 → 80
+        const g = Math.round(117 + normalizedWidth * (200 - 117)); // Green: 117 → 200
+        const b = Math.round(24 + normalizedWidth * (120 - 24)); // Blue: 24 → 120
+
+        return `rgb(${r}, ${g}, ${b})`; 
+    };
+
     return (
         <View style={[{height: isLevelOpen ? height * 0.25 : height * 0.1}, LevelProgressStyle.container]}>
             <TouchableOpacity style={LevelProgressStyle.levelContainer} onPress={() => {setIsLevelOpen(prev => !prev)}}>
@@ -65,7 +79,12 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
                         <Text>סה"כ מילים: {countAllWords}</Text>
                     </View>
                     <View style={LevelProgressStyle.progressBar}>
-                        <View style={[{width: `${Number(percentageWordsSeen)}%`}, LevelProgressStyle.fullPartProgressBar]} />
+                        <View style={[{width: `${Number(percentageWordsSeen)}%`, backgroundColor: getBackgroundColor(fullProgressBarWidth)}, 
+                            LevelProgressStyle.fullPartProgressBar]} 
+                            onLayout={(event) => {
+                                const layoutWidth = event.nativeEvent.layout.width;
+                                setFullProgressBarWidth(layoutWidth);
+                              }}/>
                     </View>
             </View>
             {
