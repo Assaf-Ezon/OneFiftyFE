@@ -8,6 +8,7 @@ import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { CONFIG } from '../../../config';
 import { SidebarActionIndex } from '../../../data_objects/enums/sidebar_action_index';
+import { SlideIn } from '../../../animations/slide_animation';
 
 const { width } = Dimensions.get('window');
 
@@ -20,17 +21,9 @@ const SideBar = () => {
 
     useEffect(() => {
         if (isOpen) {
-            Animated.timing(slideAnim, {
-                toValue: width - menuWidth,
-                duration: 200,
-                useNativeDriver: true,
-            }).start();
+            SlideIn(slideAnim, width - menuWidth, 200);
         } else {
-            Animated.timing(slideAnim, {
-                toValue: width,
-                duration: 200,
-                useNativeDriver: true,
-            }).start();
+            SlideIn(slideAnim, width, 200);
         }
     }, [isOpen]);
 

@@ -7,6 +7,7 @@ import ContactFormStyle from './contact_form_style';
 
 import { useContactUsFormContext } from "../../context/general_context/contact_form_context";
 import { useNavigation } from "@react-navigation/native";
+import { SlideIn } from "../../animations/slide_animation";
 
 const { height } = Dimensions.get('window');
 
@@ -23,17 +24,9 @@ const ContactForm = () => {
 
     useEffect(() => {
         if (isContactFormOpen) {
-            Animated.timing(slideUpAnim, {
-                toValue: 0,
-                duration: 300,
-                useNativeDriver: true,
-            }).start();
+            SlideIn(slideUpAnim, 0, 300);
         } else {
-            Animated.timing(slideUpAnim, {
-                toValue: height * 0.6,
-                duration: 300,
-                useNativeDriver: true,
-            }).start();
+            SlideIn(slideUpAnim, height * 0.6, 300);
         }
     }, [isContactFormOpen]);
 
