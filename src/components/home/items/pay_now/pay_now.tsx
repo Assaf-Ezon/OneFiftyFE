@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import { findPlanByName } from '../../../../payment_plans';
+import { findPlanByName } from './find_payment_plans_by_name';
 import { Plans } from '../../../../data_objects/enums/payment_plans';
 import { PlanType } from '../../../../data_objects/general/plan_type';
 import PayNowStyle from './pay_now_style';
