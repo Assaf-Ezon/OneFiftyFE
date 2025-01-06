@@ -15,6 +15,7 @@ export enum Screens {
     TERMS = 'terms',
     KDK = 'kdk',
     MC = 'mc',
+    PROGRESS = 'progress',
     // main + inactive stack
     PAYMENT = 'payment',
 }

@@ -10,20 +10,11 @@ import AllGamesPart from '../all_games/all_games';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
-import { useNavigation } from '@react-navigation/native';
 
 const PagePart = () => {
-    const navigation = useNavigation();
-
     const {isOpen, toggleMenu} = useSidebarContext();
     const {isLearningSettingOpen, toggleLearningSettings} = useLearningSettingsContext();
-    const {isContactFormOpen} = useContactUsFormContext()
-
-    useEffect(() => {
-        navigation.setOptions({
-            gestureEnabled: !isLearningSettingOpen,
-          });
-    }, [isLearningSettingOpen])
+    const {isContactFormOpen} = useContactUsFormContext();
 
     return (
         <View style={{ opacity: isOpen || isLearningSettingOpen || isContactFormOpen ? 0.2 : 1 }}

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import KdkStyle from './kdk_style';
 
 import KDKGamePage from '../../components/kdk/kdk_game_page/kdk_game_page';
@@ -6,6 +8,10 @@ import { LeaveGameProvider } from '../../context/game_context/leave_game_context
 import { GameErrorProvider } from '../../context/game_context/game_error_context';
 
 const KdkPage = ({ navigation }: {navigation: any}) => {
+    useEffect(() => {
+        navigation.setOptions({ gestureEnabled: false });
+    }, []);
+
     return (
         <EndGameProvider>
             <LeaveGameProvider>

@@ -30,11 +30,13 @@ export const IMAGES = {
     unused_learning: require('../assets/generic icons/unused_learn_icon.png'),
     unused_leaderboard: require('../assets/generic icons/unused_chart_icon.png'),
     unused_profile: require('../assets/generic icons/unused_profile_icon.png'),
-
+    
+    progress: require('../assets/generic icons/progress_icon.png'),
     settings: require('../assets/generic icons/settings_icon.png'),
     notification: require('../assets/generic icons/notification_icon.png'),
     problem: require('../assets/generic icons/report_problem_icon.png'),
     information: require('../assets/generic icons/info_icon.png'),
+    terms: require('../assets/generic icons/terms_icon.png'),
     logout: require('../assets/generic icons/logout_icon.png'),
 
     side_menu: require('../assets/generic icons/side_menu_icon.png'),

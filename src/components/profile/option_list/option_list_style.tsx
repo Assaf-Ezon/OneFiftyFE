@@ -10,7 +10,6 @@ const OptionListStyle = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        //backgroundColor: 'red',
     },
     line: {
         height: 1,

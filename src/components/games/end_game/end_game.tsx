@@ -115,13 +115,13 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                 <View style={EndGameStyle.correctContainer}>
                     <Text style={EndGameStyle.correct}>
                         סה"כ מילים שהצלחת: {correctAnswers.length} {'\n'}
-                        אחוזי הצלחה: {(correctAnswers.length/totalWords)*100}%
+                        אחוזי הצלחה: {((correctAnswers.length/totalWords)*100).toFixed(1)}%
                     </Text>
                 </View>
                 <View style={EndGameStyle.wrongContainer}>
                     <Text style={EndGameStyle.wrong}>
                         סה"כ מילים שנכשלת: {wrongAnswers.length} {'\n'}
-                        אחוזי כישלון: {(wrongAnswers.length/totalWords)*100}%
+                        אחוזי כישלון: {((wrongAnswers.length/totalWords)*100).toFixed(1)}%
                     </Text>
                 </View>
             </View>

@@ -8,19 +8,8 @@ import SettingsStyle from './settings_style';
 
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 import { Languages } from '../../data_objects/enums/language';
-import { useNavigation } from '@react-navigation/native';
 
 const LearningSettings = () => {
-    // navigation
-    const navigation = useNavigation();
-    
-    // disable swipe right to go back
-    useEffect(() => {
-        navigation.setOptions({
-            gestureEnabled: false,
-        });
-    })
-
     // settings context
     const {isLearningSettingOpen, toggleLearningSettings, settings, updateCheckboxes, updateLanguage, generateRandomNumbers} = useLearningSettingsContext();
 

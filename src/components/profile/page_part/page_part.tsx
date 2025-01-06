@@ -8,21 +8,12 @@ import OptionList from '../option_list/option_list';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
-import { useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 const PagePart = () => {
-    const navigation = useNavigation();
 
     const {isOpen} = useSidebarContext();
     const {isProfileImageMenuOpen} = useProfileImageMenuContext();
     const {isContactFormOpen} = useContactUsFormContext();
-
-    useEffect(() => {
-        navigation.setOptions({
-          gestureEnabled: !isProfileImageMenuOpen,
-        });
-    }, [isProfileImageMenuOpen])
 
     return (
         <View pointerEvents={ isOpen || isProfileImageMenuOpen || isContactFormOpen ? 'none' : 'auto' } 

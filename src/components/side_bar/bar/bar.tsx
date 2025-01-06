@@ -7,6 +7,7 @@ import { Screens } from '../../../data_objects/enums/screens';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { CONFIG } from '../../../config';
+import { SidebarActionIndex } from '../../../data_objects/enums/sidebar_action_index';
 
 const { width } = Dimensions.get('window');
 
@@ -51,24 +52,24 @@ const SideBar = () => {
                 </View>
             </View>
             <View style={barStyle.middlePart}>
-                <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} onPressActionIndex={0} screenName={Screens.HOME} />
+                <SideBarIcon iconPath={IMAGES.unused_home} iconText='בית' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.HOME} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_dictionary} iconText='מילון' isRed={false} onPressActionIndex={0} screenName={Screens.DICTIONARY} />
+                <SideBarIcon iconPath={IMAGES.unused_dictionary} iconText='מילון' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.DICTIONARY} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} onPressActionIndex={0} screenName={Screens.LEARNING} />
+                <SideBarIcon iconPath={IMAGES.unused_learning} iconText='למידה' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.LEARNING} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} onPressActionIndex={0} screenName={Screens.LEADERBOARD} />
+                <SideBarIcon iconPath={IMAGES.unused_leaderboard} iconText='מובילים' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.LEADERBOARD} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} onPressActionIndex={0} screenName={Screens.PROFILE} />
+                <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.PROFILE} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} onPressActionIndex={0} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={''} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} onPressActionIndex={1} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.information} iconText='תנאי שימוש' isRed={false} onPressActionIndex={0} screenName={Screens.TERMS} />
+                <SideBarIcon iconPath={IMAGES.terms} iconText='תנאי שימוש' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.TERMS} />
             </View>
             <View style={barStyle.lowerPart}>
-                <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={2} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={SidebarActionIndex.Logout} screenName={''} />
                 <Text style={barStyle.versionText}>Version {CONFIG.Version}</Text>
             </View>
         </Animated.View>
