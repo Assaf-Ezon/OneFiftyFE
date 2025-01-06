@@ -1,5 +1,4 @@
 export const IMAGES = {
-    profile_image: require('../assets/profile image icons/profile_picture.jpg'),
     profile_images: {
         0: require('../assets/profile image icons/default.png'),
         1: require('../assets/profile image icons/1.png'),
@@ -40,7 +39,6 @@ export const IMAGES = {
     logout: require('../assets/generic icons/logout_icon.png'),
 
     side_menu: require('../assets/generic icons/side_menu_icon.png'),
-    score_icon: require('../assets/generic icons/score_icon.png'),
     back_icon: require('../assets/generic icons/back_icon.png'),
 
     change_profile_image: require('../assets/profile page icons/change_profile_image.png'),
@@ -49,6 +47,9 @@ export const IMAGES = {
     subscription: require('../assets/profile page icons/subscription_icon.png'),
     payment: require('../assets/profile page icons/payment_icon.png'),
     report_problem: require('../assets/profile page icons/report_problem_icon.png'),
+
+    kdk: require('../assets/game icons/kdk.jpg'),
+    mc: require('../assets/game icons/mc.jpg'),
 
     option: require('../assets/game icons/option.png'),
     chosen_option: require('../assets/game icons/chosen.png'),

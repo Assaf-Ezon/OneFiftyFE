@@ -8,6 +8,7 @@ import SettingsStyle from './settings_style';
 
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 import { Languages } from '../../data_objects/enums/language';
+import { LangItemsType } from '../../data_objects/general/lang_items_type';
 
 const LearningSettings = () => {
     // settings context
@@ -29,12 +30,6 @@ const LearningSettings = () => {
     const [langOpen, setLangOpen] = useState<boolean>(false);
     const [langValue, setLangValue] = useState<string | null>(settings.language); 
 
-    // type of the items for the dropdown menu
-    type LangItemsType = {
-        label: string;
-        value: string;
-    };
-
     // the options for the dropdown menu
     const [langItems, setLangItems] = useState<LangItemsType[]>([
         {label: 'אנגלית', value: Languages.English},
@@ -50,15 +45,15 @@ const LearningSettings = () => {
     // checks if the form is filled correctly
     const checkForm = () => {
         if (Object.values(settings.levels).every(value => value === 0)) {
-            Alert.alert('טופס לא תקין ', 'בחר כמה מילים לתרגל');
+            Alert.alert('טופס לא תקין ', 'בחרו כמה מילים לתרגל');
             return false;
         }
         if (!langValue) {
-            Alert.alert('טופס לא תקין ', 'בחר שפה');
+            Alert.alert('טופס לא תקין ', 'בחרו שפה');
             return false;
         }
         if (!((smartStudy && !newWordsChecbox && !incorrectWordsChecbox && !practiceWordsChecbox) || (!smartStudy && (newWordsChecbox || incorrectWordsChecbox || practiceWordsChecbox)))) {
-            Alert.alert('טופס לא תקין ', 'בחר צורת תרגול');
+            Alert.alert('טופס לא תקין ', 'בחרו צורת תרגול');
             return false;
         }
 
@@ -78,7 +73,7 @@ const LearningSettings = () => {
                 </View>
                 <View style={SettingsStyle.SettingsPart}>
                     <View style={SettingsStyle.PickLevel}>
-                        <Text style={SettingsStyle.ChooseLevelText}>בחר מילים מכל רמה (אין לעבור 100 מילים סה"כ):</Text>
+                        <Text style={SettingsStyle.ChooseLevelText}>בחרו מילים מכל רמה (אין לעבור 100 מילים סה"כ):</Text>
                         <View style={SettingsStyle.selectLevels}>
                         {
                             Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
@@ -101,12 +96,12 @@ const LearningSettings = () => {
                         setOpen={setLangOpen}
                         setValue={setLangValue}
                         setItems={setLangItems}
-                        placeholder='בחר שפת תרגול'
+                        placeholder='בחרו שפת תרגול'
                         textStyle={{textAlign: 'right'}}
                     />
 
                     <View style={SettingsStyle.TypeOfPractice}>
-                        <Text style={SettingsStyle.TypeOfPracticeTitle}>בחר צורת תרגול (אחת משתי האפשרויות):</Text>
+                        <Text style={SettingsStyle.TypeOfPracticeTitle}>בחרו צורת תרגול (אחת משתי האפשרויות):</Text>
                         <View style={SettingsStyle.OptionsContainer}>
                             <View style={[SettingsStyle.PracticeContainer, {opacity: isRegularPracticeOn() ? 0.4 : 1}]}
                             pointerEvents={ isRegularPracticeOn()  ? 'none' : 'auto' }>
@@ -114,7 +109,7 @@ const LearningSettings = () => {
                                     <Text style={SettingsStyle.SmartStudyText}>תרגול חכם</Text>
                                     <CheckBox value={smartStudy} onValueChange={() => {setSmartStudy(prev => !prev)}} />
                                 </View>
-                                <Text style={SettingsStyle.SmartStudyDescription}>בוחר עבורך איזה מילים לתרגל (מומלץ)</Text>
+                                <Text style={SettingsStyle.SmartStudyDescription}>בוחר עבורכם אילו מילים לתרגל (מומלץ)</Text>
                             </View>
 
                             <View style={SettingsStyle.VerticalLine} />

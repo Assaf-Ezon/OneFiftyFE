@@ -7,9 +7,12 @@ import SettingsStyle from "./settings_style";
 
 import { useSettings } from '../../../context/dictionary_context/settings_context';
 import { Languages } from "../../../data_objects/enums/language";
+import { useWords } from "../../../context/general_context/words_context";
+import { LevelItemsType } from "../../../data_objects/general/level_item_type";
 
 const Settings = () => {
     const { setSettings } = useSettings();
+    const { hebrewWords } = useWords();
 
     // lang settings
     const [langOpen, setLangOpen] = useState<boolean>(false);
@@ -28,24 +31,13 @@ const Settings = () => {
     // level settings
     const [levelOpen, setLevelOpen] = useState<boolean>(false);
     const [levelValue, setLevelValue] = useState<number>(-1);
-    
-    type LevelItemsType = {
-        label: string;
-        value: number;
-    };
 
-    const [levelItems, setLevelItems] = useState<LevelItemsType[]>([
-        {label: '1', value: 1},
-        {label: '2', value: 2},
-        {label: '3', value: 3},
-        {label: '4', value: 4},
-        {label: '5', value: 5},
-        {label: '6', value: 6},
-        {label: '7', value: 7},
-        {label: '8', value: 8},
-        {label: '9', value: 9},
-        {label: '10', value: 10},
-    ]);
+    const [levelItems, setLevelItems] = useState<LevelItemsType[]>(() => 
+        Object.keys(hebrewWords.Words).map((level) => ({
+          label: String(level),
+          value: Number(level), 
+        }))
+      );
 
     useEffect(() => {
         setSettings({ language: langValue, level: levelValue });
@@ -61,7 +53,7 @@ const Settings = () => {
                 setOpen={setLevelOpen}
                 setValue={setLevelValue}
                 setItems={setLevelItems}
-                placeholder='בחר רמה'
+                placeholder='בחרו רמה'
                 textStyle={{textAlign: 'right'}}
                 />
             </View>
@@ -73,7 +65,7 @@ const Settings = () => {
                 setOpen={setLangOpen}
                 setValue={setLangValue}
                 setItems={setLangItems}
-                placeholder='בחר שפה'
+                placeholder='בחרו שפה'
                 textStyle={{textAlign: 'right'}}
                 />
             </View>

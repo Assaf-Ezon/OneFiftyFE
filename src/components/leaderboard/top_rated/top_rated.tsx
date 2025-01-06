@@ -10,7 +10,7 @@ import LeaderboardCard from './card/card';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 import LeaderboardDataRequestHandler, { getTopUsersByScore, getUserRankByName } from '../../../requests/requests_handlers/leaderboard_data_request_handler';
-import AuthenticationHandler from '../../../screens/authentication_handler';
+import AuthenticationHandler from '../../../authentication_handler';
 
 import { Score } from '../../../data_objects/requests/leaderboard_data/score';
 import { LeaderboardDataResponse } from '../../../data_objects/requests/leaderboard_data/leaderboard_data_response';
@@ -51,7 +51,7 @@ const TopRated = () => {
                     AppRequestsErrors(err, handleLogout, handleInactive);
                 } 
                 else {
-                    Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
+                    Alert.alert('תקלה קרתה, נסו שנית מאוחר יותר');
                 }
             }
             

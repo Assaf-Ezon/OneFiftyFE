@@ -8,6 +8,7 @@ import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { CONFIG } from '../../../config';
 import { SidebarActionIndex } from '../../../data_objects/enums/sidebar_action_index';
+import { SlideIn } from '../../../animations/slide_animation';
 
 const { width } = Dimensions.get('window');
 
@@ -20,17 +21,9 @@ const SideBar = () => {
 
     useEffect(() => {
         if (isOpen) {
-            Animated.timing(slideAnim, {
-                toValue: width - menuWidth,
-                duration: 200,
-                useNativeDriver: true,
-            }).start();
+            SlideIn(slideAnim, width - menuWidth, 200);
         } else {
-            Animated.timing(slideAnim, {
-                toValue: width,
-                duration: 200,
-                useNativeDriver: true,
-            }).start();
+            SlideIn(slideAnim, width, 200);
         }
     }, [isOpen]);
 
@@ -64,7 +57,7 @@ const SideBar = () => {
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={''} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.problem} iconText='דיווח על בעיה' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.terms} iconText='תנאי שימוש' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.TERMS} />
             </View>

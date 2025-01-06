@@ -1,4 +1,4 @@
-import { View, Image, Text, Pressable, ActivityIndicator } from 'react-native';
+import { View, Image, Text, Pressable, ActivityIndicator, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import AuthenticationPopup from '../../components/auth_popups/authentication_popup';
 import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
@@ -12,7 +12,7 @@ import { useProfile } from '../../context/general_context/profile_context';
 import { useWords } from '../../context/general_context/words_context';
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
-import AuthenticationHandler from '../authentication_handler';
+import AuthenticationHandler from '../../authentication_handler';
 
 import { ProfileDataResponse } from '../../data_objects/requests/profile_data/profile_data_response';
 import ProfileDataRequestHandler from '../../requests/requests_handlers/profile_data_request_handler';
@@ -23,7 +23,7 @@ import AuthenticationRequestsErrors from '../../requests/components_requests_err
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
     // contexts
-    const {setProfile, IsInTrail} = useProfile();
+    const {profile, setProfile, IsInTrail} = useProfile();
     const {hebrewWords, 
         setHebrewWords, 
         englishWords, 
@@ -170,6 +170,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         if (canRedirect) {
             setLoading(false);
             setStackIndexByName(StackNames.Main);
+            profile.isTrial ? Alert.alert('יש לשים לב שהמנוי הינו בתקופת ניסיון של כ-3 ימים') : null;
+
         }
       }, [canRedirect]);
 
@@ -187,7 +189,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title}>
                 150 - לומדת פסיכומטרי{'\n'}
-                למד מילים בכל מקום
+                למדו מילים בכל מקום
             </Text>
             <Text style={StartScreenStyle.paragraph}>
                 150 הינו כלי ללימוד מילים בעברית ובאנגלית כחלק מהכנה{'\n'}
@@ -196,7 +198,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             </Text>
             <View style={StartScreenStyle.btnContainer}>
                 <Pressable style={StartScreenStyle.btn} onPress={() => {promptAsync({ showInRecents: true })} }>
-                    <Text style={StartScreenStyle.btnText}>בואו נתחיל</Text>            
+                    <Text style={StartScreenStyle.btnText}>המשך</Text>            
                 </Pressable>
             </View>
         </View>

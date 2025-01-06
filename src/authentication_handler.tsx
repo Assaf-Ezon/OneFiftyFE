@@ -3,7 +3,7 @@ import retry from 'p-retry';
 import * as SecureStore from 'expo-secure-store';
 import * as AuthSession from 'expo-auth-session';
 
-import { CONFIG } from '../config';
+import { CONFIG } from './config';
 
 const tenantName = 'OneFiftyApp'; 
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';

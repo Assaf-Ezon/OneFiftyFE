@@ -8,7 +8,7 @@ import { IMAGES } from '../../image_handler';
 import { CONFIG } from '../../config';
 import { Screens } from '../../data_objects/enums/screens';
 
-import AuthenticationHandler from '../authentication_handler';
+import AuthenticationHandler from '../../authentication_handler';
 
 import { StackNames, useStackManagerContext } from '../../context/general_context/stack_manager_context';
 import { useProfile } from '../../context/general_context/profile_context';
@@ -36,7 +36,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       updateNewHebrewWords, 
       englishNewWords, 
       updateNewEnglishWords} = useWords();
-    const {setProfile, IsInTrail} = useProfile();
+    const {profile, setProfile, IsInTrail} = useProfile();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -147,6 +147,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
       if (canRedirect) {
         setStackIndexByName(StackNames.Main);
+        profile.isTrial ? Alert.alert('יש לשים לב שהמנוי הינו בתקופת ניסיון של כ-3 ימים') : null;
       }
     }, [canRedirect]);
 

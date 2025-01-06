@@ -31,7 +31,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
             </View>
             <View style={PlanStyle.PayBtnContainer}>
                 <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => {openWebView()}}>
-                    <Text style={[{color: backgroundColor}, PlanStyle.PayBtnText]}>שלם עכשיו</Text>
+                    <Text style={[{color: backgroundColor}, PlanStyle.PayBtnText]}>שלמו עכשיו</Text>
                 </TouchableOpacity>
                 <Text style={PlanStyle.Price}>{price} ₪</Text> 
             </View>

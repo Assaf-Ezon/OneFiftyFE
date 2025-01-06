@@ -10,7 +10,7 @@ import { Plans } from '../../data_objects/enums/payment_plans';
 import { CONFIG } from '../../config';
 
 import { usePaymentContext } from '../../context/payment_context/payment_context';
-import AuthenticationHandler from '../../screens/authentication_handler';
+import AuthenticationHandler from '../../authentication_handler';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 
@@ -46,7 +46,7 @@ const PlansContainer = () => {
         
                 webviewRef.current.injectJavaScript(script);
             } else {
-                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                Alert.alert('קרתה שגיאה בהזדהות, אנא התחברו מחדש');
                 handleLogout();
             }
         }

@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, ImageSourcePropType } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 
 import TitleStyle from './title_style';
@@ -6,12 +6,19 @@ import TitleStyle from './title_style';
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
+import { useEffect, useRef, useState } from 'react';
 
 
 const Title = () => {
     const {profile} = useProfile();
     const {toggleMenu} = useSidebarContext();
     const {toggleProfileImageMenu} = useProfileImageMenuContext();
+    
+    const [profileImage, setProfileImage] = useState<ImageSourcePropType>(profile.profileImage);
+
+    useEffect(() => {
+        setProfileImage(profile.profileImage);
+    }, [profile.profileImage]);
 
     return (
         <View style={TitleStyle.container}>
@@ -21,7 +28,7 @@ const Title = () => {
                 </TouchableOpacity>  
             </View>
             <View style={TitleStyle.profileImageContainer}>
-                <Image style={TitleStyle.profileImage} source={profile.profileImage} />
+                <Image style={TitleStyle.profileImage} source={profileImage} />
                 <TouchableOpacity style={TitleStyle.changeImageIconContainer} onPress={() => {toggleProfileImageMenu()}}>
                     <Image style={TitleStyle.changeImageIcon} source={IMAGES.change_profile_image} />
                 </TouchableOpacity>

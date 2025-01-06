@@ -1,6 +1,6 @@
 import { createContext, FC, ReactNode, useContext, useState } from 'react';
 
-import AuthenticationHandler from '../../screens/authentication_handler';
+import AuthenticationHandler from '../../authentication_handler';
 import { Screens } from '../../data_objects/enums/screens';
 import { StackNames } from '../../data_objects/contexts/stack_names';
 import { StackMangerContextConfig } from '../../config/contexts/stack_manger_context_config';

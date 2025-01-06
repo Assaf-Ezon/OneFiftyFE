@@ -18,7 +18,7 @@ const OptionList = () => {
             <View style={OptionListStyle.line} />
             <OptionCard title='תשלום' image={IMAGES.payment} onPressActionIndex={ProfilePageActionIndex.NavigateToPage} screenName={Screens.PAYMENT} isActive={profile.isTrial} />
             <View style={OptionListStyle.line} />
-            <OptionCard title='דווח על בעיה' image={IMAGES.report_problem} onPressActionIndex={ProfilePageActionIndex.OpenContactUsForm} screenName='' isActive={true} />
+            <OptionCard title='דיווח על בעיה' image={IMAGES.report_problem} onPressActionIndex={ProfilePageActionIndex.OpenContactUsForm} screenName='' isActive={true} />
             <View style={OptionListStyle.line} />
             <OptionCard title='הודעות' image={IMAGES.notification} onPressActionIndex={ProfilePageActionIndex.NavigateToPage} screenName='' isActive={true} />
             <View style={OptionListStyle.line} />

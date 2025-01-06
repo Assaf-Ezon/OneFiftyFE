@@ -11,7 +11,7 @@ import { useProfileImageMenuContext } from '../../../context/settings_context/pr
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
 
 import SetProfilePictureRequestHandler from '../../../requests/requests_handlers/set_profile_picture_request_handler';
-import AuthenticationHandler from '../../../screens/authentication_handler';
+import AuthenticationHandler from '../../../authentication_handler';
 
 import { ErrorType } from '../../../data_objects/enums/change_profile_image_error_type';
 import { RequestsError } from '../../../data_objects/enums/requests_error_type';
@@ -66,7 +66,7 @@ const ChangeProfileImagePopup = () => {
                 <TouchableOpacity onPress={() => {toggleProfileImageMenu()}}>
                     <Image source={IMAGES.back_icon} />
                 </TouchableOpacity>
-                <Text style={ChangeProfileImageStyle.title}>בחר תמונת פרופיל: </Text>
+                <Text style={ChangeProfileImageStyle.title}>בחרו תמונת פרופיל: </Text>
             </View>
             <View style={[ChangeProfileImageStyle.imagesContainer, {opacity: loading ? 0.5 : 1}]}
                 pointerEvents={loading ? "none" : "auto"}>
@@ -84,9 +84,9 @@ const ChangeProfileImagePopup = () => {
                 </TouchableOpacity>
                 {
                     errorType == ErrorType.Error ? 
-                    <Text style={ChangeProfileImageStyle.errorText}>תקלה קרתה, נסה שנית מאוחר יותר</Text> :
+                    <Text style={ChangeProfileImageStyle.errorText}>תקלה קרתה, נסו שנית מאוחר יותר</Text> :
                     errorType == ErrorType.NoImage ?
-                    <Text style={ChangeProfileImageStyle.errorText}>בחר תמונת פרופיל</Text> :
+                    <Text style={ChangeProfileImageStyle.errorText}>בחרו תמונת פרופיל</Text> :
                     null
                 }
             </View>
