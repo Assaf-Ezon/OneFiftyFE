@@ -50,6 +50,9 @@ export const IMAGES = {
     payment: require('../assets/profile page icons/payment_icon.png'),
     report_problem: require('../assets/profile page icons/report_problem_icon.png'),
 
+    kdk: require('../assets/game icons/kdk.jpg'),
+    mc: require('../assets/game icons/mc.jpg'),
+
     option: require('../assets/game icons/option.png'),
     chosen_option: require('../assets/game icons/chosen.png'),
     wrong: require('../assets/game icons/wrong.png'),

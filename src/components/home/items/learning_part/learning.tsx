@@ -27,7 +27,7 @@ const LearningPartHome: FC = () => {
                             return (
                                 <GameCard key={game.id}
                                     id={game.id}
-                                    image={IMAGES.profile_image} 
+                                    image={game.image_route} 
                                     title={game.name} 
                                     description={game.description}
                                     gameName={game.page_name}
