@@ -13,8 +13,8 @@ const LeaveGame = () => {
     return (
         <View style={LeaveGameStyle.container}>
             <View style={LeaveGameStyle.textContainer}>
-                <Text style={LeaveGameStyle.title}>ההתקדמות שצברת במשחק לא תשמר</Text>
-                <Text style={LeaveGameStyle.desc}>האם את/ה בטוח/ה שאת/ה רוצה לצאת מהמשחק?</Text>
+                <Text style={LeaveGameStyle.title}>ההתקדמות שצברתם במשחק לא תשמר</Text>
+                <Text style={LeaveGameStyle.desc}>האם אתם בטוחים שאתם רוצים לצאת מהמשחק?</Text>
             </View>
             <View style={LeaveGameStyle.btnsContainer}>
                 <TouchableOpacity style={LeaveGameStyle.returnBtn} onPress={() => {toggleLeaveGameMenu()}}>

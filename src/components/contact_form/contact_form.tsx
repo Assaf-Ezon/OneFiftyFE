@@ -49,7 +49,7 @@ const ContactForm = () => {
                     <TouchableOpacity onPress={() => {toggleOpenContactUsForm(); Keyboard.dismiss();}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
-                    <Text style={ContactFormStyle.title}>דווח על בעיה</Text>
+                    <Text style={ContactFormStyle.title}>דיווח על בעיה</Text>
                 </View>
                 <View style={ContactFormStyle.inputFieldsContainer}>
                 <TextInput

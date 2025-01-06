@@ -46,7 +46,7 @@ const PlansContainer = () => {
         
                 webviewRef.current.injectJavaScript(script);
             } else {
-                Alert.alert('קרתה שגיאה בהזדהות, אנא התחבר מחדש');
+                Alert.alert('קרתה שגיאה בהזדהות, אנא התחברו מחדש');
                 handleLogout();
             }
         }

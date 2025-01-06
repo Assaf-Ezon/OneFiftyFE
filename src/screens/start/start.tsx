@@ -187,7 +187,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title}>
                 150 - לומדת פסיכומטרי{'\n'}
-                למד מילים בכל מקום
+                למדו מילים בכל מקום
             </Text>
             <Text style={StartScreenStyle.paragraph}>
                 150 הינו כלי ללימוד מילים בעברית ובאנגלית כחלק מהכנה{'\n'}
@@ -196,7 +196,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             </Text>
             <View style={StartScreenStyle.btnContainer}>
                 <Pressable style={StartScreenStyle.btn} onPress={() => {promptAsync({ showInRecents: true })} }>
-                    <Text style={StartScreenStyle.btnText}>בואו נתחיל</Text>            
+                    <Text style={StartScreenStyle.btnText}>המשך</Text>            
                 </Pressable>
             </View>
         </View>

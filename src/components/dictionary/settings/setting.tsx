@@ -61,7 +61,7 @@ const Settings = () => {
                 setOpen={setLevelOpen}
                 setValue={setLevelValue}
                 setItems={setLevelItems}
-                placeholder='בחר רמה'
+                placeholder='בחרו רמה'
                 textStyle={{textAlign: 'right'}}
                 />
             </View>
@@ -73,7 +73,7 @@ const Settings = () => {
                 setOpen={setLangOpen}
                 setValue={setLangValue}
                 setItems={setLangItems}
-                placeholder='בחר שפה'
+                placeholder='בחרו שפה'
                 textStyle={{textAlign: 'right'}}
                 />
             </View>

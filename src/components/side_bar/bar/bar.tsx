@@ -57,7 +57,7 @@ const SideBar = () => {
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={''} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.problem} iconText='דווח על בעיה' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.problem} iconText='דיווח על בעיה' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.terms} iconText='תנאי שימוש' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.TERMS} />
             </View>

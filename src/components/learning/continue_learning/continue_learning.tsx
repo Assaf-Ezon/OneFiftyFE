@@ -25,7 +25,7 @@ const ContinueLearningPart: FC = () => {
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
-                <Text style={learningPartStyle.title}>המשך לומדות</Text>   
+                <Text style={learningPartStyle.title}>המשיכו לומדות</Text>   
             </View>
             <View style={learningPartStyle.cardsContainerContainer}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
@@ -35,7 +35,7 @@ const ContinueLearningPart: FC = () => {
                             <View style={learningPartStyle.playSomethingContainer}>
                                 <Image source={IMAGES.profile_image} style={learningPartStyle.cardImage} />
                                 <View style={learningPartStyle.textContainer}>
-                                    <Text style={learningPartStyle.titleText}>שחק עכשיו</Text>
+                                    <Text style={learningPartStyle.titleText}>שחקו עכשיו</Text>
                                 </View>
                             </View>
                         :

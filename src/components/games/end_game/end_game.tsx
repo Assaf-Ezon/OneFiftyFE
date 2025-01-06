@@ -75,13 +75,13 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
 
             if (err instanceof Error) {
                     if (err.name == RequestsError.LanguageError) {
-                        Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                        Alert.alert('קרתה תקלה לא צפויה, אנא נסו מחדש מאוחר יותר');
                         navigation.goBack();                    
                     }
     
                     AppRequestsErrors(err, handleLogout, handleInactive);
             } else {
-                Alert.alert('קרתה תקלה לא צפויה, אנא נסה מחדש מאוחר יותר');
+                Alert.alert('קרתה תקלה לא צפויה, אנא נסו מחדש מאוחר יותר');
                 navigation.goBack();
             }
         }
@@ -114,20 +114,20 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                 </View>
                 <View style={EndGameStyle.correctContainer}>
                     <Text style={EndGameStyle.correct}>
-                        סה"כ מילים שהצלחת: {correctAnswers.length} {'\n'}
+                        סה"כ מילים שהצלחתם: {correctAnswers.length} {'\n'}
                         אחוזי הצלחה: {((correctAnswers.length/totalWords)*100).toFixed(1)}%
                     </Text>
                 </View>
                 <View style={EndGameStyle.wrongContainer}>
                     <Text style={EndGameStyle.wrong}>
-                        סה"כ מילים שנכשלת: {wrongAnswers.length} {'\n'}
+                        סה"כ מילים שנכשלתם: {wrongAnswers.length} {'\n'}
                         אחוזי כישלון: {((wrongAnswers.length/totalWords)*100).toFixed(1)}%
                     </Text>
                 </View>
             </View>
             <View style={[{opacity: loading ? 0.6 : 1}, EndGameStyle.btnContainer]}>
                 <TouchableOpacity style={EndGameStyle.btn} onPress={() => {finishGame()}}>
-                    <Text style={EndGameStyle.btnText}>סיים משחק</Text>
+                    <Text style={EndGameStyle.btnText}>סיום משחק</Text>
                 </TouchableOpacity>
             </View>
             {loading ? <View style={EndGameStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}

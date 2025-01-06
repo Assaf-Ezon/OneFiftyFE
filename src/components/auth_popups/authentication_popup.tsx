@@ -25,8 +25,8 @@ const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetSt
                 <View style={PopupsStyle.errorPopupMainContainer}>
                     <Text style={PopupsStyle.popupText}>
                         אירוע לא צפוי קרה{'\n'}
-                        אנא נסה שנית מאוחר יותר.{'\n'}{'\n'}{'\n'}
-                        פנה אלינו: OneFifty.customers@gmail.com
+                        אנא נסו שנית מאוחר יותר.{'\n'}{'\n'}{'\n'}
+                        פנו אלינו: OneFifty.customers@gmail.com
                     </Text>
                 </View>
             </View>
@@ -45,8 +45,8 @@ const IncorrectVersionPopup = () => {
                 </View>
                 <View style={PopupsStyle.versionPopupMainContainer}>
                     <Text style={PopupsStyle.versionExplanationText}>
-                        גרסה המותקנת על מכשירך אינה העדכנית ביותר. {'\n'}
-                        אנא עדכן את הגרסה על מנת להמשיך להשתמש באפליקציה{'\n'}
+                        גרסה המותקנת על מכשירכם אינה העדכנית ביותר. {'\n'}
+                        אנא עדכנו את הגרסה על מנת להמשיך להשתמש באפליקציה{'\n'}
                     </Text>
                 </View>
             </View>
@@ -74,12 +74,12 @@ const InactivePopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.Se
                 </View>
                 <View style={PopupsStyle.inactivePopupMainContainer}>
                     <Text style={PopupsStyle.inactiveExplanationText}>
-                        חשבונך הינו פג תוקף מאחת מהסיבות הבאות: {'\n'}
+                        חשבונכם הינו פג תוקף מאחת מהסיבות הבאות: {'\n'}
                             1. תקופת המנוי של המשתמש נגמרה{'\n'}
                             2. תקופת הניסיון של המשתמש נגמרה{'\n'}{'\n'}{'\n'}
                             
-                        על מנת להמשיך את השימוש באפליקציה, עליך לרכוש מנוי. על מנת לרכוש מנוי, לחץ על הכפתור.{'\n'}{'\n'}
-                        (במידה וחלה טעות, פנה אלינו במייל שלנו: OneFifty.customers.com)
+                        על מנת להמשיך את השימוש באפליקציה, עליכם לרכוש מנוי. על מנת לרכוש מנוי, לחצו על הכפתור.{'\n'}{'\n'}
+                        (במידה וחלה טעות, פנו אלינו במייל שלנו: OneFifty.customers.com)
                     </Text>
                 </View>
                 <View style={PopupsStyle.btnsContainer}>
@@ -102,11 +102,11 @@ const InternetConnectionPopup = () => {
         visible={true}>
             <View style={PopupsStyle.internetPopupContainer}>
                 <View style={PopupsStyle.internetPopupTitleContainer}>
-                    <Text style={PopupsStyle.internetPopupTitle}>אינך מחובר לאינטרנט</Text>
+                    <Text style={PopupsStyle.internetPopupTitle}>אינכם מחוברים לאינטרנט</Text>
                 </View>
                 <View style={PopupsStyle.internetPopupMainContainer}>
                     <Text style={PopupsStyle.internetExplanationText}>
-                        אנא התחבר ונסה שוב{'\n'}
+                        אנא התחברו ונסו שוב{'\n'}
                     </Text>
                 </View>
             </View>

@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import learningPartStyle from './learning_style';
 
-import { IMAGES } from '../../../../image_handler';
 import { GAMES } from '../../../../data_objects/enums/game_objects';
 import { Screens } from '../../../../data_objects/enums/screens';
 
@@ -16,7 +15,7 @@ const LearningPartHome: FC = () => {
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
-                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEARNING as never)}}><Text style={learningPartStyle.seeEverything}>ראה הכל</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEARNING as never)}}><Text style={learningPartStyle.seeEverything}>ראו הכל</Text></TouchableOpacity>
                 <Text style={learningPartStyle.title}>לומדות מילים</Text>   
             </View>
             <View style={learningPartStyle.cardsContainerContainer}>

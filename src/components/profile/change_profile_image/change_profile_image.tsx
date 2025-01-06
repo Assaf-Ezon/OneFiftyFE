@@ -66,7 +66,7 @@ const ChangeProfileImagePopup = () => {
                 <TouchableOpacity onPress={() => {toggleProfileImageMenu()}}>
                     <Image source={IMAGES.back_icon} />
                 </TouchableOpacity>
-                <Text style={ChangeProfileImageStyle.title}>בחר תמונת פרופיל: </Text>
+                <Text style={ChangeProfileImageStyle.title}>בחרו תמונת פרופיל: </Text>
             </View>
             <View style={[ChangeProfileImageStyle.imagesContainer, {opacity: loading ? 0.5 : 1}]}
                 pointerEvents={loading ? "none" : "auto"}>
@@ -84,9 +84,9 @@ const ChangeProfileImagePopup = () => {
                 </TouchableOpacity>
                 {
                     errorType == ErrorType.Error ? 
-                    <Text style={ChangeProfileImageStyle.errorText}>תקלה קרתה, נסה שנית מאוחר יותר</Text> :
+                    <Text style={ChangeProfileImageStyle.errorText}>תקלה קרתה, נסו שנית מאוחר יותר</Text> :
                     errorType == ErrorType.NoImage ?
-                    <Text style={ChangeProfileImageStyle.errorText}>בחר תמונת פרופיל</Text> :
+                    <Text style={ChangeProfileImageStyle.errorText}>בחרו תמונת פרופיל</Text> :
                     null
                 }
             </View>

@@ -51,7 +51,7 @@ const TopRated = () => {
                     AppRequestsErrors(err, handleLogout, handleInactive);
                 } 
                 else {
-                    Alert.alert('תקלה קרתה, נסה שנית מאוחר יותר');
+                    Alert.alert('תקלה קרתה, נסו שנית מאוחר יותר');
                 }
             }
             
