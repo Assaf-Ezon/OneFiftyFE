@@ -8,6 +8,7 @@ import SettingsStyle from './settings_style';
 
 import { useLearningSettingsContext } from '../../context/settings_context/learning_context';
 import { Languages } from '../../data_objects/enums/language';
+import { LangItemsType } from '../../data_objects/general/lang_items_type';
 
 const LearningSettings = () => {
     // settings context
@@ -28,12 +29,6 @@ const LearningSettings = () => {
     // state handling for language dropdown menu - 1. for open and close menu. 2. for choosing the value.
     const [langOpen, setLangOpen] = useState<boolean>(false);
     const [langValue, setLangValue] = useState<string | null>(settings.language); 
-
-    // type of the items for the dropdown menu
-    type LangItemsType = {
-        label: string;
-        value: string;
-    };
 
     // the options for the dropdown menu
     const [langItems, setLangItems] = useState<LangItemsType[]>([
