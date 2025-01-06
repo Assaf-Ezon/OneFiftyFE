@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { IMAGES } from '../../../image_handler';
-import { GAMES } from '../../../game_objects';
+import { GAMES } from '../../../data_objects/enums/game_objects';
 
 import learningPartStyle from './continue_learning_style';
 import GameCard from '../../game_card/game_card';
@@ -39,20 +39,20 @@ const ContinueLearningPart: FC = () => {
                                 </View>
                             </View>
                         :
-                            games.map(gameId => {
-                                const game = GAMES.find(game => game.id === gameId);
+                            Object.entries(GAMES).map(([gameName, gameValue]) => {
+                                const game = games.find((value) => value === gameValue.id);
 
                                 if (!game) {
                                     return null;
                                 }
 
                                 return (
-                                    <GameCard key={game.id}
-                                        id={game.id}
-                                        image={game.image_route} 
-                                        title={game.name}
-                                        description={game.description}
-                                        gameName={game.page_name}
+                                    <GameCard key={gameValue.id}
+                                        id={gameValue.id}
+                                        image={gameValue.image_route} 
+                                        title={gameValue.name}
+                                        description={gameValue.description}
+                                        gameName={gameValue.page_name}
                                     />  
                                 )
                             })

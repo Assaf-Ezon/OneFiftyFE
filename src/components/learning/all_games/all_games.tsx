@@ -1,7 +1,7 @@
 import { Text, View, ScrollView } from 'react-native';
 import { FC } from 'react';
 import { IMAGES } from '../../../image_handler';
-import { GAMES } from '../../../game_objects';
+import { GAMES } from '../../../data_objects/enums/game_objects';
 
 import allGamesStyle from './all_games_style';
 
@@ -17,14 +17,14 @@ const AllGamesPart: FC = () => {
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
                 <View style={allGamesStyle.blank} />
                 {
-                    GAMES.map(game => {
+                    Object.entries(GAMES).map(([gameName, gameValue]) => {
                         return (
-                            <GameCard key={game.id}
-                                id={game.id}
-                                image={game.image_route} 
-                                title={game.name} 
-                                description={game.description}
-                                gameName={game.page_name}
+                            <GameCard key={gameValue.id}
+                                id={gameValue.id}
+                                image={gameValue.image_route} 
+                                title={gameValue.name} 
+                                description={gameValue.description}
+                                gameName={gameValue.page_name}
                             />
                         );
                     })
