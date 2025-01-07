@@ -32,9 +32,8 @@ const Question = () => {
     // Contexts
     const { isEndGame, toggleEndGameMenu } = useEndGameContext();
     const { toggleGameErrorMenu } = useGameErrorContext()
-    const { toggleLearningSettings } = useLearningSettingsContext();
-    const { settings, isSettingsFilled } = useLearningSettingsContext();
-    const {hebrewUserStatistics,  
+    const { settings, isSettingsFilled, toggleLearningSettings } = useLearningSettingsContext();
+    const { hebrewUserStatistics,  
         englishUserStatistics,  
         hebrewNewWords,  
         englishNewWords } = useWords();
@@ -119,7 +118,7 @@ const Question = () => {
     }, [words]);
 
     // Word change logic
-    const changeWord = async () => {
+    const changeWord = () => {
         if ((wordPerLevelCount + 1) === amountInLevel) {
             if ((listPointer + 1) === words.length) {
                 toggleEndGameMenu();

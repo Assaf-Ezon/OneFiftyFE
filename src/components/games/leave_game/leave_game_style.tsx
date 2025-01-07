@@ -26,10 +26,12 @@ const LeaveGameStyle = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: '700',
+        textAlign: 'center',
     },
     desc: {
         fontSize: 15,
         fontWeight: '400',
+        textAlign: 'center',
     },
     btnsContainer: {
         width: '90%',

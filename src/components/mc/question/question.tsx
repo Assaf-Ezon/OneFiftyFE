@@ -1,50 +1,205 @@
 import { Text, View, TouchableOpacity, Image, Animated } from 'react-native';
 import React from 'react';
+import { useEffect, useState } from 'react';
+
+import EndGame from '../../games/end_game/end_game';
+
 import { IMAGES } from '../../../image_handler';
 
 import QuestionStyle from './question_style';
+
 import { fadeIn } from '../../../animations/fade_animations';
 
 import { useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
 
-const Question = () => {
+import { useEndGameContext } from '../../../context/game_context/end_game_context';
+import { useGameErrorContext } from '../../../context/game_context/game_error_context';
+import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
+import { useWords } from '../../../context/general_context/words_context';
+
+import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
+import { GameWordDictDetails } from '../../../data_objects/words/game_data_objects/game_word_dict_details';
+import { Words } from '../../../data_objects/words/basic_data_objects/words';
+import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
+import { Languages } from '../../../data_objects/enums/language';
+import { Screens } from '../../../data_objects/enums/screens';
+import WordsDictCreator from '../../../find_words/words_dict_creator';
+
+import create4MeaningsList from './get_random_meaning';
+
+const Question = () => {    
+    // Navigation
     const navigation = useNavigation();
+
+    // Contexts
+    const { isEndGame, toggleEndGameMenu } = useEndGameContext();
+    const { toggleGameErrorMenu } = useGameErrorContext()
+    const { settings, isSettingsFilled, toggleLearningSettings } = useLearningSettingsContext();
+    const { hebrewUserStatistics,  
+        englishUserStatistics,  
+        hebrewNewWords,  
+        englishNewWords,
+        hebrewWords, 
+        englishWords } = useWords();
+
+    // State
     const [next, setNext] = useState<boolean>(false);
     const [bdika, setBdika] = useState<boolean>(false);
 
-    type WordsType = {
-        [key: string]: string[]; 
-    };
+    const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
+    const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
 
-    const words: WordsType = JSON.parse('{"תְּמִימוּת דֵּעִים": ["הסכמה כוללת", "הסכמה כוללת", "אבוי", "תחושת צער עמוקה", "העמיד פני חולה"], "אַלְלַי": ["אבוי", "אבוי", "הסכמה כוללת", "תחושת צער עמוקה", "העמיד פני חולה"], "יָגוֹן": ["תחושת צער עמוקה", "העמיד פני חולה", "הגזים בדברים שהוציא מפיו או בהתנהגות שלו, החל לדבר דברים שאינם נכונים/מדויקים, עשה דברים אסורים", "תחושת צער עמוקה", "הסמכה כוללת"]}');
-    const len = Object.keys(words).length;
+    const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
+    const [totalWords, setTotalWords] = useState<number>(0);
 
-    const [count, setCount] = useState<number>(1);
-    const [word, setWord] = useState<string>(Object.entries(words)[0][0]);
-    const [pirushim, setPirushim] = useState<string[]>(Object.entries(words)[0][1]); 
-    const [selectedPirush, setSelectedPirush] = useState<string|null>();
+    const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
+    const [level, setLevel] = useState<number | null>(null); // Current level number
+    const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
+    const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
+    const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // Counter for the current level
+
+    const [word, setWord] = useState<string>("");
+    const [correctMeaning, setCorrectMeaning] = useState<string>("");
+    const [type, setType] = useState<string>("");
+
+    const [desiredMeaning, setDesiredMeaning] = useState<string>("");
+
+    const [meanings, setMeanings] = useState<string[]>([]);
+
+    // Update the words list based on settings.language
+    useEffect(() => {
+        if (!isSettingsFilled()) {
+            toggleLearningSettings();
+            navigation.navigate(Screens.LEARNING as never);
+        }
+
+        let NewWords: Words = {};
+        let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
+
+        switch (settings.language) {
+            case Languages.Hebrew:
+                NewWords = hebrewNewWords;
+                UserStatistics = hebrewUserStatistics;
+                break;
+            case Languages.English:
+                NewWords = englishNewWords;
+                UserStatistics = englishUserStatistics;
+                break;
+        }
+
+        const createGame = new WordsDictCreator(settings, NewWords, UserStatistics);
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(createGame.createList());
+
+        Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
+
+        setWords(wordsList);
+    }, []);
+
+    // Initialize other state based on words list
+    useEffect(() => {
+        if (words.length > 0) {
+            const initialPointer = 0;
+            const initialLevel = parseInt(words[initialPointer][0]);
+            const initialAmount = Object.keys(words[initialPointer][1]).length;
+            
+            const firstWordKey = Object.keys(words[initialPointer][1])[0];
+            const firstWordMeaning = words[initialPointer][1][firstWordKey];
+
+            setListPointer(0);
+            setLevel(initialLevel);
+            setAmountInLevel(initialAmount);
+
+            setWord(firstWordKey);
+            setCorrectMeaning(firstWordMeaning.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+            setType(firstWordMeaning.Type);
+
+            // Calculate total words
+            let total = 0;
+            words.forEach(group => {
+                const wordGroup = group[1];
+                total += Object.keys(wordGroup).length;  
+            });
+            setTotalWords(total);
+
+            setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, firstWordMeaning.Meanings.map((meaning) => meaning.Meaning).join("\n")));
+        }
+    }, [words]);
 
     const changeWord = () => {
-        if (len == count) {
-            navigation.goBack();
+        if ((wordPerLevelCount + 1) === amountInLevel) {
+            if ((listPointer + 1) === words.length) {
+                toggleEndGameMenu();
+            } else {
+                const nextPointer = listPointer + 1;
+                const nextLevel = parseInt(words[nextPointer][0]);
+                const nextAmount = Object.keys(words[nextPointer][1]).length;
+
+                const nextWordKey = Object.keys(words[nextPointer][1])[0];
+                const nextWord = words[nextPointer][1][nextWordKey];
+
+                setListPointer(nextPointer);
+                setLevel(nextLevel);
+                setAmountInLevel(nextAmount);
+
+                setWordCount(wordCount + 1);
+                setWordPerLevelCount(0);
+
+                setWord(nextWordKey);
+                setCorrectMeaning(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+                setType(nextWord.Type);
+
+                setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n")));
+            }
+        } else {
+            const nextWordIndex = wordPerLevelCount + 1;
+            const nextWordKey = Object.keys(words[listPointer][1])[nextWordIndex];
+            const nextWord = words[listPointer][1][nextWordKey];
+
+            setWordCount(wordCount + 1);
+            setWordPerLevelCount(nextWordIndex);
+
+            setWord(nextWordKey);
+            setCorrectMeaning(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+            setType(nextWord.Type);
+
+            setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n")));
         }
-        else {
-            setCount(count => count + 1);
-            setWord(Object.entries(words)[count][0]);
-            setPirushim(Object.entries(words)[count][1]);
-            setSelectedPirush(null);
-            setNext(false);
-        };
     };
 
-    const setIfAnswerCorrect = () => {
-        /* is correct logic here - selectedPirush is the chosen answer by the user */
-        setNext(true);
+    const setIfAnswerCorrect = (isCorrect: boolean) => {
+        const currectWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
+        const currectWordValue = words[listPointer][1][currectWordKey];
+
+        const currectWordToAdd: WordDetails = {
+            FullWord: currectWordValue.FullWord,
+            Meanings: currectWordValue.Meanings,
+            Group: currectWordValue.Group,
+        }
+
+        if (isCorrect) {
+            setCorrectAnswers((prevAnswers) => {
+                if (Array.isArray(prevAnswers)) {
+                    return [...prevAnswers, currectWordToAdd]; 
+                } else {
+                    return [currectWordToAdd]; 
+                }
+            });
+        } else {
+            setWrongAnswers((prevAnswers) => {
+                if (Array.isArray(prevAnswers)) {
+                    return [...prevAnswers, currectWordToAdd]; 
+                } else {
+                    return [currectWordToAdd]; 
+                }
+            });
+        }
+        
+        setNext(false);
     };
 
-    const setDesiredPirush = (pirush: string) => {
-        setSelectedPirush(pirush);
+    // changes the user's pick and reveals the first button
+    const setUserMeaning = (meaning: string) => {
+        setDesiredMeaning(meaning);
         setBdika(true);
     };
 
@@ -52,35 +207,34 @@ const Question = () => {
 
     useEffect(() => {
         fadeIn(fadeAnim).start();
-    }, [pirushim, fadeAnim]);
+    }, [correctMeaning, fadeAnim]);
 
     return (
         <>
             <Animated.View style={[QuestionStyle.question, {opacity: fadeAnim}]}>
                 <View style={QuestionStyle.wordSection}>
-                    <Text style={QuestionStyle.wordCounter}>{count}/{len}</Text>
                     <Text style={QuestionStyle.word}>{word}</Text>
+                </View>
+                <View style={QuestionStyle.texts}>  
+                    <Text style={QuestionStyle.wordCounter}>סוג: {type}</Text>
+                    <Text style={QuestionStyle.wordCounter}>רמה: {level}</Text>
+                    <Text style={QuestionStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
                 </View>
                 <View style={QuestionStyle.pirushim}>
                     {
-                        pirushim.slice(1).map((pirush) => {
-                            return (
-                                <TouchableOpacity 
-                                style={QuestionStyle.option} 
-                                onPress={!next ? () => {setDesiredPirush(pirush)} : () => {}}
-                                key={pirush}>
-                                    <Text style={[
-                                    QuestionStyle.optionText, 
-                                    {fontWeight: next && pirush === pirushim[0] ? '600' : '300', 
-                                    textDecorationLine: next && pirush === selectedPirush ? 'underline' : 'none'}]}>
-                                        {pirush}
-                                    </Text>
-                                    <Image source={pirush ===  selectedPirush && bdika ? IMAGES.chosen_option : 
-                                        pirush === pirushim[0] && next ? IMAGES.correct : 
-                                        next ? IMAGES.wrong : IMAGES.option} 
-                                    style={QuestionStyle.option_image} />
-                                </TouchableOpacity>
-                            )
+                        meanings.map((meaning) => {
+                                return (
+                                    <TouchableOpacity style={QuestionStyle.option} onPress={!next ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
+                                        <Text style={[QuestionStyle.optionText, {fontWeight: next && meaning === correctMeaning ? '600' : '300', 
+                                            textDecorationLine: next && meaning === desiredMeaning ? 'underline' : 'none'}]}>
+                                            {meaning}
+                                        </Text>
+                                        <Image source={meaning ===  desiredMeaning && bdika ? IMAGES.chosen_option : 
+                                            meaning === correctMeaning && next ? IMAGES.correct : 
+                                            next && meaning !== correctMeaning ? IMAGES.wrong : IMAGES.option} 
+                                        style={QuestionStyle.option_image} />
+                                    </TouchableOpacity>
+                                )
                         })
                     }
                 </View>
@@ -91,10 +245,12 @@ const Question = () => {
                 </TouchableOpacity>
             ): null}
             {next ? (
-                <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() => {setIfAnswerCorrect(); changeWord();}}>
+                <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() => {setIfAnswerCorrect(correctMeaning === desiredMeaning); changeWord();}}>
                     <Text style={QuestionStyle.btnText}>המשך</Text>
                 </TouchableOpacity>
             ) : null}
+
+            {isEndGame ? <EndGame correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} /> : null}
         </>
     );
 };

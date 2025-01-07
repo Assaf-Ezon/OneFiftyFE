@@ -14,7 +14,7 @@ const QuestionStyle = StyleSheet.create({
         marginTop: 10,
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
     wordCounter: {
@@ -27,6 +27,11 @@ const QuestionStyle = StyleSheet.create({
         fontWeight: '600',
         shadowOpacity: 0.05,
         shadowRadius: 1,
+    },
+    texts: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     pirushim: {
         height: height * 0.4,
