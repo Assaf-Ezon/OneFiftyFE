@@ -15,7 +15,7 @@ export default abstract class BaseWordsSelector {
 
         this.addRandomWordsToGameWords(relevantNewWordsArray, split.newWordsAmount, wordsDict, groupId);
         this.addRandomWordsToGameWords(relevantPracticedWordsArray, split.practicedAmount, wordsDict, groupId);
-
+        // this.enrichWordsDict
         return wordsDict;
 
     }

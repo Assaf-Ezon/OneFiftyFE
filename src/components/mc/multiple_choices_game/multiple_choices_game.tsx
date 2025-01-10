@@ -6,7 +6,7 @@ import EndGame from '../../games/end_game/end_game';
 
 import { IMAGES } from '../../../image_handler';
 
-import QuestionStyle from './question_style';
+import MultipleChoicesGameStyle from './multiple_choices_game_style';
 
 import { fadeIn } from '../../../animations/fade_animations';
 
@@ -27,7 +27,7 @@ import WordsDictCreator from '../../../find_words/words_dict_creator';
 
 import create4MeaningsList from './get_random_meaning';
 
-const Question = () => {    
+const MultipleChoicesGame = () => {    
     // Navigation
     const navigation = useNavigation();
 
@@ -103,15 +103,15 @@ const Question = () => {
             const initialAmount = Object.keys(words[initialPointer][1]).length;
             
             const firstWordKey = Object.keys(words[initialPointer][1])[0];
-            const firstWordMeaning = words[initialPointer][1][firstWordKey];
+            const firstWordDetails = words[initialPointer][1][firstWordKey];
 
             setListPointer(0);
             setLevel(initialLevel);
             setAmountInLevel(initialAmount);
 
             setWord(firstWordKey);
-            setCorrectMeaning(firstWordMeaning.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-            setType(firstWordMeaning.Type);
+            setCorrectMeaning(firstWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+            setType(firstWordDetails.Type);
 
             // Calculate total words
             let total = 0;
@@ -121,7 +121,7 @@ const Question = () => {
             });
             setTotalWords(total);
 
-            setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, firstWordMeaning.Meanings.map((meaning) => meaning.Meaning).join("\n")));
+            setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, firstWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n")));
         }
     }, [words]);
 
@@ -135,7 +135,7 @@ const Question = () => {
                 const nextAmount = Object.keys(words[nextPointer][1]).length;
 
                 const nextWordKey = Object.keys(words[nextPointer][1])[0];
-                const nextWord = words[nextPointer][1][nextWordKey];
+                const nextWordDetails = words[nextPointer][1][nextWordKey];
 
                 setListPointer(nextPointer);
                 setLevel(nextLevel);
@@ -145,10 +145,10 @@ const Question = () => {
                 setWordPerLevelCount(0);
 
                 setWord(nextWordKey);
-                setCorrectMeaning(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-                setType(nextWord.Type);
+                setCorrectMeaning(nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+                setType(nextWordDetails.Type);
 
-                setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n")));
+                setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n")));
             }
         } else {
             const nextWordIndex = wordPerLevelCount + 1;
@@ -211,28 +211,28 @@ const Question = () => {
 
     return (
         <>
-            <Animated.View style={[QuestionStyle.question, {opacity: fadeAnim}]}>
-                <View style={QuestionStyle.wordSection}>
-                    <Text style={QuestionStyle.word}>{word}</Text>
+            <Animated.View style={[MultipleChoicesGameStyle.question, {opacity: fadeAnim}]}>
+                <View style={MultipleChoicesGameStyle.wordSection}>
+                    <Text style={MultipleChoicesGameStyle.word}>{word}</Text>
                 </View>
-                <View style={QuestionStyle.texts}>  
-                    <Text style={QuestionStyle.wordCounter}>סוג: {type}</Text>
-                    <Text style={QuestionStyle.wordCounter}>רמה: {level}</Text>
-                    <Text style={QuestionStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
+                <View style={MultipleChoicesGameStyle.texts}>  
+                    <Text style={MultipleChoicesGameStyle.wordCounter}>סוג: {type}</Text>
+                    <Text style={MultipleChoicesGameStyle.wordCounter}>רמה: {level}</Text>
+                    <Text style={MultipleChoicesGameStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
                 </View>
-                <View style={QuestionStyle.pirushim}>
+                <View style={MultipleChoicesGameStyle.pirushim}>
                     {
                         meanings.map((meaning) => {
                                 return (
-                                    <TouchableOpacity style={QuestionStyle.option} onPress={!next ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
-                                        <Text style={[QuestionStyle.optionText, {fontWeight: next && meaning === correctMeaning ? '600' : '300', 
+                                    <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!next ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
+                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: next && meaning === correctMeaning ? '600' : '300', 
                                             textDecorationLine: next && meaning === desiredMeaning ? 'underline' : 'none'}]}>
                                             {meaning}
                                         </Text>
                                         <Image source={meaning ===  desiredMeaning && bdika ? IMAGES.chosen_option : 
                                             meaning === correctMeaning && next ? IMAGES.correct : 
                                             next && meaning !== correctMeaning ? IMAGES.wrong : IMAGES.option} 
-                                        style={QuestionStyle.option_image} />
+                                        style={MultipleChoicesGameStyle.option_image} />
                                     </TouchableOpacity>
                                 )
                         })
@@ -240,13 +240,13 @@ const Question = () => {
                 </View>
             </Animated.View>
             {bdika ? (
-                <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() => {setNext(true); setBdika(false);}}>
-                    <Text style={QuestionStyle.btnText}>בדיקה</Text>
+                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setNext(true); setBdika(false);}}>
+                    <Text style={MultipleChoicesGameStyle.btnText}>בדיקה</Text>
                 </TouchableOpacity>
             ): null}
             {next ? (
-                <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() => {setIfAnswerCorrect(correctMeaning === desiredMeaning); changeWord();}}>
-                    <Text style={QuestionStyle.btnText}>המשך</Text>
+                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(correctMeaning === desiredMeaning); changeWord();}}>
+                    <Text style={MultipleChoicesGameStyle.btnText}>המשך</Text>
                 </TouchableOpacity>
             ) : null}
 
@@ -255,4 +255,4 @@ const Question = () => {
     );
 };
 
-export default Question;
+export default MultipleChoicesGame;

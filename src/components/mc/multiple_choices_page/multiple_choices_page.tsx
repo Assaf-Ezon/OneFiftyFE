@@ -2,8 +2,8 @@ import { Text, View, TouchableOpacity, Image } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 import React from 'react';
 
-import PagePartStyle from './page_part_style';
-import Question from '../question/question';
+import MultipleChoicesPageStyle from './multiple_choices_page_style';
+import MultipleChoicesGame from '../multiple_choices_game/multiple_choices_game';
 
 import GameError from '../../games/game_error/game_error';
 import LeaveGame from '../../games/leave_game/leave_game';
@@ -11,7 +11,7 @@ import { useEndGameContext } from '../../../context/game_context/end_game_contex
 import { useLeaveGameContext } from '../../../context/game_context/leave_game_context';
 import { useGameErrorContext } from '../../../context/game_context/game_error_context';
 
-const PagePart = () => {    
+const MultipleChoicesPage = () => {    
     const { isEndGame } = useEndGameContext();
     const { isLeaveGame, toggleLeaveGameMenu } = useLeaveGameContext();
     const { isGameError } = useGameErrorContext();
@@ -21,16 +21,16 @@ const PagePart = () => {
     }
     return (
         <>
-            <View style={[{opacity: isLeaveGame || isGameError ? 0.6 : 1}, PagePartStyle.container]}>
-                <View style={PagePartStyle.topPart}>
-                    <View style={[{opacity: isEndGame ? 0.6 : 1}, PagePartStyle.topPartText]}>
+            <View style={[{opacity: isLeaveGame || isGameError ? 0.6 : 1}, MultipleChoicesPageStyle.container]}>
+                <View style={MultipleChoicesPageStyle.topPart}>
+                    <View style={[{opacity: isEndGame ? 0.6 : 1}, MultipleChoicesPageStyle.topPartText]}>
                         <TouchableOpacity onPress={() => {handleBackPress()}}>
                             <Image source={IMAGES.back_icon} />
                         </TouchableOpacity>
-                        <Text style={PagePartStyle.pageTitle}>שאלון אמריקאי</Text>
+                        <Text style={MultipleChoicesPageStyle.pageTitle}>שאלון אמריקאי</Text>
                     </View>
                 </View>
-                <Question />
+                <MultipleChoicesGame />
             </View>
             {isGameError ? <GameError /> : null}
             {isLeaveGame ? <LeaveGame /> : null}
@@ -38,4 +38,4 @@ const PagePart = () => {
     );
 };  
 
-export default PagePart;
+export default MultipleChoicesPage;

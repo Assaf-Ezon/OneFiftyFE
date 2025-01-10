@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const QuestionStyle = StyleSheet.create({
+const MultipleChoicesGameStyle = StyleSheet.create({
     question: {
         top: width * 0.1,
         width: width * 0.9,
@@ -76,4 +76,4 @@ const QuestionStyle = StyleSheet.create({
     },
 });
 
-export default QuestionStyle;
+export default MultipleChoicesGameStyle;

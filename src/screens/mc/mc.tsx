@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import McStyle from './mc_style';
 
-import PagePart from '../../components/mc/page_part/page_part';
+import MultipleChoicesPage from '../../components/mc/multiple_choices_page/multiple_choices_page';
 
 import { EndGameProvider } from '../../context/game_context/end_game_context';
 import { LeaveGameProvider } from '../../context/game_context/leave_game_context';
@@ -17,7 +17,7 @@ const McPage = ({ navigation }: {navigation: any}) => {
         <EndGameProvider>
             <LeaveGameProvider>
                 <GameErrorProvider>
-                        <PagePart />
+                        <MultipleChoicesPage />
                 </GameErrorProvider>
             </LeaveGameProvider>
         </EndGameProvider>
