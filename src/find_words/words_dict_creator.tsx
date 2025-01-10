@@ -14,11 +14,12 @@ export default class WordsDictCreator {
     private _settings: GameSettings;
     private _flags_count: number; 
     private _words: GameWords;
+    private _game_mode: number;
 
     private _newWords: Words;
     private _statistics: UserStatistics; 
 
-    constructor(settings: GameSettings, new_words: Words, statistics: UserStatistics) { 
+    constructor(settings: GameSettings, new_words: Words, statistics: UserStatistics, game_mode: number) { 
         this._settings = settings;
         this._flags_count = 0;
         this._updateFlagCount();
@@ -27,6 +28,8 @@ export default class WordsDictCreator {
 
         this._newWords = new_words;
         this._statistics = statistics;
+
+        this._game_mode = game_mode;
     }
 
     setSettings(settings: GameSettings): void {
@@ -61,22 +64,22 @@ export default class WordsDictCreator {
                     // TODO: change all "add" methods to handle all levels and not only 0
                     if (this._settings.shouldIncludeNewWords && amountList.length > 0)
                     { 
-                        new NewWordsSelector().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new NewWordsSelector().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words, this._game_mode);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeIncorrectWords && amountList.length > 0) 
                     { 
-                        new IncorrectWordsHandler().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new IncorrectWordsHandler().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words, this._game_mode);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludePracticedwords && amountList.length > 0) 
                     { 
-                        new PracticeWordsHandler().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new PracticeWordsHandler().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words, this._game_mode);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeSmartStudy && amountList.length > 0) 
                     { 
-                        new SmartWordsHandler().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new SmartWordsHandler().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words, this._game_mode);
                         amountList.pop();
                     }
                 }

@@ -1,10 +1,22 @@
+import { GAMES } from "../../data_objects/enums/game_objects";
+import { GameMode } from "../../data_objects/general/game_mode";
+
 import { WordDetails } from "../../data_objects/words/basic_data_objects/word_details";
 import { WordStatisticsData } from "../../data_objects/words/basic_data_objects/word_statistics_data";
 import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/game_word_dict_details";
 import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
 
 export default abstract class BaseWordsSelector {
-    select(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, groupId: number, totalAmount: number, wordsDict: GameWords) {
+    private enrichWordsDictByGameMode;
+
+    constructor () {
+        this.enrichWordsDictByGameMode = {
+            [GAMES.MC.id]: this._enrichWordsDict,
+            [GAMES.KDK.id]: null,
+        } 
+    }
+
+    select(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, groupId: number, totalAmount: number, wordsDict: GameWords, gameMode: number) {
         if (!wordsDict[groupId]) {
             wordsDict[groupId] = {};
         }
@@ -15,7 +27,12 @@ export default abstract class BaseWordsSelector {
 
         this.addRandomWordsToGameWords(relevantNewWordsArray, split.newWordsAmount, wordsDict, groupId);
         this.addRandomWordsToGameWords(relevantPracticedWordsArray, split.practicedAmount, wordsDict, groupId);
-        // this.enrichWordsDict
+        
+        const enrichWordsDict = this.enrichWordsDictByGameMode[gameMode as GameMode];
+        if (enrichWordsDict) {
+            enrichWordsDict();
+        }
+
         return wordsDict;
 
     }
@@ -53,6 +70,10 @@ export default abstract class BaseWordsSelector {
         } else {
             return this.selectPracticedInternal(practicedWords);
         }
+    }
+
+    _enrichWordsDict() {
+        console.log('test');
     }
 
     abstract getSplit(totalAmount: number, newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }): { newWordsAmount: number; practicedAmount: number };

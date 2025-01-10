@@ -22,6 +22,7 @@ import { GameWordDictDetails } from '../../../data_objects/words/game_data_objec
 import { Words } from '../../../data_objects/words/basic_data_objects/words';
 import { WordDetails } from '../../../data_objects/words/basic_data_objects/word_details';
 import { Languages } from '../../../data_objects/enums/language';
+import { GAMES } from '../../../data_objects/enums/game_objects';
 import { Screens } from '../../../data_objects/enums/screens';
 import WordsDictCreator from '../../../find_words/words_dict_creator';
 
@@ -87,8 +88,8 @@ const MultipleChoicesGame = () => {
                 break;
         }
 
-        const createGame = new WordsDictCreator(settings, NewWords, UserStatistics);
-        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(createGame.createList());
+        const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, GAMES.MC.id);
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(gameCreater.createList());
 
         Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
 

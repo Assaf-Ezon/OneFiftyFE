@@ -24,6 +24,7 @@ import { ButtonState } from '../../../data_objects/enums/button_state';
 import { UserStatistics } from '../../../data_objects/words/statistics/user_statistics';
 import { Languages } from '../../../data_objects/enums/language';
 import { Screens } from '../../../data_objects/enums/screens';
+import { GAMES } from '../../../data_objects/enums/game_objects';
 
 const Question = () => {
     // Navigation
@@ -81,8 +82,8 @@ const Question = () => {
                 break;
         }
 
-        const createGame = new WordsDictCreator(settings, NewWords, UserStatistics);
-        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(createGame.createList());
+        const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, GAMES.KDK.id);
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(gameCreater.createList());
 
         Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
 
@@ -97,15 +98,15 @@ const Question = () => {
             const initialAmount = Object.keys(words[initialPointer][1]).length;
             
             const firstWordKey = Object.keys(words[initialPointer][1])[0];
-            const firstWordMeaning = words[initialPointer][1][firstWordKey];
+            const firstWordDetails = words[initialPointer][1][firstWordKey];
 
             setListPointer(0);
             setLevel(initialLevel);
             setAmountInLevel(initialAmount);
 
             setWord(firstWordKey);
-            setPirush(firstWordMeaning.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-            setType(firstWordMeaning.Type);
+            setPirush(firstWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+            setType(firstWordDetails.Type);
 
             // Calculate total words
             let total = 0;
@@ -128,7 +129,7 @@ const Question = () => {
                 const nextAmount = Object.keys(words[nextPointer][1]).length;
 
                 const nextWordKey = Object.keys(words[nextPointer][1])[0];
-                const nextWord = words[nextPointer][1][nextWordKey];
+                const nextWordDetails = words[nextPointer][1][nextWordKey];
 
                 setListPointer(nextPointer);
                 setLevel(nextLevel);
@@ -138,8 +139,8 @@ const Question = () => {
                 setWordPerLevelCount(0);
 
                 setWord(nextWordKey);
-                setPirush(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-                setType(nextWord.Type);
+                setPirush(nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+                setType(nextWordDetails.Type);
             }
         } else {
             const nextWordIndex = wordPerLevelCount + 1;
