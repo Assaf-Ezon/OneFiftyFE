@@ -98,71 +98,54 @@ const MultipleChoicesGame = () => {
     // Initialize other state based on words list
     useEffect(() => {
         if (words.length > 0) {
-            const initialPointer = 0;
-            const initialLevel = parseInt(words[initialPointer][0]);
-            const initialAmount = Object.keys(words[initialPointer][1]).length;
-            
-            const firstWordKey = Object.keys(words[initialPointer][1])[0];
-            const firstWordDetails = words[initialPointer][1][firstWordKey];
+            setNewValuesForNextWord(true, false);
 
-            setListPointer(0);
-            setLevel(initialLevel);
-            setAmountInLevel(initialAmount);
-
-            setWord(firstWordKey);
-            setCorrectMeaning(firstWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-            setType(firstWordDetails.Type);
-
-            // Calculate total words
             let total = 0;
             words.forEach(group => {
                 const wordGroup = group[1];
                 total += Object.keys(wordGroup).length;  
             });
             setTotalWords(total);
-
-            setMeanings(uniteCorrectAndIncorrectMeanings(firstWordDetails));
         }
     }, [words]);
+
+
+    const setNewValuesForNextWord = (isFirstInGame: boolean, isNextLevel: boolean) => {
+        let wordsListPointer = listPointer;
+
+        if (isFirstInGame || isNextLevel) {
+            wordsListPointer = isFirstInGame ? 0 : listPointer + 1;
+            const newLevel = parseInt(words[wordsListPointer][0]);
+            const newAmountInLevel = Object.keys(words[wordsListPointer][1]).length;
+    
+            setListPointer(wordsListPointer);
+            setLevel(newLevel);
+            setAmountInLevel(newAmountInLevel);
+        }
+
+        setWordCount(isFirstInGame || isNextLevel ? 0 : wordCount + 1);
+        setWordPerLevelCount(isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1);
+
+
+        const newWordKey = Object.keys(words[wordsListPointer][1])[isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1];
+        const newWordDetails = words[wordsListPointer][1][newWordKey];
+
+        setWord(newWordKey);
+        setCorrectMeaning(newWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+        setType(newWordDetails.Type);
+
+        setMeanings(uniteCorrectAndIncorrectMeanings(newWordDetails));
+    };
 
     const changeWord = () => {
         if ((wordPerLevelCount + 1) === amountInLevel) {
             if ((listPointer + 1) === words.length) {
                 toggleEndGameMenu();
             } else {
-                const nextPointer = listPointer + 1;
-                const nextLevel = parseInt(words[nextPointer][0]);
-                const nextAmount = Object.keys(words[nextPointer][1]).length;
-
-                const nextWordKey = Object.keys(words[nextPointer][1])[0];
-                const nextWordDetails = words[nextPointer][1][nextWordKey];
-
-                setListPointer(nextPointer);
-                setLevel(nextLevel);
-                setAmountInLevel(nextAmount);
-
-                setWordCount(wordCount + 1);
-                setWordPerLevelCount(0);
-
-                setWord(nextWordKey);
-                setCorrectMeaning(nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-                setType(nextWordDetails.Type);
-
-                setMeanings(uniteCorrectAndIncorrectMeanings(nextWordDetails));
+                setNewValuesForNextWord(false, true);
             }
         } else {
-            const nextWordIndex = wordPerLevelCount + 1;
-            const nextWordKey = Object.keys(words[listPointer][1])[nextWordIndex];
-            const nextWordDetails = words[listPointer][1][nextWordKey];
-
-            setWordCount(wordCount + 1);
-            setWordPerLevelCount(nextWordIndex);
-
-            setWord(nextWordKey);
-            setCorrectMeaning(nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-            setType(nextWordDetails.Type);
-
-            setMeanings(uniteCorrectAndIncorrectMeanings(nextWordDetails));
+            setNewValuesForNextWord(false, false);
         }
     };
 
