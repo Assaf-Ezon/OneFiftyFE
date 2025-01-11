@@ -9,11 +9,12 @@ import { UserStatistics } from "../data_objects/words/statistics/user_statistics
 import { GameWords } from "../data_objects/words/game_data_objects/game_words";
 import { WordDetails } from "../data_objects/words/basic_data_objects/word_details";
 import { WordStatisticsData } from "../data_objects/words/basic_data_objects/word_statistics_data";
+import { MultipleChoicesGameWords } from "../data_objects/words/game_data_objects/multiple_choices_game_words";
 
 export default class WordsDictCreator {
     private _settings: GameSettings;
     private _flags_count: number; 
-    private _words: GameWords;
+    private _words: GameWords | MultipleChoicesGameWords;
     private _game_mode: number;
 
     private _newWords: Words;
@@ -47,19 +48,19 @@ export default class WordsDictCreator {
     }
     
 
-    createList(): GameWords {
+    createList(): GameWords | MultipleChoicesGameWords {
         try {
             for (const [groupId, levelWordCount] of Object.entries(this._settings.levels)) {
                 if (typeof levelWordCount == 'number' && levelWordCount > 0 && levelWordCount <= 100) { 
                     const amountList = this._splitAmountToTypes(levelWordCount); 
-                    var newWords: { [word: string]: WordDetails } = {}
+                    var newWords: Words = {}
                     if (this.checkLevelExistsInNewList(parseInt(groupId))){ // TODO: revert to group id
-                        newWords = this._newWords[0]
+                        newWords = this._newWords
                     }
                     
-                    var practicedWords: { [word: string]: WordStatisticsData } = {}
+                    var practicedWords: { [groupId: number]: { [word: string]: WordStatisticsData; }; } = {}
                     if (this.checkLevelExistsInStatisticsList(parseInt(groupId))){
-                        practicedWords = this._statistics.WordsStatistics.Words[0]; // TODO: revert to group id
+                        practicedWords = this._statistics.WordsStatistics.Words; // TODO: revert to group id
                     }
                     // TODO: change all "add" methods to handle all levels and not only 0
                     if (this._settings.shouldIncludeNewWords && amountList.length > 0)
