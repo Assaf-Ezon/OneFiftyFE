@@ -145,32 +145,24 @@ const KnewDidntKnowGame = () => {
     };
 
     const setIsAnswerCorrect = (isCorrect: boolean) => {
-        const currectWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
-        const currectWordValue = words[listPointer][1][currectWordKey];
+        const currentWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
+        const currentWordDetails = words[listPointer][1][currentWordKey];
 
-        const currectWordToAdd: WordDetails = {
-            FullWord: currectWordValue.FullWord,
-            Meanings: currectWordValue.Meanings,
-            Group: currectWordValue.Group,
+        const currentWordToAdd: WordDetails = {
+            FullWord: currentWordDetails.FullWord,
+            Meanings: currentWordDetails.Meanings,
+            Group: currentWordDetails.Group,
         }
 
-        if (isCorrect) {
-            setCorrectAnswers((prevAnswers) => {
-                if (Array.isArray(prevAnswers)) {
-                    return [...prevAnswers, currectWordToAdd]; 
-                } else {
-                    return [currectWordToAdd]; 
-                }
-            });
-        } else {
-            setWrongAnswers((prevAnswers) => {
-                if (Array.isArray(prevAnswers)) {
-                    return [...prevAnswers, currectWordToAdd]; 
-                } else {
-                    return [currectWordToAdd]; 
-                }
-            });
-        }
+        const addAnswerToRelevantList: (value: React.SetStateAction<WordDetails[]>) => void = isCorrect ? setCorrectAnswers : setWrongAnswers;
+
+        addAnswerToRelevantList((prevAnswers) => {
+            if (Array.isArray(prevAnswers)) {
+                return [...prevAnswers, currentWordToAdd]; 
+            } else {
+                return [currentWordToAdd]; 
+            }
+        });
 
         setAnswer(ButtonState.Continue);
     };
