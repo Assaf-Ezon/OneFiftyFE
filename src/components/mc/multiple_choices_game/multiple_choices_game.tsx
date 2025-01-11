@@ -26,7 +26,8 @@ import { GAMES } from '../../../data_objects/enums/game_objects';
 import { Screens } from '../../../data_objects/enums/screens';
 import WordsDictCreator from '../../../find_words/words_dict_creator';
 
-import create4MeaningsList from './get_random_meaning';
+import { MultipleChoicesGameWordDictDetails } from '../../../data_objects/words/game_data_objects/multiple_choices_game_word_details';
+import { MultipleChoicesGameWords } from '../../../data_objects/words/game_data_objects/multiple_choices_game_words';
 
 const MultipleChoicesGame = () => {    
     // Navigation
@@ -39,9 +40,7 @@ const MultipleChoicesGame = () => {
     const { hebrewUserStatistics,  
         englishUserStatistics,  
         hebrewNewWords,  
-        englishNewWords,
-        hebrewWords, 
-        englishWords } = useWords();
+        englishNewWords } = useWords();
 
     // State
     const [next, setNext] = useState<boolean>(false);
@@ -50,7 +49,7 @@ const MultipleChoicesGame = () => {
     const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
     const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
 
-    const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
+    const [words, setWords] = useState<[string, { [word: string]: MultipleChoicesGameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
     const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
@@ -89,7 +88,7 @@ const MultipleChoicesGame = () => {
         }
 
         const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, GAMES.MC.id);
-        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(gameCreater.createList());
+        let wordsList: [string, { [word: string]: MultipleChoicesGameWordDictDetails }][] = Object.entries(gameCreater.createList() as MultipleChoicesGameWords);
 
         Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
 
@@ -122,7 +121,7 @@ const MultipleChoicesGame = () => {
             });
             setTotalWords(total);
 
-            setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, firstWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n")));
+            setMeanings(uniteCorrectAndIncorrectMeanings(firstWordDetails));
         }
     }, [words]);
 
@@ -149,22 +148,32 @@ const MultipleChoicesGame = () => {
                 setCorrectMeaning(nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
                 setType(nextWordDetails.Type);
 
-                setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n")));
+                setMeanings(uniteCorrectAndIncorrectMeanings(nextWordDetails));
             }
         } else {
             const nextWordIndex = wordPerLevelCount + 1;
             const nextWordKey = Object.keys(words[listPointer][1])[nextWordIndex];
-            const nextWord = words[listPointer][1][nextWordKey];
+            const nextWordDetails = words[listPointer][1][nextWordKey];
 
             setWordCount(wordCount + 1);
             setWordPerLevelCount(nextWordIndex);
 
             setWord(nextWordKey);
-            setCorrectMeaning(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-            setType(nextWord.Type);
+            setCorrectMeaning(nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+            setType(nextWordDetails.Type);
 
-            setMeanings(create4MeaningsList(settings.language === Languages.Hebrew ? hebrewWords : englishWords, nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n")));
+            setMeanings(uniteCorrectAndIncorrectMeanings(nextWordDetails));
         }
+    };
+
+    const uniteCorrectAndIncorrectMeanings = (wordDetails: MultipleChoicesGameWordDictDetails): string[] => {
+        const incorrectList: string[] = wordDetails.IncorrectMeanings.map((meanings) => meanings.map((meaning) => meaning.Meaning).join("\n"));
+        const randomIndex: number = Math.floor(Math.random() * (incorrectList.length + 1));
+        
+        const allMeanings: string[] = [...incorrectList];
+        allMeanings.splice(randomIndex, 0, wordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+
+        return allMeanings;
     };
 
     const setIfAnswerCorrect = (isCorrect: boolean) => {
