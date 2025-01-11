@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import EndGame from '../../games/end_game/end_game';
 import React from 'react';
 
-import QuestionStyle from './question_style';
+import KnewDidntKnowGameStyle from './knew_didnt_know_game_style';
 import { fadeIn } from '../../../animations/fade_animations';
 
 import { useNavigation } from '@react-navigation/native';
@@ -26,7 +26,7 @@ import { Languages } from '../../../data_objects/enums/language';
 import { Screens } from '../../../data_objects/enums/screens';
 import { GAMES } from '../../../data_objects/enums/game_objects';
 
-const Question = () => {
+const KnewDidntKnowGame = () => {
     // Navigation
     const navigation = useNavigation();
 
@@ -93,20 +93,7 @@ const Question = () => {
     // Initialize other state based on words list
     useEffect(() => {
         if (words.length > 0) {
-            const initialPointer = 0;
-            const initialLevel = parseInt(words[initialPointer][0]);
-            const initialAmount = Object.keys(words[initialPointer][1]).length;
-            
-            const firstWordKey = Object.keys(words[initialPointer][1])[0];
-            const firstWordDetails = words[initialPointer][1][firstWordKey];
-
-            setListPointer(0);
-            setLevel(initialLevel);
-            setAmountInLevel(initialAmount);
-
-            setWord(firstWordKey);
-            setPirush(firstWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-            setType(firstWordDetails.Type);
+            setNewValuesForNextWord(true, false);
 
             // Calculate total words
             let total = 0;
@@ -124,38 +111,37 @@ const Question = () => {
             if ((listPointer + 1) === words.length) {
                 toggleEndGameMenu();
             } else {
-                const nextPointer = listPointer + 1;
-                const nextLevel = parseInt(words[nextPointer][0]);
-                const nextAmount = Object.keys(words[nextPointer][1]).length;
-
-                const nextWordKey = Object.keys(words[nextPointer][1])[0];
-                const nextWordDetails = words[nextPointer][1][nextWordKey];
-
-                setListPointer(nextPointer);
-                setLevel(nextLevel);
-                setAmountInLevel(nextAmount);
-
-                setWordCount(wordCount + 1);
-                setWordPerLevelCount(0);
-
-                setWord(nextWordKey);
-                setPirush(nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-                setType(nextWordDetails.Type);
+                setNewValuesForNextWord(false, true);
             }
         } else {
-            const nextWordIndex = wordPerLevelCount + 1;
-            const nextWordKey = Object.keys(words[listPointer][1])[nextWordIndex];
-            const nextWord = words[listPointer][1][nextWordKey];
-
-            setWordCount(wordCount + 1);
-            setWordPerLevelCount(nextWordIndex);
-
-            setWord(nextWordKey);
-            setPirush(nextWord.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-            setType(nextWord.Type);
-
+            setNewValuesForNextWord(false, false);
             setAnswer(ButtonState.ShowAnswer);
         }
+    };
+
+    const setNewValuesForNextWord = (isFirstInGame: boolean, isNextLevel: boolean) => {
+        let wordsListPointer = listPointer;
+
+        if (isFirstInGame || isNextLevel) {
+            wordsListPointer = isFirstInGame ? 0 : listPointer + 1;
+            const newLevel = parseInt(words[wordsListPointer][0]);
+            const newAmountInLevel = Object.keys(words[wordsListPointer][1]).length;
+    
+            setListPointer(wordsListPointer);
+            setLevel(newLevel);
+            setAmountInLevel(newAmountInLevel);
+        }
+
+        setWordCount(isFirstInGame || isNextLevel ? 0 : wordCount + 1);
+        setWordPerLevelCount(isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1);
+
+
+        const newWordKey = Object.keys(words[wordsListPointer][1])[isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1];
+        const newWordDetails = words[wordsListPointer][1][newWordKey];
+
+        setWord(newWordKey);
+        setPirush(newWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+        setType(newWordDetails.Type);
     };
 
     const setIsAnswerCorrect = (isCorrect: boolean) => {
@@ -204,47 +190,47 @@ const Question = () => {
 
     return (
         <>
-            <Animated.View style={[QuestionStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
+            <Animated.View style={[KnewDidntKnowGameStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
                 pointerEvents={isEndGame ? 'none' : 'auto'}>
-                            <View style={QuestionStyle.wordSection}>
-                    <Text style={QuestionStyle.word}>{word}</Text>
+                            <View style={KnewDidntKnowGameStyle.wordSection}>
+                    <Text style={KnewDidntKnowGameStyle.word}>{word}</Text>
                 </View>
-                <View style={QuestionStyle.texts}>  
-                    <Text style={QuestionStyle.wordCounter}>סוג: {type}</Text>
-                    <Text style={QuestionStyle.wordCounter}>רמה: {level}</Text>
-                    <Text style={QuestionStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
+                <View style={KnewDidntKnowGameStyle.texts}>  
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>סוג: {type}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>רמה: {level}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
                 </View>
-                <View style={QuestionStyle.interpretation}>
+                <View style={KnewDidntKnowGameStyle.interpretation}>
                     <LinearGradient
                         colors={['#F27155', '#EA7B30']}
                         start={{ x: 1, y: 0.5 }}
                         end={{ x: 0, y: 0.5 }}
-                        style={QuestionStyle.color}
+                        style={KnewDidntKnowGameStyle.color}
                     >
-                        <View style={QuestionStyle.meaningContainer}>
-                            {answer != 1 ? <Text style={QuestionStyle.meaning}>{pirush}</Text> : null}
+                        <View style={KnewDidntKnowGameStyle.meaningContainer}>
+                            {answer != 1 ? <Text style={KnewDidntKnowGameStyle.meaning}>{pirush}</Text> : null}
                         </View>
                     </LinearGradient>
                 </View>
                 {answer == ButtonState.ShowAnswer ? (
                     <Animated.View style={{ opacity: btnFadeAnim }}>
-                        <TouchableOpacity style={QuestionStyle.nextBtn} onPress={() =>{setAnswer(ButtonState.ChooseAnswer)}}>
-                            <Text style={QuestionStyle.btnText}>הצג תשובה</Text>
+                        <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={() =>{setAnswer(ButtonState.ChooseAnswer)}}>
+                            <Text style={KnewDidntKnowGameStyle.btnText}>הצג תשובה</Text>
                         </TouchableOpacity>
                     </Animated.View>
                 ) : answer == ButtonState.ChooseAnswer ? (
-                    <View style={QuestionStyle.btns}>
-                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIsAnswerCorrect(false)}>
-                            <Text style={QuestionStyle.btnText}>לא ידעתי</Text>
+                    <View style={KnewDidntKnowGameStyle.btns}>
+                        <TouchableOpacity style={KnewDidntKnowGameStyle.btn} onPress={() => setIsAnswerCorrect(false)}>
+                            <Text style={KnewDidntKnowGameStyle.btnText}>לא ידעתי</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={QuestionStyle.btn} onPress={() => setIsAnswerCorrect(true)}>
-                            <Text style={QuestionStyle.btnText}>ידעתי</Text>
+                        <TouchableOpacity style={KnewDidntKnowGameStyle.btn} onPress={() => setIsAnswerCorrect(true)}>
+                            <Text style={KnewDidntKnowGameStyle.btnText}>ידעתי</Text>
                         </TouchableOpacity>
                     </View>
                 ) : answer == ButtonState.Continue ? (
                     <Animated.View style={{ opacity: btnFadeAnim }}>
-                        <TouchableOpacity style={QuestionStyle.nextBtn} onPress={changeWord}>
-                            <Text style={QuestionStyle.btnText}>המשך</Text>
+                        <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={changeWord}>
+                            <Text style={KnewDidntKnowGameStyle.btnText}>המשך</Text>
                         </TouchableOpacity>
                     </Animated.View>
                 ) : null}
@@ -254,4 +240,4 @@ const Question = () => {
     );
 };
 
-export default Question;
+export default KnewDidntKnowGame;

@@ -110,6 +110,18 @@ const MultipleChoicesGame = () => {
     }, [words]);
 
 
+    const changeWord = () => {
+        if ((wordPerLevelCount + 1) === amountInLevel) {
+            if ((listPointer + 1) === words.length) {
+                toggleEndGameMenu();
+            } else {
+                setNewValuesForNextWord(false, true);
+            }
+        } else {
+            setNewValuesForNextWord(false, false);
+        }
+    };
+
     const setNewValuesForNextWord = (isFirstInGame: boolean, isNextLevel: boolean) => {
         let wordsListPointer = listPointer;
 
@@ -135,18 +147,6 @@ const MultipleChoicesGame = () => {
         setType(newWordDetails.Type);
 
         setMeanings(uniteCorrectAndIncorrectMeanings(newWordDetails));
-    };
-
-    const changeWord = () => {
-        if ((wordPerLevelCount + 1) === amountInLevel) {
-            if ((listPointer + 1) === words.length) {
-                toggleEndGameMenu();
-            } else {
-                setNewValuesForNextWord(false, true);
-            }
-        } else {
-            setNewValuesForNextWord(false, false);
-        }
     };
 
     const uniteCorrectAndIncorrectMeanings = (wordDetails: MultipleChoicesGameWordDictDetails): string[] => {

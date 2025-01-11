@@ -4,7 +4,7 @@ import { IMAGES } from '../../../image_handler';
 
 import KDKGamePageStyle from './kdk_game_page_style';
 
-import Question from '../question/question';
+import KnewDidntKnowGame from '../knew_didnt_know_game/knew_didnt_know_game';
 import LeaveGame from '../../games/leave_game/leave_game';
 import GameError from '../../games/game_error/game_error';
 import { useLeaveGameContext } from '../../../context/game_context/leave_game_context';
@@ -32,7 +32,7 @@ const KDKGamePage = () => {
                         <Text style={KDKGamePageStyle.pageTitle}>ידעתי / לא ידעתי</Text>
                     </View>
                 </View>
-                <Question />
+                <KnewDidntKnowGame />
             </View>
             {isGameError ? <GameError /> : null}
             {isLeaveGame ? <LeaveGame /> : null}
