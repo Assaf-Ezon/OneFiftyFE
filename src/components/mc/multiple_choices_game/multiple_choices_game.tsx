@@ -28,6 +28,7 @@ import WordsDictCreator from '../../../find_words/words_dict_creator';
 
 import { MultipleChoicesGameWordDictDetails } from '../../../data_objects/words/game_data_objects/multiple_choices_game_word_details';
 import { MultipleChoicesGameWords } from '../../../data_objects/words/game_data_objects/multiple_choices_game_words';
+import { Meaning } from '../../../data_objects/words/basic_data_objects/meaning';
 
 const MultipleChoicesGame = () => {    
     // Navigation
@@ -143,21 +144,25 @@ const MultipleChoicesGame = () => {
         const newWordDetails = words[wordsListPointer][1][newWordKey];
 
         setWord(newWordKey);
-        setCorrectMeaning(newWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+        setCorrectMeaning(convertMeaningsObjectToString(newWordDetails.Meanings));
         setType(newWordDetails.Type);
 
         setMeanings(uniteCorrectAndIncorrectMeanings(newWordDetails));
     };
 
     const uniteCorrectAndIncorrectMeanings = (wordDetails: MultipleChoicesGameWordDictDetails): string[] => {
-        const incorrectList: string[] = wordDetails.IncorrectMeanings.map((meanings) => meanings.map((meaning) => meaning.Meaning).join("\n"));
+        const incorrectList: string[] = wordDetails.IncorrectMeanings.map((meanings) => convertMeaningsObjectToString(meanings));
         const randomIndex: number = Math.floor(Math.random() * (incorrectList.length + 1));
         
         const allMeanings: string[] = [...incorrectList];
-        allMeanings.splice(randomIndex, 0, wordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
+        allMeanings.splice(randomIndex, 0, convertMeaningsObjectToString(wordDetails.Meanings));
 
         return allMeanings;
     };
+
+    const convertMeaningsObjectToString = (meanings: Meaning[]) => {
+        return meanings.map((meaning) => meaning.Meaning).join("\n");
+    }
 
     const setIfAnswerCorrect = (isCorrect: boolean) => {
         const currentWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
