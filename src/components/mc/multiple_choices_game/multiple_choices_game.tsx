@@ -26,9 +26,8 @@ import { GAMES } from '../../../data_objects/enums/game_objects';
 import { Screens } from '../../../data_objects/enums/screens';
 import WordsDictCreator from '../../../find_words/words_dict_creator';
 
-import { MultipleChoicesGameWordDictDetails } from '../../../data_objects/words/game_data_objects/multiple_choices_game_word_details';
-import { MultipleChoicesGameWords } from '../../../data_objects/words/game_data_objects/multiple_choices_game_words';
 import { Meaning } from '../../../data_objects/words/basic_data_objects/meaning';
+import { GameWordState } from '../../../data_objects/general/game_word_state';
 
 const MultipleChoicesGame = () => {    
     // Navigation
@@ -44,8 +43,8 @@ const MultipleChoicesGame = () => {
         englishNewWords } = useWords();
 
     // State
-    const [next, setNext] = useState<boolean>(false);
-    const [bdika, setBdika] = useState<boolean>(false);
+    const [isNextBtn, setIsNextBtn] = useState<boolean>(false);
+    const [isCheckBtn, setIsCheckBtn] = useState<boolean>(false);
 
     const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
     const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
@@ -53,19 +52,20 @@ const MultipleChoicesGame = () => {
     const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
-    const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
-    const [level, setLevel] = useState<number | null>(null); // Current level number
+    const [listIndex, setListIndex] = useState<number>(0); // Pointer to the current level
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
     const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // Counter for the current level
 
-    const [word, setWord] = useState<string>("");
-    const [correctMeaning, setCorrectMeaning] = useState<string>("");
-    const [type, setType] = useState<string>("");
+    const [currentWord, setCurrentWord] = useState<GameWordState>({
+        word: "",
+        meaning: "",
+        type: "",
+        level: 0,
+        meanings: [],
+    });
 
     const [desiredMeaning, setDesiredMeaning] = useState<string>("");
-
-    const [meanings, setMeanings] = useState<string[] | undefined>([]);
 
     // Update the words list based on settings.language
     useEffect(() => {
@@ -89,7 +89,7 @@ const MultipleChoicesGame = () => {
         }
 
         const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, GAMES.MC.id);
-        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(gameCreater.createList() as MultipleChoicesGameWords);
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(gameCreater.createList());
 
         Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
 
@@ -113,7 +113,7 @@ const MultipleChoicesGame = () => {
 
     const changeWord = () => {
         if ((wordPerLevelCount + 1) === amountInLevel) {
-            if ((listPointer + 1) === words.length) {
+            if ((listIndex + 1) === words.length) {
                 toggleEndGameMenu();
             } else {
                 setNewValuesForNextWord(false, true);
@@ -124,15 +124,13 @@ const MultipleChoicesGame = () => {
     };
 
     const setNewValuesForNextWord = (isFirstInGame: boolean, isNextLevel: boolean) => {
-        let wordsListPointer = listPointer;
+        let wordsListIndex = listIndex;
 
         if (isFirstInGame || isNextLevel) {
-            wordsListPointer = isFirstInGame ? 0 : listPointer + 1;
-            const newLevel = parseInt(words[wordsListPointer][0]);
-            const newAmountInLevel = Object.keys(words[wordsListPointer][1]).length;
+            wordsListIndex = isFirstInGame ? 0 : listIndex + 1;
+            const newAmountInLevel = Object.keys(words[wordsListIndex][1]).length;
     
-            setListPointer(wordsListPointer);
-            setLevel(newLevel);
+            setListIndex(wordsListIndex);
             setAmountInLevel(newAmountInLevel);
         }
 
@@ -140,34 +138,26 @@ const MultipleChoicesGame = () => {
         setWordPerLevelCount(isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1);
 
 
-        const newWordKey = Object.keys(words[wordsListPointer][1])[isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1];
-        const newWordDetails = words[wordsListPointer][1][newWordKey];
+        const newWordKey = Object.keys(words[wordsListIndex][1])[isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1];
+        const newWordDetails = words[wordsListIndex][1][newWordKey];
 
-        setWord(newWordKey);
-        setCorrectMeaning(convertMeaningsObjectToString(newWordDetails.Meanings));
-        setType(newWordDetails.Type);
-
-        setMeanings(newWordDetails.RandomMeanings);
-        // setMeanings(uniteCorrectAndIncorrectMeanings(newWordDetails));
+        setCurrentWord({
+            word: newWordKey,
+            meaning: convertMeaningsObjectToString(newWordDetails.Meanings),
+            type: newWordDetails.Type,
+            level: newWordDetails.Group,
+            meanings: newWordDetails.RandomMeanings,
+        });
     };
 
-    // const uniteCorrectAndIncorrectMeanings = (wordDetails: GameWordDictDetails): string[] => {
-    //     const incorrectList: string[] = wordDetails.IncorrectMeanings.map((meanings) => convertMeaningsObjectToString(meanings));
-    //     const randomIndex: number = Math.floor(Math.random() * (incorrectList.length + 1));
-        
-    //     const allMeanings: string[] = [...incorrectList];
-    //     allMeanings.splice(randomIndex, 0, convertMeaningsObjectToString(wordDetails.Meanings));
-
-    //     return allMeanings;
-    // };
 
     const convertMeaningsObjectToString = (meanings: Meaning[]) => {
         return meanings.map((meaning) => meaning.Meaning).join("\n");
     }
 
     const setIfAnswerCorrect = (isCorrect: boolean) => {
-        const currentWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
-        const currentWordDetails = words[listPointer][1][currentWordKey];
+        const currentWordKey = Object.keys(words[listIndex][1])[wordPerLevelCount];
+        const currentWordDetails = words[listIndex][1][currentWordKey];
 
         const currentWordToAdd: WordDetails = {
             FullWord: currentWordDetails.FullWord,
@@ -185,44 +175,44 @@ const MultipleChoicesGame = () => {
             }
         });
         
-        setNext(false);
+        setIsNextBtn(false);
     };
 
     // changes the user's pick and reveals the first button
     const setUserMeaning = (meaning: string) => {
         setDesiredMeaning(meaning);
-        setBdika(true);
+        setIsCheckBtn(true);
     };
 
     const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
 
     useEffect(() => {
         fadeIn(fadeAnim).start();
-    }, [correctMeaning, fadeAnim]);
+    }, [currentWord.meaning, fadeAnim]);
 
     return (
         <>
             <Animated.View style={[MultipleChoicesGameStyle.question, {opacity: fadeAnim}]}>
                 <View style={MultipleChoicesGameStyle.wordSection}>
-                    <Text style={MultipleChoicesGameStyle.word}>{word}</Text>
+                    <Text style={MultipleChoicesGameStyle.word}>{currentWord.word}</Text>
                 </View>
                 <View style={MultipleChoicesGameStyle.texts}>  
-                    <Text style={MultipleChoicesGameStyle.wordCounter}>סוג: {type}</Text>
-                    <Text style={MultipleChoicesGameStyle.wordCounter}>רמה: {level}</Text>
+                    <Text style={MultipleChoicesGameStyle.wordCounter}>סוג: {currentWord.type}</Text>
+                    <Text style={MultipleChoicesGameStyle.wordCounter}>רמה: {currentWord.level}</Text>
                     <Text style={MultipleChoicesGameStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
                 </View>
                 <View style={MultipleChoicesGameStyle.pirushim}>
                     {
-                        meanings?.map((meaning) => {
+                        currentWord.meanings?.map((meaning) => {
                                 return (
-                                    <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!next ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
-                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: next && meaning === correctMeaning ? '600' : '300', 
-                                            textDecorationLine: next && meaning === desiredMeaning ? 'underline' : 'none'}]}>
+                                    <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!isNextBtn ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
+                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: isNextBtn && meaning === currentWord.meaning ? '600' : '300', 
+                                            textDecorationLine: isNextBtn && meaning === desiredMeaning ? 'underline' : 'none'}]}>
                                             {meaning}
                                         </Text>
-                                        <Image source={meaning ===  desiredMeaning && bdika ? IMAGES.chosen_option : 
-                                            meaning === correctMeaning && next ? IMAGES.correct : 
-                                            next && meaning !== correctMeaning ? IMAGES.wrong : IMAGES.option} 
+                                        <Image source={meaning ===  desiredMeaning && isCheckBtn ? IMAGES.chosen_option : 
+                                            meaning === currentWord.meaning && isNextBtn ? IMAGES.correct : 
+                                            isNextBtn && meaning !== currentWord.meaning ? IMAGES.wrong : IMAGES.option} 
                                         style={MultipleChoicesGameStyle.option_image} />
                                     </TouchableOpacity>
                                 )
@@ -230,13 +220,13 @@ const MultipleChoicesGame = () => {
                     }
                 </View>
             </Animated.View>
-            {bdika ? (
-                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setNext(true); setBdika(false);}}>
+            {isCheckBtn ? (
+                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIsNextBtn(true); setIsCheckBtn(false);}}>
                     <Text style={MultipleChoicesGameStyle.btnText}>בדיקה</Text>
                 </TouchableOpacity>
             ): null}
-            {next ? (
-                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(correctMeaning === desiredMeaning); changeWord();}}>
+            {isNextBtn ? (
+                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(currentWord.meaning === desiredMeaning); changeWord();}}>
                     <Text style={MultipleChoicesGameStyle.btnText}>המשך</Text>
                 </TouchableOpacity>
             ) : null}

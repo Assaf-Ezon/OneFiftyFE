@@ -25,6 +25,7 @@ import { UserStatistics } from '../../../data_objects/words/statistics/user_stat
 import { Languages } from '../../../data_objects/enums/language';
 import { Screens } from '../../../data_objects/enums/screens';
 import { GAMES } from '../../../data_objects/enums/game_objects';
+import { GameWordState } from '../../../data_objects/general/game_word_state';
 
 const KnewDidntKnowGame = () => {
     // Navigation
@@ -46,20 +47,20 @@ const KnewDidntKnowGame = () => {
     const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
-    const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
-    const [level, setLevel] = useState<number | null>(null); // Current level number
+    const [listIndex, setListIndex] = useState<number>(0); // Pointer to the current level
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
     const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // Counter for the current level
 
-    const [word, setWord] = useState<string>("");
-    const [pirush, setPirush] = useState<string>("");
-    const [type, setType] = useState<string>("");
+
+    const [currentWord, setCurrentWord] = useState<GameWordState>({
+        word: "",
+        meaning: "",
+        type: "",
+        level: 0,
+    });
 
     const [answer, setAnswer] = useState<number>(ButtonState.ShowAnswer); // Button states
-
-    const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
-    const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
     
     // Update the words list based on settings.language
     useEffect(() => {
@@ -108,7 +109,7 @@ const KnewDidntKnowGame = () => {
     // Word change logic
     const changeWord = () => {
         if ((wordPerLevelCount + 1) === amountInLevel) {
-            if ((listPointer + 1) === words.length) {
+            if ((listIndex + 1) === words.length) {
                 toggleEndGameMenu();
             } else {
                 setNewValuesForNextWord(false, true);
@@ -120,15 +121,13 @@ const KnewDidntKnowGame = () => {
     };
 
     const setNewValuesForNextWord = (isFirstInGame: boolean, isNextLevel: boolean) => {
-        let wordsListPointer = listPointer;
+        let wordsListIndex = listIndex;
 
         if (isFirstInGame || isNextLevel) {
-            wordsListPointer = isFirstInGame ? 0 : listPointer + 1;
-            const newLevel = parseInt(words[wordsListPointer][0]);
-            const newAmountInLevel = Object.keys(words[wordsListPointer][1]).length;
+            wordsListIndex = isFirstInGame ? 0 : listIndex + 1;
+            const newAmountInLevel = Object.keys(words[wordsListIndex][1]).length;
     
-            setListPointer(wordsListPointer);
-            setLevel(newLevel);
+            setListIndex(wordsListIndex);
             setAmountInLevel(newAmountInLevel);
         }
 
@@ -136,17 +135,20 @@ const KnewDidntKnowGame = () => {
         setWordPerLevelCount(isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1);
 
 
-        const newWordKey = Object.keys(words[wordsListPointer][1])[isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1];
-        const newWordDetails = words[wordsListPointer][1][newWordKey];
+        const newWordKey = Object.keys(words[wordsListIndex][1])[isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1];
+        const newWordDetails = words[wordsListIndex][1][newWordKey];
 
-        setWord(newWordKey);
-        setPirush(newWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"));
-        setType(newWordDetails.Type);
+        setCurrentWord({
+            word: newWordKey,
+            meaning: newWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
+            type: newWordDetails.Type,
+            level: newWordDetails.Group,
+        });
     };
 
     const setIsAnswerCorrect = (isCorrect: boolean) => {
-        const currentWordKey = Object.keys(words[listPointer][1])[wordPerLevelCount];
-        const currentWordDetails = words[listPointer][1][currentWordKey];
+        const currentWordKey = Object.keys(words[listIndex][1])[wordPerLevelCount];
+        const currentWordDetails = words[listIndex][1][currentWordKey];
 
         const currentWordToAdd: WordDetails = {
             FullWord: currentWordDetails.FullWord,
@@ -167,6 +169,10 @@ const KnewDidntKnowGame = () => {
         setAnswer(ButtonState.Continue);
     };
 
+
+    const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
+    const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
+
     // Animations
     useEffect(() => {
         fadeIn(fadeAnim).start();
@@ -185,11 +191,11 @@ const KnewDidntKnowGame = () => {
             <Animated.View style={[KnewDidntKnowGameStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
                 pointerEvents={isEndGame ? 'none' : 'auto'}>
                             <View style={KnewDidntKnowGameStyle.wordSection}>
-                    <Text style={KnewDidntKnowGameStyle.word}>{word}</Text>
+                    <Text style={KnewDidntKnowGameStyle.word}>{currentWord.word}</Text>
                 </View>
                 <View style={KnewDidntKnowGameStyle.texts}>  
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>סוג: {type}</Text>
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>רמה: {level}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>סוג: {currentWord.type}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>רמה: {currentWord.level}</Text>
                     <Text style={KnewDidntKnowGameStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
                 </View>
                 <View style={KnewDidntKnowGameStyle.interpretation}>
@@ -200,7 +206,7 @@ const KnewDidntKnowGame = () => {
                         style={KnewDidntKnowGameStyle.color}
                     >
                         <View style={KnewDidntKnowGameStyle.meaningContainer}>
-                            {answer != 1 ? <Text style={KnewDidntKnowGameStyle.meaning}>{pirush}</Text> : null}
+                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{currentWord.meaning}</Text> : null}
                         </View>
                     </LinearGradient>
                 </View>
