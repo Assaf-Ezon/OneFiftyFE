@@ -4,7 +4,7 @@ import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/
 import BaseWordsSelector from "./base_words_selector";
 
 
-export default class IncorrectWordsHandler extends BaseWordsSelector {
+export default class IncorrectWordsSelector extends BaseWordsSelector {
     selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
         // dict of the words that are considered "wrong words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};

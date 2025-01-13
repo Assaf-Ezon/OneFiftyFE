@@ -50,7 +50,7 @@ const MultipleChoicesGame = () => {
     const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
     const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
 
-    const [words, setWords] = useState<[string, { [word: string]: MultipleChoicesGameWordDictDetails }][]>([]);
+    const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
     const [listPointer, setListPointer] = useState<number>(0); // Pointer to the current level
@@ -65,7 +65,7 @@ const MultipleChoicesGame = () => {
 
     const [desiredMeaning, setDesiredMeaning] = useState<string>("");
 
-    const [meanings, setMeanings] = useState<string[]>([]);
+    const [meanings, setMeanings] = useState<string[] | undefined>([]);
 
     // Update the words list based on settings.language
     useEffect(() => {
@@ -89,7 +89,7 @@ const MultipleChoicesGame = () => {
         }
 
         const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, GAMES.MC.id);
-        let wordsList: [string, { [word: string]: MultipleChoicesGameWordDictDetails }][] = Object.entries(gameCreater.createList() as MultipleChoicesGameWords);
+        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(gameCreater.createList() as MultipleChoicesGameWords);
 
         Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
 
@@ -147,18 +147,19 @@ const MultipleChoicesGame = () => {
         setCorrectMeaning(convertMeaningsObjectToString(newWordDetails.Meanings));
         setType(newWordDetails.Type);
 
-        setMeanings(uniteCorrectAndIncorrectMeanings(newWordDetails));
+        setMeanings(newWordDetails.RandomMeanings);
+        // setMeanings(uniteCorrectAndIncorrectMeanings(newWordDetails));
     };
 
-    const uniteCorrectAndIncorrectMeanings = (wordDetails: MultipleChoicesGameWordDictDetails): string[] => {
-        const incorrectList: string[] = wordDetails.IncorrectMeanings.map((meanings) => convertMeaningsObjectToString(meanings));
-        const randomIndex: number = Math.floor(Math.random() * (incorrectList.length + 1));
+    // const uniteCorrectAndIncorrectMeanings = (wordDetails: GameWordDictDetails): string[] => {
+    //     const incorrectList: string[] = wordDetails.IncorrectMeanings.map((meanings) => convertMeaningsObjectToString(meanings));
+    //     const randomIndex: number = Math.floor(Math.random() * (incorrectList.length + 1));
         
-        const allMeanings: string[] = [...incorrectList];
-        allMeanings.splice(randomIndex, 0, convertMeaningsObjectToString(wordDetails.Meanings));
+    //     const allMeanings: string[] = [...incorrectList];
+    //     allMeanings.splice(randomIndex, 0, convertMeaningsObjectToString(wordDetails.Meanings));
 
-        return allMeanings;
-    };
+    //     return allMeanings;
+    // };
 
     const convertMeaningsObjectToString = (meanings: Meaning[]) => {
         return meanings.map((meaning) => meaning.Meaning).join("\n");
@@ -212,7 +213,7 @@ const MultipleChoicesGame = () => {
                 </View>
                 <View style={MultipleChoicesGameStyle.pirushim}>
                     {
-                        meanings.map((meaning) => {
+                        meanings?.map((meaning) => {
                                 return (
                                     <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!next ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
                                         <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: next && meaning === correctMeaning ? '600' : '300', 

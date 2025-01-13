@@ -4,6 +4,7 @@ import { Meaning } from "../basic_data_objects/meaning";
 export type GameWordDictDetails = {
     FullWord: string;
     Meanings: Meaning[];
+    RandomMeanings?: string[];
     Group: number;
     Type: string;
 }

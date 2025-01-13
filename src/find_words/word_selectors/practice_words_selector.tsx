@@ -3,7 +3,7 @@ import { WordStatisticsData } from "../../data_objects/words/basic_data_objects/
 import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/game_word_dict_details";
 import BaseWordsSelector from "./base_words_selector";
 
-export default class PracticeWordsHandler extends BaseWordsSelector {
+export default class PracticeWordsSelector extends BaseWordsSelector {
     selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
         // dict of the words that are considered "wrong words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
