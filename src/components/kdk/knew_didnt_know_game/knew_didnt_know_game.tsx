@@ -41,13 +41,15 @@ const KnewDidntKnowGame = () => {
         englishNewWords } = useWords();
 
     // State
+    const [answer, setAnswer] = useState<number>(ButtonState.ShowAnswer); // Button states
+
     const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
     const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
 
     const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
-    const [listIndex, setListIndex] = useState<number>(0); // Pointer to the current level
+    const [listIndex, setListIndex] = useState<number>(0); // index of the current level
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
     const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // Counter for the current level
@@ -59,8 +61,6 @@ const KnewDidntKnowGame = () => {
         type: "",
         level: 0,
     });
-
-    const [answer, setAnswer] = useState<number>(ButtonState.ShowAnswer); // Button states
     
     // Update the words list based on settings.language
     useEffect(() => {
@@ -94,7 +94,7 @@ const KnewDidntKnowGame = () => {
     // Initialize other state based on words list
     useEffect(() => {
         if (words.length > 0) {
-            setNewValuesForNextWord(true, false);
+            setNewValuesForNextWord(true);
 
             // Calculate total words
             let total = 0;
@@ -106,30 +106,27 @@ const KnewDidntKnowGame = () => {
         }
     }, [words]);
 
-    // Word change logic
-    const changeWord = () => {
-        if ((wordPerLevelCount + 1) === amountInLevel) {
+    const setNewValuesForNextWord = (isFirstInGame: boolean) => {
+        let isNextLevel: boolean = false;
+        let wordsListIndex: number = listIndex;
+
+        if (isFirstInGame) {
+            wordsListIndex = 0;
+        } else {
+            isNextLevel = (wordPerLevelCount + 1) == amountInLevel;
+        }
+        
+        if (isNextLevel) {
             if ((listIndex + 1) === words.length) {
                 toggleEndGameMenu();
-            } else {
-                setNewValuesForNextWord(false, true);
+                return;
             }
-        } else {
-            setNewValuesForNextWord(false, false);
-            setAnswer(ButtonState.ShowAnswer);
-        }
-    };
 
-    const setNewValuesForNextWord = (isFirstInGame: boolean, isNextLevel: boolean) => {
-        let wordsListIndex = listIndex;
-
-        if (isFirstInGame || isNextLevel) {
-            wordsListIndex = isFirstInGame ? 0 : listIndex + 1;
-            const newAmountInLevel = Object.keys(words[wordsListIndex][1]).length;
-    
-            setListIndex(wordsListIndex);
-            setAmountInLevel(newAmountInLevel);
+            wordsListIndex = listIndex + 1;
         }
+
+        setListIndex(wordsListIndex);
+        setAmountInLevel(Object.keys(words[wordsListIndex][1]).length);
 
         setWordCount(isFirstInGame || isNextLevel ? 0 : wordCount + 1);
         setWordPerLevelCount(isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1);
@@ -144,6 +141,8 @@ const KnewDidntKnowGame = () => {
             type: newWordDetails.Type,
             level: newWordDetails.Group,
         });
+
+        setAnswer(ButtonState.ShowAnswer);
     };
 
     const setIsAnswerCorrect = (isCorrect: boolean) => {
@@ -227,7 +226,7 @@ const KnewDidntKnowGame = () => {
                     </View>
                 ) : answer == ButtonState.Continue ? (
                     <Animated.View style={{ opacity: btnFadeAnim }}>
-                        <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={changeWord}>
+                        <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={() => {setNewValuesForNextWord(false)}}>
                             <Text style={KnewDidntKnowGameStyle.btnText}>המשך</Text>
                         </TouchableOpacity>
                     </Animated.View>

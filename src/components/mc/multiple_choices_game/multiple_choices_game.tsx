@@ -52,7 +52,7 @@ const MultipleChoicesGame = () => {
     const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
     const [totalWords, setTotalWords] = useState<number>(0);
 
-    const [listIndex, setListIndex] = useState<number>(0); // Pointer to the current level
+    const [listIndex, setListIndex] = useState<number>(0); // index of the current level
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
     const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // Counter for the current level
@@ -99,7 +99,7 @@ const MultipleChoicesGame = () => {
     // Initialize other state based on words list
     useEffect(() => {
         if (words.length > 0) {
-            setNewValuesForNextWord(true, false);
+            setNewValuesForNextWord(true);
 
             let total = 0;
             words.forEach(group => {
@@ -111,28 +111,27 @@ const MultipleChoicesGame = () => {
     }, [words]);
 
 
-    const changeWord = () => {
-        if ((wordPerLevelCount + 1) === amountInLevel) {
+    const setNewValuesForNextWord = (isFirstInGame: boolean) => {
+        let isNextLevel: boolean = false;
+        let wordsListIndex: number = listIndex;
+
+        if (isFirstInGame) {
+            wordsListIndex = 0;
+        } else {
+            isNextLevel = (wordPerLevelCount + 1) == amountInLevel;
+        }
+        
+        if (isNextLevel) {
             if ((listIndex + 1) === words.length) {
                 toggleEndGameMenu();
-            } else {
-                setNewValuesForNextWord(false, true);
+                return;
             }
-        } else {
-            setNewValuesForNextWord(false, false);
-        }
-    };
 
-    const setNewValuesForNextWord = (isFirstInGame: boolean, isNextLevel: boolean) => {
-        let wordsListIndex = listIndex;
-
-        if (isFirstInGame || isNextLevel) {
-            wordsListIndex = isFirstInGame ? 0 : listIndex + 1;
-            const newAmountInLevel = Object.keys(words[wordsListIndex][1]).length;
-    
-            setListIndex(wordsListIndex);
-            setAmountInLevel(newAmountInLevel);
+            wordsListIndex = listIndex + 1;
         }
+
+        setListIndex(wordsListIndex);
+        setAmountInLevel(Object.keys(words[wordsListIndex][1]).length);
 
         setWordCount(isFirstInGame || isNextLevel ? 0 : wordCount + 1);
         setWordPerLevelCount(isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1);
@@ -143,17 +142,12 @@ const MultipleChoicesGame = () => {
 
         setCurrentWord({
             word: newWordKey,
-            meaning: convertMeaningsObjectToString(newWordDetails.Meanings),
+            meaning: newWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
             type: newWordDetails.Type,
             level: newWordDetails.Group,
             meanings: newWordDetails.RandomMeanings,
         });
     };
-
-
-    const convertMeaningsObjectToString = (meanings: Meaning[]) => {
-        return meanings.map((meaning) => meaning.Meaning).join("\n");
-    }
 
     const setIfAnswerCorrect = (isCorrect: boolean) => {
         const currentWordKey = Object.keys(words[listIndex][1])[wordPerLevelCount];
@@ -226,7 +220,7 @@ const MultipleChoicesGame = () => {
                 </TouchableOpacity>
             ): null}
             {isNextBtn ? (
-                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(currentWord.meaning === desiredMeaning); changeWord();}}>
+                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(currentWord.meaning === desiredMeaning); setNewValuesForNextWord(false);}}>
                     <Text style={MultipleChoicesGameStyle.btnText}>המשך</Text>
                 </TouchableOpacity>
             ) : null}
