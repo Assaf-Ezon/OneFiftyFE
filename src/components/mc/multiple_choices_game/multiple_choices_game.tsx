@@ -54,7 +54,7 @@ const MultipleChoicesGame = () => {
     const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
-    const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(0); // Counter for the current level
+    const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(0); // index for the current level
 
     // current word
     const [currentWord, setCurrentWord] = useState<GameWordState>({
