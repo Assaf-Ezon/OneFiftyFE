@@ -26,6 +26,7 @@ import { Languages } from '../../../data_objects/enums/language';
 import { Screens } from '../../../data_objects/enums/screens';
 import { GAMES } from '../../../data_objects/enums/game_objects';
 import { GameWordState } from '../../../data_objects/general/game_word_state';
+import { GameWords } from '../../../data_objects/words/game_data_objects/game_words';
 
 const KnewDidntKnowGame = () => {
     // Navigation
@@ -40,35 +41,31 @@ const KnewDidntKnowGame = () => {
         hebrewNewWords,  
         englishNewWords } = useWords();
 
+
+
     // State
     const [answer, setAnswer] = useState<number>(ButtonState.ShowAnswer); // Button states
 
-    const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]);
-    const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]);
+    const [correctAnswers, setCorrectAnswers] = useState<WordDetails[]>([]); // list of the words the user got correctly
+    const [wrongAnswers, setWrongAnswers] = useState<WordDetails[]>([]); // list of the words the user got incorrectly
 
-    const [words, setWords] = useState<[string, { [word: string]: GameWordDictDetails }][]>([]);
-    const [totalWords, setTotalWords] = useState<number>(0);
+    const [totalWords, setTotalWords] = useState<number>(0); // total amount of words in the current game
 
-    const [listIndex, setListIndex] = useState<number>(0); // index of the current level
+    const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
-    const [wordPerLevelCount, setWordPerLevelCount] = useState<number>(0); // Counter for the current level
+    const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(0); // Counter for the current level
 
-
+    // current word
     const [currentWord, setCurrentWord] = useState<GameWordState>({
-        word: "",
-        meaning: "",
-        type: "",
-        level: 0,
+        Word: "",
+        Meaning: "",
+        Type: "",
+        Group: 0,
     });
     
-    // Update the words list based on settings.language
-    useEffect(() => {
-        if (!isSettingsFilled()) {
-            toggleLearningSettings();
-            navigation.navigate(Screens.LEARNING as never);
-        }
-
+    // sets at start the "words" state that holds the gameDict 
+    const setFirstWords = () => {
         let NewWords: Words = {};
         let UserStatistics: UserStatistics = {  WordsStatistics: {WordCount: 0, Words: {}}};
 
@@ -84,70 +81,75 @@ const KnewDidntKnowGame = () => {
         }
 
         const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, GAMES.KDK.id);
-        let wordsList: [string, { [word: string]: GameWordDictDetails }][] = Object.entries(gameCreater.createList());
+        const wordsList: GameWords = gameCreater.createList();
 
         Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
 
-        setWords(wordsList);
+        return wordsList;
+    }
+
+    const [words, setWords] = useState<GameWords>(setFirstWords()); // GameWordsDict
+
+    // validates if settings are filled
+    useEffect(() => {
+        if (!isSettingsFilled()) {
+            toggleLearningSettings();
+            navigation.navigate(Screens.LEARNING as never);
+        }
     }, []);
 
-    // Initialize other state based on words list
+    // Initialize first values in states for game 
     useEffect(() => {
-        if (words.length > 0) {
-            setNewValuesForNextWord(true);
-
-            // Calculate total words
+        if (Object.keys(words)) {
             let total = 0;
-            words.forEach(group => {
-                const wordGroup = group[1];
-                total += Object.keys(wordGroup).length;  
-            });
+
+            for (const groupId in words) {
+                const group = words[groupId];
+                total += Object.keys(group).length;
+            }
             setTotalWords(total);
+
+            setNewValuesForNextWord(true);
         }
     }, [words]);
 
     const setNewValuesForNextWord = (isFirstInGame: boolean) => {
-        let isNextLevel: boolean = false;
-        let wordsListIndex: number = listIndex;
+        let isNextLevel: boolean = (wordsInLevelIndex + 1) == amountInLevel;
+        let currentLevel: number = level;
 
-        if (isFirstInGame) {
-            wordsListIndex = 0;
-        } else {
-            isNextLevel = (wordPerLevelCount + 1) == amountInLevel;
-        }
-        
-        if (isNextLevel) {
-            if ((listIndex + 1) === words.length) {
-                toggleEndGameMenu();
-                return;
+        if (isFirstInGame || isNextLevel) {
+            currentLevel++;
+            while (!(currentLevel in words)) {
+                if (currentLevel > 10) {
+                    toggleEndGameMenu();
+                    return;
+                }
+
+                currentLevel++;
             }
+        } 
 
-            wordsListIndex = listIndex + 1;
-        }
+        setLevel(currentLevel);
+        setAmountInLevel(Object.entries(words[currentLevel]).length);
 
-        setListIndex(wordsListIndex);
-        setAmountInLevel(Object.keys(words[wordsListIndex][1]).length);
+        setWordCount(wordCount + 1);
+        setWordsInLevelIndex(isFirstInGame || isNextLevel ? 0 : wordsInLevelIndex + 1);
 
-        setWordCount(isFirstInGame || isNextLevel ? 0 : wordCount + 1);
-        setWordPerLevelCount(isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1);
-
-
-        const newWordKey = Object.keys(words[wordsListIndex][1])[isFirstInGame || isNextLevel ? 0 : wordPerLevelCount + 1];
-        const newWordDetails = words[wordsListIndex][1][newWordKey];
+        const nextWordDetails: GameWordDictDetails = Object.entries(words[currentLevel])[isFirstInGame || isNextLevel ? 0 : wordsInLevelIndex + 1][1];
 
         setCurrentWord({
-            word: newWordKey,
-            meaning: newWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
-            type: newWordDetails.Type,
-            level: newWordDetails.Group,
+            Word: nextWordDetails.FullWord,
+            Meaning: nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
+            Type: nextWordDetails.Type,
+            Group: nextWordDetails.Group,
+            Meanings: nextWordDetails.RandomMeanings,
         });
 
         setAnswer(ButtonState.ShowAnswer);
     };
 
     const setIsAnswerCorrect = (isCorrect: boolean) => {
-        const currentWordKey = Object.keys(words[listIndex][1])[wordPerLevelCount];
-        const currentWordDetails = words[listIndex][1][currentWordKey];
+        const currentWordDetails: GameWordDictDetails = Object.entries(words[level])[wordsInLevelIndex][1];
 
         const currentWordToAdd: WordDetails = {
             FullWord: currentWordDetails.FullWord,
@@ -190,12 +192,12 @@ const KnewDidntKnowGame = () => {
             <Animated.View style={[KnewDidntKnowGameStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
                 pointerEvents={isEndGame ? 'none' : 'auto'}>
                             <View style={KnewDidntKnowGameStyle.wordSection}>
-                    <Text style={KnewDidntKnowGameStyle.word}>{currentWord.word}</Text>
+                    <Text style={KnewDidntKnowGameStyle.word}>{currentWord.Word}</Text>
                 </View>
                 <View style={KnewDidntKnowGameStyle.texts}>  
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>סוג: {currentWord.type}</Text>
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>רמה: {currentWord.level}</Text>
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>כמות: {wordCount + 1}/{totalWords}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>סוג: {currentWord.Type}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>רמה: {currentWord.Group}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter}>כמות: {wordCount}/{totalWords}</Text>
                 </View>
                 <View style={KnewDidntKnowGameStyle.interpretation}>
                     <LinearGradient
@@ -205,7 +207,7 @@ const KnewDidntKnowGame = () => {
                         style={KnewDidntKnowGameStyle.color}
                     >
                         <View style={KnewDidntKnowGameStyle.meaningContainer}>
-                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{currentWord.meaning}</Text> : null}
+                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{currentWord.Meaning}</Text> : null}
                         </View>
                     </LinearGradient>
                 </View>
