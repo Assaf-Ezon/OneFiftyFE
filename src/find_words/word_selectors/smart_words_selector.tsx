@@ -20,7 +20,8 @@ export default class SmartWordsSelector extends BaseWordsSelector {
                         FullWord: practicedWords[word].Word.FullWord,
                         Meanings: practicedWords[word].Word.Meanings,
                         Group: practicedWords[word].Word.Group,
-                        Type: "תרגול (חכם)"
+                        Type: "תרגול (חכם)",
+                        ExtraParameters: {},
                     }
                     wordsMatchingToFilter[word] = WordDetails
             }

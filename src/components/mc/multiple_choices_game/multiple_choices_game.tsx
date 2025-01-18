@@ -28,6 +28,7 @@ import WordsDictCreator from '../../../find_words/words_dict_creator';
 
 import { GameWordState } from '../../../data_objects/general/game_word_state';
 import { GameWords } from '../../../data_objects/words/game_data_objects/game_words';
+import { EnrichersParamName } from '../../../data_objects/enums/enrichers_param_name';
 
 const MultipleChoicesGame = () => {    
     // Navigation
@@ -146,7 +147,7 @@ const MultipleChoicesGame = () => {
             Meaning: nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
             Type: nextWordDetails.Type,
             Group: nextWordDetails.Group,
-            Meanings: nextWordDetails.RandomMeanings,
+            Meanings: nextWordDetails.ExtraParameters[EnrichersParamName.RandomMeanings],
         });
     };
 

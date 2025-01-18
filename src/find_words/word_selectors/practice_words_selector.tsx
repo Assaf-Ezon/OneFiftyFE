@@ -15,7 +15,8 @@ export default class PracticeWordsSelector extends BaseWordsSelector {
                     FullWord: practicedWords[word].Word.FullWord,
                     Meanings: practicedWords[word].Word.Meanings,
                     Group: practicedWords[word].Word.Group,
-                    Type: "תרגול"
+                    Type: "תרגול",
+                    ExtraParameters: {},
                 }
                 wordsMatchingToFilter[word] = WordDetails;
             }

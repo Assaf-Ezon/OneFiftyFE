@@ -41,8 +41,6 @@ const KnewDidntKnowGame = () => {
         hebrewNewWords,  
         englishNewWords } = useWords();
 
-
-
     // State
     const [answer, setAnswer] = useState<number>(ButtonState.ShowAnswer); // Button states
 
@@ -84,7 +82,7 @@ const KnewDidntKnowGame = () => {
         const wordsList: GameWords = gameCreater.createList();
 
         Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
-
+        
         return wordsList;
     }
 
@@ -142,7 +140,6 @@ const KnewDidntKnowGame = () => {
             Meaning: nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
             Type: nextWordDetails.Type,
             Group: nextWordDetails.Group,
-            Meanings: nextWordDetails.RandomMeanings,
         });
 
         setAnswer(ButtonState.ShowAnswer);

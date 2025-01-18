@@ -17,7 +17,8 @@ export default class NewWordsSelector extends BaseWordsSelector {
                 FullWord: newWords[word].FullWord,
                 Meanings: newWords[word].Meanings,
                 Group: newWords[word].Group,
-                Type: "חדש"
+                Type: "חדש",
+                ExtraParameters: {},
             }
             wordsMatchingToFilter[word] = WordDetails;
         }

@@ -38,7 +38,8 @@ export default abstract class BaseWordsSelector {
                 FullWord: relevantWordsArray[randomIndex][1].FullWord,
                 Meanings: relevantWordsArray[randomIndex][1].Meanings,
                 Group: relevantWordsArray[randomIndex][1].Group,
-                Type: relevantWordsArray[randomIndex][1].Type
+                Type: relevantWordsArray[randomIndex][1].Type,
+                ExtraParameters: {},
             }
 
             // adds the index to the "used" indexes

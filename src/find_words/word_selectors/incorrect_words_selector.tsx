@@ -16,7 +16,8 @@ export default class IncorrectWordsSelector extends BaseWordsSelector {
                     FullWord: practicedWords[word].Word.FullWord,
                     Meanings: practicedWords[word].Word.Meanings,
                     Group: practicedWords[word].Word.Group,
-                    Type: "טעות"
+                    Type: "טעות",
+                    ExtraParameters: {},
                 }
                 wordsMatchingToFilter[word] = WordDetails;
             }

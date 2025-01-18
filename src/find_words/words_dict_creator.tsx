@@ -11,27 +11,31 @@ import { WordStatisticsData } from "../data_objects/words/basic_data_objects/wor
 import { WordDetails } from "../data_objects/words/basic_data_objects/word_details";
 import { Meaning } from "../data_objects/words/basic_data_objects/meaning";
 import { GAMES } from "../data_objects/enums/game_objects";
+import { GameMode } from "../data_objects/general/game_mode";
+
+import { EnricherByGamemode } from "./game_words_enrichers/enricher_by_gamemode";
+import BaseWordsEnricher from "./game_words_enrichers/base_words_enricher";
 
 export default class WordsDictCreator {
     private _settings: GameSettings;
-    private _flags_count: number; 
+    private _flagsCount: number; 
     private _words: GameWords;
-    private _game_mode: number;
+    private _enricher: BaseWordsEnricher | undefined;
 
     private _newWords: Words;
     private _statistics: UserStatistics; 
 
-    constructor(settings: GameSettings, new_words: Words, statistics: UserStatistics, game_mode: number) { 
+    constructor(settings: GameSettings, newWords: Words, statistics: UserStatistics, gameMode: GameMode) { 
         this._settings = settings;
-        this._flags_count = 0;
+        this._flagsCount = 0;
         this._updateFlagCount();
 
         this._words = {};
 
-        this._newWords = new_words;
+        this._newWords = newWords;
         this._statistics = statistics;
 
-        this._game_mode = game_mode;
+        this._enricher = EnricherByGamemode(gameMode);
     }
 
     setSettings(settings: GameSettings): void {
@@ -40,12 +44,12 @@ export default class WordsDictCreator {
     }
 
     _updateFlagCount(){
-        this._flags_count = 0;
+        this._flagsCount = 0;
 
-        this._flags_count += Number(this._settings.shouldIncludeNewWords);
-        this._flags_count += Number(this._settings.shouldIncludeIncorrectWords);
-        this._flags_count += Number(this._settings.shouldIncludePracticedwords);
-        this._flags_count += Number(this._settings.shouldIncludeSmartStudy);
+        this._flagsCount += Number(this._settings.shouldIncludeNewWords);
+        this._flagsCount += Number(this._settings.shouldIncludeIncorrectWords);
+        this._flagsCount += Number(this._settings.shouldIncludePracticedwords);
+        this._flagsCount += Number(this._settings.shouldIncludeSmartStudy);
     }
     
 
@@ -88,7 +92,7 @@ export default class WordsDictCreator {
                 }
             }
 
-            this.enrich();
+            this._enricher?.enrich(this._words, this._newWords, this._statistics);
 
             return Object.fromEntries(Object.entries(this._words).filter(([key, value]) => Object.keys(value).length !== 0));
             
@@ -100,13 +104,13 @@ export default class WordsDictCreator {
     }
 
     private _splitAmountToTypes(totalAmount: number): number[] { 
-        const baseValue = Math.floor(totalAmount / this._flags_count); 
-        const remainder = totalAmount % this._flags_count; 
+        const baseValue = Math.floor(totalAmount / this._flagsCount); 
+        const remainder = totalAmount % this._flagsCount; 
 
-        const result = Array(this._flags_count).fill(baseValue);
+        const result = Array(this._flagsCount).fill(baseValue);
         
         for (let i = 0; i < remainder; i++) {
-            result[this._flags_count - i - 1] += 1;
+            result[this._flagsCount - i - 1] += 1;
         }
         
         return result;
@@ -120,94 +124,5 @@ export default class WordsDictCreator {
     checkLevelExistsInStatisticsList(level: number): boolean {
         return true; // TODO: remove. As for now, if there is no validation over if the level exist or not them it might throw an error 
         return level in this._statistics.WordsStatistics.Words;
-    }
-
-    enrich() {
-        switch (this._game_mode) {
-            case GAMES.KDK.id:
-                break;
-            case GAMES.MC.id:
-                this._enrichMultipleChoices();
-                break;
-        }
-    }
-
-    _enrichMultipleChoices() {
-        for (const level of Object.values(this._words)) {
-            for (const word_key of Object.keys(level)) {
-                let currectWord = level[word_key];
-                const currentWordMeaning = this._getMeaningsAsString(currectWord.Meanings);
-
-                let firstRandomMeaning: string = this._findRandomMeaning();
-
-                while (firstRandomMeaning == currentWordMeaning) {
-                    firstRandomMeaning = this._findRandomMeaning();
-                }
-
-                let secondRandomMeaning: string = this._findRandomMeaning();
-
-                while (secondRandomMeaning == currentWordMeaning || firstRandomMeaning == secondRandomMeaning) {
-                    secondRandomMeaning = this._findRandomMeaning();
-                }
-
-                let thirdRandomMeaning: string = this._findRandomMeaning();
-
-                while (thirdRandomMeaning == currentWordMeaning || firstRandomMeaning == thirdRandomMeaning || secondRandomMeaning == thirdRandomMeaning) {
-                    thirdRandomMeaning = this._findRandomMeaning();
-                }
-
-                const randomMeanings = [firstRandomMeaning, secondRandomMeaning, thirdRandomMeaning];
-
-                const randomIndex: number = Math.floor(Math.random() * (randomMeanings.length + 1));
-        
-                const allMeanings: string[] = [...randomMeanings];
-                allMeanings.splice(randomIndex, 0, this._getMeaningsAsString(currectWord.Meanings));
-
-                currectWord.RandomMeanings = allMeanings;
-            }
-        }
-    }
-
-    _findRandomMeaning(): string {
-        let randomWordInLevel: WordDetails;
-
-        const newWordsRatio = this._precentageNewWordsToTotal();
-
-        const randomNumberInRatio = Math.floor(Math.random() * 100) + 1;
-        if (randomNumberInRatio > newWordsRatio) {
-            const levels = Object.keys(this._statistics.WordsStatistics.Words); // all levels
-            let randomLevel = this._statistics.WordsStatistics.Words[Math.floor(Math.random() * levels.length)]; // random level from existing levels
-            randomWordInLevel = Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)].Word; // random word in the random level
-        } 
-        else {
-            const levels = Object.keys(this._newWords); // all levels
-            let randomLevel = this._newWords[Math.floor(Math.random() * levels.length)]; // random level from existing levels
-            randomWordInLevel = Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)]; // random word in the random level
-        }
-
-        return this._getMeaningsAsString(randomWordInLevel.Meanings);
-    }
-
-    _getMeaningsAsString (meaningsObject: Meaning[]): string {
-        return meaningsObject.map(item => item.Meaning).join("\n");
-    }
-
-    _precentageNewWordsToTotal (): number {
-        let newWordsTotal = this._getAmountOfWords(this._newWords);
-        let practiceWordsTotal = this._getAmountOfWords(this._statistics.WordsStatistics.Words);;
-
-        return Math.floor((newWordsTotal / (newWordsTotal + practiceWordsTotal)) * 100);
-    }
-
-    _getAmountOfWords (words: Words | { [groupId: number]: { [word: string]: WordStatisticsData; } }): number {
-        let total = 0;
-
-        for (const level of Object.values(words)) {
-            for (const word of Object.keys(level)) {
-                total += 1;
-            }
-        }
-
-        return total
     }
 }
