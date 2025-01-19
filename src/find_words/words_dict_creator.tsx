@@ -20,7 +20,7 @@ export default class WordsDictCreator {
     private _settings: GameSettings;
     private _flagsCount: number; 
     private _words: GameWords;
-    private _enricher: BaseWordsEnricher | undefined;
+    private _enricher: BaseWordsEnricher;
 
     private _newWords: Words;
     private _statistics: UserStatistics; 
@@ -92,7 +92,7 @@ export default class WordsDictCreator {
                 }
             }
 
-            this._enricher?.enrich(this._words, this._newWords, this._statistics);
+            this._enricher.enrich(this._words, this._newWords, this._statistics);
 
             return Object.fromEntries(Object.entries(this._words).filter(([key, value]) => Object.keys(value).length !== 0));
             

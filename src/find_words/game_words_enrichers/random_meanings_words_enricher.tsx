@@ -8,7 +8,7 @@ import { UserStatistics } from "../../data_objects/words/statistics/user_statist
 
 import BaseWordsEnricher from "./base_words_enricher";
 
-export default class RandomMeaningsEnricher extends BaseWordsEnricher {    
+export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {    
     enrich(wordsDictToEnrich: GameWords, newWords: Words, statistics: UserStatistics) {
         for (const level of Object.values(wordsDictToEnrich)) {
             for (const word_key of Object.keys(level)) {
