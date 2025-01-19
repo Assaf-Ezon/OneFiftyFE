@@ -165,8 +165,8 @@ const KnewDidntKnowGame = () => {
         setAnswer(ButtonState.Continue);
     };
 
-    const convertMeaningsTypeToString = (meaning: Meaning[]) => {
-        return meaning.map((meaning) => meaning.Meaning).join("\n");
+    const getMeaningsAsString = (meaningsObject: Meaning[]) => {
+        return meaningsObject.map((meaning) => meaning.Meaning).join("\n");
     }
 
     const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
@@ -205,7 +205,7 @@ const KnewDidntKnowGame = () => {
                         style={KnewDidntKnowGameStyle.color}
                     >
                         <View style={KnewDidntKnowGameStyle.meaningContainer}>
-                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{convertMeaningsTypeToString(currentWord.Meanings)}</Text> : null}
+                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{getMeaningsAsString(currentWord.Meanings)}</Text> : null}
                         </View>
                     </LinearGradient>
                 </View>
