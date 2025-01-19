@@ -25,8 +25,8 @@ import { UserStatistics } from '../../../data_objects/words/statistics/user_stat
 import { Languages } from '../../../data_objects/enums/language';
 import { Screens } from '../../../data_objects/enums/screens';
 import { GAMES } from '../../../data_objects/enums/game_objects';
-import { GameWordState } from '../../../data_objects/general/game_word_state';
 import { GameWords } from '../../../data_objects/words/game_data_objects/game_words';
+import { Meaning } from '../../../data_objects/words/basic_data_objects/meaning';
 
 const KnewDidntKnowGame = () => {
     // Navigation
@@ -49,17 +49,18 @@ const KnewDidntKnowGame = () => {
 
     const [totalWords, setTotalWords] = useState<number>(0); // total amount of words in the current game
 
-    const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level
+    const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level, change it in the "setNewValuesForNextWord" as well
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
     const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(0); // index for the current level
 
     // current word
-    const [currentWord, setCurrentWord] = useState<GameWordState>({
-        Word: "",
-        Meaning: "",
-        Type: "",
+    const [currentWord, setCurrentWord] = useState<GameWordDictDetails>({
+        FullWord: "",
+        Meanings: [],
         Group: 0,
+        Type: "",
+        ExtraParameters: {},
     });
     
     // sets at start the "words" state that holds the gameDict 
@@ -106,12 +107,14 @@ const KnewDidntKnowGame = () => {
                 total += Object.keys(group).length;
             }
             setTotalWords(total);
-
-            setNewValuesForNextWord(true);
+            
+            setNewValuesForNextWord();
         }
     }, [words]);
 
-    const setNewValuesForNextWord = (isFirstInGame: boolean) => {
+    const setNewValuesForNextWord = () => {
+        const isFirstInGame: boolean = level == -1;
+
         let isNextLevel: boolean = (wordsInLevelIndex + 1) == amountInLevel;
         let currentLevel: number = level;
 
@@ -130,17 +133,12 @@ const KnewDidntKnowGame = () => {
         setLevel(currentLevel);
         setAmountInLevel(Object.entries(words[currentLevel]).length);
 
+        const nextWordsInLevelIndex = wordsInLevelIndex + 1;
+
         setWordCount(wordCount + 1);
-        setWordsInLevelIndex(isFirstInGame || isNextLevel ? 0 : wordsInLevelIndex + 1);
+        setWordsInLevelIndex(isFirstInGame || isNextLevel ? 0 : nextWordsInLevelIndex);
 
-        const nextWordDetails: GameWordDictDetails = Object.entries(words[currentLevel])[isFirstInGame || isNextLevel ? 0 : wordsInLevelIndex + 1][1];
-
-        setCurrentWord({
-            Word: nextWordDetails.FullWord,
-            Meaning: nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
-            Type: nextWordDetails.Type,
-            Group: nextWordDetails.Group,
-        });
+        setCurrentWord(Object.entries(words[currentLevel])[isFirstInGame || isNextLevel ? 0 : nextWordsInLevelIndex][1]);
 
         setAnswer(ButtonState.ShowAnswer);
     };
@@ -167,6 +165,9 @@ const KnewDidntKnowGame = () => {
         setAnswer(ButtonState.Continue);
     };
 
+    const convertMeaningsTypeToString = (meaning: Meaning[]) => {
+        return meaning.map((meaning) => meaning.Meaning).join("\n");
+    }
 
     const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
     const btnFadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
@@ -189,7 +190,7 @@ const KnewDidntKnowGame = () => {
             <Animated.View style={[KnewDidntKnowGameStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
                 pointerEvents={isEndGame ? 'none' : 'auto'}>
                             <View style={KnewDidntKnowGameStyle.wordSection}>
-                    <Text style={KnewDidntKnowGameStyle.word}>{currentWord.Word}</Text>
+                    <Text style={KnewDidntKnowGameStyle.word}>{currentWord.FullWord}</Text>
                 </View>
                 <View style={KnewDidntKnowGameStyle.texts}>  
                     <Text style={KnewDidntKnowGameStyle.wordCounter}>סוג: {currentWord.Type}</Text>
@@ -204,7 +205,7 @@ const KnewDidntKnowGame = () => {
                         style={KnewDidntKnowGameStyle.color}
                     >
                         <View style={KnewDidntKnowGameStyle.meaningContainer}>
-                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{currentWord.Meaning}</Text> : null}
+                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{convertMeaningsTypeToString(currentWord.Meanings)}</Text> : null}
                         </View>
                     </LinearGradient>
                 </View>
@@ -225,7 +226,7 @@ const KnewDidntKnowGame = () => {
                     </View>
                 ) : answer == ButtonState.Continue ? (
                     <Animated.View style={{ opacity: btnFadeAnim }}>
-                        <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={() => {setNewValuesForNextWord(false)}}>
+                        <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={() => {setNewValuesForNextWord()}}>
                             <Text style={KnewDidntKnowGameStyle.btnText}>המשך</Text>
                         </TouchableOpacity>
                     </Animated.View>

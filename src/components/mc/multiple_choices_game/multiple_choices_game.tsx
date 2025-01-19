@@ -26,9 +26,9 @@ import { GAMES } from '../../../data_objects/enums/game_objects';
 import { Screens } from '../../../data_objects/enums/screens';
 import WordsDictCreator from '../../../find_words/words_dict_creator';
 
-import { GameWordState } from '../../../data_objects/general/game_word_state';
 import { GameWords } from '../../../data_objects/words/game_data_objects/game_words';
 import { EnrichersParamName } from '../../../data_objects/enums/enrichers_param_name';
+import { Meaning } from '../../../data_objects/words/basic_data_objects/meaning';
 
 const MultipleChoicesGame = () => {    
     // Navigation
@@ -52,18 +52,18 @@ const MultipleChoicesGame = () => {
 
     const [totalWords, setTotalWords] = useState<number>(0); // total amount of words in the current game
 
-    const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level
+    const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level, change it in the "setNewValuesForNextWord" as well
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
     const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(0); // index for the current level
 
     // current word
-    const [currentWord, setCurrentWord] = useState<GameWordState>({
-        Word: "",
-        Meaning: "",
-        Type: "",
+    const [currentWord, setCurrentWord] = useState<GameWordDictDetails>({
+        FullWord: "",
+        Meanings: [{Meaning: '', Source: ''}],
         Group: 0,
-        Meanings: [],
+        Type: "",
+        ExtraParameters: {[EnrichersParamName.RandomMeanings]: []},
     });
 
     const [desiredMeaning, setDesiredMeaning] = useState<string>(""); // the meaning that the user chose right now
@@ -113,12 +113,14 @@ const MultipleChoicesGame = () => {
             }
             setTotalWords(total);
 
-            setNewValuesForNextWord(true);
+            setNewValuesForNextWord();
         }
     }, [words]);
 
 
-    const setNewValuesForNextWord = (isFirstInGame: boolean) => {
+    const setNewValuesForNextWord = () => {
+        const isFirstInGame: boolean = level == -1;
+
         let isNextLevel: boolean = (wordsInLevelIndex + 1) == amountInLevel;
         let currentLevel: number = level;
 
@@ -137,18 +139,12 @@ const MultipleChoicesGame = () => {
         setLevel(currentLevel);
         setAmountInLevel(Object.entries(words[currentLevel]).length);
 
+        const nextWordsInLevelIndex = wordsInLevelIndex + 1;
+
         setWordCount(wordCount + 1);
-        setWordsInLevelIndex(isFirstInGame || isNextLevel ? 0 : wordsInLevelIndex + 1);
+        setWordsInLevelIndex(isFirstInGame || isNextLevel ? 0 : nextWordsInLevelIndex);
 
-        const nextWordDetails: GameWordDictDetails = Object.entries(words[currentLevel])[isFirstInGame || isNextLevel ? 0 : wordsInLevelIndex + 1][1];
-
-        setCurrentWord({
-            Word: nextWordDetails.FullWord,
-            Meaning: nextWordDetails.Meanings.map((meaning) => meaning.Meaning).join("\n"),
-            Type: nextWordDetails.Type,
-            Group: nextWordDetails.Group,
-            Meanings: nextWordDetails.ExtraParameters[EnrichersParamName.RandomMeanings],
-        });
+        setCurrentWord(Object.entries(words[currentLevel])[isFirstInGame || isNextLevel ? 0 : nextWordsInLevelIndex][1]);
     };
 
     const setIfAnswerCorrect = (isCorrect: boolean) => {
@@ -179,17 +175,21 @@ const MultipleChoicesGame = () => {
         setIsCheckBtn(true);
     };
 
+    const convertMeaningsTypeToString = (meaning: Meaning[]) => {
+        return meaning.map((meaning) => meaning.Meaning).join("\n");
+    }
+
     const fadeAnim = useState<Animated.Value>(new Animated.Value(0))[0];
 
     useEffect(() => {
         fadeIn(fadeAnim).start();
-    }, [currentWord.Meaning, fadeAnim]);
+    }, [currentWord.FullWord, fadeAnim]);
 
     return (
         <>
             <Animated.View style={[MultipleChoicesGameStyle.question, {opacity: fadeAnim}]}>
                 <View style={MultipleChoicesGameStyle.wordSection}>
-                    <Text style={MultipleChoicesGameStyle.word}>{currentWord.Word}</Text>
+                    <Text style={MultipleChoicesGameStyle.word}>{currentWord.FullWord}</Text>
                 </View>
                 <View style={MultipleChoicesGameStyle.texts}>  
                     <Text style={MultipleChoicesGameStyle.wordCounter}>סוג: {currentWord.Type}</Text>
@@ -198,16 +198,16 @@ const MultipleChoicesGame = () => {
                 </View>
                 <View style={MultipleChoicesGameStyle.pirushim}>
                     {
-                        currentWord.Meanings?.map((meaning) => {
+                        currentWord.ExtraParameters[EnrichersParamName.RandomMeanings].map((meaning: string) => {
                                 return (
                                     <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!isNextBtn ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
-                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: isNextBtn && meaning === currentWord.Meaning ? '600' : '300', 
+                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: isNextBtn && meaning === convertMeaningsTypeToString(currentWord.Meanings) ? '600' : '300', 
                                             textDecorationLine: isNextBtn && meaning === desiredMeaning ? 'underline' : 'none'}]}>
                                             {meaning}
                                         </Text>
                                         <Image source={meaning ===  desiredMeaning && isCheckBtn ? IMAGES.chosen_option : 
-                                            meaning === currentWord.Meaning && isNextBtn ? IMAGES.correct : 
-                                            isNextBtn && meaning !== currentWord.Meaning ? IMAGES.wrong : IMAGES.option} 
+                                            meaning === convertMeaningsTypeToString(currentWord.Meanings) && isNextBtn ? IMAGES.correct : 
+                                            isNextBtn && meaning !== convertMeaningsTypeToString(currentWord.Meanings) ? IMAGES.wrong : IMAGES.option} 
                                         style={MultipleChoicesGameStyle.option_image} />
                                     </TouchableOpacity>
                                 )
@@ -221,7 +221,7 @@ const MultipleChoicesGame = () => {
                 </TouchableOpacity>
             ): null}
             {isNextBtn ? (
-                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(currentWord.Meaning === desiredMeaning); setNewValuesForNextWord(false);}}>
+                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(convertMeaningsTypeToString(currentWord.Meanings) === desiredMeaning); setNewValuesForNextWord();}}>
                     <Text style={MultipleChoicesGameStyle.btnText}>המשך</Text>
                 </TouchableOpacity>
             ) : null}
