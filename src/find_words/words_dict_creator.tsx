@@ -9,11 +9,9 @@ import { UserStatistics } from "../data_objects/words/statistics/user_statistics
 import { GameWords } from "../data_objects/words/game_data_objects/game_words";
 import { WordStatisticsData } from "../data_objects/words/basic_data_objects/word_statistics_data";
 import { WordDetails } from "../data_objects/words/basic_data_objects/word_details";
-import { Meaning } from "../data_objects/words/basic_data_objects/meaning";
-import { GAMES } from "../data_objects/enums/game_objects";
 import { GameMode } from "../data_objects/general/game_mode";
 
-import { EnricherByGamemode } from "./game_words_enrichers/enricher_by_gamemode";
+import { CreateEnricher } from "./game_words_enrichers/create_enricher";
 import BaseWordsEnricher from "./game_words_enrichers/base_words_enricher";
 
 export default class WordsDictCreator {
@@ -35,7 +33,7 @@ export default class WordsDictCreator {
         this._newWords = newWords;
         this._statistics = statistics;
 
-        this._enricher = EnricherByGamemode(gameMode);
+        this._enricher = CreateEnricher(gameMode);
     }
 
     setSettings(settings: GameSettings): void {

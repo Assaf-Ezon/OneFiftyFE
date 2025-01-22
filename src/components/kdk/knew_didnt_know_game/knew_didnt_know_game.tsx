@@ -52,7 +52,7 @@ const KnewDidntKnowGame = () => {
     const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level, change it in the "setNewValuesForNextWord" as well
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
-    const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(0); // index for the current level
+    const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(-1); // index for the current level
 
     // current word
     const [currentWord, setCurrentWord] = useState<GameWordDictDetails>({
@@ -113,12 +113,10 @@ const KnewDidntKnowGame = () => {
     }, [words]);
 
     const setNewValuesForNextWord = () => {
-        const isFirstInGame: boolean = level == -1;
-
         let isNextLevel: boolean = (wordsInLevelIndex + 1) == amountInLevel;
         let currentLevel: number = level;
 
-        if (isFirstInGame || isNextLevel) {
+        if (isNextLevel) {
             currentLevel++;
             while (!(currentLevel in words)) {
                 if (currentLevel > 10) {
@@ -133,12 +131,12 @@ const KnewDidntKnowGame = () => {
         setLevel(currentLevel);
         setAmountInLevel(Object.entries(words[currentLevel]).length);
 
-        const nextWordsInLevelIndex = wordsInLevelIndex + 1;
+        const nextWordsInLevelIndex = isNextLevel ? 0 : wordsInLevelIndex + 1;
 
         setWordCount(wordCount + 1);
-        setWordsInLevelIndex(isFirstInGame || isNextLevel ? 0 : nextWordsInLevelIndex);
+        setWordsInLevelIndex(nextWordsInLevelIndex);
 
-        setCurrentWord(Object.entries(words[currentLevel])[isFirstInGame || isNextLevel ? 0 : nextWordsInLevelIndex][1]);
+        setCurrentWord(Object.entries(words[currentLevel])[nextWordsInLevelIndex][1]);
 
         setAnswer(ButtonState.ShowAnswer);
     };

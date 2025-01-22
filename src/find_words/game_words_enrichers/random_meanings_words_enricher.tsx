@@ -41,28 +41,21 @@ export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {
     }
 
     private _findRandomMeaning(newWords: Words, statistics: { [groupId: number]: { [word: string]: WordStatisticsData; } }): string {
-        // gets the ratio of "new" words / all words
-        const newWordsRatio = this._precentageNewWordsToTotal(newWords, statistics);
+        // gets the threshold of "new" words / all words
+        const newWordsThreshold = this._precentageNewWordsToTotal(newWords, statistics);
 
         // generates a random number between 1-100
-        const randomNumberInRatio = Math.floor(Math.random() * 100) + 1;
+        const randomNumberInThreshold = Math.floor(Math.random() * 100) + 1;
 
-        let randomLevel;
-        let levels: string[];
-        let randomWordInLevel: WordDetails;
+        // picks "newWords" or "statistics" depend on the random number and the threshold
+        const usedWordsDict = randomNumberInThreshold > newWordsThreshold ? statistics : newWords;
 
-        // if the random number is higher then the "new" words ratio, then it will take a random meaning from the "statistics" words dict
-        if (randomNumberInRatio > newWordsRatio) {
-            levels = Object.keys(statistics); // all levels
-            randomLevel = statistics[Math.floor(Math.random() * levels.length)]; // random level from existing levels
-            randomWordInLevel = Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)].Word; // random word in the random level
-        } 
-        // if the random number is lower then or equal to the "new" words ratio, it will take a random meaning from the "new" words dict
-        else {
-            levels = Object.keys(newWords); // all levels
-            randomLevel = newWords[Math.floor(Math.random() * levels.length)]; // random level from existing levels
-            randomWordInLevel = Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)]; // random word in the random level
-        }
+        const levels = Object.keys(usedWordsDict); // all levels
+        const randomLevel = (usedWordsDict)[Math.floor(Math.random() * levels.length)]; // random level from existing levels
+
+        const randomWordInLevel: WordDetails = randomNumberInThreshold > newWordsThreshold ? // random word in the random level
+        Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)].Word
+        : Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)];
 
         return this._getMeaningsAsString(randomWordInLevel.Meanings);
     }
