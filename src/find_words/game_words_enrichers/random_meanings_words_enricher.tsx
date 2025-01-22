@@ -48,10 +48,10 @@ export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {
         const randomNumberInThreshold = Math.floor(Math.random() * 100) + 1;
 
         // picks "newWords" or "statistics" depend on the random number and the threshold
-        const usedWordsDict = randomNumberInThreshold > newWordsThreshold ? statistics : newWords;
+        const selectedWordsDict = randomNumberInThreshold > newWordsThreshold ? statistics : newWords;
 
-        const levels = Object.keys(usedWordsDict); // all levels
-        const randomLevel = (usedWordsDict)[Math.floor(Math.random() * levels.length)]; // random level from existing levels
+        const levels = Object.keys(selectedWordsDict); // all levels
+        const randomLevel = (selectedWordsDict)[Math.floor(Math.random() * levels.length)]; // random level from existing levels
 
         const randomWordInLevel: WordDetails = randomNumberInThreshold > newWordsThreshold ? // random word in the random level
         Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)].Word
