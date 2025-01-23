@@ -1,17 +1,17 @@
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-import React from 'react';
 import { IMAGES } from '../../../image_handler';
+import React from 'react';
 
-import KDKGamePageStyle from './kdk_game_page_style';
+import MultipleChoicesPageStyle from './multiple_choices_page_style';
+import MultipleChoicesGame from '../multiple_choices_game/multiple_choices_game';
 
-import KnewDidntKnowGame from '../knew_didnt_know_game/knew_didnt_know_game';
-import LeaveGame from '../../games/leave_game/leave_game';
 import GameError from '../../games/game_error/game_error';
+import LeaveGame from '../../games/leave_game/leave_game';
+import { useEndGameContext } from '../../../context/game_context/end_game_context';
 import { useLeaveGameContext } from '../../../context/game_context/leave_game_context';
 import { useGameErrorContext } from '../../../context/game_context/game_error_context';
-import { useEndGameContext } from '../../../context/game_context/end_game_context';
 
-const KDKGamePage = () => {
+const MultipleChoicesPage = () => {    
     const { isEndGame } = useEndGameContext();
     const { isLeaveGame, toggleLeaveGameMenu } = useLeaveGameContext();
     const { isGameError } = useGameErrorContext();
@@ -19,20 +19,18 @@ const KDKGamePage = () => {
     const handleBackPress = () => {
         isEndGame ? null : toggleLeaveGameMenu();
     }
-
     return (
         <>
-            <View style={[{opacity: isLeaveGame || isGameError ? 0.6 : 1}, KDKGamePageStyle.container]}
-            pointerEvents={isLeaveGame || isGameError ? 'none' : 'auto'}>
-                <View style={KDKGamePageStyle.topPart}>
-                    <View style={[{opacity: isEndGame ? 0.6 : 1}, KDKGamePageStyle.topPartText]}>
+            <View style={[{opacity: isLeaveGame || isGameError ? 0.6 : 1}, MultipleChoicesPageStyle.container]}>
+                <View style={MultipleChoicesPageStyle.topPart}>
+                    <View style={[{opacity: isEndGame ? 0.6 : 1}, MultipleChoicesPageStyle.topPartText]}>
                         <TouchableOpacity onPress={() => {handleBackPress()}}>
                             <Image source={IMAGES.back_icon} />
                         </TouchableOpacity>
-                        <Text style={KDKGamePageStyle.pageTitle}>ידעתי / לא ידעתי</Text>
+                        <Text style={MultipleChoicesPageStyle.pageTitle}>שאלון אמריקאי</Text>
                     </View>
                 </View>
-                <KnewDidntKnowGame />
+                <MultipleChoicesGame />
             </View>
             {isGameError ? <GameError /> : null}
             {isLeaveGame ? <LeaveGame /> : null}
@@ -40,4 +38,4 @@ const KDKGamePage = () => {
     );
 };  
 
-export default KDKGamePage;
+export default MultipleChoicesPage;

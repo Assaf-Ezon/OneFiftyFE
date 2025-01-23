@@ -6,4 +6,5 @@ export type GameWordDictDetails = {
     Meanings: Meaning[];
     Group: number;
     Type: string;
+    ExtraParameters: {[key: string]: any};
 }

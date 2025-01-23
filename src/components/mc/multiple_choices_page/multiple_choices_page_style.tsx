@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const PagePartStyle = StyleSheet.create({
+const MultipleChoicesPageStyle = StyleSheet.create({
     container: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -30,4 +30,4 @@ const PagePartStyle = StyleSheet.create({
     },
 });
 
-export default PagePartStyle;
+export default MultipleChoicesPageStyle;

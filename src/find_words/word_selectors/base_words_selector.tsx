@@ -4,7 +4,7 @@ import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/
 import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
 
 export default abstract class BaseWordsSelector {
-    select(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, groupId: number, totalAmount: number, wordsDict: GameWords) {
+    select(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, groupId: number, totalAmount: number, wordsDict: GameWords): GameWords {
         if (!wordsDict[groupId]) {
             wordsDict[groupId] = {};
         }
@@ -17,10 +17,9 @@ export default abstract class BaseWordsSelector {
         this.addRandomWordsToGameWords(relevantPracticedWordsArray, split.practicedAmount, wordsDict, groupId);
 
         return wordsDict;
-
     }
 
-    addRandomWordsToGameWords(relevantWordsArray: [string, GameWordDictDetails][], amountToAdd: number, wordsDict: GameWords, groupId: number){
+    addRandomWordsToGameWords(relevantWordsArray: [string, GameWordDictDetails][], amountToAdd: number, wordsDict: GameWords, groupId: number) {
         // contains the "used" indexes
         const takenWordsindexList: number[] = [];
         
@@ -39,7 +38,8 @@ export default abstract class BaseWordsSelector {
                 FullWord: relevantWordsArray[randomIndex][1].FullWord,
                 Meanings: relevantWordsArray[randomIndex][1].Meanings,
                 Group: relevantWordsArray[randomIndex][1].Group,
-                Type: relevantWordsArray[randomIndex][1].Type
+                Type: relevantWordsArray[randomIndex][1].Type,
+                ExtraParameters: {},
             }
 
             // adds the index to the "used" indexes

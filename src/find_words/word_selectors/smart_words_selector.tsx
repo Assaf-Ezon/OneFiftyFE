@@ -1,14 +1,11 @@
 import { WordStatisticsData } from '../../data_objects/words/basic_data_objects/word_statistics_data';
-import { Words } from '../../data_objects/words/basic_data_objects/words';
-import { GameWords } from '../../data_objects/words/game_data_objects/game_words';
-import { UserStatistics } from '../../data_objects/words/statistics/user_statistics';
 
 import NewWordsSelector from './new_words_selector';
 import BaseWordsSelector from './base_words_selector';
 import { WordDetails } from '../../data_objects/words/basic_data_objects/word_details';
 import { GameWordDictDetails } from '../../data_objects/words/game_data_objects/game_word_dict_details';
 
-export default class SmartWordsHandler extends BaseWordsSelector {
+export default class SmartWordsSelector extends BaseWordsSelector {
     selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
         // dict of the words that are considered "smart practice words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
@@ -23,7 +20,8 @@ export default class SmartWordsHandler extends BaseWordsSelector {
                         FullWord: practicedWords[word].Word.FullWord,
                         Meanings: practicedWords[word].Word.Meanings,
                         Group: practicedWords[word].Word.Group,
-                        Type: "תרגול (חכם)"
+                        Type: "תרגול (חכם)",
+                        ExtraParameters: {},
                     }
                     wordsMatchingToFilter[word] = WordDetails
             }

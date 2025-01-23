@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-const QuestionStyle = StyleSheet.create({
+const MultipleChoicesGameStyle = StyleSheet.create({
     question: {
         top: width * 0.1,
         width: width * 0.9,
@@ -14,7 +14,7 @@ const QuestionStyle = StyleSheet.create({
         marginTop: 10,
         width: '100%',
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
     wordCounter: {
@@ -27,6 +27,11 @@ const QuestionStyle = StyleSheet.create({
         fontWeight: '600',
         shadowOpacity: 0.05,
         shadowRadius: 1,
+    },
+    texts: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
     },
     pirushim: {
         height: height * 0.4,
@@ -71,4 +76,4 @@ const QuestionStyle = StyleSheet.create({
     },
 });
 
-export default QuestionStyle;
+export default MultipleChoicesGameStyle;
