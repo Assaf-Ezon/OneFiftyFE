@@ -74,7 +74,7 @@ const TopRated = () => {
             </View>
             {loading ? <View style={TopRatedStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
             {
-                leaderboardData && leaderboardData ? leaderboardData.map((score, index) => {
+                leaderboardData ? leaderboardData.map((score, index) => {
                     return (
                         <LeaderboardCard
                             key={index}

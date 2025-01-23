@@ -10,6 +10,7 @@ const WordsStyle = StyleSheet.create({
     container: {
         marginBottom: 15,
         width: width * 0.9,
+        flexGrow: 1,
     },
     blank: {
         height: height * 0.15,
