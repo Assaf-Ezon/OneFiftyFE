@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ const EndGameStyle = StyleSheet.create({
          height: '20%',
     },
     title: {
-        fontSize: 28,
+        fontSize: calculateFontSize(28),
         fontWeight: '700',
         textAlign: 'right',
     },
@@ -40,12 +41,12 @@ const EndGameStyle = StyleSheet.create({
         width: '100%',
     },
     sum: {
-        fontSize: 16,
+        fontSize: calculateFontSize(16),
         fontWeight: '500',
         textAlign: 'right',
     },
     lang: {
-        fontSize: 16,
+        fontSize: calculateFontSize(16),
         fontWeight: '500',
         textAlign: 'right',
     },
@@ -54,7 +55,7 @@ const EndGameStyle = StyleSheet.create({
         alignItems: 'flex-end',
     },
     correct: {
-        fontSize: 16,
+        fontSize: calculateFontSize(16),
         fontWeight: '500',
         textAlign: 'right',
     },
@@ -63,7 +64,7 @@ const EndGameStyle = StyleSheet.create({
         alignItems: 'flex-end',
     },
     wrong: {
-        fontSize: 16,
+        fontSize: calculateFontSize(16),
         fontWeight: '500',
         textAlign: 'right',
     },
@@ -83,7 +84,7 @@ const EndGameStyle = StyleSheet.create({
     },
     btnText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
     },
     loadingContainer: {

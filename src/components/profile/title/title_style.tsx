@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,7 +22,7 @@ const TitleStyle = StyleSheet.create({
         alignItems: 'center',
     },
     pageTitle: {
-        fontSize: 30,
+        fontSize: calculateFontSize(30),
         fontWeight: 'bold',
     },
     profileImageContainer: {
@@ -53,7 +54,7 @@ const TitleStyle = StyleSheet.create({
     },
     name: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: calculateFontSize(20),
         fontWeight: 'bold',
     },
     email: {
@@ -63,7 +64,7 @@ const TitleStyle = StyleSheet.create({
     expiration: {
         textAlign: 'center',
         color: '#656565',
-        fontSize: 12,
+        fontSize: calculateFontSize(12),
         marginTop: 3,
     },
 });

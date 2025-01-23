@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -22,7 +23,7 @@ const profilePartStyle = StyleSheet.create({
     },
     profileNameText: {
         textAlign: 'right',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '700',
     },
     profileEmailText: {

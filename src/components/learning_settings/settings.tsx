@@ -73,7 +73,7 @@ const LearningSettings = () => {
                 </View>
                 <View style={SettingsStyle.SettingsPart}>
                     <View style={SettingsStyle.PickLevel}>
-                        <Text style={SettingsStyle.ChooseLevelText} allowFontScaling={false}>בחרו מילים מכל רמה (אין לעבור 100 מילים סה"כ):</Text>
+                        <Text style={SettingsStyle.ChooseLevelText} allowFontScaling={false}>בחרו מילים מכל רמה:</Text>
                         <View style={SettingsStyle.selectLevels}>
                         {
                             Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
@@ -101,7 +101,7 @@ const LearningSettings = () => {
                     />
 
                     <View style={SettingsStyle.TypeOfPractice}>
-                        <Text style={SettingsStyle.TypeOfPracticeTitle} allowFontScaling={false}>בחרו צורת תרגול (אחת משתי האפשרויות):</Text>
+                        <Text style={SettingsStyle.TypeOfPracticeTitle} allowFontScaling={false}>בחרו צורת תרגול:</Text>
                         <View style={SettingsStyle.OptionsContainer}>
                             <View style={[SettingsStyle.PracticeContainer, {opacity: isRegularPracticeOn() ? 0.4 : 1}]}
                             pointerEvents={ isRegularPracticeOn()  ? 'none' : 'auto' }>

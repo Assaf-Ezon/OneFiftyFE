@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -29,7 +30,7 @@ const PagePartStyle = StyleSheet.create({
         alignItems: 'center',
     },
     pageTitle: {
-        fontSize: 30,
+        fontSize: calculateFontSize(30),
         fontWeight: 'bold',
     },
     ScrollviewContainer: {
@@ -56,7 +57,7 @@ const PagePartStyle = StyleSheet.create({
     },
     settingsBtnText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '600',
         marginRight: 5,
     },

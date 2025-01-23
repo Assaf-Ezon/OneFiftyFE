@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,7 +13,7 @@ const cardStyle = StyleSheet.create({
     },
     text: {
         marginRight: 10,
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         color: '#656565',
     },
 });

@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -23,7 +24,7 @@ const PlanStyle = StyleSheet.create({
     Title: {
         textAlign: 'right',
         color: 'white',
-        fontSize: 24,
+        fontSize: calculateFontSize(24),
         fontWeight: '700',
         marginRight: 10,
     },
@@ -37,14 +38,14 @@ const PlanStyle = StyleSheet.create({
     Description: {
         textAlign: 'right',
         color: 'white',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '400',
         marginRight: 10,
     },
     Price: {
         textAlign: 'right',
         color: 'white',
-        fontSize: 24,
+        fontSize: calculateFontSize(24),
         fontWeight: '700',
     },
     PayBtnContainer: {
@@ -67,7 +68,7 @@ const PlanStyle = StyleSheet.create({
     PayBtnText: {
         textAlign: 'center',
         fontWeight: '700',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
     },
 });
 

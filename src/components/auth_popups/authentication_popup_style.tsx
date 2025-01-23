@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,7 +26,7 @@ const PopupsStyle = StyleSheet.create({
         alignItems: 'center',
     },
     errorPopupTitle: {
-        fontSize: 25,
+        fontSize: calculateFontSize(25),
         fontWeight: '600',
     },
     errorPopupMainContainer: {
@@ -35,7 +36,7 @@ const PopupsStyle = StyleSheet.create({
         alignItems: 'center',
     },
     popupText: {
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '300',
         textAlign: 'center',
     },
@@ -66,7 +67,7 @@ const PopupsStyle = StyleSheet.create({
         alignItems: 'center',
     },
     inactivePopupTitle: {
-        fontSize: 28,
+        fontSize: calculateFontSize(28),
         fontWeight: '600',
     },
     inactivePopupMainContainer: {
@@ -76,7 +77,7 @@ const PopupsStyle = StyleSheet.create({
     },
     inactiveExplanationText: {
         width: '100%',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         textAlign: 'right',
     },
     btnsContainer: {
@@ -97,7 +98,7 @@ const PopupsStyle = StyleSheet.create({
     },
     inactivePopupBtnText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
     },
     versionPopupContainer: {
@@ -123,7 +124,7 @@ const PopupsStyle = StyleSheet.create({
     },
     versionPopupTitle: {
         width: '100%',
-        fontSize: 28,
+        fontSize: calculateFontSize(28),
         fontWeight: '600',
         textAlign: 'center',
     },
@@ -134,7 +135,7 @@ const PopupsStyle = StyleSheet.create({
     },
     versionExplanationText: {
         width: '100%',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         textAlign: 'center',
     },
     internetPopupContainer: {
@@ -160,7 +161,7 @@ const PopupsStyle = StyleSheet.create({
     },
     internetPopupTitle: {
         width: '100%',
-        fontSize: 28,
+        fontSize: calculateFontSize(28),
         fontWeight: '600',
         textAlign: 'center',
     },
@@ -171,7 +172,7 @@ const PopupsStyle = StyleSheet.create({
     },
     internetExplanationText: {
         width: '100%',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         textAlign: 'center',
     },
 });

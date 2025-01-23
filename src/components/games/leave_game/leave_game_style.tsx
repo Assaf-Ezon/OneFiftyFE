@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,12 +25,12 @@ const LeaveGameStyle = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 20,
+        fontSize: calculateFontSize(20),
         fontWeight: '700',
         textAlign: 'center',
     },
     desc: {
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         fontWeight: '400',
         textAlign: 'center',
     },
@@ -52,7 +53,7 @@ const LeaveGameStyle = StyleSheet.create({
     },
     returnBtnText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
     },
     exitBtn: {
@@ -67,7 +68,7 @@ const LeaveGameStyle = StyleSheet.create({
     },
     exitBtnContainer: {
         color: 'white',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
     },
 });

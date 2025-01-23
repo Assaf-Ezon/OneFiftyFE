@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,7 +29,7 @@ const LeaderboardCardStyle = StyleSheet.create({
     },
     profileNameText: {
         textAlign: 'right',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '700',
     },
     profileScoreText: {
@@ -47,7 +48,7 @@ const LeaderboardCardStyle = StyleSheet.create({
     },
     rankText: {
         fontWeight: '900',
-        fontSize: 20,
+        fontSize: calculateFontSize(20),
     },
 });
 

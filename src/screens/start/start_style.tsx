@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -50,7 +51,7 @@ const StartScreenStyle = StyleSheet.create({
         alignItems: 'center',
     },
     popupTitle: {
-        fontSize: 25,
+        fontSize: calculateFontSize(25),
         fontWeight: '600',
     },
     errorPopupMainContainer: {
@@ -60,7 +61,7 @@ const StartScreenStyle = StyleSheet.create({
         alignItems: 'center',
     },
     popupText: {
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         fontWeight: '300',
         textAlign: 'center',
     },
@@ -73,14 +74,14 @@ const StartScreenStyle = StyleSheet.create({
     },
     title: {
         flex: 1,
-        fontSize: 30,
+        fontSize: calculateFontSize(30),
         lineHeight: 45,
         fontWeight: 'bold',
         textAlign: 'center',
     },
     paragraph: {
         flex: 1,
-        fontSize: 14,
+        fontSize: calculateFontSize(14),
         lineHeight: 25,
         textAlign: 'center',
         color: '#656565',
@@ -102,7 +103,7 @@ const StartScreenStyle = StyleSheet.create({
     },
     btnText: {
         color: 'white',
-        fontSize: 25,
+        fontSize: calculateFontSize(25),
         fontWeight: '500',
     },
 });
