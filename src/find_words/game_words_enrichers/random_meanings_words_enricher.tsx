@@ -53,9 +53,12 @@ export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {
         const levels = Object.keys(selectedWordsDict); // all levels
         const randomLevel = (selectedWordsDict)[Math.floor(Math.random() * levels.length)]; // random level from existing levels
 
-        const randomWordInLevel: WordDetails = randomNumberInThreshold > newWordsThreshold ? // random word in the random level
-        Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)].Word
-        : Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)];
+        let randomWordInLevel: WordStatisticsData | WordDetails = Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)]; // random word in the random level
+
+        // if the dict is "statistics" - need to get the "Word" in WordStatisticsData
+        if ('Word' in randomWordInLevel) {
+            randomWordInLevel = randomWordInLevel.Word;
+        }
 
         return this._getMeaningsAsString(randomWordInLevel.Meanings);
     }
