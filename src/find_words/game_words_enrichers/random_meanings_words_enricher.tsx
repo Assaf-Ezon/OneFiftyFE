@@ -55,8 +55,9 @@ export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {
 
         let randomWordInLevel: WordStatisticsData | WordDetails = Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)]; // random word in the random level
 
-        // if the dict is "statistics" - need to get the "Word" in WordStatisticsData
         if ('Word' in randomWordInLevel) {
+            // If the random number is above threshold we select from "statistics" dict, in "statistics" the "WordDetails"
+            // object is inside the "Word" member
             randomWordInLevel = randomWordInLevel.Word;
         }
 
