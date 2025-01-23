@@ -71,12 +71,12 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
         <View style={[{height: isLevelOpen ? height * 0.25 : height * 0.1}, LevelProgressStyle.container]}>
             <TouchableOpacity style={LevelProgressStyle.levelContainer} onPress={() => {setIsLevelOpen(prev => !prev)}}>
                 <Image source={isLevelOpen ? IMAGES.open_dictionary : IMAGES.close_dictionary} />
-                <Text style={LevelProgressStyle.title}>רמה {level}</Text>
+                <Text style={LevelProgressStyle.title} allowFontScaling={false}>רמה {level}</Text>
             </TouchableOpacity>
             <View style={LevelProgressStyle.minimizedContainer}>
                     <View style={LevelProgressStyle.minimizedLangContainer}>
-                        <Text>שפה: {langName}</Text>
-                        <Text>סה"כ מילים: {countAllWords}</Text>
+                        <Text allowFontScaling={false}>שפה: {langName}</Text>
+                        <Text allowFontScaling={false}>סה"כ מילים: {countAllWords}</Text>
                     </View>
                     <View style={LevelProgressStyle.progressBar}>
                         <View style={[{width: `${Number(percentageWordsSeen)}%`, backgroundColor: getBackgroundColor(fullProgressBarWidth)}, 
@@ -91,10 +91,10 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
                 isLevelOpen ?
 
                 <View style={LevelProgressStyle.statisticsContainer}>
-                    <Text>סה"כ מילים חדשות שנותרו: {countAllWords-countSeenWords}</Text>
-                    <Text>סה"כ מילים שתורגלו: {countSeenWords} ({percentageWordsSeen}%)</Text>
-                    <Text>סה"כ מילים שלא הצלחתי בכלל: {countWrongWords} ({percentageWrongWordsFromPracticed}%)</Text>
-                    <Text>סה"כ תרגולים ברמה: {sumOfWordsPracticed}</Text>
+                    <Text allowFontScaling={false}>סה"כ מילים חדשות שנותרו: {countAllWords-countSeenWords}</Text>
+                    <Text allowFontScaling={false}>סה"כ מילים שתורגלו: {countSeenWords} ({percentageWordsSeen}%)</Text>
+                    <Text allowFontScaling={false}>סה"כ מילים שלא הצלחתי בכלל: {countWrongWords} ({percentageWrongWordsFromPracticed}%)</Text>
+                    <Text allowFontScaling={false}>סה"כ תרגולים ברמה: {sumOfWordsPracticed}</Text>
                 </View>
 
                 : null

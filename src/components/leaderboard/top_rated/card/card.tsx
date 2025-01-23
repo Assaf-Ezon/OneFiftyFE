@@ -9,12 +9,12 @@ const LeaderboardCard: FC<LeaderBoardCardConfig> = ({ name, score, rank, image }
     return (
         <View style={LeaderboardCardStyle.profileScore}>
             <View style={LeaderboardCardStyle.rankContainer}>
-                <Text style={LeaderboardCardStyle.rankText}>{rank}</Text>
+                <Text style={LeaderboardCardStyle.rankText} allowFontScaling={false}>{rank}</Text>
             </View>
             <View style={LeaderboardCardStyle.profileContainer}>
                 <View style={LeaderboardCardStyle.profileDetailsContainer}>
-                    <Text style={LeaderboardCardStyle.profileNameText}>{name}</Text>
-                    <Text style={LeaderboardCardStyle.profileScoreText}>ניקוד: {score}</Text>
+                    <Text style={LeaderboardCardStyle.profileNameText} allowFontScaling={false}>{name}</Text>
+                    <Text style={LeaderboardCardStyle.profileScoreText} allowFontScaling={false}>ניקוד: {score}</Text>
                 </View>
                 <Image style={LeaderboardCardStyle.profileImage} source={image} />
             </View>

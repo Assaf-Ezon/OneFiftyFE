@@ -105,21 +105,21 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
         <View style={EndGameStyle.container}
             pointerEvents={loading ? 'none' : 'auto'}>
             <View style={EndGameStyle.titleContainer}>
-                <Text style={EndGameStyle.title}>סוף התרגול</Text>
+                <Text style={EndGameStyle.title} allowFontScaling={false}>סוף התרגול</Text>
             </View>
             <View style={EndGameStyle.mainContainer}>
                 <View style={EndGameStyle.sumContainer}>
-                    <Text style={EndGameStyle.sum}>סה"כ מילים שתורגלו: {totalWords}</Text>
-                    <Text style={EndGameStyle.lang}>שפה: {'עברית'}</Text>
+                    <Text style={EndGameStyle.sum} allowFontScaling={false}>סה"כ מילים שתורגלו: {totalWords}</Text>
+                    <Text style={EndGameStyle.lang} allowFontScaling={false}>שפה: {'עברית'}</Text>
                 </View>
                 <View style={EndGameStyle.correctContainer}>
-                    <Text style={EndGameStyle.correct}>
+                    <Text style={EndGameStyle.correct} allowFontScaling={false}>
                         סה"כ מילים שהצלחתם: {correctAnswers.length} {'\n'}
                         אחוזי הצלחה: {((correctAnswers.length/totalWords)*100).toFixed(1)}%
                     </Text>
                 </View>
                 <View style={EndGameStyle.wrongContainer}>
-                    <Text style={EndGameStyle.wrong}>
+                    <Text style={EndGameStyle.wrong} allowFontScaling={false}>
                         סה"כ מילים שנכשלתם: {wrongAnswers.length} {'\n'}
                         אחוזי כישלון: {((wrongAnswers.length/totalWords)*100).toFixed(1)}%
                     </Text>
@@ -127,7 +127,7 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
             </View>
             <View style={[{opacity: loading ? 0.6 : 1}, EndGameStyle.btnContainer]}>
                 <TouchableOpacity style={EndGameStyle.btn} onPress={() => {finishGame()}}>
-                    <Text style={EndGameStyle.btnText}>סיום משחק</Text>
+                    <Text style={EndGameStyle.btnText} allowFontScaling={false}>סיום משחק</Text>
                 </TouchableOpacity>
             </View>
             {loading ? <View style={EndGameStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}

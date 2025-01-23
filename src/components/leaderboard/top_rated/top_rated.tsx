@@ -67,9 +67,9 @@ const TopRated = () => {
         <View style={TopRatedStyle.container}>
             <View style={TopRatedStyle.self}>
                 <Image source={profile.profileImage} style={TopRatedStyle.profileImage} />
-                <Text style={TopRatedStyle.textName}>{profile.name}</Text>
+                <Text style={TopRatedStyle.textName} allowFontScaling={false}>{profile.name}</Text>
                 <View style={TopRatedStyle.selfStatsContainer}>
-                    <Text style={TopRatedStyle.scoreText}>מקום: {profile.rank} {'\n'}  ניקוד: {profile.score}</Text>
+                    <Text style={TopRatedStyle.scoreText} allowFontScaling={false}>מקום: {profile.rank} {'\n'}  ניקוד: {profile.score}</Text>
                 </View>
             </View>
             {loading ? <View style={TopRatedStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}

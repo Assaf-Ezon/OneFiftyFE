@@ -14,12 +14,12 @@ const Word: FC<DictionaryWordConfig> = ({ word, meaning }) => {
     return (
         <View style={[WordStyle.container, {height:  isOpen ? height * 0.08 : height * 0.04}]}>
             <TouchableOpacity style={WordStyle.wordContainer} onPress={() => {setIsOpen(!isOpen)}}>
-                <Text style={[WordStyle.word, {color: isOpen ? '#ff7518' : 'black'}]}>{word}</Text>
+                <Text style={[WordStyle.word, {color: isOpen ? '#ff7518' : 'black'}]} allowFontScaling={false}>{word}</Text>
                 <Image source={isOpen ? IMAGES.open_dictionary : IMAGES.close_dictionary} />
             </TouchableOpacity>
             {isOpen ? 
                 <View style={WordStyle.meaningConatiner}>
-                    <Text style={WordStyle.meaning}>{meaning}</Text>
+                    <Text style={WordStyle.meaning} allowFontScaling={false}>{meaning}</Text>
                 </View> 
             : null}
         </View>

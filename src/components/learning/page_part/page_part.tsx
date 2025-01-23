@@ -24,7 +24,7 @@ const PagePart = () => {
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
                         <Image source={IMAGES.side_menu} />
                     </TouchableOpacity>
-                    <Text style={PagePartStyle.pageTitle}>הלמידה שלי</Text>
+                    <Text style={PagePartStyle.pageTitle} allowFontScaling={false}>הלמידה שלי</Text>
                 </View>
             </View>
             <View style={PagePartStyle.ScrollviewContainer}>
@@ -32,7 +32,7 @@ const PagePart = () => {
                         showsVerticalScrollIndicator={false}>
                     <View style={PagePartStyle.settingBtnContainer}>
                         <TouchableOpacity style={PagePartStyle.settingsBtn} onPress={() => {toggleLearningSettings()}}>
-                            <Text style={PagePartStyle.settingsBtnText}>הגדרות</Text>
+                            <Text style={PagePartStyle.settingsBtnText} allowFontScaling={false}>הגדרות</Text>
                             <Image source={IMAGES.settings} />
                         </TouchableOpacity>
                     </View>

@@ -22,7 +22,7 @@ const PagePart = () => {
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
                         <Image source={IMAGES.side_menu} />
                     </TouchableOpacity>
-                    <Text style={PagePartStyle.pageTitle}>מובילים</Text>
+                    <Text style={PagePartStyle.pageTitle} allowFontScaling={false}>מובילים</Text>
                 </View>
             </View>
             <View style={PagePartStyle.ScrollviewContainer}>

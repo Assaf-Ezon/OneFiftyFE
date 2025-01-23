@@ -188,12 +188,12 @@ const KnewDidntKnowGame = () => {
             <Animated.View style={[KnewDidntKnowGameStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
                 pointerEvents={isEndGame ? 'none' : 'auto'}>
                             <View style={KnewDidntKnowGameStyle.wordSection}>
-                    <Text style={KnewDidntKnowGameStyle.word}>{currentWord.FullWord}</Text>
+                    <Text style={KnewDidntKnowGameStyle.word} allowFontScaling={false}>{currentWord.FullWord}</Text>
                 </View>
                 <View style={KnewDidntKnowGameStyle.texts}>  
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>סוג: {currentWord.Type}</Text>
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>רמה: {currentWord.Group}</Text>
-                    <Text style={KnewDidntKnowGameStyle.wordCounter}>כמות: {wordCount}/{totalWords}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter} allowFontScaling={false}>סוג: {currentWord.Type}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter} allowFontScaling={false}>רמה: {currentWord.Group}</Text>
+                    <Text style={KnewDidntKnowGameStyle.wordCounter} allowFontScaling={false}>כמות: {wordCount}/{totalWords}</Text>
                 </View>
                 <View style={KnewDidntKnowGameStyle.interpretation}>
                     <LinearGradient
@@ -203,29 +203,30 @@ const KnewDidntKnowGame = () => {
                         style={KnewDidntKnowGameStyle.color}
                     >
                         <View style={KnewDidntKnowGameStyle.meaningContainer}>
-                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning}>{getMeaningsAsString(currentWord.Meanings)}</Text> : null}
+                            {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning} allowFontScaling={false}>
+                                {getMeaningsAsString(currentWord.Meanings)}</Text> : null}
                         </View>
                     </LinearGradient>
                 </View>
                 {answer == ButtonState.ShowAnswer ? (
                     <Animated.View style={{ opacity: btnFadeAnim }}>
                         <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={() =>{setAnswer(ButtonState.ChooseAnswer)}}>
-                            <Text style={KnewDidntKnowGameStyle.btnText}>הצג תשובה</Text>
+                            <Text style={KnewDidntKnowGameStyle.btnText} allowFontScaling={false}>הצג תשובה</Text>
                         </TouchableOpacity>
                     </Animated.View>
                 ) : answer == ButtonState.ChooseAnswer ? (
                     <View style={KnewDidntKnowGameStyle.btns}>
                         <TouchableOpacity style={KnewDidntKnowGameStyle.btn} onPress={() => setIsAnswerCorrect(false)}>
-                            <Text style={KnewDidntKnowGameStyle.btnText}>לא ידעתי</Text>
+                            <Text style={KnewDidntKnowGameStyle.btnText} allowFontScaling={false}>לא ידעתי</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={KnewDidntKnowGameStyle.btn} onPress={() => setIsAnswerCorrect(true)}>
-                            <Text style={KnewDidntKnowGameStyle.btnText}>ידעתי</Text>
+                            <Text style={KnewDidntKnowGameStyle.btnText} allowFontScaling={false}>ידעתי</Text>
                         </TouchableOpacity>
                     </View>
                 ) : answer == ButtonState.Continue ? (
                     <Animated.View style={{ opacity: btnFadeAnim }}>
                         <TouchableOpacity style={KnewDidntKnowGameStyle.nextBtn} onPress={() => {setNewValuesForNextWord()}}>
-                            <Text style={KnewDidntKnowGameStyle.btnText}>המשך</Text>
+                            <Text style={KnewDidntKnowGameStyle.btnText} allowFontScaling={false}>המשך</Text>
                         </TouchableOpacity>
                     </Animated.View>
                 ) : null}

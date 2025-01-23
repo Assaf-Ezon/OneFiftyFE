@@ -49,7 +49,7 @@ const ContactForm = () => {
                     <TouchableOpacity onPress={() => {toggleOpenContactUsForm(); Keyboard.dismiss();}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
-                    <Text style={ContactFormStyle.title}>דיווח על בעיה</Text>
+                    <Text style={ContactFormStyle.title} allowFontScaling={false}>דיווח על בעיה</Text>
                 </View>
                 <View style={ContactFormStyle.inputFieldsContainer}>
                 <TextInput
@@ -59,6 +59,7 @@ const ContactForm = () => {
                     value={problemTitle}
                     onChangeText={setProblemTitle}
                     blurOnSubmit={true} 
+                    allowFontScaling={false}
                 />
                 <TextInput
                     style={ContactFormStyle.bodyInputField}
@@ -68,11 +69,12 @@ const ContactForm = () => {
                     value={problemBody}
                     onChangeText={setProblemBody}
                     blurOnSubmit={true} 
+                    allowFontScaling={false}
                 />
                 </View>
                 <View style={ContactFormStyle.submitBtnContainer}>
                     <TouchableOpacity style={ContactFormStyle.submitBtn} onPress={() => {sendEmail()}}>
-                            <Text style={ContactFormStyle.submitBtnText}>אישור</Text>
+                            <Text style={ContactFormStyle.submitBtnText} allowFontScaling={false}>אישור</Text>
                     </TouchableOpacity>
                 </View>
             </Animated.View>

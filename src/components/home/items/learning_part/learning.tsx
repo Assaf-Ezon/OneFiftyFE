@@ -15,8 +15,10 @@ const LearningPartHome: FC = () => {
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
-                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEARNING as never)}}><Text style={learningPartStyle.seeEverything}>ראו הכל</Text></TouchableOpacity>
-                <Text style={learningPartStyle.title}>לומדות מילים</Text>   
+                <TouchableOpacity onPress={() => {navigation.navigate(Screens.LEARNING as never)}}>
+                    <Text style={learningPartStyle.seeEverything} allowFontScaling={false}>ראו הכל</Text>
+                </TouchableOpacity>
+                <Text style={learningPartStyle.title} allowFontScaling={false}>לומדות מילים</Text>   
             </View>
             <View style={learningPartStyle.cardsContainerContainer}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>

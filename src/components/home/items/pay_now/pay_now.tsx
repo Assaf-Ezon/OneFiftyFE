@@ -27,23 +27,23 @@ const PayNow = () => {
                     Object.values(Plans).map((plan) => {
                         return (
                             <TouchableOpacity style={[{backgroundColor: plan.Plan == currentPlan.Plan ? '#e57c37' : 'white'}, PayNowStyle.planBtn]} onPress={() => {changePlan(plan.Plan)}} key={plan.Plan}>
-                                <Text style={[{color: plan.Plan == currentPlan.Plan ? 'white' : 'black'}, PayNowStyle.planBtnText]} key={plan.Title}>{plan.Title}</Text>
+                                <Text style={[{color: plan.Plan == currentPlan.Plan ? 'white' : 'black'}, PayNowStyle.planBtnText]} key={plan.Title} allowFontScaling={false}>{plan.Title}</Text>
                             </TouchableOpacity>
                         )
                     })
                 }
             </View>
             <View style={PayNowStyle.titleContainer}>
-                <Text style={PayNowStyle.Title}>מנוי ל{currentPlan.Title}</Text>
-                <Text style={PayNowStyle.expiration}>
+                <Text style={PayNowStyle.Title} allowFontScaling={false}>מנוי ל{currentPlan.Title}</Text>
+                <Text style={PayNowStyle.expiration} allowFontScaling={false}>
                     תום תוקף תקופת ניסיון: {profile.expirationDate.getHours()}:{profile.expirationDate.getMinutes()} {profile.expirationDate.getDate()}/{profile.expirationDate.getMonth() + 1}/{profile.expirationDate.getFullYear()}
                 </Text>
             </View>
             <View style={PayNowStyle.PayBtnContainer}>
                 <TouchableOpacity style={PayNowStyle.PayBtn} onPress={() => {navigation.navigate(Screens.PAYMENT as never)}}>
-                    <Text style={[{color: currentPlan.backgroundColor}, PayNowStyle.PayBtnText]}>למעבר לתשלום</Text>
+                    <Text style={[{color: currentPlan.backgroundColor}, PayNowStyle.PayBtnText]} allowFontScaling={false}>למעבר לתשלום</Text>
                 </TouchableOpacity>
-                <Text style={PayNowStyle.Price}>{currentPlan.Price} ₪</Text> 
+                <Text style={PayNowStyle.Price} allowFontScaling={false}>{currentPlan.Price} ₪</Text> 
             </View>
         </View>
     );

@@ -187,18 +187,18 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
         <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.textContainer]} 
         pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
-            <Text style={StartScreenStyle.title}>
+            <Text style={StartScreenStyle.title} allowFontScaling={false}>
                 150 - לומדת פסיכומטרי{'\n'}
                 למדו מילים בכל מקום
             </Text>
-            <Text style={StartScreenStyle.paragraph}>
+            <Text style={StartScreenStyle.paragraph} allowFontScaling={false}>
                 150 הינו כלי ללימוד מילים בעברית ובאנגלית כחלק מהכנה{'\n'}
                 למבחן הפסיכומטרי. מגוון משחקונים ולומדות לצורך שינון{'\n'}
                 ולמידה של מילים חדשות.
             </Text>
             <View style={StartScreenStyle.btnContainer}>
                 <Pressable style={StartScreenStyle.btn} onPress={() => {promptAsync({ showInRecents: true })} }>
-                    <Text style={StartScreenStyle.btnText}>המשך</Text>            
+                    <Text style={StartScreenStyle.btnText} allowFontScaling={false}>המשך</Text>            
                 </Pressable>
             </View>
         </View>

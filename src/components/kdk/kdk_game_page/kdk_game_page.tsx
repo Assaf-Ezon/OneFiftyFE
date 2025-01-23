@@ -29,7 +29,7 @@ const KDKGamePage = () => {
                         <TouchableOpacity onPress={() => {handleBackPress()}}>
                             <Image source={IMAGES.back_icon} />
                         </TouchableOpacity>
-                        <Text style={KDKGamePageStyle.pageTitle}>ידעתי / לא ידעתי</Text>
+                        <Text style={KDKGamePageStyle.pageTitle} allowFontScaling={false}>ידעתי / לא ידעתי</Text>
                     </View>
                 </View>
                 <KnewDidntKnowGame />

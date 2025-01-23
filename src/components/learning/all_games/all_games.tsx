@@ -11,7 +11,7 @@ const AllGamesPart: FC = () => {
     return (
         <View style={allGamesStyle.container}>
             <View style={allGamesStyle.titleContainer}>
-                <Text style={allGamesStyle.title}>כל הלומדות</Text>   
+                <Text style={allGamesStyle.title} allowFontScaling={false}>כל הלומדות</Text>   
             </View>
             <View style={allGamesStyle.cardsContainerConatiner}>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={allGamesStyle.cardsContainer}>
