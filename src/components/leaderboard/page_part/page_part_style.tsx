@@ -30,7 +30,7 @@ const PagePartStyle = StyleSheet.create({
         height: height * 0.82,
     },
     mainPart: {
-        height: height * 1.5,
+        flexGrow: 1,
         alignItems: 'center',
         width: '100%',
         marginTop: 20,

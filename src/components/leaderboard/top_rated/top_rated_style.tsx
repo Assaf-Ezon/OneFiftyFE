@@ -6,7 +6,6 @@ const { width, height } = Dimensions.get('window');
 const TopRatedStyle = StyleSheet.create({
     container: {
         width: '90%',
-        height: height * 0.9,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
