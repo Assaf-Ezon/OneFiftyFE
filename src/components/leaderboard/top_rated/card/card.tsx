@@ -6,10 +6,23 @@ import { LeaderBoardCardConfig } from '../../../../data_objects/components_confi
 
 const LeaderboardCard: FC<LeaderBoardCardConfig> = ({ name, score, rank, image }) => {
 
+    const colorByRank = () => {
+        switch (rank) {
+            case 1:
+                return 'gold';
+            case 2:
+                return 'silver';
+            case 3:
+                return 'sienna';
+            default:
+                return 'black';  
+        }
+    }
+
     return (
         <View style={LeaderboardCardStyle.profileScore}>
             <View style={LeaderboardCardStyle.rankContainer}>
-                <Text style={LeaderboardCardStyle.rankText} allowFontScaling={false}>{rank}</Text>
+                <Text style={[{color: colorByRank()}, LeaderboardCardStyle.rankText]} allowFontScaling={false}>{rank}</Text>
             </View>
             <View style={LeaderboardCardStyle.profileContainer}>
                 <View style={LeaderboardCardStyle.profileDetailsContainer}>
