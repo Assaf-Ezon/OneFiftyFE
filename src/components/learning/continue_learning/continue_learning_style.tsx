@@ -34,10 +34,16 @@ const learningPartStyle = StyleSheet.create({
         transform: [{ scaleX: -1 }],
     },
     playSomethingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
         transform: [{ scaleX: -1 }],
-        width: width * 0.6,
+        width: width * 0.7,
+        height: height * 0.3,
         borderWidth: 0.2,
         borderRadius: 20,
+    },
+    emptyGameCardText: {
+        fontSize: calculateFontSize(60),
     },
     cardImage: {
         width: '100%',

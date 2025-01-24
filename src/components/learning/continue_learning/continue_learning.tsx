@@ -33,10 +33,7 @@ const ContinueLearningPart: FC = () => {
                     {
                         games.length == 0 ? 
                             <View style={learningPartStyle.playSomethingContainer}>
-                                <Image source={IMAGES.mc} style={learningPartStyle.cardImage} />
-                                <View style={learningPartStyle.textContainer}>
-                                    <Text style={learningPartStyle.titleText} allowFontScaling={false}>שחקו עכשיו</Text>
-                                </View>
+                                <Text style={learningPartStyle.emptyGameCardText}>---</Text>
                             </View>
                         :
                             Object.entries(GAMES).map(([gameName, gameValue]) => {
