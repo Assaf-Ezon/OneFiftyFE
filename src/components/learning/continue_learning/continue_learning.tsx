@@ -31,9 +31,12 @@ const ContinueLearningPart: FC = () => {
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
                     <View style={learningPartStyle.blank} />
                     {
-                        games.length == 0 ? 
+                        games.length !== 0 ? 
                             <View style={learningPartStyle.playSomethingContainer}>
-                                <Text style={learningPartStyle.emptyGameCardText}>---</Text>
+                                <Image source={IMAGES.play_now} style={learningPartStyle.cardImage} />
+                                <View style={learningPartStyle.textContainer}>
+                                    <Text style={learningPartStyle.titleText} allowFontScaling={false}>שמנו לב שלא שיחקתם עדיין {'\n'} שחקו עכשיו</Text>
+                                </View>
                             </View>
                         :
                             Object.entries(GAMES).map(([gameName, gameValue]) => {
