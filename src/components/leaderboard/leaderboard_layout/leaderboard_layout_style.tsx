@@ -3,7 +3,7 @@ import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
-const PagePartStyle = StyleSheet.create({
+const LeaderboardLayoutStyle = StyleSheet.create({
     topPart: {
         width: '100%',
         height: height * 0.18,
@@ -40,4 +40,4 @@ const PagePartStyle = StyleSheet.create({
     },
 });
 
-export default PagePartStyle;
+export default LeaderboardLayoutStyle;

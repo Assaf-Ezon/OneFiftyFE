@@ -5,7 +5,7 @@ import { CONFIG } from '../../../config';
 import { IMAGES } from '../../../image_handler';
 import TopRatedStyle from './top_rated_style';
 
-import LeaderboardCard from './card/card';
+import TopRatedMember from './top_rated_member/top_rated_member';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
@@ -76,7 +76,7 @@ const TopRated = () => {
             {
                 leaderboardData ? leaderboardData.map((score, index) => {
                     return (
-                        <LeaderboardCard
+                        <TopRatedMember
                             key={index}
                             name={score.DisplayName}
                             score={score.Score}

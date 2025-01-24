@@ -3,7 +3,7 @@ import calculateFontSize from '../../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
-const LeaderboardCardStyle = StyleSheet.create({
+const TopRatedMemberStyle = StyleSheet.create({
     profileScore: {
         width: '100%',
         height: height * 0.1,
@@ -52,4 +52,4 @@ const LeaderboardCardStyle = StyleSheet.create({
     },
 });
 
-export default LeaderboardCardStyle;
+export default TopRatedMemberStyle;

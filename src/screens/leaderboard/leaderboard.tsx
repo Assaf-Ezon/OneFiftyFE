@@ -6,7 +6,7 @@ import LeaderboardScreenStyle from './leaderboard_style';
 
 import BottomBar from '../../components/bottom_bar/bar/bar';
 import SideBar from '../../components/side_bar/bar/bar';
-import PagePart from '../../components/leaderboard/page_part/page_part';
+import LeaderboardLayout from '../../components/leaderboard/leaderboard_layout/leaderboard_layout';
 import ContactForm from '../../components/contact_form/contact_form';
 
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
@@ -22,7 +22,7 @@ const LeaderboardPage = ({ navigation }: {navigation: any}) => {
         <SidebarProvider>
             <ContactUsFormProvider>
                 <ProfileImageProvider>
-                    <PagePart />
+                    <LeaderboardLayout />
                     <BottomBar 
                         activeScreen={"leaderboard"}
                         homePath={IMAGES.unused_home}
