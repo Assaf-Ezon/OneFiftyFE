@@ -31,7 +31,7 @@ const ContinueLearningPart: FC = () => {
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
                     <View style={learningPartStyle.blank} />
                     {
-                        games.length !== 0 ? 
+                        games.length == 0 ? 
                             <View style={learningPartStyle.playSomethingContainer}>
                                 <Image source={IMAGES.play_now} style={learningPartStyle.cardImage} />
                                 <View style={learningPartStyle.textContainer}>
