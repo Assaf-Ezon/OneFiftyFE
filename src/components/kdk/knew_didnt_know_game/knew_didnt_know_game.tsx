@@ -43,6 +43,10 @@ const KnewDidntKnowGame = () => {
         }
     }, [answer, btnFadeAnim]);
 
+    useEffect(() => {
+        fadeIn(fadeAnim).start();
+    }, [wordCount, fadeAnim]);
+
     return (
         <>
             <Animated.View style={[KnewDidntKnowGameStyle.question, { opacity: isEndGame ? 0.6 : fadeAnim }]}
