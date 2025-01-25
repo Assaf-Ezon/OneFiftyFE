@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -25,7 +26,7 @@ const ChangeProfileImageStyle = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 25,
+        fontSize: calculateFontSize(25),
         fontWeight: '600',
     },
     imagesContainer: {

@@ -48,6 +48,7 @@ export const IMAGES = {
     payment: require('../assets/profile page icons/payment_icon.png'),
     report_problem: require('../assets/profile page icons/report_problem_icon.png'),
 
+    play_now: require('../assets/game icons/play_now.jpg'),
     kdk: require('../assets/game icons/kdk.jpg'),
     mc: require('../assets/game icons/mc.jpg'),
 

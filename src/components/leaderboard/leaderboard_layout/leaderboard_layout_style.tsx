@@ -1,8 +1,9 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
-const PagePartStyle = StyleSheet.create({
+const LeaderboardLayoutStyle = StyleSheet.create({
     topPart: {
         width: '100%',
         height: height * 0.18,
@@ -21,7 +22,7 @@ const PagePartStyle = StyleSheet.create({
         alignItems: 'center',
     },
     pageTitle: {
-        fontSize: 30,
+        fontSize: calculateFontSize(30),
         fontWeight: 'bold',
     },
     ScrollviewContainer: {
@@ -30,8 +31,6 @@ const PagePartStyle = StyleSheet.create({
     },
     mainPart: {
         flexGrow: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
         alignItems: 'center',
         width: '100%',
         marginTop: 20,
@@ -41,4 +40,4 @@ const PagePartStyle = StyleSheet.create({
     },
 });
 
-export default PagePartStyle;
+export default LeaderboardLayoutStyle;

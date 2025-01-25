@@ -37,8 +37,8 @@ const SideBar = () => {
                     </TouchableOpacity>
                     <View style={barStyle.userContent}>
                         <View style={barStyle.profileDetailsContainer}>
-                            <Text style={barStyle.profileNameText}>{profile.name}</Text>
-                            <Text style={barStyle.profileEmailText}>{profile.email}</Text>
+                            <Text style={barStyle.profileNameText} allowFontScaling={false}>{profile.name}</Text>
+                            <Text style={barStyle.profileEmailText} allowFontScaling={false}>{profile.email}</Text>
                         </View>
                         <Image style={barStyle.profileImage} source={profile.profileImage} />
                     </View>
@@ -63,7 +63,7 @@ const SideBar = () => {
             </View>
             <View style={barStyle.lowerPart}>
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={SidebarActionIndex.Logout} screenName={''} />
-                <Text style={barStyle.versionText}>Version {CONFIG.Version}</Text>
+                <Text style={barStyle.versionText} allowFontScaling={false}>Version {CONFIG.Version}</Text>
             </View>
         </Animated.View>
     );

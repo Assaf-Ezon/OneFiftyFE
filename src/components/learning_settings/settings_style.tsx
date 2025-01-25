@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { CONFIG } from '../../config';
+import calculateFontSize from '../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,7 +28,7 @@ const SettingsStyle = StyleSheet.create({
         alignItems: 'flex-end',
     },
     title: {
-        fontSize: 25,
+        fontSize: calculateFontSize(25),
         fontWeight: '600',
     },
     exitBtn: {
@@ -48,7 +49,7 @@ const SettingsStyle = StyleSheet.create({
         alignItems: 'flex-end',
     },
     TypeOfPracticeTitle: {
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         fontWeight: '500',
     },
     OptionsContainer: {
@@ -65,7 +66,7 @@ const SettingsStyle = StyleSheet.create({
     },
     RegularStudyText: {
         marginRight: 8,
-        fontSize: 14,
+        fontSize: calculateFontSize(14),
         fontWeight: '500',
     },
     PracticeContainer: {
@@ -84,7 +85,7 @@ const SettingsStyle = StyleSheet.create({
     },
     SmartStudyText: {
         marginRight: 8,
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
     },
     PickLevel: {
@@ -109,7 +110,7 @@ const SettingsStyle = StyleSheet.create({
     ChooseLevelText: {
         width: '100%',
         textAlign: 'right',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         fontWeight: '500',
     },
     selectLevels: {

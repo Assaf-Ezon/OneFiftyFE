@@ -27,7 +27,7 @@ const MultipleChoicesPage = () => {
                         <TouchableOpacity onPress={() => {handleBackPress()}}>
                             <Image source={IMAGES.back_icon} />
                         </TouchableOpacity>
-                        <Text style={MultipleChoicesPageStyle.pageTitle}>שאלון אמריקאי</Text>
+                        <Text style={MultipleChoicesPageStyle.pageTitle} allowFontScaling={false}>שאלון אמריקאי</Text>
                     </View>
                 </View>
                 <MultipleChoicesGame />

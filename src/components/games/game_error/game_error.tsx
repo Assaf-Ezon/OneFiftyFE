@@ -19,12 +19,12 @@ const GameError = () => {
     return (
         <View style={GameErrorStyle.container}>
             <View style={GameErrorStyle.textContainer}>
-                <Text style={GameErrorStyle.title}>תקלה קרתה ביצירת משחק</Text>
-                <Text style={GameErrorStyle.desc}>אנא נסו שנית מאוחר יותר</Text>
+                <Text style={GameErrorStyle.title} allowFontScaling={false}>תקלה קרתה ביצירת משחק</Text>
+                <Text style={GameErrorStyle.desc} allowFontScaling={false}>אנא נסו שנית מאוחר יותר</Text>
             </View>
             <View style={GameErrorStyle.btnsContainer}>
                 <TouchableOpacity style={GameErrorStyle.exitBtn} onPress={() => {handleErrorPopupPress()}}>
-                    <Text style={GameErrorStyle.exitBtnContainer}>יציאה</Text>
+                    <Text style={GameErrorStyle.exitBtnContainer} allowFontScaling={false}>יציאה</Text>
                 </TouchableOpacity>
             </View>
         </View>

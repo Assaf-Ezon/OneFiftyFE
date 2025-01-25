@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -21,7 +22,7 @@ const learningPartStyle = StyleSheet.create({
         color: '#656565',
     },
     title: {
-        fontSize: 22, 
+        fontSize: calculateFontSize(22),
         fontWeight: 'bold',
     },
     cardsContainerContainer: {

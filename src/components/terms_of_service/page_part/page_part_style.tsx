@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ const PagePartStyle = StyleSheet.create({
         alignItems: 'center',
     },
     pageTitle: {
-        fontSize: 30,
+        fontSize: calculateFontSize(30),
         fontWeight: 'bold',
     },
     SwitchContainer: {
@@ -65,14 +66,14 @@ const PagePartStyle = StyleSheet.create({
         alignItems: 'center',
     },
     DocumentTitle: {
-        fontSize: 22,
+        fontSize: calculateFontSize(22),
         width: '95%',
         fontWeight: '600',
         textAlign: 'right',
     },
     content: {
         width: '95%',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         textAlign: 'right',
     },
     blank: {

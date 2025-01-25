@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import calculateFontSize from '../../../../calculated_font_size';
 
 const WordStyle = StyleSheet.create({
     container: {
@@ -18,7 +19,7 @@ const WordStyle = StyleSheet.create({
     },
     word: {
         textAlign: 'right',
-        fontSize: 20,
+        fontSize: calculateFontSize(20),
         marginRight: 5,
     },
     meaningConatiner: {

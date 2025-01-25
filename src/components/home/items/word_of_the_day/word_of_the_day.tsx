@@ -110,11 +110,11 @@ const WordOfTheDay = () => {
                             end={{ x: 0, y: 0.5 }}
                             style={wordOfTheDayStyle.wordOfTheDaySection}>
                 <View style={wordOfTheDayStyle.title}>
-                    <Text style={wordOfTheDayStyle.subTitle}>המילה היומית</Text>
-                    <Text style={wordOfTheDayStyle.word}>"{word}"</Text>
+                    <Text style={wordOfTheDayStyle.subTitle} allowFontScaling={false}>המילה היומית</Text>
+                    <Text style={wordOfTheDayStyle.word} allowFontScaling={false}>"{word}"</Text>
                 </View>
                 <View style={wordOfTheDayStyle.meaningContainer}>
-                    <Text style={wordOfTheDayStyle.meaning}>{meaning}</Text>
+                    <Text style={wordOfTheDayStyle.meaning} allowFontScaling={false}>{meaning}</Text>
                 </View>
                 <View style={wordOfTheDayStyle.blankSpace}></View>
             </LinearGradient>

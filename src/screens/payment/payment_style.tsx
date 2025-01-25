@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -24,7 +25,7 @@ const PaymentScreenStyle = StyleSheet.create({
         alignItems: 'center',
     },
     pageTitle: {
-        fontSize: 30,
+        fontSize: calculateFontSize(30),
         fontWeight: 'bold',
     },
     mainPage: {

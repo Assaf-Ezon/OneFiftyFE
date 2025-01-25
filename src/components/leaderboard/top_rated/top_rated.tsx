@@ -5,7 +5,7 @@ import { CONFIG } from '../../../config';
 import { IMAGES } from '../../../image_handler';
 import TopRatedStyle from './top_rated_style';
 
-import LeaderboardCard from './card/card';
+import TopRatedMember from './top_rated_member/top_rated_member';
 
 import { useProfile } from '../../../context/general_context/profile_context';
 import { useStackManagerContext } from '../../../context/general_context/stack_manager_context';
@@ -67,16 +67,16 @@ const TopRated = () => {
         <View style={TopRatedStyle.container}>
             <View style={TopRatedStyle.self}>
                 <Image source={profile.profileImage} style={TopRatedStyle.profileImage} />
-                <Text style={TopRatedStyle.textName}>{profile.name}</Text>
+                <Text style={TopRatedStyle.textName} allowFontScaling={false}>{profile.name}</Text>
                 <View style={TopRatedStyle.selfStatsContainer}>
-                    <Text style={TopRatedStyle.scoreText}>מקום: {profile.rank} {'\n'}  ניקוד: {profile.score}</Text>
+                    <Text style={TopRatedStyle.scoreText} allowFontScaling={false}>מקום: {profile.rank} {'\n'}  ניקוד: {profile.score}</Text>
                 </View>
             </View>
             {loading ? <View style={TopRatedStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
             {
-                leaderboardData && leaderboardData ? leaderboardData.map((score, index) => {
+                leaderboardData ? leaderboardData.map((score, index) => {
                     return (
-                        <LeaderboardCard
+                        <TopRatedMember
                             key={index}
                             name={score.DisplayName}
                             score={score.Score}

@@ -14,7 +14,7 @@ const BottomBarIcon: FC<BottomBarIconConfig> = ({ iconPath, iconText, activeScre
             <TouchableOpacity onPress={() => {navigation.navigate(screenName as never)}}>
                 <Image source={iconPath} />
             </TouchableOpacity>
-            <Text style={activeScreen ? iconStyle.activeText : iconStyle.inactiveText}>{iconText}</Text>
+            <Text style={activeScreen ? iconStyle.activeText : iconStyle.inactiveText} allowFontScaling={false}>{iconText}</Text>
         </View>
     );
 };

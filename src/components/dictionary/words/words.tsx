@@ -30,7 +30,7 @@ const Words = () => {
 
     return (
         <View style={WordsStyle.scrollviewContainer}>
-            <ScrollView contentContainerStyle={[WordsStyle.container, {flexGrow: 1}]}
+            <ScrollView contentContainerStyle={WordsStyle.container}
             showsVerticalScrollIndicator={false}>
                 {   
                     Object.entries(words).map(([wordKey, wordDetails]) => {

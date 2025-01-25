@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,7 +19,7 @@ const LevelProgressStyle = StyleSheet.create({
         alignItems: 'flex-end',
     },
     title: {
-        fontSize: 20,
+        fontSize: calculateFontSize(20),
         fontWeight: '600',
     },
     minimizedContainer: {

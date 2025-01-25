@@ -22,18 +22,18 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
     return (
         <View style={[{backgroundColor: backgroundColor}, PlanStyle.Container]}>
             <View style={PlanStyle.TitleContainer}>
-                <Text style={PlanStyle.Title}>תכנית: {title}</Text>
+                <Text style={PlanStyle.Title} allowFontScaling={false}>תכנית: {title}</Text>
                 <Image source={IMAGES.plan} />
             </View>
             <View style={PlanStyle.MainContainer}>
-                <Text style={PlanStyle.Description}>{description}</Text> 
+                <Text style={PlanStyle.Description} allowFontScaling={false}>{description}</Text> 
                 <Image source={IMAGES.check} />
             </View>
             <View style={PlanStyle.PayBtnContainer}>
                 <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => {openWebView()}}>
-                    <Text style={[{color: backgroundColor}, PlanStyle.PayBtnText]}>שלמו עכשיו</Text>
+                    <Text style={[{color: backgroundColor}, PlanStyle.PayBtnText]} allowFontScaling={false}>שלמו עכשיו</Text>
                 </TouchableOpacity>
-                <Text style={PlanStyle.Price}>{price} ₪</Text> 
+                <Text style={PlanStyle.Price} allowFontScaling={false}>{price} ₪</Text> 
             </View>
         </View>
     );

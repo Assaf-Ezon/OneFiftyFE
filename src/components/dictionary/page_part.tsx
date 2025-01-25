@@ -22,7 +22,7 @@ const PagePart = () => {
                         <TouchableOpacity onPress={() => {toggleMenu()}}>
                             <Image source={IMAGES.side_menu} />
                         </TouchableOpacity>
-                        <Text style={PagePartStyle.pageTitle}>מילון</Text>
+                        <Text style={PagePartStyle.pageTitle} allowFontScaling={false}>מילון</Text>
                     </View>
                 </View>
                 <View style={{zIndex: 2}}>

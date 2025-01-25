@@ -1,7 +1,7 @@
 import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { IMAGES } from '../../../image_handler';
 
-import PagePartStyle from './page_part_style';
+import LeaderboardLayoutStyle from './leaderboard_layout_style';
 
 import TopRated from '../top_rated/top_rated';
 
@@ -10,30 +10,30 @@ import { useSidebarContext } from '../../../context/general_context/sidebar_cont
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
 
 
-const PagePart = () => {
+const LeaderboardLayout = () => {
     const {profile} = useProfile();
     const {isOpen, toggleMenu} = useSidebarContext();
     const {isContactFormOpen} = useContactUsFormContext();
 
     return (
         <View pointerEvents={ isOpen || isContactFormOpen ? 'none' : 'auto' } style={{opacity: isOpen || isContactFormOpen ? 0.2 : 1}}>
-            <View style={PagePartStyle.topPart}>
-                <View style={PagePartStyle.topPartText}>
+            <View style={LeaderboardLayoutStyle.topPart}>
+                <View style={LeaderboardLayoutStyle.topPartText}>
                     <TouchableOpacity onPress={() => {toggleMenu()}}>
                         <Image source={IMAGES.side_menu} />
                     </TouchableOpacity>
-                    <Text style={PagePartStyle.pageTitle}>מובילים</Text>
+                    <Text style={LeaderboardLayoutStyle.pageTitle} allowFontScaling={false}>מובילים</Text>
                 </View>
             </View>
-            <View style={PagePartStyle.ScrollviewContainer}>
-                <ScrollView contentContainerStyle={PagePartStyle.mainPart}
+            <View style={LeaderboardLayoutStyle.ScrollviewContainer}>
+                <ScrollView contentContainerStyle={LeaderboardLayoutStyle.mainPart}
                             showsVerticalScrollIndicator={false}>
                     <TopRated />
-                    <View style={PagePartStyle.blank}></View>
+                    <View style={LeaderboardLayoutStyle.blank}></View>
                 </ScrollView>
             </View>
         </View>
     );
 };  
 
-export default PagePart;
+export default LeaderboardLayout;

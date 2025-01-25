@@ -32,7 +32,7 @@ const PaymentPage = ({ navigation }: {navigation: any}) => {
                         <TouchableOpacity onPress={() => {isActive ? navigation.replace(Screens.HOME) : setStackIndexByName(StackNames.Auth)}}>
                             <Image source={IMAGES.back_icon} />
                         </TouchableOpacity>
-                        <Text style={PaymentScreenStyle.pageTitle}>תשלום</Text>
+                        <Text style={PaymentScreenStyle.pageTitle} allowFontScaling={false}>תשלום</Text>
                     </View>
                 </View>
                 <PlansContainer />

@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -18,12 +19,12 @@ const MultipleChoicesGameStyle = StyleSheet.create({
         alignItems: 'center',
     },
     wordCounter: {
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         shadowOpacity: 0.1,
         shadowRadius: 1,
     },
     word: {
-        fontSize: 25,
+        fontSize: calculateFontSize(25),
         fontWeight: '600',
         shadowOpacity: 0.05,
         shadowRadius: 1,
@@ -52,7 +53,7 @@ const MultipleChoicesGameStyle = StyleSheet.create({
     optionText: {
         width: '80%',
         textAlign: 'right',
-        fontSize: 12,
+        fontSize: calculateFontSize(12),
         marginRight: 10,
     },
     option_image: {
@@ -61,7 +62,7 @@ const MultipleChoicesGameStyle = StyleSheet.create({
     btnText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 16,
+        fontSize: calculateFontSize(16),
         fontWeight: '500',
     },
     nextBtn: {

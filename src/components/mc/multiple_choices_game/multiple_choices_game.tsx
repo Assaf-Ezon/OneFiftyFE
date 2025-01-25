@@ -187,12 +187,12 @@ const MultipleChoicesGame = () => {
         <>
             <Animated.View style={[MultipleChoicesGameStyle.question, {opacity: fadeAnim}]}>
                 <View style={MultipleChoicesGameStyle.wordSection}>
-                    <Text style={MultipleChoicesGameStyle.word}>{currentWord.FullWord}</Text>
+                    <Text style={MultipleChoicesGameStyle.word} allowFontScaling={false}>{currentWord.FullWord}</Text>
                 </View>
                 <View style={MultipleChoicesGameStyle.texts}>  
-                    <Text style={MultipleChoicesGameStyle.wordCounter}>סוג: {currentWord.Type}</Text>
-                    <Text style={MultipleChoicesGameStyle.wordCounter}>רמה: {currentWord.Group}</Text>
-                    <Text style={MultipleChoicesGameStyle.wordCounter}>כמות: {wordCount}/{totalWords}</Text>
+                    <Text style={MultipleChoicesGameStyle.wordCounter} allowFontScaling={false}>סוג: {currentWord.Type}</Text>
+                    <Text style={MultipleChoicesGameStyle.wordCounter} allowFontScaling={false}>רמה: {currentWord.Group}</Text>
+                    <Text style={MultipleChoicesGameStyle.wordCounter} allowFontScaling={false}>כמות: {wordCount}/{totalWords}</Text>
                 </View>
                 <View style={MultipleChoicesGameStyle.pirushim}>
                     {
@@ -200,7 +200,8 @@ const MultipleChoicesGame = () => {
                                 return (
                                     <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!isNextBtn ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
                                         <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: isNextBtn && meaning === getMeaningsAsString(currentWord.Meanings) ? '600' : '300', 
-                                            textDecorationLine: isNextBtn && meaning === desiredMeaning ? 'underline' : 'none'}]}>
+                                            textDecorationLine: isNextBtn && meaning === desiredMeaning ? 'underline' : 'none'}]}
+                                            allowFontScaling={false}>
                                             {meaning}
                                         </Text>
                                         <Image source={meaning ===  desiredMeaning && isCheckBtn ? IMAGES.chosen_option : 
@@ -215,12 +216,12 @@ const MultipleChoicesGame = () => {
             </Animated.View>
             {isCheckBtn ? (
                 <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIsNextBtn(true); setIsCheckBtn(false);}}>
-                    <Text style={MultipleChoicesGameStyle.btnText}>בדיקה</Text>
+                    <Text style={MultipleChoicesGameStyle.btnText} allowFontScaling={false}>בדיקה</Text>
                 </TouchableOpacity>
             ): null}
             {isNextBtn ? (
                 <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIfAnswerCorrect(getMeaningsAsString(currentWord.Meanings) === desiredMeaning); setNewValuesForNextWord();}}>
-                    <Text style={MultipleChoicesGameStyle.btnText}>המשך</Text>
+                    <Text style={MultipleChoicesGameStyle.btnText} allowFontScaling={false}>המשך</Text>
                 </TouchableOpacity>
             ) : null}
 

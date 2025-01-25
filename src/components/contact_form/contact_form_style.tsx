@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { CONFIG } from '../../config';
+import calculateFontSize from '../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -27,7 +28,7 @@ const ContactFormStyle = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
-        fontSize: 22,
+        fontSize: calculateFontSize(22),
         fontWeight: '600',
     },
     inputFieldsContainer: {
@@ -40,7 +41,7 @@ const ContactFormStyle = StyleSheet.create({
         width: '100%',
         height: '20%',
         textAlign: 'right',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         paddingRight: 10,
         borderWidth: 0.2,
         borderColor: '#5F5F5F',
@@ -50,7 +51,7 @@ const ContactFormStyle = StyleSheet.create({
         width: '100%',
         height: '70%',
         textAlign: 'right',
-        fontSize: 15,
+        fontSize: calculateFontSize(15),
         padding: 10,
         borderWidth: 0.2,
         borderColor: '#5F5F5F',
@@ -72,7 +73,7 @@ const ContactFormStyle = StyleSheet.create({
     },
     submitBtnText: {
         color: 'white',
-        fontSize: 18,
+        fontSize: calculateFontSize(18),
     },
 });
 

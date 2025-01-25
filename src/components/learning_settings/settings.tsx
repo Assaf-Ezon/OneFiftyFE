@@ -69,23 +69,23 @@ const LearningSettings = () => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={[{display: isLearningSettingOpen ? 'flex' : 'none'}, SettingsStyle.container]}>
                 <View style={SettingsStyle.upperPart}>
-                    <Text style={SettingsStyle.title}>הגדרות:</Text>
+                    <Text style={SettingsStyle.title} allowFontScaling={false}>הגדרות:</Text>
                 </View>
                 <View style={SettingsStyle.SettingsPart}>
                     <View style={SettingsStyle.PickLevel}>
-                        <Text style={SettingsStyle.ChooseLevelText}>בחרו מילים מכל רמה (אין לעבור 100 מילים סה"כ):</Text>
+                        <Text style={SettingsStyle.ChooseLevelText} allowFontScaling={false}>בחרו מילים מכל רמה:</Text>
                         <View style={SettingsStyle.selectLevels}>
                         {
                             Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
                                 <View style={SettingsStyle.checkboxContainer} key={i}>
                                 <NumericInput level={i} />
-                                <Text style={SettingsStyle.levelsText}>{i}</Text>
+                                <Text style={SettingsStyle.levelsText} allowFontScaling={false}>{i}</Text>
                                 </View>
                             ))
                         }   
                         </View>
                         <TouchableOpacity style={SettingsStyle.RandomBtn} onPress={generateRandomNumbers}>
-                            <Text style={SettingsStyle.RandomBtnText}>רנדומלי</Text>
+                            <Text style={SettingsStyle.RandomBtnText} allowFontScaling={false}>רנדומלי</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -101,15 +101,15 @@ const LearningSettings = () => {
                     />
 
                     <View style={SettingsStyle.TypeOfPractice}>
-                        <Text style={SettingsStyle.TypeOfPracticeTitle}>בחרו צורת תרגול (אחת משתי האפשרויות):</Text>
+                        <Text style={SettingsStyle.TypeOfPracticeTitle} allowFontScaling={false}>בחרו צורת תרגול:</Text>
                         <View style={SettingsStyle.OptionsContainer}>
                             <View style={[SettingsStyle.PracticeContainer, {opacity: isRegularPracticeOn() ? 0.4 : 1}]}
                             pointerEvents={ isRegularPracticeOn()  ? 'none' : 'auto' }>
                                 <View style={SettingsStyle.SmartStudy}>
-                                    <Text style={SettingsStyle.SmartStudyText}>תרגול חכם</Text>
+                                    <Text style={SettingsStyle.SmartStudyText} allowFontScaling={false}>תרגול חכם</Text>
                                     <CheckBox value={smartStudy} onValueChange={() => {setSmartStudy(prev => !prev)}} />
                                 </View>
-                                <Text style={SettingsStyle.SmartStudyDescription}>בוחר עבורכם אילו מילים לתרגל (מומלץ)</Text>
+                                <Text style={SettingsStyle.SmartStudyDescription} allowFontScaling={false}>בוחר עבורכם אילו מילים לתרגל (מומלץ)</Text>
                             </View>
 
                             <View style={SettingsStyle.VerticalLine} />
@@ -117,15 +117,15 @@ const LearningSettings = () => {
                             <View style={[SettingsStyle.PracticeContainer , {opacity: smartStudy ? 0.4 : 1}]}
                             pointerEvents={ smartStudy  ? 'none' : 'auto' }>
                                 <View style={SettingsStyle.SmartStudy}>
-                                    <Text style={SettingsStyle.RegularStudyText}>מילים חדשות</Text>
+                                    <Text style={SettingsStyle.RegularStudyText} allowFontScaling={false}>מילים חדשות</Text>
                                     <CheckBox value={newWordsChecbox} onValueChange={() => {setNewWordsChecbox(prev => !prev)}} />
                                 </View>
                                 <View style={SettingsStyle.SmartStudy}>
-                                    <Text style={SettingsStyle.RegularStudyText}>מילים שלא הצלחתי</Text>
+                                    <Text style={SettingsStyle.RegularStudyText} allowFontScaling={false}>מילים שלא הצלחתי</Text>
                                     <CheckBox value={incorrectWordsChecbox} onValueChange={() => {setIncorrectWordsChecbox(prev => !prev)}} />
                                 </View>
                                 <View style={SettingsStyle.SmartStudy}>
-                                    <Text style={SettingsStyle.RegularStudyText}>מילים שתרגלתי</Text>
+                                    <Text style={SettingsStyle.RegularStudyText} allowFontScaling={false}>מילים שתרגלתי</Text>
                                     <CheckBox value={practiceWordsChecbox} onValueChange={() => {setPracticeWordsChecbox(prev => !prev)}} />
                                 </View>
                             </View>
@@ -134,7 +134,7 @@ const LearningSettings = () => {
                 </View>
                 <View style={SettingsStyle.LowerPart}>
                     <TouchableOpacity style={SettingsStyle.submitBtn} onPress={() => {updateSettings()}}>
-                        <Text style={SettingsStyle.submitBtnText}>אישור</Text>
+                        <Text style={SettingsStyle.submitBtnText} allowFontScaling={false}>אישור</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -38,10 +38,10 @@ const GameCard: FC<GameCardConfig> = ({ id, image, title, description, gameName 
         <View style={GameCardStyle.container}>
             <Image source={image} style={GameCardStyle.cardImage} />
             <View style={GameCardStyle.textContainer}>
-                <Text style={GameCardStyle.titleText}>{title}</Text>
-                <Text style={GameCardStyle.descriptionText}>{description}</Text>
+                <Text style={GameCardStyle.titleText} allowFontScaling={false}>{title}</Text>
+                <Text style={GameCardStyle.descriptionText} allowFontScaling={false}>{description}</Text>
                 <TouchableOpacity style={GameCardStyle.btn} onPress={() => {goToGamePage()}}>
-                    <Text style={GameCardStyle.btnText}>התחילו משחק</Text>
+                    <Text style={GameCardStyle.btnText} allowFontScaling={false}>התחילו משחק</Text>
                 </TouchableOpacity>
             </View>
         </View>

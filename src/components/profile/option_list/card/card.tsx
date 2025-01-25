@@ -25,7 +25,7 @@ const OptionCard: FC<ProfileMenuConfig> = ({ image, title, onPressActionIndex, s
         <View style={{opacity: isActive ? 1 : 0.6}}
         pointerEvents={isActive ? 'auto' : 'none'}>        
             <TouchableOpacity style={cardStyle.container} onPress={() => {onPressHandler[onPressActionIndex]()}}>
-                <Text style={cardStyle.text}>{title}</Text>
+                <Text style={cardStyle.text} allowFontScaling={false}>{title}</Text>
                 <Image source={image} />
             </TouchableOpacity>
         </View>

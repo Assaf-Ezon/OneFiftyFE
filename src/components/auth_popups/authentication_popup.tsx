@@ -20,10 +20,10 @@ const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetSt
                     <TouchableOpacity onPress={() => {setPopupIndex(AuthErrorType.None)}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
-                    <Text style={PopupsStyle.errorPopupTitle}>תקלה</Text>
+                    <Text style={PopupsStyle.errorPopupTitle} allowFontScaling={false}>תקלה</Text>
                 </View>
                 <View style={PopupsStyle.errorPopupMainContainer}>
-                    <Text style={PopupsStyle.popupText}>
+                    <Text style={PopupsStyle.popupText} allowFontScaling={false}>
                         אירוע לא צפוי קרה{'\n'}
                         אנא נסו שנית מאוחר יותר.{'\n'}{'\n'}{'\n'}
                         פנו אלינו: OneFifty.customers@gmail.com
@@ -41,10 +41,10 @@ const IncorrectVersionPopup = () => {
         visible={true}>
             <View style={PopupsStyle.versionPopupContainer}>
                 <View style={PopupsStyle.versionPopupTitleContainer}>
-                    <Text style={PopupsStyle.versionPopupTitle}>עדכן גרסה</Text>
+                    <Text style={PopupsStyle.versionPopupTitle} allowFontScaling={false}>עדכן גרסה</Text>
                 </View>
                 <View style={PopupsStyle.versionPopupMainContainer}>
-                    <Text style={PopupsStyle.versionExplanationText}>
+                    <Text style={PopupsStyle.versionExplanationText} allowFontScaling={false}>
                         גרסה המותקנת על מכשירכם אינה העדכנית ביותר. {'\n'}
                         אנא עדכנו את הגרסה על מנת להמשיך להשתמש באפליקציה{'\n'}
                     </Text>
@@ -70,10 +70,10 @@ const InactivePopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.Se
         visible={true}>
             <View style={PopupsStyle.inactivePopup}>
                 <View style={PopupsStyle.inactivePopupTitleContainer}>
-                    <Text style={PopupsStyle.inactivePopupTitle}>משתמש לא בתוקף</Text>
+                    <Text style={PopupsStyle.inactivePopupTitle} allowFontScaling={false}>משתמש לא בתוקף</Text>
                 </View>
                 <View style={PopupsStyle.inactivePopupMainContainer}>
-                    <Text style={PopupsStyle.inactiveExplanationText}>
+                    <Text style={PopupsStyle.inactiveExplanationText} allowFontScaling={false}>
                         חשבונכם הינו פג תוקף מאחת מהסיבות הבאות: {'\n'}
                             1. תקופת המנוי של המשתמש נגמרה{'\n'}
                             2. תקופת הניסיון של המשתמש נגמרה{'\n'}{'\n'}{'\n'}
@@ -84,10 +84,10 @@ const InactivePopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.Se
                 </View>
                 <View style={PopupsStyle.btnsContainer}>
                         <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => setStackIndexByName(StackNames.Inactive)}>
-                                <Text style={PopupsStyle.inactivePopupBtnText}>מעבר לתשלום</Text>
+                                <Text style={PopupsStyle.inactivePopupBtnText} allowFontScaling={false}>מעבר לתשלום</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={PopupsStyle.inactivePopupBtn} onPress={() => redirectToStartPage()}>
-                                <Text style={PopupsStyle.inactivePopupBtnText}>למסך התחברות</Text>
+                                <Text style={PopupsStyle.inactivePopupBtnText} allowFontScaling={false}>למסך התחברות</Text>
                         </TouchableOpacity>
                 </View>
             </View>
@@ -102,10 +102,10 @@ const InternetConnectionPopup = () => {
         visible={true}>
             <View style={PopupsStyle.internetPopupContainer}>
                 <View style={PopupsStyle.internetPopupTitleContainer}>
-                    <Text style={PopupsStyle.internetPopupTitle}>אינכם מחוברים לאינטרנט</Text>
+                    <Text style={PopupsStyle.internetPopupTitle} allowFontScaling={false}>אינכם מחוברים לאינטרנט</Text>
                 </View>
                 <View style={PopupsStyle.internetPopupMainContainer}>
-                    <Text style={PopupsStyle.internetExplanationText}>
+                    <Text style={PopupsStyle.internetExplanationText} allowFontScaling={false}>
                         אנא התחברו ונסו שוב{'\n'}
                     </Text>
                 </View>

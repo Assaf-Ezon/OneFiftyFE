@@ -59,7 +59,7 @@ const NumericInput: FC<GameSettingsNumericInputConfig> = ({ level }) => {
 
         <View style={NumbericInputStyle.container}>
             <TouchableOpacity style={NumbericInputStyle.btn} onPress={decrease}>
-                <Text style={NumbericInputStyle.text}>-</Text>
+                <Text style={NumbericInputStyle.text} allowFontScaling={false}>-</Text>
             </TouchableOpacity>
             <TextInput
                 style={NumbericInputStyle.inputField}
@@ -68,9 +68,10 @@ const NumericInput: FC<GameSettingsNumericInputConfig> = ({ level }) => {
                 value={value.toString()}
                 selectTextOnFocus={true}
                 onChangeText={(text) => {handleChangeText(text)}}
+                allowFontScaling={false}
             />
             <TouchableOpacity style={NumbericInputStyle.btn} onPress={increase}>
-                <Text style={NumbericInputStyle.text}>+</Text>
+                <Text style={NumbericInputStyle.text} allowFontScaling={false}>+</Text>
             </TouchableOpacity>
         </View>
     );

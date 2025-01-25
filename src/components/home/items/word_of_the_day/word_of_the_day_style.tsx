@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import calculateFontSize from '../../../../calculated_font_size';
 
 const { width, height } = Dimensions.get('window');
 
@@ -31,7 +32,7 @@ const wordOfTheDayStyle = StyleSheet.create({
     },
     word: {
         color: 'white',
-        fontSize: 22,
+        fontSize: calculateFontSize(22),
         fontWeight: '600',
         textAlign: 'right',
     },

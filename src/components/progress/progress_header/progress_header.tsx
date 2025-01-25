@@ -14,7 +14,7 @@ const ProgressHeader = () => {
                 <TouchableOpacity onPress={() => {navigation.goBack()}}>
                     <Image source={IMAGES.back_icon} />
                 </TouchableOpacity>
-                <Text style={ProgressHeaderStyle.pageTitle}>התקדמות</Text>
+                <Text style={ProgressHeaderStyle.pageTitle} allowFontScaling={false}>התקדמות</Text>
             </View>
         </View>
     );
