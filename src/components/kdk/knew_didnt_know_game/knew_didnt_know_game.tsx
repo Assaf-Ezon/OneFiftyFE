@@ -12,8 +12,8 @@ import { useEndGameContext } from '../../../context/game_context/end_game_contex
 import { ButtonState } from '../../../data_objects/enums/button_state';
 
 import { GAMES } from '../../../data_objects/enums/game_objects';
-import { useGameLogic } from '../../../game_utils/use_game_logic';
-import { getMeaningsAsString } from '../../../game_utils/get_meanings_as_string';
+import { useGameLogic } from '../../../game_component_logic/use_game_logic';
+import { getMeaningsAsString } from '../../../game_component_logic/get_meanings_as_string';
 
 const KnewDidntKnowGame = () => {
     // Contexts
