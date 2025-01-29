@@ -16,7 +16,7 @@ import { GAMES } from '../../../data_objects/enums/game_objects';
 
 import { EnrichersParamName } from '../../../data_objects/enums/enrichers_param_name';
 import { useGameLogic } from '../../../game_component_logic/use_game_logic';
-import { getMeaningsAsString } from '../../../game_component_logic/get_meanings_as_string';
+import WordsFormatter from '../../../words_formatter';
 
 const MultipleChoicesGame = () => {    
     // Contexts
@@ -66,14 +66,14 @@ const MultipleChoicesGame = () => {
                         currentWord.ExtraParameters[EnrichersParamName.RandomMeanings].map((meaning: string) => {
                                 return (
                                     <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!isNextBtn ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
-                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: isNextBtn && meaning === getMeaningsAsString(currentWord.Meanings) ? '600' : '300', 
+                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: isNextBtn && meaning === WordsFormatter.getMeaningsAsString(currentWord.Meanings) ? '600' : '300', 
                                             textDecorationLine: isNextBtn && meaning === desiredMeaning ? 'underline' : 'none'}]}
                                             allowFontScaling={false}>
                                             {meaning}
                                         </Text>
                                         <Image source={meaning ===  desiredMeaning && isCheckBtn ? IMAGES.chosen_option : 
-                                            meaning === getMeaningsAsString(currentWord.Meanings) && isNextBtn ? IMAGES.correct : 
-                                            isNextBtn && meaning !== getMeaningsAsString(currentWord.Meanings) ? IMAGES.wrong : IMAGES.option} 
+                                            meaning === WordsFormatter.getMeaningsAsString(currentWord.Meanings) && isNextBtn ? IMAGES.correct : 
+                                            isNextBtn && meaning !== WordsFormatter.getMeaningsAsString(currentWord.Meanings) ? IMAGES.wrong : IMAGES.option} 
                                         style={MultipleChoicesGameStyle.option_image} />
                                     </TouchableOpacity>
                                 )
@@ -87,7 +87,7 @@ const MultipleChoicesGame = () => {
                 </TouchableOpacity>
             ): null}
             {isNextBtn ? (
-                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIsAnswerCorrect(getMeaningsAsString(currentWord.Meanings) === desiredMeaning); setIsNextBtn(false); setNewValuesForNextWord();}}>
+                <TouchableOpacity style={MultipleChoicesGameStyle.nextBtn} onPress={() => {setIsAnswerCorrect(WordsFormatter.getMeaningsAsString(currentWord.Meanings) === desiredMeaning); setIsNextBtn(false); setNewValuesForNextWord();}}>
                     <Text style={MultipleChoicesGameStyle.btnText} allowFontScaling={false}>המשך</Text>
                 </TouchableOpacity>
             ) : null}

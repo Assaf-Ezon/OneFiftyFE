@@ -13,7 +13,7 @@ import { ButtonState } from '../../../data_objects/enums/button_state';
 
 import { GAMES } from '../../../data_objects/enums/game_objects';
 import { useGameLogic } from '../../../game_component_logic/use_game_logic';
-import { getMeaningsAsString } from '../../../game_component_logic/get_meanings_as_string';
+import WordsFormatter from '../../../words_formatter';
 
 const KnewDidntKnowGame = () => {
     // Contexts
@@ -68,7 +68,7 @@ const KnewDidntKnowGame = () => {
                     >
                         <View style={KnewDidntKnowGameStyle.meaningContainer}>
                             {answer != ButtonState.ShowAnswer ? <Text style={KnewDidntKnowGameStyle.meaning} allowFontScaling={false}>
-                                {getMeaningsAsString(currentWord.Meanings)}</Text> : null}
+                                {WordsFormatter.getMeaningsAsString(currentWord.Meanings)}</Text> : null}
                         </View>
                     </LinearGradient>
                 </View>

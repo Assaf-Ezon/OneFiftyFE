@@ -52,7 +52,7 @@ export const useGameLogic = (gameMode: GameMode, fadeAnim: Animated.Value, Extra
                 total += Object.keys(group).length;
             }
             setTotalWords(total);
-
+            
             setNewValuesForNextWord();
         }
     }, [words]);
