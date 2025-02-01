@@ -230,19 +230,21 @@ export default class AuthenticationHandler {
 
     // handles logout - sets all secureStore to non relevant values
     public async logout () {
-        const revoke = await AuthSession.requestAsync(
-            discovery.revocationEndpoint,
-            {
-                
-            }
-        );
-
-        await SecureStore.setItemAsync(CONFIG.access_token, '');
-        await SecureStore.setItemAsync(CONFIG.refresh_token, '');
-        await SecureStore.setItemAsync(CONFIG.name, '');
-
-        this.setAccessTokenToExpired();
-        this.setRefreshTokenToExpired();
+        try {
+            await AuthSession.requestAsync(
+                discovery.revocationEndpoint,
+                {
+    
+                }
+            );
+        } finally {
+            await SecureStore.setItemAsync(CONFIG.access_token, '');
+            await SecureStore.setItemAsync(CONFIG.refresh_token, '');
+            await SecureStore.setItemAsync(CONFIG.name, '');
+    
+            this.setAccessTokenToExpired();
+            this.setRefreshTokenToExpired();
+        }
     } 
 
     // is the refresh token not expired
