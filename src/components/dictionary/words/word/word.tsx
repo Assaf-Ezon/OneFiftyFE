@@ -8,11 +8,11 @@ import { DictionaryWordConfig } from "../../../../data_objects/components_config
 
 const { height } = Dimensions.get('window');
 
-const Word: FC<DictionaryWordConfig> = ({ word, meaning }) => {
+const Word: FC<DictionaryWordConfig> = ({ word, meaning, success, failure }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
-        <View style={[WordStyle.container, {height:  isOpen ? height * 0.08 : height * 0.04}]}>
+        <View style={[WordStyle.container, {height:  isOpen ? height * 0.18 : height * 0.04}]}>
             <TouchableOpacity style={WordStyle.wordContainer} onPress={() => {setIsOpen(!isOpen)}}>
                 <Text style={[WordStyle.word, {color: isOpen ? '#ff7518' : 'black'}]} allowFontScaling={false}>{word}</Text>
                 <Image source={isOpen ? IMAGES.open_dictionary : IMAGES.close_dictionary} />
@@ -20,6 +20,10 @@ const Word: FC<DictionaryWordConfig> = ({ word, meaning }) => {
             {isOpen ? 
                 <View style={WordStyle.meaningConatiner}>
                     <Text style={WordStyle.meaning} allowFontScaling={false}>{meaning}</Text>
+                    <View style={WordStyle.statisticsContainer}>
+                        <Text>כשלונות: {failure}</Text>
+                        <Text>הצלחות: {success}</Text>
+                    </View>
                 </View> 
             : null}
         </View>

@@ -12,7 +12,6 @@ const WordStyle = StyleSheet.create({
         backgroundColor: 'white',
     },
     wordContainer: {
-        flex: 2,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
@@ -24,10 +23,16 @@ const WordStyle = StyleSheet.create({
     },
     meaningConatiner: {
         flex: 3,
-        width: '92%',
-        justifyContent: 'center',
+        width: '100%',
+        justifyContent: 'space-around',
+    },
+    statisticsContainer: {
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
     },
     meaning: {
+        marginRight: 20,
         textAlign: 'right',
     },
 });
