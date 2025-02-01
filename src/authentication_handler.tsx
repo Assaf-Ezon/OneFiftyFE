@@ -4,6 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 import * as AuthSession from 'expo-auth-session';
 
 import { CONFIG } from './config';
+import { Prompt } from 'expo-auth-session';
 
 const tenantName = 'OneFiftyApp'; 
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
@@ -13,6 +14,7 @@ const redirectUri = 'com.OneFifty.App://auth';
 const discovery = {
     authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
     tokenEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/token`,
+    revocationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/logout`,
 };
 
 export default class AuthenticationHandler {
@@ -97,6 +99,7 @@ export default class AuthenticationHandler {
                 redirectUri,
                 scopes: ["https://onefiftyapp.onmicrosoft.com/e448e103-0d00-4b1f-842e-96da9d017f11/offline_access", "offline_access"],
                 responseType: AuthSession.ResponseType.Code,
+                prompt: Prompt.Login,
                 extraParams: {
                     nonce: 'defaultNonce', 
                 },
@@ -227,12 +230,21 @@ export default class AuthenticationHandler {
 
     // handles logout - sets all secureStore to non relevant values
     public async logout () {
-        await SecureStore.setItemAsync(CONFIG.access_token, '');
-        await SecureStore.setItemAsync(CONFIG.refresh_token, '');
-        await SecureStore.setItemAsync(CONFIG.name, '');
-
-        this.setAccessTokenToExpired();
-        this.setRefreshTokenToExpired();
+        try {
+            await AuthSession.requestAsync(
+                discovery.revocationEndpoint,
+                {
+    
+                }
+            );
+        } finally {
+            await SecureStore.setItemAsync(CONFIG.access_token, '');
+            await SecureStore.setItemAsync(CONFIG.refresh_token, '');
+            await SecureStore.setItemAsync(CONFIG.name, '');
+    
+            this.setAccessTokenToExpired();
+            this.setRefreshTokenToExpired();
+        }
     } 
 
     // is the refresh token not expired
