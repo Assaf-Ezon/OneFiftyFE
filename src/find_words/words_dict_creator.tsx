@@ -68,27 +68,27 @@ export default class WordsDictCreator {
 
                     if (this._settings.shouldIncludeNewWords && amountList.length > 0)
                     { 
-                        new NewWordsSelector().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new NewWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeIncorrectWords && amountList.length > 0) 
                     { 
-                        new IncorrectWordsSelector().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new IncorrectWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludePracticedwords && amountList.length > 0) 
                     { 
-                        new PracticeWordsSelector().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new PracticeWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeSmartStudy && amountList.length > 0) 
                     { 
-                        new SmartWordsSelector().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
+                        new SmartWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
                         amountList.pop();
                     }
                 }
             }
-
+            console.log(this._words);
             this._enricher.enrich(this._words, this._newWords, this._statistics.WordsStatistics.Words);
 
             return Object.fromEntries(Object.entries(this._words).filter(([key, value]) => Object.keys(value).length !== 0));
