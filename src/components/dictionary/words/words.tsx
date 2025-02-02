@@ -45,8 +45,8 @@ const Words = () => {
                                 key={wordKey}
                                 word={wordKey}
                                 meaning={WordsFormatter.getMeaningsAsString(wordDetails.Meanings)}
-                                success={statistics[settings.level]?.[wordKey].Successes ?? 0}
-                                failure={statistics[settings.level]?.[wordKey].Failures ?? 0}
+                                success={statistics[settings.level]?.[wordKey]?.Successes ?? 0}
+                                failure={statistics[settings.level]?.[wordKey]?.Failures ?? 0}
                             />
                         );
                     })
