@@ -32,7 +32,7 @@ const KDKGamePage = () => {
                         <Text style={KDKGamePageStyle.pageTitle} allowFontScaling={false}>ידעתי / לא ידעתי</Text>
                     </View>
                 </View>
-                <KnewDidntKnowGame />
+                {isGameError ? null : <KnewDidntKnowGame />}
             </View>
             {isGameError ? <GameError /> : null}
             {isLeaveGame ? <LeaveGame /> : null}

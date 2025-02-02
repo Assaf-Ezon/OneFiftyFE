@@ -88,7 +88,7 @@ export default class WordsDictCreator {
                     }
                 }
             }
-            console.log(this._words);
+
             this._enricher.enrich(this._words, this._newWords, this._statistics.WordsStatistics.Words);
 
             return Object.fromEntries(Object.entries(this._words).filter(([key, value]) => Object.keys(value).length !== 0));

@@ -54,7 +54,7 @@ export const useGameLogic = (gameMode: GameMode, fadeAnim: Animated.Value, Extra
             }
             setTotalWords(total);
             console.log(JSON.stringify(words));
-            setNewValuesForNextWord();
+            total ? setNewValuesForNextWord() : null;
         }
     }, [words]);
 

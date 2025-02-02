@@ -36,7 +36,11 @@ export const getWords = (gameMode: GameMode) => {
     const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, gameMode);
     const wordsList: GameWords = gameCreater.createList();
 
-    Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
-    
-    return wordsList;
+    if (Object.keys(wordsList).length == 0) {
+        toggleGameErrorMenu();
+        return {};
+    }  
+    else {
+        return wordsList;
+    }
 }

@@ -30,7 +30,7 @@ const MultipleChoicesPage = () => {
                         <Text style={MultipleChoicesPageStyle.pageTitle} allowFontScaling={false}>שאלון אמריקאי</Text>
                     </View>
                 </View>
-                <MultipleChoicesGame />
+                {isGameError ? null : <MultipleChoicesGame />}
             </View>
             {isGameError ? <GameError /> : null}
             {isLeaveGame ? <LeaveGame /> : null}
