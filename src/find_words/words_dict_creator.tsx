@@ -57,16 +57,15 @@ export default class WordsDictCreator {
                 if (typeof levelWordCount == 'number' && levelWordCount > 0 && levelWordCount <= 100) { 
                     const amountList = this._splitAmountToTypes(levelWordCount); 
                     var newWords: { [word: string]: WordDetails } = {};
-                    if (this.checkLevelExistsInNewList(parseInt(groupId))){ // TODO: revert to group id
-                        newWords = this._newWords[0];
+                    if (this.checkLevelExistsInNewList(parseInt(groupId))){ 
+                        newWords = this._newWords[parseInt(groupId)];
                     }
                     
                     var practicedWords: { [word: string]: WordStatisticsData } = {};
                     if (this.checkLevelExistsInStatisticsList(parseInt(groupId))){
-                        practicedWords = this._statistics.WordsStatistics.Words[0]; // TODO: revert to group id
+                        practicedWords = this._statistics.WordsStatistics.Words[parseInt(groupId)]; 
                     }
 
-                    // TODO: change all "add" methods to handle all levels and not only 0
                     if (this._settings.shouldIncludeNewWords && amountList.length > 0)
                     { 
                         new NewWordsSelector().select(newWords, practicedWords, 0, Math.min(Object.keys(this._newWords[0]).length, amountList[amountList.length - 1]), this._words);
@@ -115,12 +114,10 @@ export default class WordsDictCreator {
     }
 
     checkLevelExistsInNewList(level: number): boolean {
-        return true; // TODO: remove
         return level in this._newWords;
     }
 
     checkLevelExistsInStatisticsList(level: number): boolean {
-        return true; // TODO: remove. As for now, if there is no validation over if the level exist or not them it might throw an error 
         return level in this._statistics.WordsStatistics.Words;
     }
 }

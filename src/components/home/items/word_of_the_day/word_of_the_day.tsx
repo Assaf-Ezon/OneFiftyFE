@@ -10,11 +10,12 @@ import { Languages } from '../../../../data_objects/enums/language';
 import { WordDetails } from '../../../../data_objects/words/basic_data_objects/word_details';
 import { WordsDictionary } from '../../../../data_objects/words/dIctionary/words_dictionary';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CONFIG } from '../../../../config';
 
 const generateDailyWord = (hebrewWords: WordsDictionary, englishWords: WordsDictionary) => {
     // random language and level
     const randomLanguage = Math.random() < 0.5 ? Languages.Hebrew : Languages.English;
-    const randomLevel = 0; // TODO: change level 0 to random 1-10/5-10
+    const randomLevel = Math.floor(Math.random() * (CONFIG.max_level - CONFIG.min_level + 1)) + CONFIG.min_level;
 
     let randomLanguageWordsDict: { [word: string]: WordDetails } = {};
     

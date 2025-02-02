@@ -12,6 +12,7 @@ import { GameMode } from "../data_objects/general/game_mode";
 import { WordDetails } from "../data_objects/words/basic_data_objects/word_details";
 import { GameWordDictDetails } from "../data_objects/words/game_data_objects/game_word_dict_details";
 import { GameWords } from "../data_objects/words/game_data_objects/game_words";
+import { CONFIG } from "../config";
 
 export const useGameLogic = (gameMode: GameMode, fadeAnim: Animated.Value, ExtraParams: any) => {
     // context
@@ -23,7 +24,7 @@ export const useGameLogic = (gameMode: GameMode, fadeAnim: Animated.Value, Extra
 
     const [totalWords, setTotalWords] = useState<number>(0); // total amount of words in the current game
 
-    const [level, setLevel] = useState<number>(-1); // index of the current level TODO: change the -1 to 0 because 1 is the first available level, change it in the "setNewValuesForNextWord" as well
+    const [level, setLevel] = useState<number>(0); // index of the current level 
     const [amountInLevel, setAmountInLevel] = useState<number>(0); // Words in the current level
     const [wordCount, setWordCount] = useState<number>(0); // Overall word counter
     const [wordsInLevelIndex, setWordsInLevelIndex] = useState<number>(-1); // index for the current level
@@ -64,7 +65,7 @@ export const useGameLogic = (gameMode: GameMode, fadeAnim: Animated.Value, Extra
         if (isNextLevel) {
             currentLevel++;
             while (!(currentLevel in words)) {
-                if (currentLevel > 10) {
+                if (currentLevel > CONFIG.max_level) {
                     toggleEndGameMenu();
                     return;
                 }
