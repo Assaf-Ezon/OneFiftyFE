@@ -68,22 +68,22 @@ export default class WordsDictCreator {
 
                     if (this._settings.shouldIncludeNewWords && amountList.length > 0)
                     { 
-                        new NewWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
+                        new NewWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[amountList.length - 1], this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeIncorrectWords && amountList.length > 0) 
                     { 
-                        new IncorrectWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
+                        new IncorrectWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[amountList.length - 1], this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludePracticedwords && amountList.length > 0) 
                     { 
-                        new PracticeWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
+                        new PracticeWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[amountList.length - 1], this._words);
                         amountList.pop();
                     }
                     if (this._settings.shouldIncludeSmartStudy && amountList.length > 0) 
                     { 
-                        new SmartWordsSelector().select(newWords, practicedWords, parseInt(groupId), Math.min(Object.keys(this._newWords).length, amountList[amountList.length - 1]), this._words);
+                        new SmartWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[amountList.length - 1], this._words);
                         amountList.pop();
                     }
                 }
