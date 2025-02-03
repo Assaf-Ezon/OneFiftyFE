@@ -9,6 +9,7 @@ export default class SmartWordsSelector extends BaseWordsSelector {
     selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
         // dict of the words that are considered "smart practice words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
+        var count = 0;
 
         // filters only the words that are considered "smart pracrice"
         for (const word in practicedWords) {
@@ -23,10 +24,13 @@ export default class SmartWordsSelector extends BaseWordsSelector {
                         Type: "תרגול (חכם)",
                         ExtraParameters: {},
                     }
-                    wordsMatchingToFilter[word] = WordDetails
+                    wordsMatchingToFilter[word] = WordDetails;
+
+                    count++;
             }
         }
         
+        this.countWordsMatchingToFilter = count;
         return wordsMatchingToFilter;
     }
 

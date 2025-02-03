@@ -13,6 +13,7 @@ export default class NewWordsSelector extends BaseWordsSelector {
         // dict of the words that are considered "new words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
         for (const word in newWords){
+            
             const WordDetails: GameWordDictDetails = {
                 FullWord: newWords[word].FullWord,
                 Meanings: newWords[word].Meanings,
@@ -23,6 +24,7 @@ export default class NewWordsSelector extends BaseWordsSelector {
             wordsMatchingToFilter[word] = WordDetails;
         }
 
+        this.countWordsMatchingToFilter = Object.keys(newWords).length;
         return wordsMatchingToFilter;
     }
 

@@ -4,6 +4,12 @@ import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/
 import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
 
 export default abstract class BaseWordsSelector {
+    public countWordsMatchingToFilter: number;
+
+    constructor () {
+        this.countWordsMatchingToFilter = 0;
+    }
+
     select(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, groupId: number, totalAmount: number, wordsDict: GameWords): GameWords {
         if (!wordsDict[groupId]) {
             wordsDict[groupId] = {};
