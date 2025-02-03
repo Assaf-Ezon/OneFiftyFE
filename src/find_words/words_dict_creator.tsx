@@ -33,7 +33,6 @@ export default class WordsDictCreator {
         this._newWords = newWords;
         this._statistics = statistics;
 
-
         this._enricher = CreateEnricher(gameMode);
     }
 

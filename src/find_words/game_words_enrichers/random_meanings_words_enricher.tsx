@@ -1,3 +1,4 @@
+import { CONFIG } from "../../config";
 import { EnrichersParamName } from "../../data_objects/enums/enrichers_param_name";
 import { Meaning } from "../../data_objects/words/basic_data_objects/meaning";
 import { WordDetails } from "../../data_objects/words/basic_data_objects/word_details";
@@ -5,6 +6,7 @@ import { WordStatisticsData } from "../../data_objects/words/basic_data_objects/
 import { Words } from "../../data_objects/words/basic_data_objects/words";
 import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/game_word_dict_details";
 import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
+import WordsFormatter from "../../words_formatter";
 import BaseWordsEnricher from "./base_words_enricher";
 
 export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {    
@@ -12,7 +14,7 @@ export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {
         for (const level of Object.values(wordsDictToEnrich)) {
             for (const word_key of Object.keys(level)) {
                 const currentWord: GameWordDictDetails = level[word_key];
-                const currentWordMeaning: string = this._getMeaningsAsString(currentWord.Meanings);
+                const currentWordMeaning: string = WordsFormatter.getMeaningsAsString(currentWord.Meanings);
 
                 const allMeanings: string[] = this._getThreeUniqueRandomMeanings(currentWordMeaning, newWords, statistics);
 
@@ -41,19 +43,18 @@ export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {
     }
 
     private _findRandomMeaning(newWords: Words, statistics: { [groupId: number]: { [word: string]: WordStatisticsData; } }): string {
+        const randomLevel = Math.floor(Math.random() * (CONFIG.max_level - CONFIG.min_level + 1)) + CONFIG.min_level; // random level 
+
         // gets the threshold of "new" words / all words
-        const newWordsThreshold = this._precentageNewWordsToTotal(newWords, statistics);
+        const newWordsThreshold = this._precentageNewWordsToTotal(newWords[randomLevel] || {}, statistics[randomLevel] || {});
 
         // generates a random number between 1-100
         const randomNumberInThreshold = Math.floor(Math.random() * 100) + 1;
 
         // picks "newWords" or "statistics" depend on the random number and the threshold
-        const selectedWordsDict = randomNumberInThreshold > newWordsThreshold ? statistics : newWords;
+        const selectedWordsDict = (randomNumberInThreshold > newWordsThreshold ? statistics : newWords)[randomLevel];    
 
-        const levels = Object.keys(selectedWordsDict); // all levels
-        const randomLevel = (selectedWordsDict)[Math.floor(Math.random() * levels.length)]; // random level from existing levels
-
-        let randomWordInLevel: WordStatisticsData | WordDetails = Object.values(randomLevel)[Math.floor(Math.random() * Object.keys(randomLevel).length)]; // random word in the random level
+        let randomWordInLevel: WordStatisticsData | WordDetails = Object.values(selectedWordsDict)[Math.floor(Math.random() * Object.keys(selectedWordsDict).length)]; // random word in the random level
 
         if (randomNumberInThreshold > newWordsThreshold) {
             // If the random number is above threshold we select from "statistics" dict, in "statistics" the "WordDetails"
@@ -61,27 +62,13 @@ export default class RandomMeaningsWordsEnricher extends BaseWordsEnricher {
             randomWordInLevel = (randomWordInLevel as WordStatisticsData).Word;
         }
 
-        return this._getMeaningsAsString((randomWordInLevel as WordDetails).Meanings);
+        return WordsFormatter.getMeaningsAsString((randomWordInLevel as WordDetails).Meanings);
     }
 
-    private _getMeaningsAsString (meaningsObject: Meaning[]): string {
-        return meaningsObject.map(item => item.Meaning).join("\n");
-    }
-
-    private _precentageNewWordsToTotal (newWords: Words, statistics: { [groupId: number]: { [word: string]: WordStatisticsData; } }): number {
-        let newWordsTotal = this._getAmountOfWords(newWords);
-        let practicedWordsTotal = this._getAmountOfWords(statistics);;
+    private _precentageNewWordsToTotal (newWords: { [word: string]: WordDetails; }, statistics: { [word: string]: WordStatisticsData; }): number {
+        let newWordsTotal = Object.keys(newWords).length;
+        let practicedWordsTotal = Object.keys(statistics).length;
 
         return Math.floor((newWordsTotal / (newWordsTotal + practicedWordsTotal)) * 100);
-    }
-
-    private _getAmountOfWords (words: Words | { [groupId: number]: { [word: string]: WordStatisticsData; } }): number {
-        let total = 0;
-
-        for (const level of Object.values(words)) {
-            total += Object.keys(level).length;
-        }
-
-        return total
     }
 }
