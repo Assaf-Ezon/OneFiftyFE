@@ -15,20 +15,25 @@ const PayNowStyle = StyleSheet.create({
         shadowOpacity: 0.02,
         marginBottom: 15,
     },
-    titles: {
+    titlesContainer: {
         width: '95%',
-        height: '20%',
+        height: '25%',
+    },
+    titles: {
+        width: '150%',
+        height: '100%',
         flexDirection: 'row-reverse',
-        justifyContent: 'space-evenly',
+        justifyContent: 'flex-end',
         alignItems: 'center',
     },
     planBtn: {
-        width: '30%',
-        height: '80%',
+        width: width * 0.3,
+        height: height * 0.03,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
         borderWidth: 0.3,
+        marginRight: 10,
     },
     planBtnText: {
         fontWeight: '600',

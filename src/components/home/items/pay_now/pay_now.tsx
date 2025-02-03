@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { findPlanByName } from './find_payment_plans_by_name';
 import { Plans } from '../../../../data_objects/enums/payment_plans';
@@ -22,16 +22,18 @@ const PayNow = () => {
 
     return (
         <View style={PayNowStyle.Container}>
-            <View style={PayNowStyle.titles}>
-                {
-                    Object.values(Plans).map((plan) => {
-                        return (
-                            <TouchableOpacity style={[{backgroundColor: plan.Plan == currentPlan.Plan ? '#e57c37' : 'white'}, PayNowStyle.planBtn]} onPress={() => {changePlan(plan.Plan)}} key={plan.Plan}>
-                                <Text style={[{color: plan.Plan == currentPlan.Plan ? 'white' : 'black'}, PayNowStyle.planBtnText]} key={plan.Title} allowFontScaling={false}>{plan.Title}</Text>
-                            </TouchableOpacity>
-                        )
-                    })
-                }
+            <View style={PayNowStyle.titlesContainer}>
+                <ScrollView horizontal contentContainerStyle={PayNowStyle.titles} showsVerticalScrollIndicator={false}>
+                    {
+                        Object.values(Plans).map((plan) => {
+                            return (
+                                <TouchableOpacity style={[{backgroundColor: plan.Plan == currentPlan.Plan ? '#e57c37' : 'white'}, PayNowStyle.planBtn]} onPress={() => {changePlan(plan.Plan)}} key={plan.Plan}>
+                                    <Text style={[{color: plan.Plan == currentPlan.Plan ? 'white' : 'black'}, PayNowStyle.planBtnText]} key={plan.Title} allowFontScaling={false}>{plan.Title}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                </ScrollView>
             </View>
             <View style={PayNowStyle.titleContainer}>
                 <Text style={PayNowStyle.Title} allowFontScaling={false}>מנוי ל{currentPlan.Title}</Text>
