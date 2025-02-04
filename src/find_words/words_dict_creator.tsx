@@ -65,25 +65,21 @@ export default class WordsDictCreator {
                     }
 
                     // selects from each relevant word groups
-                    if (this._settings.shouldIncludeNewWords && amountList.length > 0)
+                    if (this._settings.shouldIncludeNewWords && WordGroups.NEW in amountList)
                     { 
-                        new NewWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[0], this._words);
-                        amountList.shift();
+                        new NewWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[WordGroups.NEW], this._words);
                     }
-                    if (this._settings.shouldIncludeIncorrectWords && amountList.length > 0) 
+                    if (this._settings.shouldIncludeIncorrectWords && WordGroups.INCORRECT in amountList) 
                     { 
-                        new IncorrectWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[0], this._words);
-                        amountList.shift();
+                        new IncorrectWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[WordGroups.INCORRECT], this._words);
                     }
-                    if (this._settings.shouldIncludePracticedwords && amountList.length > 0) 
+                    if (this._settings.shouldIncludePracticedwords && WordGroups.PRACTICED in amountList) 
                     { 
-                        new PracticeWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[0], this._words);
-                        amountList.shift();
+                        new PracticeWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[WordGroups.PRACTICED], this._words);
                     }
-                    if (this._settings.shouldIncludeSmartStudy && amountList.length > 0) 
+                    if (this._settings.shouldIncludeSmartStudy && WordGroups.SMART in amountList) 
                     { 
-                        new SmartWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[0], this._words);
-                        amountList.shift();
+                        new SmartWordsSelector().select(newWords, practicedWords, parseInt(groupId), amountList[WordGroups.SMART], this._words);
                     }
                 }
             }
@@ -99,7 +95,7 @@ export default class WordsDictCreator {
         return [{}, {}];
     }
 
-    _distribute(groupId: number, totalAmount: number): number[] {
+    _distribute(groupId: number, totalAmount: number): { [wordGroup: string]: number; } {
         // updates how many words you can take in the current level from each words group
         this._updateAmountOfEachGroupPerLevel(groupId);  
 
@@ -146,7 +142,7 @@ export default class WordsDictCreator {
             remainingAmount -= extraWillTakeFromCurrentGroup; // updates the remaining amount
         }
 
-        return Object.values(result);
+        return result;
     }
 
     _updateAmountOfEachGroupPerLevel(groupId: number){

@@ -42,7 +42,7 @@ export const getWords = (gameMode: GameMode) => {
 
     // using the useEffect so that the error happen only after the game finishes rendering
     useEffect(() => {
-        if (Object.keys(wordsShortage).length && !isMenuShown) {
+        if (Object.keys(wordsShortage).length > 0 && !isMenuShown) {
             setWordsShortage(wordsShortage); // sets the shortage dict
             setIsMenuShown(true); // sets that the menu is called and shouldn't be called again
             setIsWordsShortage(true); // sets that the menu will be visible
