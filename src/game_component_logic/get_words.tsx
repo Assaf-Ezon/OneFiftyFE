@@ -1,6 +1,9 @@
+import { useEffect } from "react";
+
 import { useGameErrorContext } from "../context/game_context/game_error_context";
 import { useWords } from "../context/general_context/words_context";
 import { useLearningSettingsContext } from "../context/settings_context/learning_context";
+import { useWordsShortageContext } from "../context/game_context/words_shortage_context";
 
 import { UserStatistics } from '../data_objects/words/statistics/user_statistics';
 import { Languages } from "../data_objects/enums/language";
@@ -12,7 +15,8 @@ import WordsDictCreator from "../find_words/words_dict_creator";
 
 // sets at start the "words" state that holds the gameDict 
 export const getWords = (gameMode: GameMode) => {
-    const { toggleGameErrorMenu } = useGameErrorContext()
+    const { isMenuShown, setIsMenuShown, setIsWordsShortage, setWordsShortage } = useWordsShortageContext();
+    const { isGameError, toggleGameErrorMenu } = useGameErrorContext()
     const { settings } = useLearningSettingsContext();
     const { hebrewUserStatistics,  
         englishUserStatistics,  
@@ -34,9 +38,23 @@ export const getWords = (gameMode: GameMode) => {
     }
 
     const gameCreater = new WordsDictCreator(settings, NewWords, UserStatistics, gameMode);
-    const wordsList: GameWords = gameCreater.createList();
+    const [wordsList, wordsShortage]: [GameWords, { [groupId: string]: string[] }] = gameCreater.createList();
 
-    Object.keys(wordsList).length === 0 ? toggleGameErrorMenu() : null;
+    // using the useEffect so that the error happen only after the game finishes rendering
+    useEffect(() => {
+        if (Object.keys(wordsShortage).length > 0 && !isMenuShown) {
+            setWordsShortage(wordsShortage); // sets the shortage dict
+            setIsMenuShown(true); // sets that the menu is called and shouldn't be called again
+            setIsWordsShortage(true); // sets that the menu will be visible
+        }
+    }, [wordsShortage, isMenuShown]);
+
+    // using the useEffect so that the error happen only after the game finishes rendering
+    useEffect(() => {
+        if (Object.keys(wordsList).length == 0) {
+            toggleGameErrorMenu();
+        } 
+    }, [isGameError])
     
     return wordsList;
 }

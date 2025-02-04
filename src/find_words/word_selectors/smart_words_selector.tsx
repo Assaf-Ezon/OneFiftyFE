@@ -23,7 +23,7 @@ export default class SmartWordsSelector extends BaseWordsSelector {
                         Type: "תרגול (חכם)",
                         ExtraParameters: {},
                     }
-                    wordsMatchingToFilter[word] = WordDetails
+                    wordsMatchingToFilter[word] = WordDetails;
             }
         }
         

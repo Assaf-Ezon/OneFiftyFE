@@ -5,10 +5,10 @@ import BaseWordsSelector from "./base_words_selector";
 
 export default class PracticeWordsSelector extends BaseWordsSelector {
     selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
-        // dict of the words that are considered "wrong words"
+        // dict of the words that are considered "practice words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
-    
-        // filters only the words that are considered "wrong"
+
+        // filters only the words that are considered "practice"
         for (const word in practicedWords) {
             if (practicedWords[word].Successes !== 0) {
                 const WordDetails: GameWordDictDetails = {

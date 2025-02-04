@@ -1,5 +1,4 @@
 import { Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
-import { useEffect } from 'react';
 import { IMAGES } from '../../../image_handler';
 
 import PagePartStyle from './page_part_style';

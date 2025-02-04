@@ -20,7 +20,7 @@ export const GameErrorProvider: FC<{ children: ReactNode }> = ({ children }) => 
 export const useGameErrorContext = () => {
     const context = useContext(GameErrorContext);
     if (context === undefined) {
-        throw new Error('Trying to reach end game menu context outside of provider');
+        throw new Error('Trying to reach game error menu context outside of provider');
     }
     return context;
 };

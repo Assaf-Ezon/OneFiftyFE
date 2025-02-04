@@ -10,9 +10,10 @@ export default class NewWordsSelector extends BaseWordsSelector {
     }
     
     selectNewInternal(newWords: { [word: string]: WordDetails }): { [word: string]: GameWordDictDetails } {
-        // dict of the words that are considered "wrong words"
+        // dict of the words that are considered "new words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
         for (const word in newWords){
+            
             const WordDetails: GameWordDictDetails = {
                 FullWord: newWords[word].FullWord,
                 Meanings: newWords[word].Meanings,

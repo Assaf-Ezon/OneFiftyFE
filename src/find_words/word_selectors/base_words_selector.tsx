@@ -47,6 +47,10 @@ export default abstract class BaseWordsSelector {
         }
     }
 
+    getAmounthOfReleveantWords (newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, selectNew: boolean): number {
+        return selectNew ? Object.keys(this.selectNewInternal(newWords)).length : Object.keys(this.selectPracticedInternal(practicedWords)).length;
+    }
+
     _selectInternal(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, selectNew: boolean): { [word: string]: GameWordDictDetails } {
         if (selectNew) {
             return this.selectNewInternal(newWords);
