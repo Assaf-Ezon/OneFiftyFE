@@ -33,7 +33,7 @@ const PayNowStyle = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 30,
         borderWidth: 0.3,
-        marginRight: 10,
+        marginRight: 5,
     },
     planBtnText: {
         fontWeight: '600',

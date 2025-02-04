@@ -23,7 +23,7 @@ const PayNow = () => {
     return (
         <View style={PayNowStyle.Container}>
             <View style={PayNowStyle.titlesContainer}>
-                <ScrollView horizontal contentContainerStyle={PayNowStyle.titles} showsVerticalScrollIndicator={false}>
+                <ScrollView horizontal contentContainerStyle={PayNowStyle.titles} showsHorizontalScrollIndicator={false}>
                     {
                         Object.values(Plans).map((plan) => {
                             return (

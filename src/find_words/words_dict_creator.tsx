@@ -46,7 +46,7 @@ export default class WordsDictCreator {
     }
     
 
-    createList(): GameWords {
+    createList(): [GameWords, { [groupId: string]: string[] }] {
         try {
             for (const [groupId, levelWordCount] of Object.entries(this._settings.levels)) {
                 if (typeof levelWordCount == 'number' && levelWordCount > 0 && levelWordCount <= 100) { 
@@ -90,13 +90,13 @@ export default class WordsDictCreator {
 
             this._enricher.enrich(this._words, this._newWords, this._statistics.WordsStatistics.Words);
 
-            return Object.fromEntries(Object.entries(this._words).filter(([key, value]) => Object.keys(value).length !== 0));
+            return [Object.fromEntries(Object.entries(this._words).filter(([key, value]) => Object.keys(value).length !== 0)), this._wordShortageHandler];
             
         } catch (error) {
             console.error(`error: ${error}`);
         }
 
-        return {};
+        return [{}, {}];
     }
 
     _distribute(groupId: number, totalAmount: number): number[] {
