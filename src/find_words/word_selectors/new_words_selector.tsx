@@ -24,7 +24,6 @@ export default class NewWordsSelector extends BaseWordsSelector {
             wordsMatchingToFilter[word] = WordDetails;
         }
 
-        this.countWordsMatchingToFilter = Object.keys(newWords).length;
         return wordsMatchingToFilter;
     }
 

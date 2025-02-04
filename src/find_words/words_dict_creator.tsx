@@ -127,31 +127,44 @@ export default class WordsDictCreator {
         var count = 1;
 
         if (this._settings.shouldIncludeNewWords) {
-            const newSelector = new NewWordsSelector();
-            newSelector.selectNewInternal(this._newWords[groupId]);
-            this._amountInEachFlag[count] = newSelector.countWordsMatchingToFilter;
+            this._amountInEachFlag[count] = new NewWordsSelector().getAmounthOfReleveantWords(
+                this._newWords[groupId], 
+                this._statistics.WordsStatistics.Words[groupId], 
+                true
+            );
+
             count++;
         }
         if (this._settings.shouldIncludeIncorrectWords) {
-            const incorrectSelector = new IncorrectWordsSelector();
-            incorrectSelector.selectPracticedInternal(this._statistics.WordsStatistics.Words[groupId]);
-            this._amountInEachFlag[count] = incorrectSelector.countWordsMatchingToFilter;
+            this._amountInEachFlag[count] = new IncorrectWordsSelector().getAmounthOfReleveantWords(
+                this._newWords[groupId], 
+                this._statistics.WordsStatistics.Words[groupId], 
+                false
+            );
+
             count++;
         }
         if (this._settings.shouldIncludePracticedwords) {
-            const practicedSelector = new PracticeWordsSelector();
-            practicedSelector.selectPracticedInternal(this._statistics.WordsStatistics.Words[groupId]);
-            this._amountInEachFlag[count] = practicedSelector.countWordsMatchingToFilter;
+            this._amountInEachFlag[count] = new PracticeWordsSelector().getAmounthOfReleveantWords(
+                this._newWords[groupId], 
+                this._statistics.WordsStatistics.Words[groupId], 
+                false
+            );
+
             count++;
         }
         if (this._settings.shouldIncludeSmartStudy) {
-            const newSelector = new NewWordsSelector();
-            newSelector.selectNewInternal(this._newWords[groupId]);
+            this._amountInEachFlag[count] = new SmartWordsSelector().getAmounthOfReleveantWords(
+                this._newWords[groupId], 
+                this._statistics.WordsStatistics.Words[groupId], 
+                false
+            ) + 
+            new NewWordsSelector().getAmounthOfReleveantWords(
+                this._newWords[groupId], 
+                this._statistics.WordsStatistics.Words[groupId], 
+                true
+            );
 
-            const smartSelector = new SmartWordsSelector();
-            smartSelector.selectPracticedInternal(this._statistics.WordsStatistics.Words[groupId]);
-
-            this._amountInEachFlag[count] = newSelector.countWordsMatchingToFilter + smartSelector.countWordsMatchingToFilter;
             count++;
         }
     }

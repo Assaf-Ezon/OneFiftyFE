@@ -8,7 +8,6 @@ export default class IncorrectWordsSelector extends BaseWordsSelector {
     selectPracticedInternal(practicedWords: { [word: string]: WordStatisticsData }): { [word: string]: GameWordDictDetails } {
         // dict of the words that are considered "incorrect words"
         const wordsMatchingToFilter: { [word: string]: GameWordDictDetails } = {};
-        var count = 0;
 
         // filters only the words that are considered "incorrect"
         for (const word in practicedWords) {
@@ -21,12 +20,9 @@ export default class IncorrectWordsSelector extends BaseWordsSelector {
                     ExtraParameters: {},
                 }
                 wordsMatchingToFilter[word] = WordDetails;
-
-                count++;
             }
         }
         
-        this.countWordsMatchingToFilter = count;
         return wordsMatchingToFilter;
     }
 

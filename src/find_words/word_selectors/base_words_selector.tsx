@@ -4,12 +4,6 @@ import { GameWordDictDetails } from "../../data_objects/words/game_data_objects/
 import { GameWords } from "../../data_objects/words/game_data_objects/game_words";
 
 export default abstract class BaseWordsSelector {
-    public countWordsMatchingToFilter: number;
-
-    constructor () {
-        this.countWordsMatchingToFilter = 0;
-    }
-
     select(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, groupId: number, totalAmount: number, wordsDict: GameWords): GameWords {
         if (!wordsDict[groupId]) {
             wordsDict[groupId] = {};
@@ -51,6 +45,10 @@ export default abstract class BaseWordsSelector {
             // adds the index to the "used" indexes
             takenWordsindexList.push(randomIndex);
         }
+    }
+
+    getAmounthOfReleveantWords (newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, selectNew: boolean): number {
+        return selectNew ? Object.keys(this.selectNewInternal(newWords)).length : Object.keys(this.selectPracticedInternal(practicedWords)).length;
     }
 
     _selectInternal(newWords: { [word: string]: WordDetails }, practicedWords: { [word: string]: WordStatisticsData }, selectNew: boolean): { [word: string]: GameWordDictDetails } {
