@@ -47,7 +47,7 @@ const ContactForm = () => {
                 <TouchableOpacity onPress={() => {toggleOpenContactUsForm(); Keyboard.dismiss();}}>
                     <Image source={IMAGES.back_icon} />
                 </TouchableOpacity>
-                <Text style={ContactFormStyle.title} allowFontScaling={false}>דיווח על בעיה</Text>
+                <Text style={ContactFormStyle.title} allowFontScaling={false}>פנו אלינו</Text>
             </View>
             <View style={ContactFormStyle.EmailContact}>
                 <TouchableOpacity style={ContactFormStyle.EmailContactBtn} onPress={() => {sendEmail()}}>

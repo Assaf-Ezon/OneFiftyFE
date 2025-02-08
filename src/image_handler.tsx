@@ -52,8 +52,6 @@ export const IMAGES = {
     kdk: require('../assets/game icons/kdk.jpg'),
     mc: require('../assets/game icons/mc.jpg'),
 
-    option: require('../assets/game icons/option.png'),
-    chosen_option: require('../assets/game icons/chosen.png'),
     wrong: require('../assets/game icons/wrong.png'),
     correct: require('../assets/game icons/correct.png'),
 
