@@ -38,7 +38,7 @@ const PayNow = () => {
             <View style={PayNowStyle.titleContainer}>
                 <Text style={PayNowStyle.Title} allowFontScaling={false}>מנוי ל{currentPlan.Title}</Text>
                 <Text style={PayNowStyle.expiration} allowFontScaling={false}>
-                    תום תוקף תקופת ניסיון: {profile.expirationDate.getHours()}:{profile.expirationDate.getMinutes()} {profile.expirationDate.getDate()}/{profile.expirationDate.getMonth() + 1}/{profile.expirationDate.getFullYear()}
+                    תום תוקף תקופת ניסיון: {profile.expirationDate.getDate()}/{profile.expirationDate.getMonth() + 1}/{profile.expirationDate.getFullYear()}
                 </Text>
             </View>
             <View style={PayNowStyle.PayBtnContainer}>
