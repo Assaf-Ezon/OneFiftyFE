@@ -63,7 +63,7 @@ const SideBar = () => {
             </View>
             <View style={barStyle.lowerPart}>
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={SidebarActionIndex.Logout} screenName={''} />
-                <Text style={barStyle.versionText} allowFontScaling={false}>Version {CONFIG.Version}</Text>
+                <Text style={barStyle.versionText} allowFontScaling={false}>Version {CONFIG.Version} | © כל הזכויות שמורות</Text>
             </View>
         </Animated.View>
     );
