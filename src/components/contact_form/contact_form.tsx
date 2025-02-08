@@ -1,23 +1,20 @@
-import { View, Text, TouchableOpacity, Image, TextInput, Animated, Dimensions, TouchableWithoutFeedback, Keyboard } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { View, Text, TouchableOpacity, Image, Animated, Dimensions, Keyboard, Linking, Alert } from "react-native";
+import { useEffect, useRef } from "react";
 
 import { IMAGES } from "../../image_handler";
 
 import ContactFormStyle from './contact_form_style';
 
 import { useContactUsFormContext } from "../../context/general_context/contact_form_context";
-import { useNavigation } from "@react-navigation/native";
 import { SlideIn } from "../../animations/slide_animation";
+import { CONFIG } from "../../config";
+import { useProfile } from "../../context/general_context/profile_context";
 
 const { height } = Dimensions.get('window');
 
 const ContactForm = () => {
-    const navigation = useNavigation();
-
-    const {isContactFormOpen, toggleOpenContactUsForm} = useContactUsFormContext();
-
-    const [problemTitle, setProblemTitle] = useState<string>('');
-    const [problemBody, setProblemBody] = useState<string>('');
+    const { isContactFormOpen, toggleOpenContactUsForm } = useContactUsFormContext();
+    const { profile } = useProfile();
     
     // animation
     const slideUpAnim = useRef(new Animated.Value(height)).current;
@@ -30,55 +27,34 @@ const ContactForm = () => {
         }
     }, [isContactFormOpen]);
 
-    // sets swipe right to go back disabled when popup is open
-    useEffect(() => {
-        setProblemTitle('');
-        setProblemBody('');
-      }, [isContactFormOpen]);
+    const sendEmail = () => {
+        const subject = `שם משתמש: ${profile.name}`;
+        const body = `גוף הפניה: \n ---------------------------`;
+        const mailtoURL = `mailto:${CONFIG.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-      const sendEmail = () => {
-        // send email logic here
         toggleOpenContactUsForm();
-      };
+
+        Linking.openURL(mailtoURL).catch(err => {
+            console.error(`Error opening email app: ${err}`);
+            Alert.alert('לא היה ניתן להפנות לאימייל, אנא נסו שנית מאוחר יותר');
+        });
+    };
 
     return (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <Animated.View style={[{transform: [{ translateY: slideUpAnim }]}, 
-                        ContactFormStyle.container]}>
-                <View style={ContactFormStyle.titleContainer}>
-                    <TouchableOpacity onPress={() => {toggleOpenContactUsForm(); Keyboard.dismiss();}}>
-                        <Image source={IMAGES.back_icon} />
-                    </TouchableOpacity>
-                    <Text style={ContactFormStyle.title} allowFontScaling={false}>דיווח על בעיה</Text>
-                </View>
-                <View style={ContactFormStyle.inputFieldsContainer}>
-                <TextInput
-                    style={ContactFormStyle.titleInputField}
-                    placeholder='כותרת הבעיה'
-                    keyboardType='default'
-                    value={problemTitle}
-                    onChangeText={setProblemTitle}
-                    blurOnSubmit={true} 
-                    allowFontScaling={false}
-                />
-                <TextInput
-                    style={ContactFormStyle.bodyInputField}
-                    placeholder='פירוט הבעיה'
-                    keyboardType='default'
-                    multiline={true}
-                    value={problemBody}
-                    onChangeText={setProblemBody}
-                    blurOnSubmit={true} 
-                    allowFontScaling={false}
-                />
-                </View>
-                <View style={ContactFormStyle.submitBtnContainer}>
-                    <TouchableOpacity style={ContactFormStyle.submitBtn} onPress={() => {sendEmail()}}>
-                            <Text style={ContactFormStyle.submitBtnText} allowFontScaling={false}>אישור</Text>
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
-        </TouchableWithoutFeedback>
+        <Animated.View style={[{transform: [{ translateY: slideUpAnim }]}, 
+                    ContactFormStyle.container]}>
+            <View style={ContactFormStyle.titleContainer}>
+                <TouchableOpacity onPress={() => {toggleOpenContactUsForm(); Keyboard.dismiss();}}>
+                    <Image source={IMAGES.back_icon} />
+                </TouchableOpacity>
+                <Text style={ContactFormStyle.title} allowFontScaling={false}>דיווח על בעיה</Text>
+            </View>
+            <View style={ContactFormStyle.EmailContact}>
+                <TouchableOpacity style={ContactFormStyle.EmailContactBtn} onPress={() => {sendEmail()}}>
+                    <Text style={ContactFormStyle.EmailContactBtnText}>פנו אלינו במייל: {'\n'}{CONFIG.email}</Text>
+                </TouchableOpacity>
+            </View>
+        </Animated.View>
     );
 };
 

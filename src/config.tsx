@@ -1,5 +1,6 @@
 export const CONFIG = {
     Version: '1.0.0',
+    email: 'OneFifty.Customers@gmail.com',
     retries: 4,
     
     endpoints: {
