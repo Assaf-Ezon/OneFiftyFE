@@ -15,7 +15,7 @@ const GameCardStyle = StyleSheet.create({
         marginRight: 15,
     },
     cardImage: {
-        width: '100%',
+        width: '99.85%',
         flex: 1,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,

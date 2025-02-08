@@ -28,7 +28,7 @@ const LearningPartHome: FC = () => {
     const navigation = useNavigation();
 
     const [randomIds, setRandomIds] = useState<[number, number]>(getRandomIds());
-    console.log(randomIds);
+
     return (
         <View style={learningPartStyle.container}>
             <View style={learningPartStyle.titleContainer}>
