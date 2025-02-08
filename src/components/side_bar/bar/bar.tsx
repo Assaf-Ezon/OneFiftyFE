@@ -57,13 +57,13 @@ const SideBar = () => {
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={''} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.problem} iconText='דיווח על בעיה' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
+                <SideBarIcon iconPath={IMAGES.problem} iconText='פנו אלינו' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.terms} iconText='תנאי שימוש' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.TERMS} />
             </View>
             <View style={barStyle.lowerPart}>
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={SidebarActionIndex.Logout} screenName={''} />
-                <Text style={barStyle.versionText} allowFontScaling={false}>Version {CONFIG.Version}</Text>
+                <Text style={barStyle.versionText} allowFontScaling={false}>Version {CONFIG.Version} | © כל הזכויות שמורות</Text>
             </View>
         </Animated.View>
     );

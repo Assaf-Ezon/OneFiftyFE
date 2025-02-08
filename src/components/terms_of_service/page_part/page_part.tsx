@@ -32,10 +32,10 @@ const PagePart = () => {
                 </View>
             </View>
             <View style={PagePartStyle.SwitchContainer}>
-                <TouchableOpacity style={[{backgroundColor: isTerms ? 'white' : '#FAF0E6'}, PagePartStyle.LeftSwitchBtn]} onPress={() => {setIsTerms(prev => !prev)}}>
+                <TouchableOpacity style={[{backgroundColor: isTerms ? 'white' : '#FAF0E6'}, PagePartStyle.LeftSwitchBtn]} onPress={() => {setIsTerms(false)}}>
                     <Text style={PagePartStyle.SwitchText} allowFontScaling={false}>מדיניות פרטיות</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[{backgroundColor: isTerms ? '#FAF0E6' : 'white'}, PagePartStyle.RightSwitchBtn]} onPress={() => {setIsTerms(prev => !prev)}}>
+                <TouchableOpacity style={[{backgroundColor: isTerms ? '#FAF0E6' : 'white'}, PagePartStyle.RightSwitchBtn]} onPress={() => {setIsTerms(true)}}>
                     <Text style={PagePartStyle.SwitchText} allowFontScaling={false}>תנאי שימוש</Text>
                 </TouchableOpacity>
             </View>

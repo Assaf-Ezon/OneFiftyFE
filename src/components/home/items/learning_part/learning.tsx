@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import learningPartStyle from './learning_style';
@@ -9,8 +9,25 @@ import { Screens } from '../../../../data_objects/enums/screens';
 
 import GameCard from '../../../game_card/game_card';
 
+const getRandomIds = (): [number, number] => {
+    const gameIds = Object.values(GAMES).map((game) => game.id);
+    const minId = Math.min(...gameIds);
+    const maxId = Math.max(...gameIds);
+
+    let first = Math.floor(Math.random() * (maxId - minId + 1)) + minId;
+    let second;
+
+    do {
+      second = Math.floor(Math.random() * (maxId - minId + 1)) + minId;
+    } while (second === first);
+
+    return [first, second];
+};
+
 const LearningPartHome: FC = () => {
     const navigation = useNavigation();
+
+    const [randomIds, setRandomIds] = useState<[number, number]>(getRandomIds());
 
     return (
         <View style={learningPartStyle.container}>
@@ -24,16 +41,19 @@ const LearningPartHome: FC = () => {
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={learningPartStyle.cardsContainer}>
                     <View style={learningPartStyle.blank} />
                     {
-                        Object.entries(GAMES).map(([gameName, gameValue]) => {
-                            return (
-                                <GameCard key={gameValue.id}
-                                    id={gameValue.id}
-                                    image={gameValue.image_route} 
-                                    title={gameValue.name} 
-                                    description={gameValue.description}
-                                    gameName={gameValue.page_name}
+                        randomIds.map((id) => {
+                                const game = Object.values(GAMES).find((game) => game.id === id);
+                                return (
+                                    game ? 
+                                        <GameCard key={game.id}
+                                        id={game.id}
+                                        image={game.image_route} 
+                                        title={game.name} 
+                                        description={game.description}
+                                        gameName={game.page_name}
                                 />
-                            );
+                                : null
+                                )
                         })
                     }
                 </ScrollView>

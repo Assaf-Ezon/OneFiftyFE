@@ -18,11 +18,12 @@ const PayNowStyle = StyleSheet.create({
     titlesContainer: {
         width: '95%',
         height: '25%',
+        direction: 'rtl',
     },
     titles: {
         width: '150%',
         height: '100%',
-        flexDirection: 'row-reverse',
+        flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
@@ -33,7 +34,7 @@ const PayNowStyle = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 30,
         borderWidth: 0.3,
-        marginRight: 5,
+        marginLeft: 5,
     },
     planBtnText: {
         fontWeight: '600',

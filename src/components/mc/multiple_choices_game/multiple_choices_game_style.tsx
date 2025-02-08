@@ -54,9 +54,9 @@ const MultipleChoicesGameStyle = StyleSheet.create({
         width: '80%',
         textAlign: 'right',
         fontSize: calculateFontSize(12),
-        marginRight: 10,
+        marginRight: 15,
     },
-    option_image: {
+    optionImage: {
         marginRight: 10,
     },
     btnText: {

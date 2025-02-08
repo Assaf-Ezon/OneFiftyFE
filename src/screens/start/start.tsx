@@ -170,7 +170,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         if (canRedirect) {
             setLoading(false);
             setStackIndexByName(StackNames.Main);
-            profile.isTrial ? Alert.alert('יש לשים לב שהמנוי הינו בתקופת ניסיון של כ-3 ימים') : null;
+            profile.isTrial ? Alert.alert('יש לשים לב שהמשתמש הינו בתקופת ניסיון של כ-3 ימים') : null;
 
         }
       }, [canRedirect]);

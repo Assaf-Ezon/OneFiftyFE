@@ -66,15 +66,13 @@ const MultipleChoicesGame = () => {
                         currentWord.ExtraParameters[EnrichersParamName.RandomMeanings].map((meaning: string) => {
                                 return (
                                     <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!isNextBtn ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
-                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: isNextBtn && meaning === WordsFormatter.getMeaningsAsString(currentWord.Meanings) ? '600' : '300', 
-                                            textDecorationLine: isNextBtn && meaning === desiredMeaning ? 'underline' : 'none'}]}
+                                        <Image source={meaning === WordsFormatter.getMeaningsAsString(currentWord.Meanings) && isNextBtn ? IMAGES.correct : 
+                                            isNextBtn && meaning !== WordsFormatter.getMeaningsAsString(currentWord.Meanings) ? IMAGES.wrong : null} 
+                                        style={MultipleChoicesGameStyle.optionImage} />
+                                        <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: meaning === desiredMeaning ? '600' : '300'}]}
                                             allowFontScaling={false}>
                                             {meaning}
                                         </Text>
-                                        <Image source={meaning ===  desiredMeaning && isCheckBtn ? IMAGES.chosen_option : 
-                                            meaning === WordsFormatter.getMeaningsAsString(currentWord.Meanings) && isNextBtn ? IMAGES.correct : 
-                                            isNextBtn && meaning !== WordsFormatter.getMeaningsAsString(currentWord.Meanings) ? IMAGES.wrong : IMAGES.option} 
-                                        style={MultipleChoicesGameStyle.option_image} />
                                     </TouchableOpacity>
                                 )
                         })
