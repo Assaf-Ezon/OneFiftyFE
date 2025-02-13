@@ -20,10 +20,10 @@
       "associatedDomains": ["applinks:onefiftyapp.b2clogin.com"]
     },
     "android": {
+      "package": "com.OneFifty.App",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#ffffff",
-        "package": "com.OneFifty.App"
+        "backgroundColor": "#ffffff"
       }
     },
     "web": {
