@@ -25,7 +25,7 @@ const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetSt
                 <View style={PopupsStyle.errorPopupMainContainer}>
                     <Text style={PopupsStyle.popupText} allowFontScaling={false}>
                         אירוע לא צפוי קרה{'\n'}
-                        אנא נסו שנית מאוחר יותר.{'\n'}{'\n'}{'\n'}
+                        אנא נסו שנית מאוחר יותר.{'\n'}{'\n'}
                         פנו אלינו: OneFifty.customers@gmail.com
                     </Text>
                 </View>
