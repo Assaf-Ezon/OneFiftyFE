@@ -55,8 +55,6 @@ const SideBar = () => {
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.unused_profile} iconText='משתמש' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.PROFILE} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.notification} iconText='הודעות' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={''} />
-                <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.problem} iconText='פנו אלינו' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.terms} iconText='תנאי שימוש' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.TERMS} />
