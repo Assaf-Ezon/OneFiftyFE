@@ -64,7 +64,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setLoading(true);
                 await saveInfo();
                 await handleUserData();
-            } else {
+            } 
+            else if (response?.type !== 'cancel' && response?.type !== 'dismiss') {
                 setLoading(false);
                 setPopupIndex(AuthErrorType.Error);
             }
