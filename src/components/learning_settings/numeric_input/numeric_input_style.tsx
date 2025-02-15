@@ -19,7 +19,7 @@ const NumbericInputStyle = StyleSheet.create({
     btn: {
         backgroundColor: '#c0c0c0',
         height: '100%',
-        width: '35%',
+        width: '30%',
         justifyContent: 'center',
         alignItems: 'center',
     },

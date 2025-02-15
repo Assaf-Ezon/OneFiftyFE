@@ -8,7 +8,7 @@ const GameCardStyle = StyleSheet.create({
         transform: [{ scaleX: -1 }],
         flexDirection: 'column',
         borderColor: 'black',
-        borderWidth: 0.2,
+        borderWidth: 0.3,
         borderRadius: 20,
         width: width * 0.7,
         height: height * 0.33,

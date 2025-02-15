@@ -6,11 +6,11 @@ const { width, height } = Dimensions.get('window');
 
 const SettingsStyle = StyleSheet.create({
     container: {
-        width: '90%',
-        height: '60%',
+        width: '95%',
+        height: '75%',
         position: 'absolute',
-        top: '20%',
-        left: '5%',
+        top: '14%',
+        left: '2.5%',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
@@ -19,6 +19,7 @@ const SettingsStyle = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 5,
         zIndex: CONFIG.zIndexLevels.popups,
+        borderWidth: 1,
     },
     upperPart: {
         width: '90%',
@@ -130,6 +131,7 @@ const SettingsStyle = StyleSheet.create({
     },
     selectLevels: {
         width: '100%',
+        height: '60%',
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',

@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get('window');
 const ContactFormStyle = StyleSheet.create({
     container: {
         position: 'absolute',
-        top: height * 0.5,
+        top: height * 0.55,
         width: width,
         height: height * 0.5,
         borderTopLeftRadius: 50,

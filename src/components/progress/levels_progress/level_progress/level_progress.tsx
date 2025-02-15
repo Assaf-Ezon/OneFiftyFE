@@ -68,7 +68,7 @@ const LevelProgress: FC<LevelProgressConfig> = ({ language, level }) => {
     };
 
     return (
-        <View style={[{height: isLevelOpen ? height * 0.25 : height * 0.1}, LevelProgressStyle.container]}>
+        <View style={[{height: isLevelOpen ? height * 0.3 : height * 0.15}, LevelProgressStyle.container]}>
             <TouchableOpacity style={LevelProgressStyle.levelContainer} onPress={() => {setIsLevelOpen(prev => !prev)}}>
                 <Image source={isLevelOpen ? IMAGES.open_dictionary : IMAGES.close_dictionary} />
                 <Text style={LevelProgressStyle.title} allowFontScaling={false}>רמה {level}</Text>
