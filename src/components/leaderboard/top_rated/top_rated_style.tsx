@@ -12,10 +12,10 @@ const TopRatedStyle = StyleSheet.create({
     },
     self: {
         width: '100%',
-        height: height * 0.28,
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        marginBottom: 15,
     },
     profileImage: {
         width: width * 0.35,
