@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
+
 import CheckBox from 'expo-checkbox';
 import NumericInput from './numeric_input/numeric_input';
 
@@ -89,15 +90,18 @@ const LearningSettings = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <DropDownPicker
-                        open={langOpen}
+                    <Dropdown
+                        data={langItems}
+                        labelField="label"
+                        valueField="value"
                         value={langValue}
-                        items={langItems}
-                        setOpen={setLangOpen}
-                        setValue={setLangValue}
-                        setItems={setLangItems}
-                        placeholder='בחרו שפת תרגול'
-                        textStyle={{textAlign: 'right'}}
+                        onChange={(item) => setLangValue(item.value)}
+                        placeholder="בחר רמה"
+                        style={SettingsStyle.Dropdown}
+                        selectedTextStyle={SettingsStyle.text}
+                        inputSearchStyle={SettingsStyle.inputSearch}
+                        placeholderStyle={SettingsStyle.text}
+                        itemTextStyle={SettingsStyle.text}
                     />
 
                     <View style={SettingsStyle.TypeOfPractice}>

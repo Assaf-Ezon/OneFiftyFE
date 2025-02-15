@@ -107,6 +107,21 @@ const SettingsStyle = StyleSheet.create({
     RandomBtnText: {
         fontWeight: '600',
     },
+    Dropdown: {
+        borderWidth: 1,
+        borderRadius: 10,
+        width: '100%',
+        height: '10%',
+        backgroundColor: 'white',
+        textAlign: 'right',
+    },
+    text: {
+        textAlign: 'right',
+        marginRight: 8,
+    },
+    inputSearch: {
+        textAlign: 'right',
+    },
     ChooseLevelText: {
         width: '100%',
         textAlign: 'right',

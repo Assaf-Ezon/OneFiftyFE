@@ -61,6 +61,7 @@ const PagePartStyle = StyleSheet.create({
         fontWeight: '600',
         marginRight: 5,
     },
+
     mainPart: {
         flexGrow: 1,
         flexDirection: 'column',
