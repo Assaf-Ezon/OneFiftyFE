@@ -12,7 +12,7 @@ const Word: FC<DictionaryWordConfig> = ({ word, meaning, success, failure }) => 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
-        <View style={[WordStyle.container, {height:  isOpen ? height * 0.18 : height * 0.05}]}>
+        <View style={[WordStyle.container, {height:  isOpen ? height * 0.22 : height * 0.05}]}>
             <TouchableOpacity style={WordStyle.wordContainer} onPress={() => {setIsOpen(!isOpen)}}>
                 <Text style={[WordStyle.word, {color: isOpen ? '#ff7518' : 'black'}]} allowFontScaling={false}>{word}</Text>
                 <Image source={isOpen ? IMAGES.open_dictionary : IMAGES.close_dictionary} />

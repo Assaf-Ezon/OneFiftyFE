@@ -22,18 +22,20 @@ const WordStyle = StyleSheet.create({
         marginRight: 5,
     },
     meaningConatiner: {
-        flex: 3,
         width: '100%',
-        justifyContent: 'space-around',
+        height: '75%',
+        justifyContent: 'space-evenly',
+    },
+    meaning: {
+        marginRight: 20,
+        height: '60%',
+        fontSize: calculateFontSize(15),
+        textAlign: 'right',
     },
     statisticsContainer: {
         marginTop: 10,
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-    },
-    meaning: {
-        marginRight: 20,
-        textAlign: 'right',
     },
 });
 
