@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import McStyle from './mc_style';
 
 import MultipleChoicesPage from '../../components/mc/multiple_choices_page/multiple_choices_page';
@@ -10,10 +8,6 @@ import { GameErrorProvider } from '../../context/game_context/game_error_context
 import { WordsShortageProvider } from '../../context/game_context/words_shortage_context';
 
 const McPage = ({ navigation }: {navigation: any}) => {
-    useEffect(() => {
-        navigation.setOptions({ gestureEnabled: false });
-    }, []);
-
     return (
         <EndGameProvider>
             <LeaveGameProvider>
