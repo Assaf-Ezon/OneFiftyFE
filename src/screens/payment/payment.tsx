@@ -1,7 +1,6 @@
 import { Text, TouchableOpacity, View, Image } from 'react-native';
 import { useEffect } from 'react';
 import PlansContainer from '../../components/payment/plans_container';
-
 import { IMAGES } from '../../image_handler';
 import { Screens } from '../../data_objects/enums/screens';
 
@@ -17,6 +16,8 @@ const PaymentPage = ({ navigation }: {navigation: any}) => {
     const isActive = (stackIndex == StackNames.Main);
 
     useEffect(() => {
+        navigation.setOptions({ gestureEnabled: false });
+
         if (isActive && !profile.isTrial) {
             navigation.navigate(Screens.HOME);
         } 

@@ -58,8 +58,12 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     const [request, response, promptAsync] = authInstance.getAuthCode();
 
+    useEffect(() => {
+        navigation.setOptions({ gestureEnabled: false });
+    }, []);
+
     // activated when there is a response
-    useEffect(() => {         
+    useEffect(() => {      
         const processResponse = async () => {
             if (response && response.type == 'success') {
                 setLoading(true);

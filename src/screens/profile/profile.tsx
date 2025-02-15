@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { IMAGES } from '../../image_handler';
 
 import ProfileScreenStyle from './profile_style';
@@ -13,6 +15,10 @@ import { ProfileImageProvider } from '../../context/settings_context/profile_ima
 import { ContactUsFormProvider } from '../../context/general_context/contact_form_context';
 
 const ProfilePage = ({ navigation }: {navigation: any}) => {
+    useEffect(() => {
+        navigation.setOptions({ gestureEnabled: false });
+    }, []);
+
     return (
         <SidebarProvider>
             <ContactUsFormProvider>

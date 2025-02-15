@@ -68,7 +68,7 @@ const MultipleChoicesGame = () => {
                                     <TouchableOpacity style={MultipleChoicesGameStyle.option} onPress={!isNextBtn ? () => {setUserMeaning(meaning)} : () => {}} key={meaning}>
                                         <Image source={meaning === WordsFormatter.getMeaningsAsString(currentWord.Meanings) && isNextBtn ? IMAGES.correct : 
                                             isNextBtn && meaning !== WordsFormatter.getMeaningsAsString(currentWord.Meanings) ? IMAGES.wrong : null} 
-                                        style={MultipleChoicesGameStyle.optionImage} />
+                                            style={MultipleChoicesGameStyle.optionImage} />
                                         <Text style={[MultipleChoicesGameStyle.optionText, {fontWeight: meaning === desiredMeaning ? '600' : '300'}]}
                                             allowFontScaling={false}>
                                             {meaning}
