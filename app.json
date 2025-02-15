@@ -9,25 +9,21 @@
     "userInterfaceStyle": "light",
     "scheme": "com.OneFifty.App",
     "splash": {
-      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-
     "ios": {
+      "icon": "./assets/icon.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.OneFifty.App",
       "associatedDomains": ["applinks:onefiftyapp.b2clogin.com"]
     },
     "android": {
+      "package": "com.OneFifty.App",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#ffffff",
-        "package": "com.OneFifty.App"
+        "backgroundColor": "#ffffff"
       }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     }
   }
 }

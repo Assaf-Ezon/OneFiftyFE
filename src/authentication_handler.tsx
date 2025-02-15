@@ -9,7 +9,9 @@ import { Prompt } from 'expo-auth-session';
 const tenantName = 'OneFiftyApp'; 
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
-const redirectUri = 'com.OneFifty.App://auth';
+const redirectUri = AuthSession.makeRedirectUri({
+    scheme: "onefiftyapp",
+});
 
 const discovery = {
     authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,

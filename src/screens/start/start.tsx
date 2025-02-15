@@ -64,7 +64,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setLoading(true);
                 await saveInfo();
                 await handleUserData();
-            } else {
+            } 
+            else if (response?.type !== 'cancel' && response?.type !== 'dismiss') {
                 setLoading(false);
                 setPopupIndex(AuthErrorType.Error);
             }
@@ -188,12 +189,12 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.textContainer]} 
         pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title} allowFontScaling={false}>
-                150 - לומדת פסיכומטרי{'\n'}
+                לומדת פסיכומטרי{'\n'}
                 למדו מילים בכל מקום
             </Text>
             <Text style={StartScreenStyle.paragraph} allowFontScaling={false}>
-                150 הינו כלי ללימוד מילים בעברית ובאנגלית כחלק מהכנה{'\n'}
-                למבחן הפסיכומטרי. מגוון משחקונים ולומדות לצורך שינון{'\n'}
+                150 הינה לומדה ללימוד מילים בעברית ובאנגלית כחלק מהכנה{'\n'}
+                למבחן הפסיכומטרי. משחקונים ולומדות לצורך שינון{'\n'}
                 ולמידה של מילים חדשות.
             </Text>
             <View style={StartScreenStyle.btnContainer}>

@@ -3,6 +3,7 @@ import React from 'react';
 
 import PopupsStyle from './authentication_popup_style';
 import { IMAGES } from '../../image_handler';
+import { CONFIG } from '../../config';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -25,8 +26,8 @@ const ErrorPopup = ({setPopupIndex} : {setPopupIndex: React.Dispatch<React.SetSt
                 <View style={PopupsStyle.errorPopupMainContainer}>
                     <Text style={PopupsStyle.popupText} allowFontScaling={false}>
                         אירוע לא צפוי קרה{'\n'}
-                        אנא נסו שנית מאוחר יותר.{'\n'}{'\n'}{'\n'}
-                        פנו אלינו: OneFifty.customers@gmail.com
+                        אנא נסו שנית מאוחר יותר.{'\n'}{'\n'}
+                        פנו אלינו: {CONFIG.email}
                     </Text>
                 </View>
             </View>
