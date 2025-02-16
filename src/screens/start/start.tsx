@@ -194,8 +194,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.textContainer]} 
         pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title} allowFontScaling={false}>
-                לומדת פסיכומטרי{'\n'}
                 למדו מילים בכל מקום
+                {'\n'}למבחן הפסיכומטרי
             </Text>
             <Text style={StartScreenStyle.paragraph} allowFontScaling={false}>
                 150 הינה לומדה ללימוד מילים בעברית ובאנגלית כחלק מהכנה{'\n'}
