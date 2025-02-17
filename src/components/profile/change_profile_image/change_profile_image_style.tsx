@@ -6,10 +6,10 @@ const { width, height } = Dimensions.get('window');
 const ChangeProfileImageStyle = StyleSheet.create({
     container: {
         width: width * 0.95,
-        height: height * 0.5,
+        height: height * 0.6,
         position: 'absolute',
         left: width * 0.025,
-        top: height * 0.25,
+        top: height * 0.2,
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',

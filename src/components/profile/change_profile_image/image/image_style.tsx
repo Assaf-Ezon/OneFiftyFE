@@ -4,8 +4,8 @@ const { width, height } = Dimensions.get('window');
 
 const ProfileImageOptionStyle = StyleSheet.create({
     container: {
-        width: width * 0.2,
-        height: width * 0.2,
+        width: height * 0.09,
+        height: height * 0.09,
         borderWidth: 1,
         margin: 2,
     },
