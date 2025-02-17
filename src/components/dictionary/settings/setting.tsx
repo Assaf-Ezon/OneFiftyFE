@@ -50,7 +50,7 @@ const Settings = () => {
                 valueField="value"
                 value={levelValue}
                 onChange={(item) => setLevelValue(item.value)}
-                placeholder="בחר רמה"
+                placeholder="בחרו רמה"
                 style={SettingsStyle.Dropdown}
                 selectedTextStyle={SettingsStyle.text}
                 inputSearchStyle={SettingsStyle.inputSearch}
@@ -65,7 +65,7 @@ const Settings = () => {
                     valueField="value"
                     value={langValue}
                     onChange={(item) => setLangValue(item.value)}
-                    placeholder="בחר שפה"
+                    placeholder="בחרו שפה"
                     style={SettingsStyle.Dropdown}
                     selectedTextStyle={SettingsStyle.text}
                     inputSearchStyle={SettingsStyle.inputSearch}

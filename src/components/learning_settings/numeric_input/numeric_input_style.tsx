@@ -12,9 +12,18 @@ const NumbericInputStyle = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    inputFieldContainer: {
+        width: '40%',
+        height: '100%',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
     inputField: {
         fontSize: calculateFontSize(12),
         fontWeight: 'bold',
+        textAlign: 'center',
+        width: '80%',
+        height: '100%', 
     },
     btn: {
         backgroundColor: '#c0c0c0',

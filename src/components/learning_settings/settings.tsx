@@ -28,7 +28,6 @@ const LearningSettings = () => {
     };  
 
     // state handling for language dropdown menu - 1. for open and close menu. 2. for choosing the value.
-    const [langOpen, setLangOpen] = useState<boolean>(false);
     const [langValue, setLangValue] = useState<string | null>(settings.language); 
 
     // the options for the dropdown menu
@@ -96,7 +95,7 @@ const LearningSettings = () => {
                         valueField="value"
                         value={langValue}
                         onChange={(item) => setLangValue(item.value)}
-                        placeholder="בחר רמה"
+                        placeholder="בחרו שפה"
                         style={SettingsStyle.Dropdown}
                         selectedTextStyle={SettingsStyle.text}
                         inputSearchStyle={SettingsStyle.inputSearch}
