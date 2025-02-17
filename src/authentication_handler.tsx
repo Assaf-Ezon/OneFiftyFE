@@ -9,9 +9,11 @@ import { Prompt } from 'expo-auth-session';
 const tenantName = 'OneFiftyApp'; 
 const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
-const redirectUri = AuthSession.makeRedirectUri({
-    scheme: "onefiftyapp",
-});
+// const redirectUri = AuthSession.makeRedirectUri({
+//     scheme: "com.OneFifty.App",
+//     path: "auth",
+// });
+const redirectUri = 'exp://192.168.1.126:8081';
 
 const discovery = {
     authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,
@@ -26,7 +28,7 @@ export default class AuthenticationHandler {
 
     }
 
-    // singleton instance
+    // singleton instance   
     public static getInstance(): AuthenticationHandler {
         if (!AuthenticationHandler.instance) {
             AuthenticationHandler.instance = new AuthenticationHandler();
