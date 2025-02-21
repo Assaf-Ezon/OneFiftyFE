@@ -13,7 +13,7 @@ const policyName = 'B2C_1_OneFiftyApp';
 //     scheme: "com.OneFifty.App",
 //     path: "auth",
 // });
-const redirectUri = 'exp://192.168.1.126:8081';
+const redirectUri = 'exp://10.0.0.9:8081';
 
 const discovery = {
     authorizationEndpoint: `https://${tenantName}.b2clogin.com/${tenantName}.onmicrosoft.com/${policyName}/oauth2/v2.0/authorize`,

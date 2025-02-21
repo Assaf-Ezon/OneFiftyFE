@@ -1,83 +1,56 @@
-import { Text, View, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
-import { FC, useEffect, useState } from 'react';
+import { Alert, Dimensions } from 'react-native';
+import { FC, useState } from 'react';
+import NumericInput from './implementation/NumericInput';
 
 import NumbericInputStyle from './numeric_input_style';
 
 import { useLearningSettingsContext } from '../../../context/settings_context/learning_context';
 import { GameSettingsNumericInputConfig } from '../../../data_objects/components_config/learning_page/game_settings_numeric_input_config';
 
-const NumericInput: FC<GameSettingsNumericInputConfig> = ({ level }) => {
+const { width, height } = Dimensions.get('window');
+
+const Numeric: FC<GameSettingsNumericInputConfig> = ({ level }) => {
     // settings context
     const {settings, updateLevel} = useLearningSettingsContext();
 
     // use state for the quantity counter
     const [value, setValue] = useState<number>(settings.levels[level]);
 
-    // userEffects to update the context when you change the quantity
-    useEffect(() => {
-        updateLevel(level, value);
-    }, [value])
-
-    // userEffects to update the value when the quantity in the levels change - in random
-    useEffect(() => {
-        setValue(settings.levels[level]);
-    }, [settings.levels[level]]);
-
-    // increase/decrease functions for the buttons
-    const increase = () => {
-        if (value < 50 && Object.values(settings.levels).reduce((total, value) => total + value, 0) < 100) {
-            setValue(prevValue => prevValue + 1)
-        }
-    };
-
-    const decrease = () => {
-        if (value > 0) {
-            setValue(prevValue => prevValue - 1)
-        }
-    };
-
     // handle numberinput
-    const handleChangeText = (text: string) => {
-        const numericValue = parseInt(text, 10);
-    
-        const currentTotal = Object.values(settings.levels).reduce((total, value) => total + value, 0) - (settings.levels[level] || 0);
+    const handleChangeText = (value: number) => {
+        const currentTotal = Object.values(settings.levels).reduce((total, value) => total + value, 0) - (settings.levels[level]);
 
-        const potentialTotal = currentTotal + (isNaN(numericValue) ? 0 : numericValue);
+        const potentialTotal = currentTotal + (isNaN(value) ? 0 : value);
 
-        if (!isNaN(numericValue) && numericValue <= 50 && potentialTotal <= 100) {
-            setValue(numericValue);
-        } else if (!isNaN(numericValue) && numericValue > 50) {
+        if (!isNaN(value) && value <= 50 && potentialTotal <= 100) {
+            setValue(value);
+            updateLevel(level, value);
+        } else if (!isNaN(value) && value > 50) {
             Alert.alert('מספר לא תקין', 'לא יכול להיות יותר מ-50 מילים ברמה אחת');
-        } else if (!isNaN(numericValue) && potentialTotal > 100) {
+            setValue(50);
+        } else if (!isNaN(value) && potentialTotal > 100) {
             Alert.alert('מספר לא תקין', 'סה"כ מילים לא יכול לעבור את ה-100');
+            setValue(100 - currentTotal);
         } else {
             Alert.alert('מספר לא תקין', 'נא להזין מספר תקין');
         }
     };
 
     return (
-
-        <View style={NumbericInputStyle.container}>
-            <TouchableOpacity style={NumbericInputStyle.btn} onPress={decrease}>
-                <Text style={NumbericInputStyle.text} allowFontScaling={false}>-</Text>
-            </TouchableOpacity>
-            <View style={NumbericInputStyle.inputFieldContainer}>
-                <TextInput
-                    style={NumbericInputStyle.inputField}
-                    placeholder={value.toString()}
-                    keyboardType='numeric'
-                    value={value.toString()}
-                    selectTextOnFocus={true}
-                    onChangeText={(text) => {handleChangeText(text)}}
-                    allowFontScaling={false}
-                    multiline={false}
-                />
-            </View>
-            <TouchableOpacity style={NumbericInputStyle.btn} onPress={increase}>
-                <Text style={NumbericInputStyle.text} allowFontScaling={false}>+</Text>
-            </TouchableOpacity>
-        </View>
+        <NumericInput
+            value={value}
+            onChange={(val: any) => {setValue(val); handleChangeText(val);}}
+            totalWidth={width * 0.15}
+            totalHeight={height * 0.03}
+            step={1}
+            valueType='integer' 
+            rightButtonBackgroundColor='#c0c0c0' 
+            leftButtonBackgroundColor='#c0c0c0'
+            minValue={0}
+            maxValue={Math.min(50, 100 - (Object.values(settings.levels).reduce((total, value) => total + value, 0) - (settings.levels[level])))}
+            editable={true}
+        />
     );
 };  
 
-export default NumericInput;
+export default Numeric;

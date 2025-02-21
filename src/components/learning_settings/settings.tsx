@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Alert
 import { Dropdown } from 'react-native-element-dropdown';
 
 import CheckBox from 'expo-checkbox';
-import NumericInput from './numeric_input/numeric_input';
+import Numeric from './numeric_input/numeric_input';
 
 import SettingsStyle from './settings_style';
 
@@ -78,7 +78,7 @@ const LearningSettings = () => {
                         {
                             Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
                                 <View style={SettingsStyle.checkboxContainer} key={i}>
-                                <NumericInput level={i} />
+                                <Numeric level={i} />
                                 <Text style={SettingsStyle.levelsText} allowFontScaling={false}>{i}</Text>
                                 </View>
                             ))
