@@ -92,14 +92,19 @@ const SettingsStyle = StyleSheet.create({
     PickLevel: {
         width: '100%',
         height: '40%',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
+    },
+    LevelTitle: {
+        width: '100%',
+        height: '20%',
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
     },
     RandomBtn: {
         backgroundColor: 'white',
-        width: '25%',
-        height: '15%',
+        width: '35%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
@@ -107,6 +112,7 @@ const SettingsStyle = StyleSheet.create({
     },
     RandomBtnText: {
         fontWeight: '600',
+        fontSize: calculateFontSize(15),
     },
     Dropdown: {
         borderWidth: 1,
@@ -124,10 +130,13 @@ const SettingsStyle = StyleSheet.create({
         textAlign: 'right',
     },
     ChooseLevelText: {
-        width: '100%',
+        width: '50%',
         textAlign: 'right',
-        fontSize: calculateFontSize(15),
+        fontSize: calculateFontSize(16),
         fontWeight: '500',
+        justifyContent: 'center',
+        alignItems: 'center',
+
     },
     selectLevels: {
         width: '100%',

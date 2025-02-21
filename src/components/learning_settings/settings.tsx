@@ -73,7 +73,12 @@ const LearningSettings = () => {
                 </View>
                 <View style={SettingsStyle.SettingsPart}>
                     <View style={SettingsStyle.PickLevel}>
-                        <Text style={SettingsStyle.ChooseLevelText} allowFontScaling={false}>בחרו מילים מכל רמה:</Text>
+                        <View style={SettingsStyle.LevelTitle}>
+                            <Text style={SettingsStyle.ChooseLevelText} allowFontScaling={false}>בחרו מילים מכל רמה:</Text>
+                            <TouchableOpacity style={SettingsStyle.RandomBtn} onPress={generateRandomNumbers}>
+                                <Text style={SettingsStyle.RandomBtnText} allowFontScaling={false}>רנדומלי</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={SettingsStyle.selectLevels}>
                         {
                             Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
@@ -84,9 +89,6 @@ const LearningSettings = () => {
                             ))
                         }   
                         </View>
-                        <TouchableOpacity style={SettingsStyle.RandomBtn} onPress={generateRandomNumbers}>
-                            <Text style={SettingsStyle.RandomBtnText} allowFontScaling={false}>רנדומלי</Text>
-                        </TouchableOpacity>
                     </View>
 
                     <Dropdown

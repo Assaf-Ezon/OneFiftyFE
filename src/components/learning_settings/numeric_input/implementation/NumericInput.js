@@ -20,11 +20,11 @@ export default class NumericInput extends Component {
     }
 
     // this.props refers to the new props
-    componentDidUpdate() {
-        const initSent = !(this.props.initValue !== 0 && !this.props.initValue); 
-
-        // compare the new value (props.initValue) with the existing/old one (this.state.value)
-        if (this.props.initValue !== this.state.value && initSent) {
+    componentDidUpdate(prevProps) {
+        const initSent = !(this.props.initValue !== 0 && !this.props.initValue);
+    
+        // Check if initValue changed from the previous props
+        if (this.props.initValue !== prevProps.initValue && initSent) {
             this.setState({
                 value: this.props.initValue,
                 lastValid: this.props.initValue,
@@ -32,6 +32,7 @@ export default class NumericInput extends Component {
             });
         }
     }
+    
     
     updateBaseResolution = (width, height) => {
         calcSize = create({ width, height })

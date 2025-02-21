@@ -1,5 +1,5 @@
 import { Alert, Dimensions } from 'react-native';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import NumericInput from './implementation/NumericInput';
 
 import NumbericInputStyle from './numeric_input_style';
@@ -36,8 +36,13 @@ const Numeric: FC<GameSettingsNumericInputConfig> = ({ level }) => {
         }
     };
 
+    useEffect(() => {
+        setValue(settings.levels[level]);
+    }, [settings.levels[level]]);
+
     return (
         <NumericInput
+            initValue={value}
             value={value}
             onChange={(val: any) => {setValue(val); handleChangeText(val);}}
             totalWidth={width * 0.15}
