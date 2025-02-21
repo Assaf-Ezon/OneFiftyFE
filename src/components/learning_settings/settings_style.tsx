@@ -50,7 +50,7 @@ const SettingsStyle = StyleSheet.create({
         alignItems: 'flex-end',
     },
     TypeOfPracticeTitle: {
-        fontSize: calculateFontSize(15),
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
     },
     OptionsContainer: {
@@ -100,6 +100,7 @@ const SettingsStyle = StyleSheet.create({
         height: '20%',
         flexDirection: 'row-reverse',
         justifyContent: 'space-between',
+        alignItems: 'center',
     },
     RandomBtn: {
         backgroundColor: 'white',
@@ -130,13 +131,12 @@ const SettingsStyle = StyleSheet.create({
         textAlign: 'right',
     },
     ChooseLevelText: {
-        width: '50%',
+        width: '60%',
         textAlign: 'right',
-        fontSize: calculateFontSize(16),
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
         justifyContent: 'center',
         alignItems: 'center',
-
     },
     selectLevels: {
         width: '100%',

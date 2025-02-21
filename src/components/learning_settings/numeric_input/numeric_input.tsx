@@ -54,6 +54,7 @@ const Numeric: FC<GameSettingsNumericInputConfig> = ({ level }) => {
             minValue={0}
             maxValue={Math.min(50, 100 - (Object.values(settings.levels).reduce((total, value) => total + value, 0) - (settings.levels[level])))}
             editable={true}
+            font={15}
         />
     );
 };  
