@@ -8,7 +8,7 @@ const GameCardStyle = StyleSheet.create({
         transform: [{ scaleX: -1 }],
         flexDirection: 'column',
         borderColor: 'black',
-        borderWidth: 0.2,
+        borderWidth: 0.3,
         borderRadius: 20,
         width: width * 0.7,
         height: height * 0.33,
@@ -16,20 +16,21 @@ const GameCardStyle = StyleSheet.create({
     },
     cardImage: {
         width: '99.85%',
-        flex: 1,
+        height: '45%',
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         overflow: 'hidden',
     },
     textContainer: {
         width: '100%',
-        flex: 1,
+        height: '50%',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
     },
     titleText: {
         width: '90%',
+        height: '15%',
         textAlign: 'right',
         margin: 5,
         fontSize: calculateFontSize(20),
@@ -37,8 +38,10 @@ const GameCardStyle = StyleSheet.create({
     },
     descriptionText: {
         width: '90%',
+        height: '30%',
         textAlign: 'right',
         margin: 5,
+        fontSize: calculateFontSize(12),
         color: '#656565',
     },
     btn: {

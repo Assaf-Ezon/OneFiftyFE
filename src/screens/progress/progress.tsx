@@ -1,5 +1,6 @@
-import { View } from 'react-native';
 import { useEffect } from 'react';
+
+import { View } from 'react-native';
 
 import ProgressScreenStyle from './progress_style';
 

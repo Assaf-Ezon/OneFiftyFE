@@ -46,7 +46,7 @@ const MultipleChoicesGameStyle = StyleSheet.create({
         borderWidth: 0.2,
         borderColor: '#5F5F5F',
         flexDirection: 'row',
-        justifyContent: 'flex-end',
+        justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: 'white',
     },
@@ -57,7 +57,7 @@ const MultipleChoicesGameStyle = StyleSheet.create({
         marginRight: 15,
     },
     optionImage: {
-        marginRight: 10,
+        marginLeft: 20,
     },
     btnText: {
         textAlign: 'center',

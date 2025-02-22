@@ -2,6 +2,7 @@ import { View, Image, Text, Pressable, ActivityIndicator, Alert } from 'react-na
 import { useEffect, useState } from 'react';
 import AuthenticationPopup from '../../components/auth_popups/authentication_popup';
 import { AuthErrorType } from '../../data_objects/enums/auth_error_type';
+import useDisableBack from '../use_disable_back';
 
 import StartScreenStyle from './start_style';
 
@@ -22,6 +23,8 @@ import { RequestsError } from '../../data_objects/enums/requests_error_type';
 import AuthenticationRequestsErrors from '../../requests/components_requests_errors/authentication_requests_errors';
 
 const StartScreen = ({ navigation }: {navigation: any}) => {
+    useDisableBack(navigation);
+
     // contexts
     const {profile, setProfile, IsInTrail} = useProfile();
     const {hebrewWords, 
@@ -55,10 +58,12 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
 
     const [request, response, promptAsync] = authInstance.getAuthCode();
 
-    // activated when there is a response
-    useEffect(() => { 
+    useEffect(() => {
         navigation.setOptions({ gestureEnabled: false });
-        
+    }, []);
+
+    // activated when there is a response
+    useEffect(() => {      
         const processResponse = async () => {
             if (response && response.type == 'success') {
                 setLoading(true);
@@ -189,8 +194,8 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
         <View style={[{opacity: loading || popupIndex !== AuthErrorType.None ? 0.2 : 1}, StartScreenStyle.textContainer]} 
         pointerEvents={ loading || popupIndex !== AuthErrorType.None ? 'none' : 'auto' }>
             <Text style={StartScreenStyle.title} allowFontScaling={false}>
-                לומדת פסיכומטרי{'\n'}
                 למדו מילים בכל מקום
+                {'\n'}למבחן הפסיכומטרי
             </Text>
             <Text style={StartScreenStyle.paragraph} allowFontScaling={false}>
                 150 הינה לומדה ללימוד מילים בעברית ובאנגלית כחלק מהכנה{'\n'}

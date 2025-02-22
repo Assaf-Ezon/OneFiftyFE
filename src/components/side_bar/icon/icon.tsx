@@ -38,7 +38,7 @@ const SideBarIcon: FC<SideBarIconConfig> = ({ iconPath, iconText, isRed, onPress
         <>
             <TouchableOpacity style={[{width: isRed ? 'auto' : '100%'}, iconStyle.container]} onPress={() => {onPressHandler[onPressActionIndex]()}}>
                 <Text style={[{color: isRed ? 'red' : '#656565'}, iconStyle.text]} allowFontScaling={false}>{iconText}</Text>
-                <Image source={iconPath}></Image>
+                <Image source={iconPath} style={iconStyle.iconImage}></Image>
             </TouchableOpacity>   
         </>
     );

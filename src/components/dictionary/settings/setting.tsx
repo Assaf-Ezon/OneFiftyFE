@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
 
 import SettingsStyle from "./settings_style";
 
@@ -15,7 +15,6 @@ const Settings = () => {
     const { hebrewWords } = useWords();
 
     // lang settings
-    const [langOpen, setLangOpen] = useState<boolean>(false);
     const [langValue, setLangValue] = useState<string>('');
     
     type LangItemsType = {
@@ -29,7 +28,6 @@ const Settings = () => {
     ]);
 
     // level settings
-    const [levelOpen, setLevelOpen] = useState<boolean>(false);
     const [levelValue, setLevelValue] = useState<number>(-1);
 
     const [levelItems, setLevelItems] = useState<LevelItemsType[]>(() => 
@@ -37,36 +35,42 @@ const Settings = () => {
           label: String(level),
           value: Number(level), 
         }))
-      );
+    );
 
     useEffect(() => {
         setSettings({ language: langValue, level: levelValue });
-    }, [langOpen, levelOpen]);
+    }, [langValue, levelValue]);
 
     return (
         <View style={SettingsStyle.container}>
             <View style={SettingsStyle.dropDownContainer}>
-                <DropDownPicker
-                open={levelOpen}
+            <Dropdown
+                data={levelItems}
+                labelField="label"
+                valueField="value"
                 value={levelValue}
-                items={levelItems}
-                setOpen={setLevelOpen}
-                setValue={setLevelValue}
-                setItems={setLevelItems}
-                placeholder='בחרו רמה'
-                textStyle={{textAlign: 'right'}}
-                />
+                onChange={(item) => setLevelValue(item.value)}
+                placeholder="בחרו רמה"
+                style={SettingsStyle.Dropdown}
+                selectedTextStyle={SettingsStyle.text}
+                inputSearchStyle={SettingsStyle.inputSearch}
+                placeholderStyle={SettingsStyle.text}
+                itemTextStyle={SettingsStyle.text}
+            />
             </View>
             <View style={SettingsStyle.dropDownContainer}>
-                <DropDownPicker
-                open={langOpen}
-                value={langValue}
-                items={langItems}
-                setOpen={setLangOpen}
-                setValue={setLangValue}
-                setItems={setLangItems}
-                placeholder='בחרו שפה'
-                textStyle={{textAlign: 'right'}}
+                <Dropdown
+                    data={langItems}
+                    labelField="label"
+                    valueField="value"
+                    value={langValue}
+                    onChange={(item) => setLangValue(item.value)}
+                    placeholder="בחרו שפה"
+                    style={SettingsStyle.Dropdown}
+                    selectedTextStyle={SettingsStyle.text}
+                    inputSearchStyle={SettingsStyle.inputSearch}
+                    placeholderStyle={SettingsStyle.text}
+                    itemTextStyle={SettingsStyle.text}
                 />
             </View>
         </View>

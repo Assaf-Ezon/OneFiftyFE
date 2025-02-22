@@ -28,7 +28,7 @@ const PagePart = () => {
                     <TouchableOpacity onPress={() => {navigation.goBack()}}>
                         <Image source={IMAGES.back_icon} />
                     </TouchableOpacity>
-                    <Text style={PagePartStyle.pageTitle} allowFontScaling={false}>תנאי שימוש</Text>
+                    <Text style={PagePartStyle.pageTitle} allowFontScaling={false}>תנאים ומדיניות</Text>
                 </View>
             </View>
             <View style={PagePartStyle.SwitchContainer}>

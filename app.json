@@ -10,7 +10,8 @@
     "scheme": "com.OneFifty.App",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",  
+      "image": "./assets/blank.png" 
     },
     "ios": {
       "icon": "./assets/icon.png",

@@ -8,7 +8,7 @@ const TermsOfServicePage = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
         navigation.setOptions({ gestureEnabled: false });
     }, []);
-    
+
     return (
         <>
             <PagePart/>

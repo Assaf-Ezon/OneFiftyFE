@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import useDisableBack from '../use_disable_back';
 
 import { IMAGES } from '../../image_handler';
 
@@ -14,9 +14,7 @@ import { ProfileImageProvider } from '../../context/settings_context/profile_ima
 import { ContactUsFormProvider } from '../../context/general_context/contact_form_context';
 
 const HomePage = ({ navigation }: {navigation: any}) => {
-    useEffect(() => {
-        navigation.setOptions({ gestureEnabled: false });
-    }, []);
+    useDisableBack(navigation);
 
     return (
         <SidebarProvider>

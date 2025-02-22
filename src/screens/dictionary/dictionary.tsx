@@ -17,7 +17,7 @@ const DictionaryPage = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
         navigation.setOptions({ gestureEnabled: false });
     }, []);
-
+    
     return (
         <SidebarProvider>
             <ContactUsFormProvider>

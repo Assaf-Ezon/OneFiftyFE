@@ -17,6 +17,7 @@ const EndGameStyle = StyleSheet.create({
         borderRadius: 30,
         shadowOpacity: 0.15,
         shadowRadius: 5,
+        borderWidth: 1,
     },
     titleContainer: {
          justifyContent: 'center',

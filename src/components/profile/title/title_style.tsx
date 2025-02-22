@@ -25,10 +25,13 @@ const TitleStyle = StyleSheet.create({
         fontSize: calculateFontSize(30),
         fontWeight: 'bold',
     },
-    profileImageContainer: {
+    profileContainer: {
         position: 'absolute',
-        left: width * 0.35,
-        top: height * 0.12,
+        top: height * 0.1,
+    },
+    profileImageContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     profileImage: {
         width: width * 0.3,
@@ -36,11 +39,11 @@ const TitleStyle = StyleSheet.create({
         borderRadius: 100,
     },
     changeImageIconContainer: {
+        position: 'absolute',
         width: width * 0.08,
         height: width * 0.08,
-        position: 'absolute',
-        left: width * 0.22,
-        top: height * 0.1,
+        top: width * 0.2,
+        right: width * 0.27,
     },
     changeImageIcon: {
         width: '100%',
@@ -48,9 +51,6 @@ const TitleStyle = StyleSheet.create({
     },
     profileTitle: {
         width: width * 0.8,
-        position: 'absolute',
-        left: width * 0.1,
-        top: height * 0.27, 
     },
     name: {
         textAlign: 'center',
@@ -59,6 +59,7 @@ const TitleStyle = StyleSheet.create({
     },
     email: {
         textAlign: 'center',
+        fontSize: calculateFontSize(12),
         color: '#656565',
     },
     expiration: {

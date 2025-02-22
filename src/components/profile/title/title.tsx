@@ -27,18 +27,20 @@ const Title = () => {
                     <Image source={IMAGES.side_menu} />
                 </TouchableOpacity>  
             </View>
-            <View style={TitleStyle.profileImageContainer}>
-                <Image style={TitleStyle.profileImage} source={profileImage} />
-                <TouchableOpacity style={TitleStyle.changeImageIconContainer} onPress={() => {toggleProfileImageMenu()}}>
-                    <Image style={TitleStyle.changeImageIcon} source={IMAGES.change_profile_image} />
-                </TouchableOpacity>
-            </View>
-            <View style={TitleStyle.profileTitle}>
-                <Text style={TitleStyle.name} allowFontScaling={false}>{profile.name}</Text>
-                <Text style={TitleStyle.email} allowFontScaling={false}>{profile.email}</Text>
-                <Text style={TitleStyle.expiration} allowFontScaling={false}>
-                    תום תוקף משתמש: {profile.expirationDate.getDate()}/{profile.expirationDate.getMonth() + 1}/{profile.expirationDate.getFullYear()}
-                </Text>
+            <View style={TitleStyle.profileContainer}>
+                <View style={TitleStyle.profileImageContainer}>
+                    <Image style={TitleStyle.profileImage} source={profileImage} />
+                    <TouchableOpacity style={TitleStyle.changeImageIconContainer} onPress={() => {toggleProfileImageMenu()}}>
+                        <Image style={TitleStyle.changeImageIcon} source={IMAGES.change_profile_image} />
+                    </TouchableOpacity>
+                </View>
+                <View style={TitleStyle.profileTitle}>
+                    <Text style={TitleStyle.name} allowFontScaling={false}>{profile.name}</Text>
+                    <Text style={TitleStyle.email} allowFontScaling={false}>{profile.email}</Text>
+                    <Text style={TitleStyle.expiration} allowFontScaling={false}>
+                        תום תוקף משתמש: {profile.expirationDate.getDate()}/{profile.expirationDate.getMonth() + 1}/{profile.expirationDate.getFullYear()}
+                    </Text>
+                </View>
             </View>
         </View>
     );

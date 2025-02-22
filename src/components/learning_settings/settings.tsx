@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
+
 import CheckBox from 'expo-checkbox';
-import NumericInput from './numeric_input/numeric_input';
+import Numeric from './numeric_input/numeric_input';
 
 import SettingsStyle from './settings_style';
 
@@ -27,7 +28,6 @@ const LearningSettings = () => {
     };  
 
     // state handling for language dropdown menu - 1. for open and close menu. 2. for choosing the value.
-    const [langOpen, setLangOpen] = useState<boolean>(false);
     const [langValue, setLangValue] = useState<string | null>(settings.language); 
 
     // the options for the dropdown menu
@@ -73,31 +73,36 @@ const LearningSettings = () => {
                 </View>
                 <View style={SettingsStyle.SettingsPart}>
                     <View style={SettingsStyle.PickLevel}>
-                        <Text style={SettingsStyle.ChooseLevelText} allowFontScaling={false}>בחרו מילים מכל רמה:</Text>
+                        <View style={SettingsStyle.LevelTitle}>
+                            <Text style={SettingsStyle.ChooseLevelText} allowFontScaling={false}>בחרו מילים מכל רמה:</Text>
+                            <TouchableOpacity style={SettingsStyle.RandomBtn} onPress={generateRandomNumbers}>
+                                <Text style={SettingsStyle.RandomBtnText} allowFontScaling={false}>רנדומלי</Text>
+                            </TouchableOpacity>
+                        </View>
                         <View style={SettingsStyle.selectLevels}>
                         {
                             Array.from({ length: 10 }, (_, i) => i + 1).map(i => (
                                 <View style={SettingsStyle.checkboxContainer} key={i}>
-                                <NumericInput level={i} />
+                                <Numeric level={i} />
                                 <Text style={SettingsStyle.levelsText} allowFontScaling={false}>{i}</Text>
                                 </View>
                             ))
                         }   
                         </View>
-                        <TouchableOpacity style={SettingsStyle.RandomBtn} onPress={generateRandomNumbers}>
-                            <Text style={SettingsStyle.RandomBtnText} allowFontScaling={false}>רנדומלי</Text>
-                        </TouchableOpacity>
                     </View>
 
-                    <DropDownPicker
-                        open={langOpen}
+                    <Dropdown
+                        data={langItems}
+                        labelField="label"
+                        valueField="value"
                         value={langValue}
-                        items={langItems}
-                        setOpen={setLangOpen}
-                        setValue={setLangValue}
-                        setItems={setLangItems}
-                        placeholder='בחרו שפת תרגול'
-                        textStyle={{textAlign: 'right'}}
+                        onChange={(item) => setLangValue(item.value)}
+                        placeholder="בחרו שפה"
+                        style={SettingsStyle.Dropdown}
+                        selectedTextStyle={SettingsStyle.text}
+                        inputSearchStyle={SettingsStyle.inputSearch}
+                        placeholderStyle={SettingsStyle.text}
+                        itemTextStyle={SettingsStyle.text}
                     />
 
                     <View style={SettingsStyle.TypeOfPractice}>

@@ -1,4 +1,4 @@
-import {  } from 'react-native';
+import { View } from 'react-native';
 import { useEffect } from 'react';
 
 import { IMAGES } from '../../image_handler';
@@ -19,23 +19,25 @@ const LearningPage = ({ navigation }: {navigation: any}) => {
     useEffect(() => {
         navigation.setOptions({ gestureEnabled: false });
     }, []);
-    
+
     return (
         <SidebarProvider>
             <ContactUsFormProvider>
                 <ProfileImageProvider>
-                    <PagePart />
-                    <BottomBar 
-                        activeScreen={"learning"}
-                        homePath={IMAGES.unused_home}
-                        dictionaryPath={IMAGES.unused_dictionary}
-                        learningPath={IMAGES.used_learning}
-                        leaderboardPath={IMAGES.unused_leaderboard}
-                        profilePath={IMAGES.unused_profile}
-                    />
-                    <SideBar />
-                    <ContactForm />
-                    <LearningSettings />
+                    <View style={LearningScreenStyle.container}>
+                        <PagePart />
+                        <BottomBar 
+                            activeScreen={"learning"}
+                            homePath={IMAGES.unused_home}
+                            dictionaryPath={IMAGES.unused_dictionary}
+                            learningPath={IMAGES.used_learning}
+                            leaderboardPath={IMAGES.unused_leaderboard}
+                            profilePath={IMAGES.unused_profile}
+                        />
+                        <SideBar />
+                        <ContactForm />
+                        <LearningSettings />
+                    </View>
                 </ProfileImageProvider>
             </ContactUsFormProvider>
         </SidebarProvider>

@@ -20,6 +20,10 @@ const iconStyle = StyleSheet.create({
         backgroundColor: '#C0C0C0',
         width: width * 0.9,
     },
+    iconImage: {
+        width: width * 0.05,
+        aspectRatio: 1,
+    },
 });
 
 export default iconStyle;

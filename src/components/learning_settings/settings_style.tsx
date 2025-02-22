@@ -6,11 +6,11 @@ const { width, height } = Dimensions.get('window');
 
 const SettingsStyle = StyleSheet.create({
     container: {
-        width: '90%',
-        height: '60%',
+        width: '95%',
+        height: '75%',
         position: 'absolute',
-        top: '20%',
-        left: '5%',
+        top: '14%',
+        left: '2.5%',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
@@ -19,6 +19,7 @@ const SettingsStyle = StyleSheet.create({
         shadowOpacity: 0.15,
         shadowRadius: 5,
         zIndex: CONFIG.zIndexLevels.popups,
+        borderWidth: 1,
     },
     upperPart: {
         width: '90%',
@@ -49,7 +50,7 @@ const SettingsStyle = StyleSheet.create({
         alignItems: 'flex-end',
     },
     TypeOfPracticeTitle: {
-        fontSize: calculateFontSize(15),
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
     },
     OptionsContainer: {
@@ -91,14 +92,20 @@ const SettingsStyle = StyleSheet.create({
     PickLevel: {
         width: '100%',
         height: '40%',
-        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+    },
+    LevelTitle: {
+        width: '100%',
+        height: '20%',
+        flexDirection: 'row-reverse',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
     RandomBtn: {
         backgroundColor: 'white',
-        width: '25%',
-        height: '15%',
+        width: '35%',
+        height: '80%',
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
@@ -106,15 +113,34 @@ const SettingsStyle = StyleSheet.create({
     },
     RandomBtnText: {
         fontWeight: '600',
+        fontSize: calculateFontSize(15),
+    },
+    Dropdown: {
+        borderWidth: 1,
+        borderRadius: 10,
+        width: '100%',
+        height: '10%',
+        backgroundColor: 'white',
+        textAlign: 'right',
+    },
+    text: {
+        textAlign: 'right',
+        marginRight: 8,
+    },
+    inputSearch: {
+        textAlign: 'right',
     },
     ChooseLevelText: {
-        width: '100%',
+        width: '60%',
         textAlign: 'right',
-        fontSize: calculateFontSize(15),
+        fontSize: calculateFontSize(18),
         fontWeight: '500',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     selectLevels: {
         width: '100%',
+        height: '60%',
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',

@@ -1,6 +1,7 @@
 import { View, Image, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import AuthenticationPopup from '../../components/auth_popups/authentication_popup';
+import useDisableBack from '../use_disable_back';
 
 import SplashScreenStyle from './splash_style';
 
@@ -23,6 +24,8 @@ import { RequestsError } from '../../data_objects/enums/requests_error_type';
 import AuthenticationRequestsErrors from '../../requests/components_requests_errors/authentication_requests_errors';
 
 const SplashScreen = ({ navigation }: {navigation: any}) => {
+    useDisableBack(navigation);
+
     const {setStackIndexByName} = useStackManagerContext();
     const {hebrewWords, 
       setHebrewWords, 
@@ -51,7 +54,9 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
 
     useEffect(() => {
         navigation.setOptions({ gestureEnabled: false });
-        
+    }, []);
+
+    useEffect(() => {        
         const validation = async () => {
             // checks if the refresh token is expired
             if (await authInstance.IsRefreshTokenExpired()) {

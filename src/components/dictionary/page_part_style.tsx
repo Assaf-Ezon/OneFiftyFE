@@ -29,6 +29,12 @@ const PagePartStyle = StyleSheet.create({
         fontSize: calculateFontSize(30),
         fontWeight: 'bold',
     },
+    settingsContainer: {
+        height: '10%',
+    },
+    wordsContainer: {
+
+    },
 });
 
 export default PagePartStyle;

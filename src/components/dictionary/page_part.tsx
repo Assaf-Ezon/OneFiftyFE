@@ -25,10 +25,10 @@ const PagePart = () => {
                         <Text style={PagePartStyle.pageTitle} allowFontScaling={false}>מילון</Text>
                     </View>
                 </View>
-                <View style={{zIndex: 2}}>
+                <View style={[{zIndex: 2}, PagePartStyle.settingsContainer]}>
                     <Settings />
                 </View>
-                <View style={{zIndex:1}}>
+                <View style={[{zIndex:1}, PagePartStyle.wordsContainer]}>
                     <Words />
                 </View>
             </View>
