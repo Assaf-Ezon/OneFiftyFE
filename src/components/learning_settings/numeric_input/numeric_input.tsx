@@ -18,17 +18,22 @@ const Numeric: FC<GameSettingsNumericInputConfig> = ({ level }) => {
 
     // handle numberinput
     const handleChangeText = (value: number) => {
-        const currentTotal = Object.values(settings.levels).reduce((total, value) => total + value, 0) - (settings.levels[level]);
+        const currentTotal = Object.values(settings.levels).reduce((total, levelValue) => total + levelValue, 0) - (settings.levels[level]);
 
         const potentialTotal = currentTotal + (isNaN(value) ? 0 : value);
 
-        if (!isNaN(value) && value <= 50 && potentialTotal <= 100) {
+        if (isNaN(value)) {
+            Alert.alert('מספר לא תקין', 'נא להזין מספר תקין');
+            return;
+        }
+
+        if (value <= 50 && potentialTotal <= 100) {
             setValue(value);
             updateLevel(level, value);
-        } else if (!isNaN(value) && value > 50) {
+        } else if (value > 50) {
             Alert.alert('מספר לא תקין', 'לא יכול להיות יותר מ-50 מילים ברמה אחת');
             setValue(50);
-        } else if (!isNaN(value) && potentialTotal > 100) {
+        } else if (potentialTotal > 100) {
             Alert.alert('מספר לא תקין', 'סה"כ מילים לא יכול לעבור את ה-100');
             setValue(100 - currentTotal);
         } else {
