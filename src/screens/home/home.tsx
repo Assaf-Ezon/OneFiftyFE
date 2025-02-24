@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import useDisableBack from '../use_disable_back';
 
 import { IMAGES } from '../../image_handler';
@@ -12,9 +13,16 @@ import ContactForm from '../../components/contact_form/contact_form';
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
 import { ProfileImageProvider } from '../../context/settings_context/profile_image_context';
 import { ContactUsFormProvider } from '../../context/general_context/contact_form_context';
+import { useProfile } from '../../context/general_context/profile_context';
 
 const HomePage = ({ navigation }: {navigation: any}) => {
     useDisableBack(navigation);
+
+    const { IsTermsAndServiesValidation } = useProfile();
+
+    useEffect(() => {
+        console.log(`should validate terms: ${IsTermsAndServiesValidation}`);
+    })
 
     return (
         <SidebarProvider>

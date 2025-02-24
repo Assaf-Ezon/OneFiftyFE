@@ -22,6 +22,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         expirationDate: new Date('1900-01-01'), 
         profileImage: IMAGES.profile_images[0],
         isTrial: false,
+        lastTermsOfServiceApproval: new Date('1900-01-01'),
     });
 
     const updateProfileImage = (newImage: ImageSourcePropType) => {
@@ -56,8 +57,10 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return differenceInMs <= maxDifferenceInMs;
     }
 
+    const [IsTermsAndServiesValidation, setIsTermsAndServiesValidation] = useState<boolean>(false);
+
     return (
-        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, IsInTrail }}>
+        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, IsInTrail, IsTermsAndServiesValidation, setIsTermsAndServiesValidation }}>
             {children}
         </ProfileContext.Provider>
     );

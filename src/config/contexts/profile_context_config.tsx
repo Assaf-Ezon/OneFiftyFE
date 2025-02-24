@@ -7,4 +7,6 @@ export interface ProfileContextConfig {
     updateProfileImage: (newImage: ImageSourcePropType) => void;
     updateRank: (rank: number) => void;
     IsInTrail: (dateJoined: string, expirationDate: string) => boolean;
+    IsTermsAndServiesValidation: boolean;
+    setIsTermsAndServiesValidation: (validate: boolean) => void;
 };
