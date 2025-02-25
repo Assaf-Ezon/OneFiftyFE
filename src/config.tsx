@@ -9,7 +9,7 @@ export const CONFIG = {
         leaderboard: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/leaderboard/get',
         profile_picture: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/profile/picture',
         update_words: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats',
-
+        terms_approval: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/terms/approved',
     },
     zIndexLevels: {
         regular: 2,

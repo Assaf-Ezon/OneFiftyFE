@@ -14,7 +14,6 @@ import AuthenticationHandler from '../../../authentication_handler';
 
 import { Score } from '../../../data_objects/requests/leaderboard_data/score';
 import { LeaderboardDataResponse } from '../../../data_objects/requests/leaderboard_data/leaderboard_data_response';
-import { RequestsError } from '../../../data_objects/enums/requests_error_type';
 import AppRequestsErrors from '../../../requests/components_requests_errors/app_requests_errors';
 
 const TopRated = () => {

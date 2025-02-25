@@ -7,11 +7,16 @@ import { CONFIG } from '../../config';
 
 import { useProfile } from '../../context/general_context/profile_context';
 
+import TermsApprovalRequestHandler from '../../requests/requests_handlers/terms_approval_request_handler';
+import AuthenticationHandler from '../../authentication_handler';
+
 const TermsAndServicesPopup = () => {
-    const { setIsTermsAndServiesValidation } = useProfile();
+    const { profile, setIsTermsAndServiesValidation } = useProfile();
 
     const [isRedirectedToTerms, setIsRedirectedToTerms] = useState<boolean>(false);
 
+    const authInstance = AuthenticationHandler.getInstance();
+    
     const handleLink = async () => {
         try {
             const supported = await Linking.canOpenURL(CONFIG.terms_and_services_link);
@@ -27,9 +32,22 @@ const TermsAndServicesPopup = () => {
         }
     };
 
-    const closePopup = () => {
+    const closePopup = async () => {
         if (isRedirectedToTerms) {
-            setIsTermsAndServiesValidation(false);
+            try {
+                const name = await authInstance.getName();
+                const token = await authInstance.getAccessToken();
+
+                const leaderboardData: TermsApprovalRequestHandler = await TermsApprovalRequestHandler.getInstance().post({
+                    DisplayName: name,
+                    token: token,
+                    expirationDate: profile.expirationDate,
+                });
+
+                setIsTermsAndServiesValidation(false);
+            } catch {
+                Alert.alert('תקלה קרתה, אנא פנו אלינו');
+            }
         } else {
             Alert.alert('נא להיכנס ללינק המצורף לפני שממשיכים');
         }
