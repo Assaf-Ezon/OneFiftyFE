@@ -13,11 +13,11 @@ import { useProfile } from '../../context/general_context/profile_context';
 const HomeScrollView = () => {
     const {isOpen} = useSidebarContext();
     const {isContactFormOpen} = useContactUsFormContext();
-    const { profile } = useProfile();
+    const { profile, isTermsAndServiesValidation } = useProfile();
 
     return (
-        <ScrollView pointerEvents={ isOpen || isContactFormOpen ? 'none' : 'auto' } 
-                    contentContainerStyle={[HomeScrollViewStyle.container, { opacity: isOpen || isContactFormOpen ? 0.2 : 1 }]}
+        <ScrollView pointerEvents={ isOpen || isContactFormOpen || isTermsAndServiesValidation ? 'none' : 'auto' } 
+                    contentContainerStyle={[HomeScrollViewStyle.container, { opacity: isOpen || isContactFormOpen || isTermsAndServiesValidation ? 0.2 : 1 }]}
                     showsVerticalScrollIndicator={false}>
             <ProfilePartHome />
             <WordOfTheDay />

@@ -2,6 +2,7 @@ export const CONFIG = {
     Version: '1.0.0',
     email: 'OneFifty.Customers@gmail.com',
     retries: 4,
+    terms_and_services_link: 'https://google.com',
     
     endpoints: {
         login: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/login',
