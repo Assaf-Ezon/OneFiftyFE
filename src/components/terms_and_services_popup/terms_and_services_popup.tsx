@@ -11,6 +11,8 @@ import { useProfile } from '../../context/general_context/profile_context';
 import TermsApprovalRequestHandler from '../../requests/requests_handlers/terms_approval_request_handler';
 import AuthenticationHandler from '../../authentication_handler';
 
+import * as WebBrowser from 'expo-web-browser';
+
 const TermsAndServicesPopup = () => {
     const { profile, setIsTermsAndServiesValidation } = useProfile();
 
@@ -25,7 +27,7 @@ const TermsAndServicesPopup = () => {
 
             if (supported) {
                 setIsRedirectedToTerms(true);
-                await Linking.openURL(CONFIG.terms_and_services_link);
+                await WebBrowser.openBrowserAsync(CONFIG.terms_and_services_link);
             } else {
                 Alert.alert('לא ניתן להיכנס ללינק, אנא פנו אלינו');
             }
@@ -54,7 +56,7 @@ const TermsAndServicesPopup = () => {
                     const name = await authInstance.getName();
                     const token = await authInstance.getAccessToken();
     
-                    const leaderboardData: TermsApprovalRequestHandler = await TermsApprovalRequestHandler.getInstance().post({
+                    await TermsApprovalRequestHandler.getInstance().post({
                         DisplayName: name,
                         token: token,
                         expirationDate: profile.expirationDate,
