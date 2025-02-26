@@ -1,5 +1,6 @@
 import { View, Text, Modal, TouchableOpacity, Linking, Alert } from 'react-native';
 import React, { useState } from 'react';
+import CheckBox from 'expo-checkbox';
 
 import TermsAndServicesPopupStyle from './terms_and_services_popup_style';
 
@@ -14,6 +15,7 @@ const TermsAndServicesPopup = () => {
     const { profile, setIsTermsAndServiesValidation } = useProfile();
 
     const [isRedirectedToTerms, setIsRedirectedToTerms] = useState<boolean>(false);
+    const [isAccepted, setIsAccepted] = useState<boolean>(false);
 
     const authInstance = AuthenticationHandler.getInstance();
     
@@ -32,25 +34,42 @@ const TermsAndServicesPopup = () => {
         }
     };
 
-    const closePopup = async () => {
+    const fillAcceptCheckbox = async () => {
+        if (isAccepted) {
+            setIsAccepted(false);
+            return;
+        }
+
         if (isRedirectedToTerms) {
-            try {
-                const name = await authInstance.getName();
-                const token = await authInstance.getAccessToken();
-
-                const leaderboardData: TermsApprovalRequestHandler = await TermsApprovalRequestHandler.getInstance().post({
-                    DisplayName: name,
-                    token: token,
-                    expirationDate: profile.expirationDate,
-                });
-
-                setIsTermsAndServiesValidation(false);
-            } catch {
-                Alert.alert('תקלה קרתה, אנא פנו אלינו');
-            }
+            setIsAccepted(true);
         } else {
             Alert.alert('נא להיכנס ללינק המצורף לפני שממשיכים');
         }
+    };
+
+    const closePopup = async () => {
+        if (isAccepted) {
+            if (isRedirectedToTerms) {
+                try {
+                    const name = await authInstance.getName();
+                    const token = await authInstance.getAccessToken();
+    
+                    const leaderboardData: TermsApprovalRequestHandler = await TermsApprovalRequestHandler.getInstance().post({
+                        DisplayName: name,
+                        token: token,
+                        expirationDate: profile.expirationDate,
+                    });
+    
+                    setIsTermsAndServiesValidation(false);
+                } catch {
+                    Alert.alert('תקלה קרתה, אנא פנו אלינו');
+                }
+            } else {
+                Alert.alert('נא להיכנס ללינק המצורף לפני שממשיכים');
+            }
+        } else {
+            Alert.alert('נא לאשר את תנאי השימוש ומדיניות הפרטיות');
+        };
     };
 
     return (
@@ -67,6 +86,10 @@ const TermsAndServicesPopup = () => {
                         עליכם להיכנס לתנאי השימוש ומדיניות הפרטיות שלנו בלינק הבא: {'\n'}{'\n'}
                         <Text style={TermsAndServicesPopupStyle.termsValidationLink} onPress={() => {handleLink()}}>תנאי שימוש ומדיניות פרטיות </Text> {'\n'}
                     </Text>
+                    <View style={TermsAndServicesPopupStyle.checkboxContainer}>
+                        <Text style={TermsAndServicesPopupStyle.checkboxText} allowFontScaling={false}>אישור תנאי השימוש ומדיניות הפרטיות</Text>
+                        <CheckBox value={isAccepted} onValueChange={() => {fillAcceptCheckbox()}} />
+                    </View>
                 </View>
                 <View style={TermsAndServicesPopupStyle.btnsContainer}>
                         <TouchableOpacity style={TermsAndServicesPopupStyle.termsValidationPopupBtn} onPress={() => {closePopup()}}>

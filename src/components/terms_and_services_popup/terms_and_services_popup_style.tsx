@@ -44,6 +44,17 @@ const TermsAndServicesPopupStyle = StyleSheet.create({
     termsValidationLink: {
         color: 'blue',
     },
+    checkboxContainer: {
+        marginTop: 10,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    checkboxText: {
+        fontSize: calculateFontSize(15),
+        marginRight: 8,
+        textAlign: 'right',
+    },
     btnsContainer: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
