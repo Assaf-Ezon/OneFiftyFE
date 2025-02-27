@@ -14,7 +14,7 @@ import AuthenticationHandler from '../../authentication_handler';
 import * as WebBrowser from 'expo-web-browser';
 
 const TermsAndServicesPopup = () => {
-    const { profile, setIsTermsAndServiesValidation } = useProfile();
+    const { profile, setIsTermsAndServicesValidation } = useProfile();
 
     const [isRedirectedToTerms, setIsRedirectedToTerms] = useState<boolean>(false);
     const [isAccepted, setIsAccepted] = useState<boolean>(false);
@@ -62,7 +62,7 @@ const TermsAndServicesPopup = () => {
                         expirationDate: profile.expirationDate,
                     });
     
-                    setIsTermsAndServiesValidation(false);
+                    setIsTermsAndServicesValidation(false);
                 } catch {
                     Alert.alert('תקלה קרתה, אנא פנו אלינו');
                 }

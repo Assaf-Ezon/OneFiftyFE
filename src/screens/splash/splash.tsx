@@ -39,7 +39,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
       updateNewHebrewWords, 
       englishNewWords, 
       updateNewEnglishWords} = useWords();
-    const {profile, setProfile, IsInTrail, setIsTermsAndServiesValidation} = useProfile();
+    const {profile, setProfile, IsInTrail, setIsTermsAndServicesValidation} = useProfile();
 
     const authInstance = AuthenticationHandler.getInstance();
 
@@ -121,7 +121,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
 
-                setIsTermsAndServiesValidation(new Date(data.TermsOfServiceLatest) > new Date(data.UserData.LastTermsOfServiceApproval));
+                setIsTermsAndServicesValidation(new Date(data.TermsOfServiceLatest) > new Date(data.UserData.LastTermsOfServiceApproval));
 
                 setCanRedirect(true);
             }

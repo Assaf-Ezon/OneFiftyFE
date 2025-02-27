@@ -19,7 +19,7 @@ import { useProfile } from '../../context/general_context/profile_context';
 const HomePage = ({ navigation }: {navigation: any}) => {
     useDisableBack(navigation);
 
-    const { isTermsAndServiesValidation } = useProfile();
+    const { isTermsAndServicesValidation } = useProfile();
 
     return (
         <SidebarProvider>
@@ -36,7 +36,7 @@ const HomePage = ({ navigation }: {navigation: any}) => {
                     />
                     <SideBar/>
                     <ContactForm />
-                    {isTermsAndServiesValidation ? <TermsAndServicesPopup /> : null}
+                    {isTermsAndServicesValidation ? <TermsAndServicesPopup /> : null}
                 </ProfileImageProvider>
             </ContactUsFormProvider>
         </SidebarProvider>

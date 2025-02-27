@@ -17,10 +17,10 @@ const BottomBar: FC<BottomBarConfig> = ({ homePath, dictionaryPath, learningPath
     const {isOpen} = useSidebarContext();
     const {isLearningSettingOpen} = useLearningSettingsContext();
     const {isProfileImageMenuOpen} = useProfileImageMenuContext();
-    const {isTermsAndServiesValidation} = useProfile();
+    const {isTermsAndServicesValidation} = useProfile();
 
     return (
-        <View pointerEvents={ isOpen || isLearningSettingOpen || isProfileImageMenuOpen || isTermsAndServiesValidation ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen || isProfileImageMenuOpen || isTermsAndServiesValidation ? 0.2 : 1}, barStyle.container]}>
+        <View pointerEvents={ isOpen || isLearningSettingOpen || isProfileImageMenuOpen || isTermsAndServicesValidation ? 'none' : 'auto' } style={[{opacity: isOpen || isLearningSettingOpen || isProfileImageMenuOpen || isTermsAndServicesValidation ? 0.2 : 1}, barStyle.container]}>
             <BottomBarIcon iconPath={profilePath} iconText='משתמש' activeScreen={activeScreen == Screens.PROFILE ? true : false} screenName={Screens.PROFILE} />
             <BottomBarIcon iconPath={leaderboardPath} iconText='מובילים' activeScreen={activeScreen == Screens.LEADERBOARD ? true : false} screenName={Screens.LEADERBOARD} />
             <BottomBarIcon iconPath={learningPath} iconText='למידה' activeScreen={activeScreen == Screens.LEARNING ? true : false} screenName={Screens.LEARNING} />

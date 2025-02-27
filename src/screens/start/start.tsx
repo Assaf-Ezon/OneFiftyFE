@@ -26,7 +26,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     useDisableBack(navigation);
 
     // contexts
-    const {profile, setProfile, IsInTrail, setIsTermsAndServiesValidation} = useProfile();
+    const {profile, setProfile, IsInTrail, setIsTermsAndServicesValidation} = useProfile();
     const {hebrewWords, 
         setHebrewWords, 
         englishWords, 
@@ -143,7 +143,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
 
-                setIsTermsAndServiesValidation(new Date(data.TermsOfServiceLatest) > new Date(data.UserData.LastTermsOfServiceApproval));
+                setIsTermsAndServicesValidation(new Date(data.TermsOfServiceLatest) > new Date(data.UserData.LastTermsOfServiceApproval));
 
                 setCanRedirect(true);
             }

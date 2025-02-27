@@ -57,10 +57,10 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         return differenceInMs <= maxDifferenceInMs;
     }
 
-    const [isTermsAndServiesValidation, setIsTermsAndServiesValidation] = useState<boolean>(false);
+    const [isTermsAndServicesValidation, setIsTermsAndServicesValidation] = useState<boolean>(false);
 
     return (
-        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, IsInTrail, isTermsAndServiesValidation, setIsTermsAndServiesValidation }}>
+        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, IsInTrail, isTermsAndServicesValidation, setIsTermsAndServicesValidation }}>
             {children}
         </ProfileContext.Provider>
     );
