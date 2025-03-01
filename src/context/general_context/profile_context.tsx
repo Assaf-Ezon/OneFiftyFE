@@ -39,6 +39,13 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }));
     };
 
+    const updateScore = (score: number) => {
+        setProfile((prevProfile) => ({
+            ...prevProfile,
+            score: prevProfile.score + score,
+        }));
+    };
+
     const IsInTrail = (dateJoined: string, expirationDate: string): boolean => {
         const joined: Date = new Date(dateJoined);
         const expiration: Date = new Date(expirationDate);
@@ -60,7 +67,7 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [isTermsAndServicesValidation, setIsTermsAndServicesValidation] = useState<boolean>(false);
 
     return (
-        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, IsInTrail, isTermsAndServicesValidation, setIsTermsAndServicesValidation }}>
+        <ProfileContext.Provider value={{ profile, setProfile, updateProfileImage, updateRank, updateScore, IsInTrail, isTermsAndServicesValidation, setIsTermsAndServicesValidation }}>
             {children}
         </ProfileContext.Provider>
     );
