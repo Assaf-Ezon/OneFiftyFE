@@ -13,6 +13,7 @@ export type ProfileDataResponse = {
         WordCount: number;
         Words: Words;
     };
+    TermsOfServiceLatest: string;
     UserData: UserDataInRequest;
     Version: string;
 }

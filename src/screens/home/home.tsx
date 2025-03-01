@@ -1,3 +1,4 @@
+import React from 'react';
 import useDisableBack from '../use_disable_back';
 
 import { IMAGES } from '../../image_handler';
@@ -8,13 +9,17 @@ import BottomBar from '../../components/bottom_bar/bar/bar';
 import SideBar from '../../components/side_bar/bar/bar';
 import HomeScrollView from '../../components/home/scroll_view';
 import ContactForm from '../../components/contact_form/contact_form';
+import TermsAndServicesPopup from '../../components/terms_and_services_popup/terms_and_services_popup';
 
 import { SidebarProvider } from '../../context/general_context/sidebar_context';
 import { ProfileImageProvider } from '../../context/settings_context/profile_image_context';
 import { ContactUsFormProvider } from '../../context/general_context/contact_form_context';
+import { useProfile } from '../../context/general_context/profile_context';
 
 const HomePage = ({ navigation }: {navigation: any}) => {
     useDisableBack(navigation);
+
+    const { isTermsAndServicesValidation } = useProfile();
 
     return (
         <SidebarProvider>
@@ -31,6 +36,7 @@ const HomePage = ({ navigation }: {navigation: any}) => {
                     />
                     <SideBar/>
                     <ContactForm />
+                    {isTermsAndServicesValidation ? <TermsAndServicesPopup /> : null}
                 </ProfileImageProvider>
             </ContactUsFormProvider>
         </SidebarProvider>

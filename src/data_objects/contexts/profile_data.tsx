@@ -9,4 +9,5 @@ export type ContextProfileData = {
     expirationDate: Date,
     profileImage: ImageSourcePropType,
     isTrial: boolean,
+    lastTermsOfServiceApproval: Date,
 };

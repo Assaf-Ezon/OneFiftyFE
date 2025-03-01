@@ -26,7 +26,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
     useDisableBack(navigation);
 
     // contexts
-    const {profile, setProfile, IsInTrail} = useProfile();
+    const {profile, setProfile, IsInTrail, setIsTermsAndServicesValidation} = useProfile();
     const {hebrewWords, 
         setHebrewWords, 
         englishWords, 
@@ -135,12 +135,15 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                     expirationDate: new Date(data.UserData.ExpirationDate), 
                     profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
                     isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                    lastTermsOfServiceApproval: new Date(data.UserData.LastTermsOfServiceApproval), 
                 });
 
                 setHebrewWords(data.HebrewWordsDictionary);
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
+
+                setIsTermsAndServicesValidation(new Date(data.TermsOfServiceLatest) > new Date(data.UserData.LastTermsOfServiceApproval));
 
                 setCanRedirect(true);
             }
