@@ -26,7 +26,7 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
     const [loading, setLoading] = useState<boolean>(false);
 
     const { settings } = useLearningSettingsContext();
-    const { profile } = useProfile();
+    const { profile, updateScore } = useProfile();
     const { handleLogout, handleInactive } = useStackManagerContext();
     const {hebrewWords, 
         englishWords, 
@@ -65,6 +65,8 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                     setEnglishUserStatistics(userStatistics.UserStatistics);
                     break;
             }
+
+            updateScore(userStatistics.AddedScore);
 
             setTimeout(() => {
                 setLoading(false),
@@ -110,7 +112,7 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
             <View style={EndGameStyle.mainContainer}>
                 <View style={EndGameStyle.sumContainer}>
                     <Text style={EndGameStyle.sum} allowFontScaling={false}>סה"כ מילים שתורגלו: {totalWords}</Text>
-                    <Text style={EndGameStyle.lang} allowFontScaling={false}>שפה: {'עברית'}</Text>
+                    <Text style={EndGameStyle.lang} allowFontScaling={false}>שפה: {settings.language == Languages.English ? 'אנגלית' : 'עברית'}</Text>
                 </View>
                 <View style={EndGameStyle.correctContainer}>
                     <Text style={EndGameStyle.correct} allowFontScaling={false}>
