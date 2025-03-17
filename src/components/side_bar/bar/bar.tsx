@@ -21,9 +21,9 @@ const SideBar = () => {
 
     useEffect(() => {
         if (isOpen) {
-            SlideIn(slideAnim, width - menuWidth, 200);
+            SlideIn(slideAnim, 0, 200);
         } else {
-            SlideIn(slideAnim, width, 200);
+            SlideIn(slideAnim, -menuWidth, 200);
         }
     }, [isOpen]);
 
