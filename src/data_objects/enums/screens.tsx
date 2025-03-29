@@ -12,7 +12,6 @@ export enum Screens {
     LEARNING = 'learning',
     LEADERBOARD = 'leaderboard',
     PROFILE = 'profile',
-    TERMS = 'terms',
     KDK = 'kdk',
     MC = 'mc',
     PROGRESS = 'progress',

@@ -9,11 +9,12 @@
     "userInterfaceStyle": "light",
     "scheme": "com.OneFifty.App",
     "ios": {
+      "appleTeamId": "JV66384D8N",
       "icon": "./assets/icon.png",
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "bundleIdentifier": "com.OneFifty.App",
       "associatedDomains": [
-        "applinks:onefiftyapp.b2clogin.com",
         "applinks:onefiftyapp.b2clogin.com"
       ],
       "infoPlist": {

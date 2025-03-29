@@ -15,7 +15,7 @@ const { width } = Dimensions.get('window');
 const SideBar = () => {
     const {profile} = useProfile();
     const {isOpen, toggleMenu} = useSidebarContext();
-
+    
     const menuWidth = width * 0.75;
     const slideAnim = useRef(new Animated.Value(width)).current;
 
@@ -57,7 +57,9 @@ const SideBar = () => {
                 <View style={barStyle.line} />
                 <SideBarIcon iconPath={IMAGES.problem} iconText='פנו אלינו' isRed={false} onPressActionIndex={SidebarActionIndex.OpenContactUsForm} screenName={''} />
                 <View style={barStyle.line} />
-                <SideBarIcon iconPath={IMAGES.terms} iconText='תנאים ומדיניות' isRed={false} onPressActionIndex={SidebarActionIndex.NavigateToPage} screenName={Screens.TERMS} />
+                <SideBarIcon iconPath={IMAGES.terms} iconText='תנאי שימוש' isRed={false} onPressActionIndex={SidebarActionIndex.TermsAndCondition} screenName={''} />
+                <View style={barStyle.line} />
+                <SideBarIcon iconPath={IMAGES.terms} iconText='מדיניות הפרטיות' isRed={false} onPressActionIndex={SidebarActionIndex.PrivacyAgreement} screenName={''} />
             </View>
             <View style={barStyle.lowerPart}>
                 <SideBarIcon iconPath={IMAGES.logout} iconText='התנתקות' isRed={true} onPressActionIndex={SidebarActionIndex.Logout} screenName={''} />

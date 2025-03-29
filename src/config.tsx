@@ -3,7 +3,8 @@ export const CONFIG = {
     email: 'OneFifty.Customers@gmail.com',
     retries: 4,
     terms_and_services_link: 'https://www.onefifty.info/תנאי-שימוש',
-    
+    privacy_agreement_link: 'https://www.onefifty.info/מדיניות-פרטיות',
+
     endpoints: {
         login: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/login',
         leaderboard: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/leaderboard/get',
