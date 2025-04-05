@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "150",
+    "name": "OneFifty",
     "slug": "150",
     "version": "1.0.0",
     "newArchEnabled": true,
@@ -8,22 +8,29 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "scheme": "com.OneFifty.App",
-    "splash": {
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff",  
-      "image": "./assets/blank.png" 
-    },
     "ios": {
+      "appleTeamId": "JV66384D8N",
       "icon": "./assets/icon.png",
       "supportsTablet": true,
+      "usesAppleSignIn": true,
       "bundleIdentifier": "com.OneFifty.App",
-      "associatedDomains": ["applinks:onefiftyapp.b2clogin.com"]
+      "associatedDomains": [
+        "applinks:onefiftyapp.b2clogin.com"
+      ],
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.OneFifty.App",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "169d1782-8867-4734-959d-ba9cbd9b1093"
       }
     }
   }

@@ -13,7 +13,6 @@ import ProfilePage from './src/screens/profile/profile';
 
 import ProgressPage from './src/screens/progress/progress';
 
-import TermsOfServicePage from './src/screens/terms_of_service/terms_of_service';
 import PaymentPage from './src/screens/payment/payment';
 
 import KdkPage from './src/screens/kdk/kdk';
@@ -47,7 +46,6 @@ const MainAppStack = () => {
           <Stack.Screen name={Screens.LEADERBOARD} component={LeaderboardPage} options={{ headerShown: false }} />
           <Stack.Screen name={Screens.PROFILE} component={ProfilePage} options={{ headerShown: false }} />
 
-          <Stack.Screen name={Screens.TERMS} component={TermsOfServicePage} options={{ headerShown: false }} />
           <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
 
           <Stack.Screen name={Screens.PROGRESS} component={ProgressPage} options={{ headerShown: false }} />
