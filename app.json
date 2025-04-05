@@ -22,6 +22,7 @@
       }
     },
     "android": {
+      "scheme": "com.OneFifty.App",
       "package": "com.OneFifty.App",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
