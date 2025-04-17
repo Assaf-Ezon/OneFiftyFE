@@ -39,19 +39,21 @@ const AuthStack = () => {
 const MainAppStack = () => {
   return (
     <LearningSettingsProvider>
-      <Stack.Navigator initialRouteName={Screens.HOME}>
-          <Stack.Screen name={Screens.HOME} component={HomePage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.DICTIONARY} component={DictionaryPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.LEARNING} component={LearningPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.LEADERBOARD} component={LeaderboardPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.PROFILE} component={ProfilePage} options={{ headerShown: false }} />
+      <Stack.Navigator initialRouteName={Screens.HOME} screenOptions={{
+          animation: 'slide_from_left',
+        }}>
+          <Stack.Screen name={Screens.HOME} component={HomePage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.DICTIONARY} component={DictionaryPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.LEARNING} component={LearningPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.LEADERBOARD} component={LeaderboardPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.PROFILE} component={ProfilePage} options={{ headerShown: false, gestureEnabled: false }} />
 
-          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false, gestureEnabled: false }} />
 
-          <Stack.Screen name={Screens.PROGRESS} component={ProgressPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PROGRESS} component={ProgressPage} options={{ headerShown: false, gestureEnabled: false }} />
 
-          <Stack.Screen name={Screens.KDK} component={KdkPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.MC} component={McPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.KDK} component={KdkPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.MC} component={McPage} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>
   ); 
@@ -61,7 +63,7 @@ const InactiveStack = () => {
   return (
     <LearningSettingsProvider>
       <Stack.Navigator initialRouteName={Screens.PAYMENT}>
-          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>
   );

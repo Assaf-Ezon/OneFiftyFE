@@ -27,6 +27,10 @@ const SideBar = () => {
         }
     }, [isOpen]);
 
+    if (!isOpen){
+        return null;
+    }
+
     return (
         <Animated.View style={[barStyle.container, { transform: [{ translateX: slideAnim }] }]}>
             <View style={barStyle.upperPart}>

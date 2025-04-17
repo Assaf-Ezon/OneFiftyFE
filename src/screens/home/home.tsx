@@ -18,7 +18,6 @@ import { useProfile } from '../../context/general_context/profile_context';
 
 const HomePage = ({ navigation }: {navigation: any}) => {
     useDisableBack(navigation);
-
     const { isTermsAndServicesValidation } = useProfile();
 
     return (
@@ -34,7 +33,7 @@ const HomePage = ({ navigation }: {navigation: any}) => {
                         leaderboardPath={IMAGES.unused_leaderboard}
                         profilePath={IMAGES.unused_profile}
                     />
-                    <SideBar/>
+                    <SideBar />
                     <ContactForm />
                     {isTermsAndServicesValidation ? <TermsAndServicesPopup /> : null}
                 </ProfileImageProvider>
