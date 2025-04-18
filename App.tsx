@@ -37,21 +37,34 @@ const AuthStack = () => {
 };
 
 const MainAppStack = () => {
+  const bottomBarScreenOrder: string[] = [Screens.HOME, Screens.DICTIONARY, Screens.LEARNING, Screens.LEADERBOARD, Screens.PROFILE, Screens.PAYMENT, Screens.PROGRESS, Screens.KDK, Screens.MC];
+  var prevScreen: string = Screens.HOME;
+
+
   return (
     <LearningSettingsProvider>
-      <Stack.Navigator initialRouteName={Screens.HOME}>
-          <Stack.Screen name={Screens.HOME} component={HomePage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.DICTIONARY} component={DictionaryPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.LEARNING} component={LearningPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.LEADERBOARD} component={LeaderboardPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.PROFILE} component={ProfilePage} options={{ headerShown: false }} />
+      <Stack.Navigator initialRouteName={Screens.HOME} screenOptions={({ route }) => {
+        
+          const prevIndex = bottomBarScreenOrder.indexOf(prevScreen);
+          const currIndex = bottomBarScreenOrder.indexOf(route.name);
 
-          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
+          const direction = currIndex > prevIndex ? 'slide_from_left' : 'slide_from_right';
+          prevScreen = route.name;
+          return {
+            animation: direction,
+        };}}>  
+          <Stack.Screen name={Screens.HOME} component={HomePage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.DICTIONARY} component={DictionaryPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.LEARNING} component={LearningPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.LEADERBOARD} component={LeaderboardPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.PROFILE} component={ProfilePage} options={{ headerShown: false, gestureEnabled: false }} />
 
-          <Stack.Screen name={Screens.PROGRESS} component={ProgressPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false, gestureEnabled: false }} />
 
-          <Stack.Screen name={Screens.KDK} component={KdkPage} options={{ headerShown: false }} />
-          <Stack.Screen name={Screens.MC} component={McPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PROGRESS} component={ProgressPage} options={{ headerShown: false, gestureEnabled: false }} />
+
+          <Stack.Screen name={Screens.KDK} component={KdkPage} options={{ headerShown: false, gestureEnabled: false }} />
+          <Stack.Screen name={Screens.MC} component={McPage} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>
   ); 
@@ -61,7 +74,7 @@ const InactiveStack = () => {
   return (
     <LearningSettingsProvider>
       <Stack.Navigator initialRouteName={Screens.PAYMENT}>
-          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false }} />
+          <Stack.Screen name={Screens.PAYMENT} component={PaymentPage} options={{ headerShown: false, gestureEnabled: false }} />
       </Stack.Navigator>
     </LearningSettingsProvider>
   );
