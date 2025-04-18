@@ -37,11 +37,22 @@ const AuthStack = () => {
 };
 
 const MainAppStack = () => {
+  const bottomBarScreenOrder: string[] = [Screens.HOME, Screens.DICTIONARY, Screens.LEARNING, Screens.LEADERBOARD, Screens.PROFILE, Screens.PAYMENT, Screens.PROGRESS, Screens.KDK, Screens.MC];
+  var prevScreen: string = Screens.HOME;
+
+
   return (
     <LearningSettingsProvider>
-      <Stack.Navigator initialRouteName={Screens.HOME} screenOptions={{
-          animation: 'slide_from_left',
-        }}>
+      <Stack.Navigator initialRouteName={Screens.HOME} screenOptions={({ route }) => {
+        
+          const prevIndex = bottomBarScreenOrder.indexOf(prevScreen);
+          const currIndex = bottomBarScreenOrder.indexOf(route.name);
+
+          const direction = currIndex > prevIndex ? 'slide_from_left' : 'slide_from_right';
+          prevScreen = route.name;
+          return {
+            animation: direction,
+        };}}>  
           <Stack.Screen name={Screens.HOME} component={HomePage} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name={Screens.DICTIONARY} component={DictionaryPage} options={{ headerShown: false, gestureEnabled: false }} />
           <Stack.Screen name={Screens.LEARNING} component={LearningPage} options={{ headerShown: false, gestureEnabled: false }} />
