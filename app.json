@@ -7,13 +7,13 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "com.OneFifty.App",
+    "scheme": "com.onefifty.app",
     "ios": {
       "appleTeamId": "JV66384D8N",
       "icon": "./assets/icon.png",
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "bundleIdentifier": "com.OneFifty.App",
+      "bundleIdentifier": "com.onefifty.app",
       "associatedDomains": [
         "applinks:onefiftyapp.b2clogin.com"
       ],
@@ -22,8 +22,17 @@
       }
     },
     "android": {
-      "scheme": "com.OneFifty.App",
-      "package": "com.OneFifty.App",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": {
+            "scheme": "com.onefifty.app",
+            "host": "auth"
+          },
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "package": "com.onefifty.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
