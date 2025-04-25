@@ -14,6 +14,7 @@ const PagePartStyle = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
         backgroundColor: '#FAF0E6',
+        overflow: 'hidden',
         borderRadius: 30,
         shadowOpacity: 0.1,
         shadowRadius: 10,
