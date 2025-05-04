@@ -5,4 +5,5 @@ export type PaymnetPlanConfig = {
     price: string,
     isRecommended: boolean,
     backgroundColor: string,
+    productId: string,
 }

@@ -13,7 +13,7 @@
       "icon": "./assets/icon.png",
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "bundleIdentifier": "com.onefifty.app",
+      "bundleIdentifier": "com.OneFifty.App",
       "associatedDomains": [
         "applinks:onefiftyapp.b2clogin.com"
       ],
