@@ -28,6 +28,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
     const navigation = useNavigation();
     const Subscribe = async () => {
         try {
+            console.log("Subscribe", productId);
             await requestSubscription({
               sku: productId,
             });
