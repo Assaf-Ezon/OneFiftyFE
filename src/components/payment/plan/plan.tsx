@@ -1,11 +1,11 @@
-import { View, Text, TouchableOpacity, Image, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Platform, Alert } from 'react-native';
 import { FC, useEffect, useState } from 'react';
 
 import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
 import { PaymnetPlanConfig } from '../../../data_objects/components_config/payment_plan_config';
-import { finishTransaction, PurchaseError, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
+import { finishTransaction, getProducts, PurchaseError, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
 import { useNavigation } from '@react-navigation/native';
 import { Screens } from '../../../data_objects/enums/screens';
 import { APP_STORE_SECRET } from "@env";
@@ -18,6 +18,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
     const [loading, setLoading] = useState(false);
     const {
         connected,
+        getProducts,
         getSubscriptions, // Gets available subsctiptions for this app.
         currentPurchase, // current purchase for the tranasction
         finishTransaction,
@@ -26,15 +27,20 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
       } = useIAP();
 
     const navigation = useNavigation();
+
     const Subscribe = async () => {
         try {
-            console.log("Subscribe", productId);
+            const prods = await getProducts({skus: ["com.OneFifty.App"]})
+            Alert.alert(JSON.stringify(prods))
+            Alert.alert(productId[0]);
             await requestSubscription({
-              sku: productId,
+              sku: productId[0],
             });
             setLoading(false);
           } catch (error) {
             setLoading(false);
+            Alert.alert(error);
+
             if (error instanceof PurchaseError) {
               errorLog({ message: `[${error.code}]: ${error.message}`, error });
             } else {
