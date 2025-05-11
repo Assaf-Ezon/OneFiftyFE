@@ -30,10 +30,6 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
 
     const Subscribe = async () => {
         try {
-            Alert.alert("Test")
-            const prods = await getProducts({skus: ["com.OneFifty.App"]})
-            Alert.alert("Test2")
-            Alert.alert(JSON.stringify(prods))
             Alert.alert(productId[0]);
             await requestSubscription({
               sku: productId[0],
