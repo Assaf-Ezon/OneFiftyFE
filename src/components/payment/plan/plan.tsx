@@ -31,9 +31,9 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
     const Subscribe = async () => {
         try {
             Alert.alert(productId[0]);
-            await requestSubscription({
-              sku: productId[0],
-            });
+            //await requestSubscription({
+            //  sku: productId[0],
+            //});
             setLoading(false);
           } catch (error) {
             setLoading(false);
