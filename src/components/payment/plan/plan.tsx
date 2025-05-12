@@ -5,7 +5,7 @@ import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
 import { PaymnetPlanConfig } from '../../../data_objects/components_config/payment_plan_config';
-import { finishTransaction, getProducts, PurchaseError, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
+import { finishTransaction, getProducts, initConnection, PurchaseError, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
 import { useNavigation } from '@react-navigation/native';
 import { Screens } from '../../../data_objects/enums/screens';
 import { APP_STORE_SECRET } from "@env";
@@ -31,10 +31,12 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
     const Subscribe = async () => {
         try {
             Alert.alert(productId[0]);
-            //await requestSubscription({
-            //  sku: productId[0],
-            //});
+            await initConnection(); // Called on startup
+            const subs = await getSubscriptions({
+              skus: productId,
+            });
             setLoading(false);
+            Alert.alert(JSON.stringify(subs));
           } catch (error) {
             setLoading(false);
             Alert.alert(error);
