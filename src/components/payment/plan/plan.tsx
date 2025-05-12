@@ -35,7 +35,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
             const subs = await getSubscriptions({
               skus: productId,
             });
-            setLoading(false);
+            Alert.alert("POST");
             Alert.alert(JSON.stringify(subs));
           } catch (error) {
             setLoading(false);
