@@ -115,7 +115,7 @@ export const Subscriptions = ({ navigation }: { navigation: any }) => {
                 {
                     "receiptBody":{
                         "receipt-data": receipt,
-                        password: APP_STORE_SECRET,
+                        "password": APP_STORE_SECRET,
                       },
                       "isTest": isTestEnvironment,
                 }

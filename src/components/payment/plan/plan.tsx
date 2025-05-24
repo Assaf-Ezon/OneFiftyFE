@@ -30,13 +30,10 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
 
     const Subscribe = async () => {
         try {
-            Alert.alert(productId[0]);
             await initConnection(); // Called on startup
-            const subs = await getSubscriptions({
-              skus: productId,
+            await requestSubscription({
+              sku: productId[0],
             });
-            Alert.alert("POST");
-            Alert.alert(JSON.stringify(subs));
           } catch (error) {
             setLoading(false);
             Alert.alert(error);

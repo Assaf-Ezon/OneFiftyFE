@@ -61,27 +61,6 @@ const PlansContainer = () => {
                 <Plan name={Plans.SixMonths.Plan} title={Plans.SixMonths.Title} description={Plans.SixMonths.Description} price={Plans.SixMonths.Price} isRecommended={Plans.SixMonths.isRecommended} backgroundColor={Plans.SixMonths.backgroundColor} productId={Plans.SixMonths.productId} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
-            {
-                isPaymentWebViewOpen ? 
-                    <View style={PlansContainerStyle.WebviewContainer}>
-                        <WebView
-                            originWhitelist={['*']}
-                            ref={webviewRef}
-                            onLoad={() => {
-                                injectPaymentParams();  // Inject the script when the WebView has fully loaded
-                            }}
-                            source={require('../../../assets/html/paypal_form.html')}
-                            onMessage={(event) => {
-                                if (event.nativeEvent.data == 'remove') {
-                                    setIsPaymentWebViewOpen(false);
-                                } else if (event.nativeEvent.data == 'success') {
-                                    setStackIndexByName(StackNames.Auth);
-                                }
-                            }}
-                        />
-                    </View>
-                : null
-            }
         </View>
     );
 };
