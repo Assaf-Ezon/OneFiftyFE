@@ -9,6 +9,8 @@ import { finishTransaction, getProducts, initConnection, PurchaseError, requestS
 import { useNavigation } from '@react-navigation/native';
 import { Screens } from '../../../data_objects/enums/screens';
 import { APP_STORE_SECRET } from "@env";
+import AuthenticationHandler from '../../../authentication_handler';
+import SubscriptionsRequestHandler from '../../../requests/requests_handlers/subscriptions_request_handler';
 
 const errorLog = ({ message, error }: { message: string, error: any }) => {
     console.error("An error happened", message, error);
@@ -25,7 +27,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
         purchaseHistory, //return the purchase history of the user on the device (sandbox user in dev) - TODO: IDK if needed here
         getPurchaseHistory, //gets users purchase history - TODO: IDK if needed here
     } = useIAP();
-
+    const authInstance = AuthenticationHandler.getInstance();
     const navigation = useNavigation();
 
     // Initialize IAP when component mounts
@@ -63,6 +65,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
           if (purchase) {
             try {
               const receipt = purchase.transactionReceipt;
+              const originalTransactionIdentifierIOS = purchase.originalTransactionIdentifierIOS;
               if (receipt) {
                 if (Platform.OS === "ios") {
                   const isTestEnvironment = __DEV__;
@@ -82,7 +85,22 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
                   if (appleReceiptResponse) {
                     const { status } = appleReceiptResponse;
                     if (status) {
-                        // TODO: Validate that works properly
+                        const displayName = await authInstance.getName();
+                        const token = await authInstance.getAccessToken();
+        
+                        await SubscriptionsRequestHandler.getInstance().post({
+                            DisplayName: displayName,
+                            Plan: name,
+                            IAPType: "Apple",
+                            AppleIAPData: {
+                                originalTransactionId: originalTransactionIdentifierIOS,
+                                latestReceipt: receipt,
+                            },
+                            GoogleIAPData: {
+                                
+                            },
+                            token: token,
+                        });
                         navigation.navigate(Screens.HOME as never);
                     }
                   }
