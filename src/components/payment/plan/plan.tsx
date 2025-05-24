@@ -12,7 +12,7 @@ import { APP_STORE_SECRET } from "@env";
 
 const errorLog = ({ message, error }: { message: string, error: any }) => {
     console.error("An error happened", message, error);
-  };
+};
 
 const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecommended, backgroundColor, productId }) => {
     const [loading, setLoading] = useState(false);
@@ -24,26 +24,38 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
         finishTransaction,
         purchaseHistory, //return the purchase history of the user on the device (sandbox user in dev) - TODO: IDK if needed here
         getPurchaseHistory, //gets users purchase history - TODO: IDK if needed here
-      } = useIAP();
+    } = useIAP();
 
     const navigation = useNavigation();
 
+    // Initialize IAP when component mounts
+    useEffect(() => {
+        const initializeIAP = async () => {
+            try {
+                await initConnection();
+            } catch (error) {
+                errorLog({ message: "Failed to initialize IAP", error });
+            }
+        };
+        initializeIAP();
+    }, []);
+
     const Subscribe = async () => {
         try {
-            await initConnection(); // Called on startup
+            setLoading(true);
             await requestSubscription({
-              sku: productId[0],
+                sku: productId[0],
             });
-          } catch (error) {
+        } catch (error) {
             setLoading(false);
             Alert.alert(error);
 
             if (error instanceof PurchaseError) {
-              errorLog({ message: `[${error.code}]: ${error.message}`, error });
+                errorLog({ message: `[${error.code}]: ${error.message}`, error });
             } else {
-              errorLog({ message: "handleBuySubscription", error });
+                errorLog({ message: "handleBuySubscription", error });
             }
-          }
+        }
     }
 
     useEffect(() => {
