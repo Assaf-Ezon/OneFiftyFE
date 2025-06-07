@@ -5,7 +5,7 @@ import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
 import { PaymnetPlanConfig } from '../../../data_objects/components_config/payment_plan_config';
-import { finishTransaction, getProducts, initConnection, PurchaseError, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
+import { finishTransaction, getProducts, initConnection, Product, PurchaseError, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
 import { useNavigation } from '@react-navigation/native';
 import { Screens } from '../../../data_objects/enums/screens';
 import { APP_STORE_SECRET } from "@env";
@@ -18,6 +18,7 @@ const errorLog = ({ message, error }: { message: string, error: any }) => {
 
 const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecommended, backgroundColor, productId }) => {
     const [loading, setLoading] = useState(false);
+    const [products, setProducts] = useState<Product[]>([]);
     const {
         connected,
         getProducts,
@@ -35,8 +36,12 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
         const initializeIAP = async () => {
             try {
                 await initConnection();
+                Alert.alert("IAP initialized");
+
+                const availableProducts = await getProducts({ skus: productId });
+                Alert.alert("availableProducts:" + availableProducts);
             } catch (error) {
-                errorLog({ message: "Failed to initialize IAP", error });
+                Alert.alert("Failed to initialize IAP:" + error );
             }
         };
         initializeIAP();
@@ -44,10 +49,28 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
 
     const Subscribe = async () => {
         try {
+            if (!connected) {
+                Alert.alert('Error', 'Store connection not ready. Please try again.');
+                return;
+            }
+
+            if (!productId || !productId[0]) {
+                Alert.alert('Error', 'Product ID not available');
+                return;
+            }
+
+            // Verify product is available
+            const product = products.find(p => p.productId === productId[0]);
+            if (!product) {
+                Alert.alert('Error', 'Product not available');
+                return;
+            }
+
             setLoading(true);
             await requestSubscription({
                 sku: productId[0],
             });
+            Alert.alert("Subscription requested");
         } catch (error) {
             setLoading(false);
             Alert.alert(error);
