@@ -107,6 +107,7 @@ const App = () => {
         console.error("Failed to initialize IAP", error);
       }
     };
+    
     initializeIAP();
   }, []);
 

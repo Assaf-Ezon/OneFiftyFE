@@ -35,11 +35,26 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
     useEffect(() => {
         const initializeIAP = async () => {
             try {
-                await initConnection();
-                Alert.alert("IAP initialized");
+                let attempts = 0;
+                const maxAttempts = 10; // 10 seconds timeout
+                
+                while (!connected && attempts < maxAttempts) {
+                    Alert.alert("attempts:" + attempts);
+                    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
+                    attempts++;
+                }
 
-                const availableProducts = await getProducts({ skus: productId });
-                Alert.alert("availableProducts:" + availableProducts);
+                if (connected){
+                    Alert.alert("IAP initialized");
+                    const availableProducts = await getProducts({ skus: productId });
+                    Alert.alert("availableProducts:" + availableProducts);
+                }
+                else{
+                    Alert.alert("IAP not initialized");
+                }
+
+
+
             } catch (error) {
                 Alert.alert("Failed to initialize IAP:" + error );
             }
