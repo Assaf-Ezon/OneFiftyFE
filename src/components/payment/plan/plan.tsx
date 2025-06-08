@@ -33,51 +33,25 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
 
     // Initialize IAP when component mounts
     useEffect(() => {
-        const initializeIAP = async () => {
+        const WaitForConnection = async () => {
             try {
                 let attempts = 0;
                 const maxAttempts = 10; // 10 seconds timeout
-                Alert.alert(name + " - attempts:" + attempts);
                 while (!connected && attempts < maxAttempts) {
-                    Alert.alert(name + " - attempts:" + attempts);
                     await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
                     attempts++;
                 }
-
-                if (connected){
-                    Alert.alert(name + " - IAP initialized");
-                    const availableProducts = await getProducts({ skus: productId });
-                    Alert.alert(name + " - availableProducts:" + availableProducts);
-                }
-                else{
-                    Alert.alert(name + " - IAP not initialized");
-                }
-
-
-
             } catch (error) {
-                Alert.alert("Failed to initialize IAP:" + error );
+                Alert.alert("Failed to connect to store");
             }
         };
-        initializeIAP();
+        WaitForConnection();
     }, []);
 
     const Subscribe = async () => {
         try {
             if (!connected) {
                 Alert.alert('Error', 'Store connection not ready. Please try again.');
-                return;
-            }
-
-            if (!productId || !productId[0]) {
-                Alert.alert('Error', 'Product ID not available');
-                return;
-            }
-
-            // Verify product is available
-            const product = products.find(p => p.productId === productId[0]);
-            if (!product) {
-                Alert.alert('Error', 'Product not available');
                 return;
             }
 
