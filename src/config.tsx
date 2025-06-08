@@ -11,6 +11,7 @@ export const CONFIG = {
         profile_picture: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/profile/picture',
         update_words: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats',
         terms_approval: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/terms/approved',
+        subscriptions: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/activate/subscription',
     },
     zIndexLevels: {
         regular: 2,

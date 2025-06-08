@@ -19,6 +19,6 @@ export default class SubscriptionsRequestHandler extends RequestsHandler {
     }
 
     getEndpoint(): string {
-        return CONFIG.endpoints.profile_picture;
+        return CONFIG.endpoints.subscriptions;
     }
 }

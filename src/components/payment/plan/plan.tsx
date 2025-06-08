@@ -1,132 +1,13 @@
-import { View, Text, TouchableOpacity, Image, Platform, Alert } from 'react-native';
-import { FC, useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { FC } from 'react';
 
 import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
 import { PaymnetPlanConfig } from '../../../data_objects/components_config/payment_plan_config';
-import { finishTransaction, getProducts, initConnection, Product, PurchaseError, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
-import { useNavigation } from '@react-navigation/native';
-import { Screens } from '../../../data_objects/enums/screens';
-import { APP_STORE_SECRET } from "@env";
-import AuthenticationHandler from '../../../authentication_handler';
-import SubscriptionsRequestHandler from '../../../requests/requests_handlers/subscriptions_request_handler';
 
-const errorLog = ({ message, error }: { message: string, error: any }) => {
-    console.error("An error happened", message, error);
-};
 
-const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecommended, backgroundColor, productId }) => {
-    const [loading, setLoading] = useState(false);
-    const [products, setProducts] = useState<Product[]>([]);
-    const {
-        connected,
-        getProducts,
-        getSubscriptions, // Gets available subsctiptions for this app.
-        currentPurchase, // current purchase for the tranasction
-        finishTransaction,
-        purchaseHistory, //return the purchase history of the user on the device (sandbox user in dev) - TODO: IDK if needed here
-        getPurchaseHistory, //gets users purchase history - TODO: IDK if needed here
-    } = useIAP();
-    const authInstance = AuthenticationHandler.getInstance();
-    const navigation = useNavigation();
-
-    // Initialize IAP when component mounts
-    useEffect(() => {
-        const WaitForConnection = async () => {
-            try {
-                let attempts = 0;
-                const maxAttempts = 10; // 10 seconds timeout
-                while (!connected && attempts < maxAttempts) {
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
-                    attempts++;
-                }
-            } catch (error) {
-                Alert.alert("Failed to connect to store");
-            }
-        };
-        WaitForConnection();
-    }, []);
-
-    const Subscribe = async () => {
-        try {
-            if (!connected) {
-                Alert.alert('Error', 'Store connection not ready. Please try again.');
-                return;
-            }
-
-            setLoading(true);
-            await requestSubscription({
-                sku: productId[0],
-            });
-            Alert.alert("Subscription requested");
-        } catch (error) {
-            setLoading(false);
-            Alert.alert(error);
-
-            if (error instanceof PurchaseError) {
-                errorLog({ message: `[${error.code}]: ${error.message}`, error });
-            } else {
-                errorLog({ message: "handleBuySubscription", error });
-            }
-        }
-    }
-
-    useEffect(() => {
-        const checkCurrentPurchase = async (purchase: any) => {
-          if (purchase) {
-            try {
-              const receipt = purchase.transactionReceipt;
-              const originalTransactionIdentifierIOS = purchase.originalTransactionIdentifierIOS;
-              if (receipt) {
-                if (Platform.OS === "ios") {
-                  const isTestEnvironment = __DEV__;
-    
-                  //send receipt body to apple server to validete
-                  const appleReceiptResponse = await validateReceiptIos(
-                    {
-                        "receiptBody":{
-                            "receipt-data": receipt,
-                            password: APP_STORE_SECRET,
-                          },
-                          "isTest": isTestEnvironment,
-                    }
-                  );
-    
-                  //if receipt is valid
-                  if (appleReceiptResponse) {
-                    const { status } = appleReceiptResponse;
-                    if (status) {
-                        const displayName = await authInstance.getName();
-                        const token = await authInstance.getAccessToken();
-        
-                        await SubscriptionsRequestHandler.getInstance().post({
-                            DisplayName: displayName,
-                            Plan: name,
-                            IAPType: "Apple",
-                            AppleIAPData: {
-                                originalTransactionId: originalTransactionIdentifierIOS,
-                                latestReceipt: receipt,
-                            },
-                            GoogleIAPData: {
-                                
-                            },
-                            token: token,
-                        });
-                        navigation.navigate(Screens.HOME as never);
-                    }
-                  }
-    
-                  return;
-                }
-              }
-            } catch (error) {
-              console.log("error", error);
-            }
-          }
-        };
-        checkCurrentPurchase(currentPurchase);
-      }, [currentPurchase, finishTransaction]);
+const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, backgroundColor, onPress }) => {
 
     return (
         <View style={[{backgroundColor: backgroundColor}, PlanStyle.Container]}>
@@ -139,7 +20,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
                 <Image source={IMAGES.check} />
             </View>
             <View style={PlanStyle.PayBtnContainer}>
-                <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => {Subscribe()}}>
+                <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => onPress()}>
                     <Text style={[{color: backgroundColor}, PlanStyle.PayBtnText]} allowFontScaling={false}>שלמו עכשיו</Text>
                 </TouchableOpacity>
                 <Text style={PlanStyle.Price} allowFontScaling={false}>{price} ₪</Text> 
