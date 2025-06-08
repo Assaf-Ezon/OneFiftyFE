@@ -37,20 +37,20 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
             try {
                 let attempts = 0;
                 const maxAttempts = 10; // 10 seconds timeout
-                
+                Alert.alert(name + " - attempts:" + attempts);
                 while (!connected && attempts < maxAttempts) {
-                    Alert.alert("attempts:" + attempts);
+                    Alert.alert(name + " - attempts:" + attempts);
                     await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
                     attempts++;
                 }
 
                 if (connected){
-                    Alert.alert("IAP initialized");
+                    Alert.alert(name + " - IAP initialized");
                     const availableProducts = await getProducts({ skus: productId });
-                    Alert.alert("availableProducts:" + availableProducts);
+                    Alert.alert(name + " - availableProducts:" + availableProducts);
                 }
                 else{
-                    Alert.alert("IAP not initialized");
+                    Alert.alert(name + " - IAP not initialized");
                 }
 
 
