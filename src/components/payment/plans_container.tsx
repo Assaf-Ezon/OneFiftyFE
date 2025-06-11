@@ -40,10 +40,13 @@ const PlansContainer = () => {
     // Redirection
     const navigation = useNavigation();
 
+    const [Loading, setLoading] = useState<boolean>(false);
+
     // Initialize IAP when component mounts
     useEffect(() => {
         const WaitForConnection = async () => {
             try {
+                setLoading(true);
                 let attempts = 0;
                 const maxAttempts = 10; // 10 seconds timeout
                 while (!connected && attempts < maxAttempts) {
@@ -53,6 +56,8 @@ const PlansContainer = () => {
             } catch (error) {
                 Alert.alert("Failed to connect to store");
             }
+
+            setLoading(false);
         };
         WaitForConnection();
     }, []);
@@ -68,6 +73,7 @@ const PlansContainer = () => {
             await requestSubscription({
                 sku: productId,
             });
+            setLoading(true);
             console.log("test");
             // After requestSubscription, check for the purchase and handle the receipt
             // You may need to wait for currentPurchase to update, so you can poll or use a callback if your IAP library supports it
@@ -85,6 +91,8 @@ const PlansContainer = () => {
         } catch (error) {
             Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
         }
+
+        setLoading(false);
     }
 
     const handleReceipt = async (purchase: any, planName: string) => {
@@ -111,7 +119,7 @@ const PlansContainer = () => {
             
                         //if receipt is valid
                         if (appleReceiptResponse) {
-                            console.log("In checkCurrentPurchase - sending to server: " );//+ JSON.stringify(appleReceiptResponse));
+                            console.log("In checkCurrentPurchase - sending to server: " + JSON.stringify(receipt) + "HEHEEHE" + JSON.stringify(originalTransactionIdentifierIOS));
                             const { status } = appleReceiptResponse;
                             if (status == 0) {
                                 const displayName = await authInstance.getName();
@@ -131,6 +139,7 @@ const PlansContainer = () => {
                                     token: token,
                                 });
                                 console.log("In checkCurrentPurchase - sent to server");
+                                setLoading(false);
                                 setStackIndexByName(StackNames.Auth);
                             }
                         }
@@ -172,7 +181,7 @@ const PlansContainer = () => {
     };
 
     return (
-        <View style={PlansContainerStyle.mainPage}>
+        <View style={[{opacity: Loading? 0.6 : 1}, PlansContainerStyle.mainPage]}>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} backgroundColor={Plans.OneMonth.backgroundColor} onPress={() => Subscribe(Plans.OneMonth.productId[0], Plans.OneMonth.Plan)} />
                 <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} backgroundColor={Plans.TwoMonths.backgroundColor} onPress={() => Subscribe(Plans.TwoMonths.productId[0], Plans.TwoMonths.Plan)} />
@@ -180,6 +189,7 @@ const PlansContainer = () => {
                 <Plan name={Plans.SixMonths.Plan} title={Plans.SixMonths.Title} description={Plans.SixMonths.Description} price={Plans.SixMonths.Price} backgroundColor={Plans.SixMonths.backgroundColor} onPress={() => Subscribe(Plans.SixMonths.productId[0], Plans.SixMonths.Plan)} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
+            { Loading ? <View style={PlansContainerStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
         </View>
     );
 };
