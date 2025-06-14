@@ -28,7 +28,6 @@ export default class LeaderboardDataRequestHandler extends RequestsHandler {
 export const getUserRankByName = (leaderboard: Score[], userName: string): number => {
     const sortedLeaderboard = [...leaderboard].sort((a, b) => b.Score - a.Score);
     const userIndex = sortedLeaderboard.findIndex(entry => entry.DisplayName === userName);
-    console.log("heres?")
     return userIndex !== -1 ? userIndex + 1 : 0;
 }
 
