@@ -98,60 +98,95 @@ const PlansContainer = () => {
     const handleReceipt = async (purchase: any, planName: string) => {
         if (purchase) {
             try {
-                console.log("In checkCurrentPurchase");
-                const receipt = purchase.transactionReceipt;
-                const originalTransactionIdentifierIOS = purchase.originalTransactionIdentifierIOS;
-                if (receipt) {
-                    console.log("In checkCurrentPurchase - receipt");
-                    if (Platform.OS === "ios") {
-                        const isTestEnvironment = __DEV__;
-            
-                        //send receipt body to apple server to validete
-                        const appleReceiptResponse = await validateReceiptIos(
-                            {
-                                "receiptBody":{
-                                    "receipt-data": receipt,
-                                    password: APP_STORE_SECRET,
-                                },
-                                "isTest": isTestEnvironment,
-                            }
-                        );
-            
-                        //if receipt is valid
-                        if (appleReceiptResponse) {
-                            console.log("In checkCurrentPurchase - sending to server: " + JSON.stringify(receipt) + "HEHEEHE" + JSON.stringify(originalTransactionIdentifierIOS));
-                            const { status } = appleReceiptResponse;
-                            if (status == 0) {
-                                const displayName = await authInstance.getName();
-                                const token = await authInstance.getAccessToken();
-                                console.log("In checkCurrentPurchase - sending to server - 2");
-                                await SubscriptionsRequestHandler.getInstance().post({
-                                    DisplayName: displayName,
-                                    Plan: planName,
-                                    IAPType: "Apple",
-                                    AppleIAPData: {
-                                        originalTransactionId: originalTransactionIdentifierIOS,
-                                        latestReceipt: receipt,
-                                    },
-                                    GoogleIAPData: {
-                                        
-                                    },
-                                    token: token,
-                                });
-                                console.log("In checkCurrentPurchase - sent to server");
-                                setLoading(false);
-                                setStackIndexByName(StackNames.Auth);
-                            }
-                        }
-            
-                        return;
-                    }
+                if (Platform.OS === "ios") {
+                    return handleReceiptIOS(purchase, planName);    
+                } else if (Platform.OS === "android"){
+                    return handleReceiptAndroid(purchase, planName);
                 }
+            
             } catch (error) {
+                Alert.alert("שגיאה בהפעלת המנוי, אנא פנה לתמיכה");
                 console.log("error", error);
             }
         }
     };
+
+    const handleReceiptIOS = async (purchase: any, planName: string) => {
+        console.log("In checkCurrentPurchase");
+        const receipt = purchase.transactionReceipt;
+        const originalTransactionIdentifierIOS = purchase.originalTransactionIdentifierIOS;
+        if (receipt) {
+            console.log("In checkCurrentPurchase - receipt");
+
+            const isTestEnvironment = __DEV__;
+            //send receipt body to apple server to validete
+            const appleReceiptResponse = await validateReceiptIos(
+                {
+                    "receiptBody":{
+                        "receipt-data": receipt,
+                        password: APP_STORE_SECRET,
+                    },
+                    "isTest": isTestEnvironment,
+                }
+            );
+
+            //if receipt is valid
+            if (appleReceiptResponse) {
+                console.log("In checkCurrentPurchase - sending to server: " + JSON.stringify(receipt) + "HEHEEHE" + JSON.stringify(originalTransactionIdentifierIOS));
+                const { status } = appleReceiptResponse;
+                if (status == 0) {
+                    const displayName = await authInstance.getName();
+                    const token = await authInstance.getAccessToken();
+                    console.log("In checkCurrentPurchase - sending to server - 2");
+                    await SubscriptionsRequestHandler.getInstance().post({
+                        DisplayName: displayName,
+                        Plan: planName,
+                        IAPType: "Apple",
+                        AppleIAPData: {
+                            originalTransactionId: originalTransactionIdentifierIOS,
+                            latestReceipt: receipt,
+                        },
+                        GoogleIAPData: {
+                            
+                        },
+                        token: token,
+                    });
+                    console.log("In checkCurrentPurchase - sent to server");
+                    setLoading(false);
+                    setStackIndexByName(StackNames.Auth);
+                }
+            }
+        }
+    }
+
+    const handleReceiptAndroid = async (purchase: any, planName: string) => {
+        console.log("In checkCurrentPurchase");
+        // For Android, we need to verify the purchase with Google Play
+        const purchaseToken = purchase.purchaseToken;
+        const productId = purchase.productId;
+        
+        if (purchaseToken && productId) {
+            const displayName = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
+            
+            await SubscriptionsRequestHandler.getInstance().post({
+                DisplayName: displayName,
+                Plan: planName,
+                IAPType: "Google",
+                AppleIAPData: {},
+                GoogleIAPData: {
+                    purchaseToken: purchaseToken,
+                    productId: productId,
+                    packageName: planName,
+                },
+                token: token,
+            });
+            
+            console.log("Subscription data sent to server successfully");
+            setLoading(false);
+            setStackIndexByName(StackNames.Auth);
+        }
+    }
 
     // parameters passed to the webview
     const injectPaymentParams = async () => {
