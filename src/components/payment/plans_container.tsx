@@ -85,7 +85,7 @@ const PlansContainer = () => {
                 attempts++;
             }
             if (currentPurchase) {
-                console.log("testtest");
+                console.log("Sending to handle receipt");
                 await handleReceipt(currentPurchase, planName);
             }
         } catch (error) {
@@ -112,11 +112,11 @@ const PlansContainer = () => {
     };
 
     const handleReceiptIOS = async (purchase: any, planName: string) => {
-        console.log("In checkCurrentPurchase");
+        console.log("handleReceiptIOS - started");
         const receipt = purchase.transactionReceipt;
         const originalTransactionIdentifierIOS = purchase.originalTransactionIdentifierIOS;
         if (receipt) {
-            console.log("In checkCurrentPurchase - receipt");
+            console.log("handleReceiptIOS - receipt");
 
             const isTestEnvironment = __DEV__;
             //send receipt body to apple server to validete
@@ -132,12 +132,12 @@ const PlansContainer = () => {
 
             //if receipt is valid
             if (appleReceiptResponse) {
-                console.log("In checkCurrentPurchase - sending to server: " + JSON.stringify(receipt) + "HEHEEHE" + JSON.stringify(originalTransactionIdentifierIOS));
+                console.log("handleReceiptIOS - receipt response");
                 const { status } = appleReceiptResponse;
                 if (status == 0) {
                     const displayName = await authInstance.getName();
                     const token = await authInstance.getAccessToken();
-                    console.log("In checkCurrentPurchase - sending to server - 2");
+                    console.log("handleReceiptIOS - sending to server");
                     await SubscriptionsRequestHandler.getInstance().post({
                         DisplayName: displayName,
                         Plan: planName,
@@ -151,7 +151,7 @@ const PlansContainer = () => {
                         },
                         token: token,
                     });
-                    console.log("In checkCurrentPurchase - sent to server");
+                    console.log("handleReceiptIOS - sent to server");
                     setLoading(false);
                     setStackIndexByName(StackNames.Auth);
                 }
@@ -160,7 +160,7 @@ const PlansContainer = () => {
     }
 
     const handleReceiptAndroid = async (purchase: any, planName: string) => {
-        console.log("In checkCurrentPurchase");
+        console.log("handleReceiptAndroid - started");
         // For Android, we need to verify the purchase with Google Play
         const purchaseToken = purchase.purchaseToken;
         const productId = purchase.productId;
@@ -168,7 +168,7 @@ const PlansContainer = () => {
         if (purchaseToken && productId) {
             const displayName = await authInstance.getName();
             const token = await authInstance.getAccessToken();
-            
+            console.log("handleReceiptAndroid - Sending to server");
             await SubscriptionsRequestHandler.getInstance().post({
                 DisplayName: displayName,
                 Plan: planName,
@@ -182,7 +182,7 @@ const PlansContainer = () => {
                 token: token,
             });
             
-            console.log("Subscription data sent to server successfully");
+            console.log("handleReceiptAndroid - sent to server");
             setLoading(false);
             setStackIndexByName(StackNames.Auth);
         }
