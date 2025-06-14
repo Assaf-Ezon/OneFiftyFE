@@ -36,7 +36,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["BILLING"]
     },
     "extra": {
       "eas": {
