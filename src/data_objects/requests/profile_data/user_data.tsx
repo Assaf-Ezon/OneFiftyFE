@@ -4,8 +4,6 @@ export type UserDataInRequest = {
     DisplayName: string;
     ETag: string;
     Email: string;
-    ExpirationDate: string;
-    IsActive: boolean;
     LastTermsOfServiceApproval: string;
     OrderId: string;
     PartitionKey: string;

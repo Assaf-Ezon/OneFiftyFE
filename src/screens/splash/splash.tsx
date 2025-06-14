@@ -93,7 +93,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 setPopupIndex(AuthErrorType.IncorrectVersion);
             } 
             // the user is active
-            else if (!data.UserData.IsActive) {         
+            else if (!data.IsActive) {         
                 setPopupIndex(AuthErrorType.Inactive);
             } else {
                 const leaderboardData: LeaderboardDataResponse = await LeaderboardDataRequestHandler.getInstance().post({
@@ -103,7 +103,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     PartialList: false,
                     expirationDate: data.UserData.ExpirationDate,
                 });
-                
+                console.log("after leaderboard");
                 setProfile({
                     name: data.UserData.DisplayName,
                     email: data.UserData.Email,
@@ -112,17 +112,17 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     dateJoined: new Date(data.UserData.DateJoined), 
                     expirationDate: new Date(data.UserData.ExpirationDate), 
                     profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                    isTrial: IsInTrail(data.UserData.DateJoined),
                     lastTermsOfServiceApproval: new Date(data.UserData.LastTermsOfServiceApproval), 
                 });
-                
+                console.log("after set profile");
                 setHebrewWords(data.HebrewWordsDictionary);
                 setEnglishWords(data.EnglishWordsDictionary);
                 setHebrewUserStatistics(data.HebrewUserStatistics);
                 setEnglishUserStatistics(data.EnglishUserStatistics);
-
+                console.log("after words setup");
                 setIsTermsAndServicesValidation(new Date(data.TermsOfServiceLatest) > new Date(data.UserData.LastTermsOfServiceApproval));
-
+                console.log("TOS");
                 setCanRedirect(true);
             }
         } catch (err) {

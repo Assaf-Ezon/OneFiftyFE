@@ -68,13 +68,14 @@ const PlansContainer = () => {
                 Alert.alert('Error', 'Store connection not ready. Please try again.');
                 return;
             }
-            
+
+            setLoading(true);
             const subscription = await getProducts({ skus: [productId] });
             await requestSubscription({
                 sku: productId,
             });
-            setLoading(true);
-            console.log("test");
+            
+            console.log("requested subscription");
             // After requestSubscription, check for the purchase and handle the receipt
             // You may need to wait for currentPurchase to update, so you can poll or use a callback if your IAP library supports it
             // Here's a simple polling approach:
@@ -112,7 +113,7 @@ const PlansContainer = () => {
     };
 
     const handleReceiptIOS = async (purchase: any, planName: string) => {
-        console.log("handleReceiptIOS - started");
+        console.log("handleReceiptIOS - started - purchase: " + JSON.stringify(purchase, null, 2));
         const receipt = purchase.transactionReceipt;
         const originalTransactionIdentifierIOS = purchase.originalTransactionIdentifierIOS;
         if (receipt) {
@@ -131,7 +132,7 @@ const PlansContainer = () => {
             );
 
             //if receipt is valid
-            if (appleReceiptResponse) {
+            if (appleReceiptResponse && originalTransactionIdentifierIOS != null) {
                 console.log("handleReceiptIOS - receipt response");
                 const { status } = appleReceiptResponse;
                 if (status == 0) {
@@ -218,10 +219,10 @@ const PlansContainer = () => {
     return (
         <View style={[{opacity: Loading? 0.6 : 1}, PlansContainerStyle.mainPage]}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} backgroundColor={Plans.OneMonth.backgroundColor} onPress={() => Subscribe(Plans.OneMonth.productId[0], Plans.OneMonth.Plan)} />
-                <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} backgroundColor={Plans.TwoMonths.backgroundColor} onPress={() => Subscribe(Plans.TwoMonths.productId[0], Plans.TwoMonths.Plan)} />
-                <Plan name={Plans.ThreeMonths.Plan} title={Plans.ThreeMonths.Title} description={Plans.ThreeMonths.Description} price={Plans.ThreeMonths.Price} backgroundColor={Plans.ThreeMonths.backgroundColor} onPress={() => Subscribe(Plans.ThreeMonths.productId[0], Plans.ThreeMonths.Plan)} />
-                <Plan name={Plans.SixMonths.Plan} title={Plans.SixMonths.Title} description={Plans.SixMonths.Description} price={Plans.SixMonths.Price} backgroundColor={Plans.SixMonths.backgroundColor} onPress={() => Subscribe(Plans.SixMonths.productId[0], Plans.SixMonths.Plan)} />
+                <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} backgroundColor={Plans.OneMonth.backgroundColor} onPress={Loading ? null : () => Subscribe(Plans.OneMonth.productId[0], Plans.OneMonth.Plan)} />
+                <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} backgroundColor={Plans.TwoMonths.backgroundColor} onPress={Loading ? null : () => Subscribe(Plans.TwoMonths.productId[0], Plans.TwoMonths.Plan)} />
+                <Plan name={Plans.ThreeMonths.Plan} title={Plans.ThreeMonths.Title} description={Plans.ThreeMonths.Description} price={Plans.ThreeMonths.Price} backgroundColor={Plans.ThreeMonths.backgroundColor} onPress={Loading ? null : () => Subscribe(Plans.ThreeMonths.productId[0], Plans.ThreeMonths.Plan)} />
+                <Plan name={Plans.SixMonths.Plan} title={Plans.SixMonths.Title} description={Plans.SixMonths.Description} price={Plans.SixMonths.Price} backgroundColor={Plans.SixMonths.backgroundColor} onPress={Loading ? null : () => Subscribe(Plans.SixMonths.productId[0], Plans.SixMonths.Plan)} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
             { Loading ? <View style={PlansContainerStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
