@@ -59,7 +59,6 @@ const TermsAndServicesPopup = () => {
                     await TermsApprovalRequestHandler.getInstance().post({
                         DisplayName: name,
                         token: token,
-                        expirationDate: profile.expirationDate,
                     });
     
                     setIsTermsAndServicesValidation(false);

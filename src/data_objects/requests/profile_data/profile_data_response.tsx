@@ -17,4 +17,5 @@ export type ProfileDataResponse = {
     UserData: UserDataInRequest;
     Version: string;
     IsActive: boolean;
+    ExpirationDateUTC: string;
 }

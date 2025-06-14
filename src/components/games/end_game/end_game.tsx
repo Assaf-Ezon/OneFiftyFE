@@ -54,7 +54,6 @@ const EndGame: FC<EndGamesStatisticsConfig> = ({ correctAnswers, wrongAnswers })
                 WordsSuccess: correctAnswers,
                 WordsFailure: wrongAnswers,
                 Language: lang,
-                expirationDate: profile.expirationDate,
             });
 
             switch (settings.language) {

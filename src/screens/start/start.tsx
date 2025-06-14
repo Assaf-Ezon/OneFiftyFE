@@ -113,7 +113,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                 setPopupIndex(AuthErrorType.IncorrectVersion);
             }  
             // the version is latest
-            else if (!data.UserData.IsActive) {
+            else if (!data.IsActive) {
                 setPopupIndex(AuthErrorType.Inactive);
             } 
             // the user is active
@@ -123,7 +123,7 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                     token: token,
                     LeaderboardType: 'OverallScore',
                     PartialList: false,
-                    expirationDate: data.UserData.ExpirationDate,
+                    expirationDate: data.ExpirationDateUTC,
                 });
                 
                 setProfile({
@@ -132,9 +132,9 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
                     rank: getUserRankByName(leaderboardData.Scores, name),
                     score: data.UserData.Score,
                     dateJoined: new Date(data.UserData.DateJoined), 
-                    expirationDate: new Date(data.UserData.ExpirationDate), 
+                    expirationDate: new Date(data.ExpirationDateUTC), 
                     profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    isTrial: IsInTrail(data.UserData.DateJoined, data.UserData.ExpirationDate),
+                    isTrial: IsInTrail(data.UserData.DateJoined),
                     lastTermsOfServiceApproval: new Date(data.UserData.LastTermsOfServiceApproval), 
                 });
 
