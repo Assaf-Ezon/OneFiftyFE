@@ -15,7 +15,7 @@
       "autoIncrement": true,
       "android": {
         "buildType": "app-bundle",
-        "gradleCommand": ":app:assemblePlayRelease"
+        "gradleCommand": ":app:bundlePlayRelease"
       }
     }
   },
