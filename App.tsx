@@ -22,8 +22,7 @@ import { ProfileProvider } from './src/context/general_context/profile_context';
 import { LearningSettingsProvider } from './src/context/settings_context/learning_context';
 import { useStackManagerContext, StackManagerProvider } from './src/context/general_context/stack_manager_context';
 import { WordsProvider } from './src/context/general_context/words_context';
-import { initConnection, withIAPContext } from 'react-native-iap';
-import React, { JSX, useEffect } from 'react';
+import React, { JSX } from 'react';
 
 const Stack = createNativeStackNavigator();
 
@@ -99,18 +98,6 @@ const StackNavigator = () => {
 };
 
 const App = () => {
-  useEffect(() => {
-    const initializeIAP = async () => {
-      try {
-        await initConnection();
-      } catch (error) {
-        console.error("Failed to initialize IAP", error);
-      }
-    };
-    
-    initializeIAP();
-  }, []);
-
   return (
       <ProfileProvider>
         <WordsProvider>
@@ -122,4 +109,4 @@ const App = () => {
   );
 };
 
-export default withIAPContext(App);
+export default App;
