@@ -2,7 +2,7 @@ import { View, ScrollView, ActivityIndicator, Alert, Platform } from 'react-nati
 import { useEffect, useRef, useState } from 'react';
 import { WebView } from 'react-native-webview';
 import Plan from './plan/plan';
-
+import Constants from 'expo-constants';
 import PlansContainerStyle from './plans_container_style';
 
 import { Plans } from '../../data_objects/enums/payment_plans';
@@ -13,7 +13,8 @@ import { usePaymentContext } from '../../context/payment_context/payment_context
 import AuthenticationHandler from '../../authentication_handler';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
-import { getProducts, requestSubscription, useIAP, validateReceiptIos } from 'react-native-iap';
+// @ts-ignore: Expo module may not have type declarations in some setups
+import * as InAppPurchases from 'expo-in-app-purchases';
 import { Screens } from '../../data_objects/enums/screens';
 import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscriptions_request_handler';
 import { useNavigation } from '@react-navigation/native';
@@ -30,70 +31,74 @@ const PlansContainer = () => {
     // reference to the webview
     const webviewRef = useRef<WebView | null>(null);
 
-    // IAP
-    const {
-        connected,
-        currentPurchase, // current purchase for the tranasction
-        finishTransaction,
-    } = useIAP();
-
     // Redirection
     const navigation = useNavigation();
 
     const [Loading, setLoading] = useState<boolean>(false);
+    const [products, setProducts] = useState<any[]>([]);
+    const [pendingPlanName, setPendingPlanName] = useState<string | null>(null);
 
-    // Initialize IAP when component mounts
+    // Fetch products on mount
     useEffect(() => {
-        const WaitForConnection = async () => {
+        const fetchProducts = async () => {
+            setLoading(true);
             try {
-                setLoading(true);
-                let attempts = 0;
-                const maxAttempts = 10; // 10 seconds timeout
-                while (!connected && attempts < maxAttempts) {
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second
-                    attempts++;
+                const productIds = [
+                    Plans.OneMonth.productId[0],
+                    Plans.TwoMonths.productId[0],
+                    Plans.ThreeMonths.productId[0],
+                    Plans.SixMonths.productId[0],
+                ];
+                const { responseCode, results } = await InAppPurchases.getProductsAsync(productIds);
+                if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+                    setProducts(results);
+                } else {
+                    Alert.alert('Failed to fetch products from store.');
                 }
             } catch (error) {
-                Alert.alert("Failed to connect to store");
+                Alert.alert('Error fetching products from store.');
             }
-
             setLoading(false);
         };
-        WaitForConnection();
+        fetchProducts();
     }, []);
+
+    // Set up purchase listener
+    useEffect(() => {
+        const subscription = InAppPurchases.setPurchaseListener(async ({ responseCode, results, errorCode }) => {
+            if (responseCode === InAppPurchases.IAPResponseCode.OK) {
+                for (const purchase of results) {
+                    if (!purchase.acknowledged) {
+                        // handle receipt
+                        if (pendingPlanName) {
+                            await handleReceipt(purchase, pendingPlanName);
+                        }
+                        await InAppPurchases.finishTransactionAsync(purchase, false);
+                    }
+                }
+            } else if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
+                Alert.alert('רכישה בוטלה על ידי המשתמש.');
+            } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
+                Alert.alert('הרכישה ממתינה לאישור.');
+            } else {
+                Alert.alert('שגיאה בתשלום, אנא נסה שוב.');
+            }
+        });
+        return () => {
+            subscription.remove();
+        };
+    }, [pendingPlanName]);
 
     const Subscribe = async (productId: string, planName: string) => {
         try {
-            if (!connected) {
-                Alert.alert('Error', 'Store connection not ready. Please try again.');
-                return;
-            }
-
             setLoading(true);
-            const subscription = await getProducts({ skus: [productId] });
-            await requestSubscription({
-                sku: productId,
-            });
-            
-            console.log("requested subscription");
-            // After requestSubscription, check for the purchase and handle the receipt
-            // You may need to wait for currentPurchase to update, so you can poll or use a callback if your IAP library supports it
-            // Here's a simple polling approach:
-            let attempts = 0;
-            const maxAttempts = 10;
-            while (!currentPurchase && attempts < maxAttempts) {
-                await new Promise(resolve => setTimeout(resolve, 500));
-                attempts++;
-            }
-            if (currentPurchase) {
-                console.log("Sending to handle receipt");
-                await handleReceipt(currentPurchase, planName);
-            }
+            setPendingPlanName(planName);
+            // Optionally, check if product exists in products
+            await InAppPurchases.purchaseItemAsync(productId);
         } catch (error) {
             Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
+            setLoading(false);
         }
-
-        setLoading(false);
     }
 
     const handleReceipt = async (purchase: any, planName: string) => {
@@ -104,7 +109,6 @@ const PlansContainer = () => {
                 } else if (Platform.OS === "android"){
                     return handleReceiptAndroid(purchase, planName);
                 }
-            
             } catch (error) {
                 Alert.alert("שגיאה בהפעלת המנוי, אנא פנה לתמיכה");
                 console.log("error", error);
@@ -115,48 +119,29 @@ const PlansContainer = () => {
     const handleReceiptIOS = async (purchase: any, planName: string) => {
         console.log("handleReceiptIOS - started - purchase: " + JSON.stringify(purchase, null, 2));
         const receipt = purchase.transactionReceipt;
-        const originalTransactionIdentifierIOS = purchase.originalTransactionIdentifierIOS;
         if (receipt) {
             console.log("handleReceiptIOS - receipt");
 
             const isTestEnvironment = __DEV__;
             //send receipt body to apple server to validete
-            const appleReceiptResponse = await validateReceiptIos(
-                {
-                    "receiptBody":{
-                        "receipt-data": receipt,
-                        password: APP_STORE_SECRET,
-                    },
-                    "isTest": isTestEnvironment,
-                }
-            );
-
-            //if receipt is valid
-            if (appleReceiptResponse && originalTransactionIdentifierIOS != null) {
-                console.log("handleReceiptIOS - receipt response");
-                const { status } = appleReceiptResponse;
-                if (status == 0) {
-                    const displayName = await authInstance.getName();
-                    const token = await authInstance.getAccessToken();
-                    console.log("handleReceiptIOS - sending to server");
-                    await SubscriptionsRequestHandler.getInstance().post({
-                        DisplayName: displayName,
-                        Plan: planName,
-                        IAPType: "Apple",
-                        AppleIAPData: {
-                            originalTransactionId: originalTransactionIdentifierIOS,
-                            latestReceipt: receipt,
-                        },
-                        GoogleIAPData: {
-                            
-                        },
-                        token: token,
-                    });
-                    console.log("handleReceiptIOS - sent to server");
-                    setLoading(false);
-                    setStackIndexByName(StackNames.Auth);
-                }
-            }
+            // You may need to implement this on your server, as expo-iap does not provide validateReceiptIos
+            // The following is a placeholder for your server validation logic
+            // const appleReceiptResponse = await validateReceiptIos(...)
+            // Instead, send the receipt to your backend for validation
+            const displayName = await authInstance.getName();
+            const token = await authInstance.getAccessToken();
+            await SubscriptionsRequestHandler.getInstance().post({
+                DisplayName: displayName,
+                Plan: planName,
+                IAPType: "Apple",
+                AppleIAPData: {
+                    latestReceipt: receipt,
+                },
+                GoogleIAPData: {},
+                token: token,
+            });
+            setLoading(false);
+            setStackIndexByName(StackNames.Auth);
         }
     }
 
@@ -165,11 +150,11 @@ const PlansContainer = () => {
         // For Android, we need to verify the purchase with Google Play
         const purchaseToken = purchase.purchaseToken;
         const productId = purchase.productId;
-        
+        // Get the package name safely for both classic and EAS Expo
+        const packageName = (Constants.expoConfig?.android?.package || (Constants.manifest as any)?.android?.package || 'com.onefifty.app');
         if (purchaseToken && productId) {
             const displayName = await authInstance.getName();
             const token = await authInstance.getAccessToken();
-            console.log("handleReceiptAndroid - Sending to server");
             await SubscriptionsRequestHandler.getInstance().post({
                 DisplayName: displayName,
                 Plan: planName,
@@ -178,12 +163,10 @@ const PlansContainer = () => {
                 GoogleIAPData: {
                     purchaseToken: purchaseToken,
                     productId: productId,
-                    packageName: planName,
+                    packageName: packageName,
                 },
                 token: token,
             });
-            
-            console.log("handleReceiptAndroid - sent to server");
             setLoading(false);
             setStackIndexByName(StackNames.Auth);
         }

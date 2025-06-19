@@ -25,7 +25,9 @@
     "expo-auth-session": "~6.1.5",
     "expo-checkbox": "~4.1.4",
     "expo-crypto": "~14.1.4",
+    "expo-dev-client": "~5.1.8",
     "expo-file-system": "~18.1.8",
+    "expo-iap": "^2.4.4",
     "expo-linear-gradient": "~14.1.4",
     "expo-network": "~7.1.5",
     "expo-secure-store": "~14.2.3",
@@ -40,7 +42,6 @@
     "react-native-dotenv": "^3.4.11",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-gesture-handler": "~2.24.0",
-    "react-native-iap": "^12.16.2",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-pixel-perfect": "^1.0.2",
     "react-native-reanimated": "~3.17.4",
@@ -49,8 +50,7 @@
     "react-native-switch-selector": "^2.3.0",
     "react-native-ui-datepicker": "^2.0.3",
     "react-native-web": "^0.20.0",
-    "react-native-webview": "13.13.5",
-    "expo-dev-client": "~5.1.8"
+    "react-native-webview": "13.13.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
