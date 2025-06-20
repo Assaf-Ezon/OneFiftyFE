@@ -20,6 +20,7 @@ import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscr
 import { useNavigation } from '@react-navigation/native';
 import { APP_STORE_SECRET } from "@env";
 
+
 const PlansContainer = () => {
     // contexts
     const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
