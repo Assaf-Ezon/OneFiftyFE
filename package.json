@@ -27,7 +27,7 @@
     "expo-crypto": "~14.1.4",
     "expo-dev-client": "~5.1.8",
     "expo-file-system": "~18.1.8",
-    "expo-in-app-purchases": "~14.3.0",
+    "expo-in-app-purchases": "~14.2.0",
     "expo-linear-gradient": "~14.1.4",
     "expo-network": "~7.1.5",
     "expo-secure-store": "~14.2.3",
@@ -50,7 +50,8 @@
     "react-native-switch-selector": "^2.3.0",
     "react-native-ui-datepicker": "^2.0.3",
     "react-native-web": "^0.20.0",
-    "react-native-webview": "13.13.5"
+    "react-native-webview": "13.13.5",
+    "expo-modules-core": "~2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
