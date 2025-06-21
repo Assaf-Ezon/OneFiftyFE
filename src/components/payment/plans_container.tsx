@@ -86,7 +86,7 @@ const PlansContainer = () => {
             }
         });
         return () => {
-            subscription.remove();
+            InAppPurchases.setPurchaseListener(() => {});
         };
     }, [pendingPlanName]);
 
