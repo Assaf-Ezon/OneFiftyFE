@@ -14,7 +14,7 @@ import AuthenticationHandler from '../../authentication_handler';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 // @ts-ignore: Expo module may not have type declarations in some setups
-import * as InAppPurchases from 'expo-in-app-purchases';
+import * as IAP from 'expo-iap';
 import { Screens } from '../../data_objects/enums/screens';
 import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscriptions_request_handler';
 import { useNavigation } from '@react-navigation/native';
@@ -49,12 +49,8 @@ const PlansContainer = () => {
                     Plans.ThreeMonths.productId[0],
                     Plans.SixMonths.productId[0],
                 ];
-                const { responseCode, results } = await InAppPurchases.getProductsAsync(productIds);
-                if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-                    setProducts(results);
-                } else {
-                    Alert.alert('Failed to fetch products from store.');
-                }
+                const results = await IAP.getProducts(productIds);
+                setProducts(results);
             } catch (error) {
                 Alert.alert('Error fetching products from store.');
             }
@@ -65,27 +61,28 @@ const PlansContainer = () => {
 
     // Set up purchase listener
     useEffect(() => {
-        const subscription = InAppPurchases.setPurchaseListener(async ({ responseCode, results, errorCode }) => {
-            if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-                for (const purchase of results) {
-                    if (!purchase.acknowledged) {
-                        // handle receipt
-                        if (pendingPlanName) {
-                            await handleReceipt(purchase, pendingPlanName);
-                        }
-                        await InAppPurchases.finishTransactionAsync(purchase, false);
-                    }
+        const purchaseUpdateSubscription = IAP.purchaseUpdatedListener(async (purchase) => {
+            const isAndroid = Platform.OS === 'android';
+            let isPurchased = false;
+            if (isAndroid) {
+                const androidPurchase = purchase as any;
+                isPurchased = androidPurchase && androidPurchase.purchaseStateAndroid === 1 && !androidPurchase.isAcknowledgedAndroid;
+            } else {
+                isPurchased = !!(purchase && purchase.transactionReceipt);
+            }
+            if (isPurchased) {
+                await IAP.finishTransaction({ purchase });
+                if (pendingPlanName) {
+                    await handleReceipt(purchase, pendingPlanName);
                 }
-            } else if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
+            } else if (isAndroid && (purchase as any)?.purchaseStateAndroid === 2) {
                 Alert.alert('רכישה בוטלה על ידי המשתמש.');
-            } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
-                Alert.alert('הרכישה ממתינה לאישור.');
             } else {
                 Alert.alert('שגיאה בתשלום, אנא נסה שוב.');
             }
         });
         return () => {
-            InAppPurchases.setPurchaseListener(() => {});
+            purchaseUpdateSubscription.remove();
         };
     }, [pendingPlanName]);
 
@@ -94,7 +91,12 @@ const PlansContainer = () => {
             setLoading(true);
             setPendingPlanName(planName);
             // Optionally, check if product exists in products
-            await InAppPurchases.purchaseItemAsync(productId);
+            const isAndroid = Platform.OS === 'android';
+            if (isAndroid) {
+                await IAP.requestPurchase({ request: { skus: [productId] } });
+            } else {
+                await IAP.requestPurchase({ request: { sku: productId } });
+            }
         } catch (error) {
             Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
             setLoading(false);
