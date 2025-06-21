@@ -51,7 +51,8 @@
     "react-native-ui-datepicker": "^2.0.3",
     "react-native-web": "^0.20.0",
     "react-native-webview": "13.13.5",
-    "expo-modules-core": "~2.4.0"
+    "expo-modules-core": "~2.4.0",
+    "expo-modules-autolinking": "*"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
