@@ -18,7 +18,6 @@ import * as InAppPurchases from 'expo-in-app-purchases';
 import { Screens } from '../../data_objects/enums/screens';
 import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscriptions_request_handler';
 import { useNavigation } from '@react-navigation/native';
-import { APP_STORE_SECRET } from "@env";
 
 
 const PlansContainer = () => {
