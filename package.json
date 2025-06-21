@@ -50,8 +50,7 @@
     "react-native-switch-selector": "^2.3.0",
     "react-native-ui-datepicker": "^2.0.3",
     "react-native-web": "^0.20.0",
-    "react-native-webview": "13.13.5",
-    "expo-modules-autolinking": "*"
+    "react-native-webview": "13.13.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

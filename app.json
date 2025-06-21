@@ -43,9 +43,6 @@
       "eas": {
         "projectId": "169d1782-8867-4734-959d-ba9cbd9b1093"
       }
-    },
-    "plugins": [
-      "expo-in-app-purchases"
-    ]
+    }
   }
 }
