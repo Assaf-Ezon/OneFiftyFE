@@ -89,7 +89,6 @@ const PlansContainer = () => {
     const Subscribe = async (productId: string, planName: string) => {
         try {
             setLoading(true);
-            setPendingPlanName(planName);
             // Optionally, check if product exists in products
             const isAndroid = Platform.OS === 'android';
             if (isAndroid) {
@@ -97,6 +96,7 @@ const PlansContainer = () => {
             } else {
                 await IAP.requestPurchase({ request: { sku: productId } });
             }
+            setPendingPlanName(planName);
         } catch (error) {
             Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
             setLoading(false);
