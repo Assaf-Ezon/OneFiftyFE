@@ -32,7 +32,7 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "package": "com.onefifty.app",
+      "package": "com.OneFifty.App",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
