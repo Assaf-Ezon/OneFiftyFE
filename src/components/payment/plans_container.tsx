@@ -81,16 +81,35 @@ const PlansContainer = () => {
                 Alert.alert('שגיאה בתשלום, אנא נסה שוב.');
             }
         });
+        
+        // Cleanup function to close IAP connection when component unmounts
         return () => {
             purchaseUpdateSubscription.remove();
+            IAP.endConnection().catch(error => {
+                console.log('Error ending IAP connection:', error);
+            });
         };
     }, [pendingPlanName]);
 
     const Subscribe = async (productId: string, planName: string) => {
         try {
             setLoading(true);
-            // Optionally, check if product exists in products
+            
+            // Check if product exists in products list
+            const productExists = products.find(p => p.productId === productId);
+            if (!productExists) {
+                throw new Error(`Product ${productId} not found in store`);
+            }
+            
             const isAndroid = Platform.OS === 'android';
+            
+            // Initialize IAP connection if needed
+            try {
+                await IAP.initConnection();
+            } catch (initError) {
+                console.log('IAP connection already initialized or failed:', initError);
+            }
+            
             if (isAndroid) {
                 await IAP.requestPurchase({ request: { skus: [productId] } });
             } else {
@@ -98,7 +117,20 @@ const PlansContainer = () => {
             }
             setPendingPlanName(planName);
         } catch (error) {
-            Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
+            console.error('Subscribe error:', error);
+            
+            // More specific error handling
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            
+            if (errorMessage.includes('User canceled') || errorMessage.includes('cancelled')) {
+                Alert.alert("הרכישה בוטלה על ידי המשתמש.");
+            } else if (errorMessage.includes('not found') || errorMessage.includes('Product')) {
+                Alert.alert("המוצר לא זמין כעת. אנא נסה שוב מאוחר יותר.");
+            } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
+                Alert.alert("בעיית חיבור לרשת. אנא בדוק את החיבור שלך ונסה שוב.");
+            } else {
+                Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
+            }
             setLoading(false);
         }
     }
