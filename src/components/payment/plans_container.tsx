@@ -95,12 +95,6 @@ const PlansContainer = () => {
         try {
             setLoading(true);
             
-            // Check if product exists in products list
-            const productExists = products.find(p => p.productId === productId);
-            if (!productExists) {
-                throw new Error(`Product ${productId} not found in store`);
-            }
-            
             const isAndroid = Platform.OS === 'android';
             
             // Initialize IAP connection if needed
@@ -108,6 +102,12 @@ const PlansContainer = () => {
                 await IAP.initConnection();
             } catch (initError) {
                 console.log('IAP connection already initialized or failed:', initError);
+            }
+            
+            // Check if product exists in products list
+            const productExists = products.find(p => p.productId === productId);
+            if (!productExists) {
+                throw new Error(`Product ${productId} not found in store`);
             }
             
             if (isAndroid) {
