@@ -117,7 +117,7 @@ const PlansContainer = () => {
             }
             setPendingPlanName(planName);
         } catch (error) {
-            console.error('Subscribe error:', error);
+            Alert.alert('Subscribe error:', error);
             
             // More specific error handling
             const errorMessage = error instanceof Error ? error.message : String(error);
@@ -156,7 +156,6 @@ const PlansContainer = () => {
         if (receipt) {
             console.log("handleReceiptIOS - receipt");
 
-            const isTestEnvironment = __DEV__;
             //send receipt body to apple server to validete
             // You may need to implement this on your server, as expo-iap does not provide validateReceiptIos
             // The following is a placeholder for your server validation logic
