@@ -58,6 +58,7 @@ const PlansContainer = () => {
                 ];
                 const results = await IAP.getProducts(productIds);
                 setProducts(results);
+                Alert.alert('Products: ', JSON.stringify(results));
             } catch (error) {
                 Alert.alert('Error fetching products from store.');
                 setIsIAPConnected(false); // Reset connection state on error
@@ -113,6 +114,7 @@ const PlansContainer = () => {
             
             // Check if product exists in products list
             const productExists = products.find(p => p.productId === productId);
+            
             if (!productExists) {
                 throw new Error(`Product ${productId} not found in store`);
             }
@@ -130,13 +132,13 @@ const PlansContainer = () => {
             const errorMessage = error instanceof Error ? error.message : String(error);
             
             if (errorMessage.includes('User canceled') || errorMessage.includes('cancelled')) {
-                Alert.alert("הרכישה בוטלה על ידי המשתמש.");
+                Alert.alert(error);//"הרכישה בוטלה על ידי המשתמש.");
             } else if (errorMessage.includes('not found') || errorMessage.includes('Product')) {
-                Alert.alert("המוצר לא זמין כעת. אנא נסה שוב מאוחר יותר.");
+                Alert.alert(error);//"המוצר לא זמין כעת. אנא נסה שוב מאוחר יותר.");
             } else if (errorMessage.includes('network') || errorMessage.includes('connection')) {
-                Alert.alert("בעיית חיבור לרשת. אנא בדוק את החיבור שלך ונסה שוב.");
+                Alert.alert(error);//"בעיית חיבור לרשת. אנא בדוק את החיבור שלך ונסה שוב.");
             } else {
-                Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
+                Alert.alert(error);//"תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
             }
             setLoading(false);
         }
