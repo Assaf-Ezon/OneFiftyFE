@@ -37,14 +37,18 @@ const PlansContainer = () => {
     const [Loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<any[]>([]);
     const [pendingPlanName, setPendingPlanName] = useState<string | null>(null);
+    const [isIAPConnected, setIsIAPConnected] = useState<boolean>(false);
 
     // Fetch products on mount
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                // Initialize IAP connection before fetching products
-                await IAP.initConnection();
+                // Initialize IAP connection before fetching products if not already connected
+                if (!isIAPConnected) {
+                    await IAP.initConnection();
+                    setIsIAPConnected(true);
+                }
                 
                 const productIds = [
                     Plans.OneMonth.productId[0],
@@ -56,6 +60,7 @@ const PlansContainer = () => {
                 setProducts(results);
             } catch (error) {
                 Alert.alert('Error fetching products from store.');
+                setIsIAPConnected(false); // Reset connection state on error
             }
             setLoading(false);
         };
@@ -100,7 +105,11 @@ const PlansContainer = () => {
             
             const isAndroid = Platform.OS === 'android';
             
-            // IAP connection already initialized in fetchProducts
+            // Ensure IAP connection is established
+            if (!isIAPConnected) {
+                await IAP.initConnection();
+                setIsIAPConnected(true);
+            }
             
             // Check if product exists in products list
             const productExists = products.find(p => p.productId === productId);
