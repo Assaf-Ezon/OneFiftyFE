@@ -43,6 +43,9 @@ const PlansContainer = () => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
+                // Initialize IAP connection before fetching products
+                await IAP.initConnection();
+                
                 const productIds = [
                     Plans.OneMonth.productId[0],
                     Plans.TwoMonths.productId[0],
@@ -97,12 +100,7 @@ const PlansContainer = () => {
             
             const isAndroid = Platform.OS === 'android';
             
-            // Initialize IAP connection if needed
-            try {
-                await IAP.initConnection();
-            } catch (initError) {
-                console.log('IAP connection already initialized or failed:', initError);
-            }
+            // IAP connection already initialized in fetchProducts
             
             // Check if product exists in products list
             const productExists = products.find(p => p.productId === productId);
