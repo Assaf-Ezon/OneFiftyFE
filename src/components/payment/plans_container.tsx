@@ -56,7 +56,18 @@ const PlansContainer = () => {
                     Plans.ThreeMonths.productId[0],
                     Plans.SixMonths.productId[0],
                 ];
-                const results = await IAP.getProducts(productIds);
+                
+                var results = [];
+                if (Platform.OS === 'android'){
+                    results = await IAP.getSubscriptions(productIds);
+                }
+                else {
+                    results = await IAP.getProducts(productIds);                    
+                }
+                
+                if (results.length == 0){
+                    throw new Error(`Products list is empty`);
+                }
                 setProducts(results);
                 Alert.alert('Products: ', JSON.stringify(results));
             } catch (error) {
@@ -120,7 +131,10 @@ const PlansContainer = () => {
             }
             
             if (isAndroid) {
-                await IAP.requestPurchase({ request: { skus: [productId] } });
+                await IAP.requestPurchase({ 
+                    request: { skus: [productId] },
+                    type: 'inapp',
+                });
             } else {
                 await IAP.requestPurchase({ request: { sku: productId } });
             }
