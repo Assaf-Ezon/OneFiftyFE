@@ -7,15 +7,12 @@ import PlansContainerStyle from './plans_container_style';
 
 import { Plans } from '../../data_objects/enums/payment_plans';
 
-import { CONFIG } from '../../config';
-
 import { usePaymentContext } from '../../context/payment_context/payment_context';
 import AuthenticationHandler from '../../authentication_handler';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 // @ts-ignore: Expo module may not have type declarations in some setups
 import * as IAP from 'expo-iap';
-import { Screens } from '../../data_objects/enums/screens';
 import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscriptions_request_handler';
 import { useNavigation } from '@react-navigation/native';
 
@@ -38,7 +35,6 @@ const PlansContainer = () => {
     const [products, setProducts] = useState<any[]>([]);
     const [pendingPlanName, setPendingPlanName] = useState<string | null>(null);
     const [isIAPConnected, setIsIAPConnected] = useState<boolean>(false);
-    const pendingPlanNameRef = useRef<string | null>(null);
 
     // Fetch products on mount
     useEffect(() => {
@@ -94,8 +90,8 @@ const PlansContainer = () => {
 
             if (isPurchased) {
                 await IAP.finishTransaction({ purchase });
-                if (pendingPlanNameRef.current) {
-                    await handleReceipt(purchase, pendingPlanNameRef.current);
+                if (pendingPlanName) {
+                    await handleReceipt(purchase, pendingPlanName);
                 }
             } else if (isAndroid && (purchase as any)?.purchaseStateAndroid === 2) {
                 Alert.alert('רכישה בוטלה על ידי המשתמש.');
@@ -121,7 +117,6 @@ const PlansContainer = () => {
             
             // Set pending plan name BEFORE initiating purchase
             setPendingPlanName(planName);
-            pendingPlanNameRef.current = planName;
 
             // Ensure IAP connection is established
             if (!isIAPConnected) {
@@ -154,13 +149,12 @@ const PlansContainer = () => {
             }
             // Reset pending plan name on error
             setPendingPlanName(null);
-            pendingPlanNameRef.current = null;
             setLoading(false);
         }
     }
 
     const SubscribeApple = async (productId: string) => {
-        const product = products.find(p => p.productId === productId);
+        const product = products.find(p => p.id === productId);
         if (!product) {
             throw new Error(`Product ${productId} not found in store`);
         }
@@ -204,8 +198,9 @@ const PlansContainer = () => {
     };
 
     const handleReceiptIOS = async (purchase: any, planName: string) => {
-        const receipt = purchase.transactionReceipt;
-        if (receipt) {
+        const receiptData = await IAP.getReceiptIos();
+        console.log("heyo: ", receiptData)
+        if (receiptData) {
             //send receipt body to apple server to validete
             // You may need to implement this on your server, as expo-iap does not provide validateReceiptIos
             // The following is a placeholder for your server validation logic
@@ -218,14 +213,13 @@ const PlansContainer = () => {
                 Plan: planName,
                 IAPType: "Apple",
                 AppleIAPData: {
-                    latestReceipt: receipt,
+                    latestReceipt: receiptData,
                 },
                 GoogleIAPData: {},
                 token: token,
             });
             // Reset pending plan name after successful processing
             setPendingPlanName(null);
-            pendingPlanNameRef.current = null;
             setLoading(false);
             setStackIndexByName(StackNames.Auth);
         }
@@ -258,7 +252,6 @@ const PlansContainer = () => {
             });
             // Reset pending plan name after successful processing
             setPendingPlanName(null);
-            pendingPlanNameRef.current = null;
             setLoading(false);
             setStackIndexByName(StackNames.Auth);
         }
