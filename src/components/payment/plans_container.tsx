@@ -199,7 +199,6 @@ const PlansContainer = () => {
 
     const handleReceiptIOS = async (purchase: any, planName: string) => {
         const receiptData = await IAP.getReceiptIos();
-        console.log("heyo: ", receiptData)
         if (receiptData) {
             //send receipt body to apple server to validete
             // You may need to implement this on your server, as expo-iap does not provide validateReceiptIos
