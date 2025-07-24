@@ -211,6 +211,12 @@ const PlansContainer = () => {
     };
 
     const handleReceiptIOS = async (purchase: any, planName: string) => {
+        if (!purchase?.transactionReceipt?.transactionId || !purchase?.transactionReceipt?.originalTransactionId) {
+            Alert.alert("שגיאה בקבלת פרטי הרכישה");
+            setLoading(false);
+            return;
+        }
+
         const displayName = await authInstance.getName();
         const token = await authInstance.getAccessToken();
         await SubscriptionsRequestHandler.getInstance().post({
@@ -231,6 +237,12 @@ const PlansContainer = () => {
     }
 
     const handleReceiptAndroid = async (purchase: any, planName: string) => {
+        if (!purchase?.dataAndroid) {
+            Alert.alert("שגיאה בקבלת פרטי הרכישה");
+            setLoading(false);
+            return;
+        }
+
         // For Android, we need to verify the purchase with Google Play
         var purchaseToken = purchase.dataAndroid.purchaseToken;
         if (typeof purchase.dataAndroid === "string"){
@@ -258,6 +270,9 @@ const PlansContainer = () => {
             // Reset pending plan name after successful processing
             setLoading(false);
             setStackIndexByName(StackNames.Auth);
+        } else {
+            Alert.alert("שגיאה בקבלת נתוני הרכישה");
+            setLoading(false);
         }
     }
 
