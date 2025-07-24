@@ -33,8 +33,23 @@ const PlansContainer = () => {
 
     const [Loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<any[]>([]);
-    const [pendingPlanName, setPendingPlanName] = useState<string | null>(null);
     const [isIAPConnected, setIsIAPConnected] = useState<boolean>(false);
+
+
+    // Create once, reuse many times
+    const createProductIdToPlanMap = () => {
+        const map = new Map<string, string>();
+        Object.values(Plans).forEach(plan => {
+            map.set(plan.productId[0], plan.Plan);
+        });
+        return map;
+    };
+
+    const productIdToPlanMap = createProductIdToPlanMap();
+
+    const getPlanByProductId = (targetProductId: string) => {
+        return productIdToPlanMap.get(targetProductId) || null;
+    };
 
     // Fetch products on mount
     useEffect(() => {
@@ -59,7 +74,7 @@ const PlansContainer = () => {
                     results = await IAP.getSubscriptions(productIds);
                 }
                 else {
-                    results = await IAP.getProducts(productIds);                    
+                    results = await IAP.requestProducts({ skus: productIds, type: "inapp" });                    
                 }
 
                 if (results.length == 0){
@@ -78,6 +93,7 @@ const PlansContainer = () => {
     // Set up purchase listener
     useEffect(() => {
         const purchaseUpdateSubscription = IAP.purchaseUpdatedListener(async (purchase) => {
+            console.log("???")
             const isAndroid = Platform.OS === 'android';
             let isPurchased = false;
             if (isAndroid) {
@@ -89,10 +105,9 @@ const PlansContainer = () => {
 
 
             if (isPurchased) {
+                console.log("here? ", purchase)
                 await IAP.finishTransaction({ purchase });
-                if (pendingPlanName) {
-                    await handleReceipt(purchase, pendingPlanName);
-                }
+                await handleReceipt(purchase, getPlanByProductId(purchase.id));
             } else if (isAndroid && (purchase as any)?.purchaseStateAndroid === 2) {
                 Alert.alert('רכישה בוטלה על ידי המשתמש.');
             } else {
@@ -115,9 +130,6 @@ const PlansContainer = () => {
         try {
             setLoading(true);
             
-            // Set pending plan name BEFORE initiating purchase
-            setPendingPlanName(planName);
-
             // Ensure IAP connection is established
             if (!isIAPConnected) {
                 await IAP.initConnection();
@@ -148,7 +160,7 @@ const PlansContainer = () => {
                 Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
             }
             // Reset pending plan name on error
-            setPendingPlanName(null);
+            console.log("I'm not here - right?")
             setLoading(false);
         }
     }
@@ -186,6 +198,7 @@ const PlansContainer = () => {
         if (purchase) {
             try {
                 if (Platform.OS === "ios") {
+                    console.log("tessssss")
                     return handleReceiptIOS(purchase, planName);    
                 } else if (Platform.OS === "android"){
                     return handleReceiptAndroid(purchase, planName);
@@ -198,30 +211,23 @@ const PlansContainer = () => {
     };
 
     const handleReceiptIOS = async (purchase: any, planName: string) => {
-        const receiptData = await IAP.getReceiptIos();
-        if (receiptData) {
-            //send receipt body to apple server to validete
-            // You may need to implement this on your server, as expo-iap does not provide validateReceiptIos
-            // The following is a placeholder for your server validation logic
-            // const appleReceiptResponse = await validateReceiptIos(...)
-            // Instead, send the receipt to your backend for validation
-            const displayName = await authInstance.getName();
-            const token = await authInstance.getAccessToken();
-            await SubscriptionsRequestHandler.getInstance().post({
-                DisplayName: displayName,
-                Plan: planName,
-                IAPType: "Apple",
-                AppleIAPData: {
-                    latestReceipt: receiptData,
-                },
-                GoogleIAPData: {},
-                token: token,
-            });
-            // Reset pending plan name after successful processing
-            setPendingPlanName(null);
-            setLoading(false);
-            setStackIndexByName(StackNames.Auth);
-        }
+        const displayName = await authInstance.getName();
+        const token = await authInstance.getAccessToken();
+        await SubscriptionsRequestHandler.getInstance().post({
+            DisplayName: displayName,
+            Plan: planName,
+            IAPType: "Apple",
+            AppleIAPData: {
+                transactionId: purchase.transactionReceipt.transactionId, 
+                originalTransactionId: purchase.transactionReceipt.originalTransactionId, 
+                productId: purchase.id, 
+            },
+            GoogleIAPData: {},
+            token: token,
+        });
+        // Reset pending plan name after successful processing
+        setLoading(false);
+        setStackIndexByName(StackNames.Auth);
     }
 
     const handleReceiptAndroid = async (purchase: any, planName: string) => {
@@ -250,7 +256,6 @@ const PlansContainer = () => {
                 token: token,
             });
             // Reset pending plan name after successful processing
-            setPendingPlanName(null);
             setLoading(false);
             setStackIndexByName(StackNames.Auth);
         }
