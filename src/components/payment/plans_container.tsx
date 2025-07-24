@@ -93,7 +93,6 @@ const PlansContainer = () => {
     // Set up purchase listener
     useEffect(() => {
         const purchaseUpdateSubscription = IAP.purchaseUpdatedListener(async (purchase) => {
-            console.log("???")
             const isAndroid = Platform.OS === 'android';
             let isPurchased = false;
             if (isAndroid) {
@@ -105,7 +104,6 @@ const PlansContainer = () => {
 
 
             if (isPurchased) {
-                console.log("here? ", purchase)
                 await IAP.finishTransaction({ purchase });
                 await handleReceipt(purchase, getPlanByProductId(purchase.id));
             } else if (isAndroid && (purchase as any)?.purchaseStateAndroid === 2) {
@@ -198,7 +196,6 @@ const PlansContainer = () => {
         if (purchase) {
             try {
                 if (Platform.OS === "ios") {
-                    console.log("tessssss")
                     return handleReceiptIOS(purchase, planName);    
                 } else if (Platform.OS === "android"){
                     return handleReceiptAndroid(purchase, planName);
@@ -211,7 +208,25 @@ const PlansContainer = () => {
     };
 
     const handleReceiptIOS = async (purchase: any, planName: string) => {
-        if (!purchase?.transactionReceipt?.transactionId || !purchase?.transactionReceipt?.originalTransactionId) {
+        if (!purchase?.transactionReceipt) {
+            Alert.alert("שגיאה בקבלת פרטי הרכישה");
+            setLoading(false);
+            return;
+        }
+
+        let transactionReceipt;
+        try {
+            // Parse the transactionReceipt string to JSON
+            transactionReceipt = typeof purchase.transactionReceipt === 'string' 
+                ? JSON.parse(purchase.transactionReceipt) 
+                : purchase.transactionReceipt;
+        } catch (error) {
+            Alert.alert("שגיאה בעיבוד פרטי הרכישה");
+            setLoading(false);
+            return;
+        }
+
+        if (!transactionReceipt?.transactionId || !transactionReceipt?.originalTransactionId) {
             Alert.alert("שגיאה בקבלת פרטי הרכישה");
             setLoading(false);
             return;
@@ -224,8 +239,8 @@ const PlansContainer = () => {
             Plan: planName,
             IAPType: "Apple",
             AppleIAPData: {
-                transactionId: purchase.transactionReceipt.transactionId, 
-                originalTransactionId: purchase.transactionReceipt.originalTransactionId, 
+                transactionId: transactionReceipt.transactionId, 
+                originalTransactionId: transactionReceipt.originalTransactionId, 
                 productId: purchase.id, 
             },
             GoogleIAPData: {},
