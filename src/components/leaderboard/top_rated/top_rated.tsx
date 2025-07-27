@@ -38,7 +38,6 @@ const TopRated = () => {
                     token: token,
                     LeaderboardType: 'OverallScore',
                     PartialList: false,
-                    expirationDate: profile.expirationDate,
                 });
 
                 setLeaderboardData(getTopUsersByScore(leaderboardData.Scores, 10));

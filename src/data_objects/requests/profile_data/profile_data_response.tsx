@@ -16,4 +16,6 @@ export type ProfileDataResponse = {
     TermsOfServiceLatest: string;
     UserData: UserDataInRequest;
     Version: string;
+    IsActive: boolean;
+    ExpirationDateUTC: string;
 }

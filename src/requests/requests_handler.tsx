@@ -59,8 +59,8 @@ export default abstract class RequestsHandler {
                 
                 return this.handleResponse(response);
                 
-            } catch {
-                throw new Error();
+            } catch (error) {
+                throw error;
             }
         }
 

@@ -13,7 +13,7 @@
       "icon": "./assets/icon.png",
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "bundleIdentifier": "com.onefifty.app",
+      "bundleIdentifier": "com.OneFifty.App",
       "associatedDomains": [
         "applinks:onefiftyapp.b2clogin.com"
       ],
@@ -32,11 +32,12 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "package": "com.onefifty.app",
+      "package": "com.OneFifty.App",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["BILLING"]
     },
     "extra": {
       "eas": {

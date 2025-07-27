@@ -4,20 +4,10 @@ import { FC } from 'react';
 import { IMAGES } from '../../../image_handler';
 import PlanStyle from './plan_style';
 
-import { usePaymentContext } from '../../../context/payment_context/payment_context';
 import { PaymnetPlanConfig } from '../../../data_objects/components_config/payment_plan_config';
 
-const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecommended, backgroundColor }) => {
-    const {setDetails, setIsPaymentWebViewOpen} = usePaymentContext(); 
 
-    const openWebView = () => {     
-        setDetails({
-            name: name,
-            price: price,
-        });
-
-        setIsPaymentWebViewOpen(true);
-    };
+const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, backgroundColor, onPress }) => {
 
     return (
         <View style={[{backgroundColor: backgroundColor}, PlanStyle.Container]}>
@@ -30,7 +20,7 @@ const Plan: FC<PaymnetPlanConfig> = ({ name, title, description, price, isRecomm
                 <Image source={IMAGES.check} />
             </View>
             <View style={PlanStyle.PayBtnContainer}>
-                <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => {openWebView()}}>
+                <TouchableOpacity style={PlanStyle.PayBtn} onPress={() => onPress()}>
                     <Text style={[{color: backgroundColor}, PlanStyle.PayBtnText]} allowFontScaling={false}>שלמו עכשיו</Text>
                 </TouchableOpacity>
                 <Text style={PlanStyle.Price} allowFontScaling={false}>{price} ₪</Text> 

@@ -22,6 +22,7 @@ import { ProfileProvider } from './src/context/general_context/profile_context';
 import { LearningSettingsProvider } from './src/context/settings_context/learning_context';
 import { useStackManagerContext, StackManagerProvider } from './src/context/general_context/stack_manager_context';
 import { WordsProvider } from './src/context/general_context/words_context';
+import React, { JSX } from 'react';
 
 const Stack = createNativeStackNavigator();
 
@@ -96,14 +97,16 @@ const StackNavigator = () => {
   );
 };
 
-export default function App() {
+const App = () => {
   return (
-    <ProfileProvider>
-      <WordsProvider>
-        <StackManagerProvider>
-          <StackNavigator />
-        </StackManagerProvider>
-      </WordsProvider>
-    </ProfileProvider>
+      <ProfileProvider>
+        <WordsProvider>
+          <StackManagerProvider>
+            <StackNavigator />
+          </StackManagerProvider>
+        </WordsProvider>
+      </ProfileProvider>
   );
 };
+
+export default App;

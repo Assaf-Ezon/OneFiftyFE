@@ -38,7 +38,6 @@ const ChangeProfileImagePopup = () => {
                 DisplayName: name, 
                 token: token, 
                 ProfilePicture: imageIndex as keyof typeof IMAGES.profile_images,
-                expirationDate: profile.expirationDate,
             });
             
             setErrorType(ErrorType.None);

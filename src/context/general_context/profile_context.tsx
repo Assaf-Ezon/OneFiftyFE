@@ -46,21 +46,17 @@ export const ProfileProvider: FC<{ children: ReactNode }> = ({ children }) => {
         }));
     };
 
-    const IsInTrail = (dateJoined: string, expirationDate: string): boolean => {
+    const IsInTrail = (dateJoined: string): boolean => {
         const joined: Date = new Date(dateJoined);
-        const expiration: Date = new Date(expirationDate);
-    
-        if (isNaN(joined.getTime()) || isNaN(expiration.getTime())) {
+        if (isNaN(joined.getTime())) {
             throw new Error("Invalid date format");
         }
-    
         const joinedTimestamp: number = joined.getTime();
-        const expirationTimestamp: number = expiration.getTime();
     
-        const differenceInMs: number = expirationTimestamp - joinedTimestamp;
+        const differenceInMs: number = Date.now() - joinedTimestamp;
     
         const maxDifferenceInMs: number = (3 * DAY) + (12 * HOUR);
-    
+
         return differenceInMs <= maxDifferenceInMs;
     }
 
