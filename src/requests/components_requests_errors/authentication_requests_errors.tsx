@@ -9,6 +9,8 @@ const AuthenticationRequestsErrors = (err: Error, setPopupIndex: (value: React.S
         case RequestsError.UserExpiredError:
             setPopupIndex(AuthErrorType.Inactive);
             break;
+        default:
+            setPopupIndex(AuthErrorType.Error);
     }
 }
 
