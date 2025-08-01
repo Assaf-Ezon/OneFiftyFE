@@ -1,35 +1,25 @@
 import { View, ScrollView, ActivityIndicator, Alert, Platform } from 'react-native';
-import { useEffect, useRef, useState } from 'react';
-import { WebView } from 'react-native-webview';
+import { useEffect, useState } from 'react';
 import Plan from './plan/plan';
 import Constants from 'expo-constants';
 import PlansContainerStyle from './plans_container_style';
 
 import { Plans } from '../../data_objects/enums/payment_plans';
 
-import { usePaymentContext } from '../../context/payment_context/payment_context';
 import AuthenticationHandler from '../../authentication_handler';
 
 import { useStackManagerContext, StackNames } from '../../context/general_context/stack_manager_context';
 // @ts-ignore: Expo module may not have type declarations in some setups
 import * as IAP from 'expo-iap';
 import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscriptions_request_handler';
-import { useNavigation } from '@react-navigation/native';
 
 
 const PlansContainer = () => {
     // contexts
-    const {isPaymentWebViewOpen, setIsPaymentWebViewOpen, details} = usePaymentContext(); 
-    const {setStackIndexByName, handleLogout} = useStackManagerContext();
+    const {setStackIndexByName} = useStackManagerContext();
 
     //auth instance
     const authInstance = AuthenticationHandler.getInstance();
-
-    // reference to the webview
-    const webviewRef = useRef<WebView | null>(null);
-
-    // Redirection
-    const navigation = useNavigation();
 
     const [Loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<any[]>([]);
@@ -124,7 +114,7 @@ const PlansContainer = () => {
         };
     }, []);
 
-    const Subscribe = async (productId: string, planName: string) => {
+    const Subscribe = async (productId: string) => {
         try {
             setLoading(true);
             
@@ -157,8 +147,6 @@ const PlansContainer = () => {
             } else {
                 Alert.alert("תשלום נכשל, אנא וודא חיבור נאות לחנות האפליקציות. אם בעיה זו נמשכת, אנא פנה אלינו.");
             }
-            // Reset pending plan name on error
-            console.log("I'm not here - right?")
             setLoading(false);
         }
     }
@@ -294,10 +282,10 @@ const PlansContainer = () => {
     return (
         <View style={[{opacity: Loading? 0.6 : 1}, PlansContainerStyle.mainPage]}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} backgroundColor={Plans.OneMonth.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.OneMonth.productId[0], Plans.OneMonth.Plan)} />
-                <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} backgroundColor={Plans.TwoMonths.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.TwoMonths.productId[0], Plans.TwoMonths.Plan)} />
-                <Plan name={Plans.ThreeMonths.Plan} title={Plans.ThreeMonths.Title} description={Plans.ThreeMonths.Description} price={Plans.ThreeMonths.Price} backgroundColor={Plans.ThreeMonths.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.ThreeMonths.productId[0], Plans.ThreeMonths.Plan)} />
-                <Plan name={Plans.SixMonths.Plan} title={Plans.SixMonths.Title} description={Plans.SixMonths.Description} price={Plans.SixMonths.Price} backgroundColor={Plans.SixMonths.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.SixMonths.productId[0], Plans.SixMonths.Plan)} />
+                <Plan name={Plans.OneMonth.Plan} title={Plans.OneMonth.Title} description={Plans.OneMonth.Description} price={Plans.OneMonth.Price} backgroundColor={Plans.OneMonth.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.OneMonth.productId[0])} />
+                <Plan name={Plans.TwoMonths.Plan} title={Plans.TwoMonths.Title} description={Plans.TwoMonths.Description} price={Plans.TwoMonths.Price} backgroundColor={Plans.TwoMonths.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.TwoMonths.productId[0])} />
+                <Plan name={Plans.ThreeMonths.Plan} title={Plans.ThreeMonths.Title} description={Plans.ThreeMonths.Description} price={Plans.ThreeMonths.Price} backgroundColor={Plans.ThreeMonths.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.ThreeMonths.productId[0])} />
+                <Plan name={Plans.SixMonths.Plan} title={Plans.SixMonths.Title} description={Plans.SixMonths.Description} price={Plans.SixMonths.Price} backgroundColor={Plans.SixMonths.backgroundColor} onPress={Loading ? () => "" : () => Subscribe(Plans.SixMonths.productId[0])} />
                 <View style={PlansContainerStyle.blank} />
             </ScrollView>
             { Loading ? <View style={PlansContainerStyle.loadingContainer}><ActivityIndicator size="large" color="black" /></View> : null}
