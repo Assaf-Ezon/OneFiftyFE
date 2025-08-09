@@ -111,7 +111,7 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                     dateJoined: new Date(data.UserData.DateJoined), 
                     expirationDate: new Date(data.ExpirationDateUTC), 
                     profileImage: IMAGES.profile_images[data.UserData.ProfilePicture],
-                    isTrial: IsInTrail(data.UserData.DateJoined),
+                    isTrial: IsInTrail(data.UserData.DateJoined) && !data.UserData.IAPType,
                     lastTermsOfServiceApproval: new Date(data.UserData.LastTermsOfServiceApproval), 
                 });
                 setHebrewWords(data.HebrewWordsDictionary);

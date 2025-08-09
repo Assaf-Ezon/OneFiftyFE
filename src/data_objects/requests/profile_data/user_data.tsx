@@ -11,4 +11,5 @@ export type UserDataInRequest = {
     RowKey: string;
     Score: number;
     Timestamp: string;
+    IAPType: string;
 }
