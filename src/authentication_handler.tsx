@@ -11,7 +11,7 @@ const clientId = 'e448e103-0d00-4b1f-842e-96da9d017f11';
 const policyName = 'B2C_1_OneFiftyApp';
 
 let redirectUri = AuthSession.makeRedirectUri({
-    native: "com.onefifty.app://auth",
+    native: "com.onefifty.appv2://auth",
     preferLocalhost: true,
 });
 

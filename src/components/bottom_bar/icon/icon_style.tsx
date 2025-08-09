@@ -8,7 +8,9 @@ const iconStyle = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 5,
     },
     inactiveText: {
         marginTop: 5,
