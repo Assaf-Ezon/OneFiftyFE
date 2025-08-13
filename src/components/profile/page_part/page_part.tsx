@@ -8,16 +8,18 @@ import OptionList from '../option_list/option_list';
 import { useSidebarContext } from '../../../context/general_context/sidebar_context';
 import { useProfileImageMenuContext } from '../../../context/settings_context/profile_image_context';
 import { useContactUsFormContext } from '../../../context/general_context/contact_form_context';
+import { useDeleteUserConfirmationContext } from '../../../context/general_context/delete_user_confirmation_context';
 
 const PagePart = () => {
 
     const {isOpen} = useSidebarContext();
     const {isProfileImageMenuOpen} = useProfileImageMenuContext();
     const {isContactFormOpen} = useContactUsFormContext();
+    const {isDeleteUserConfirmationOpen} = useDeleteUserConfirmationContext();
 
     return (
-        <View pointerEvents={ isOpen || isProfileImageMenuOpen || isContactFormOpen ? 'none' : 'auto' } 
-            style={[{opacity: isOpen || isProfileImageMenuOpen || isContactFormOpen ? 0.2 : 1}, PagePartStyle.container]}>
+        <View pointerEvents={ isOpen || isProfileImageMenuOpen || isContactFormOpen || isDeleteUserConfirmationOpen ? 'none' : 'auto' } 
+            style={[{opacity: isOpen || isProfileImageMenuOpen || isContactFormOpen || isDeleteUserConfirmationOpen ? 0.2 : 1}, PagePartStyle.container]}>
             <View style={PagePartStyle.title}>
                 <Title />
             </View>
