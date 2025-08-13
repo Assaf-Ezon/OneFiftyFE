@@ -20,6 +20,8 @@ const OptionList = () => {
             <View style={OptionListStyle.line} />
             <OptionCard title='פנו אלינו' image={IMAGES.report_problem} onPressActionIndex={ProfilePageActionIndex.OpenContactUsForm} screenName='' isActive={true} />
             <View style={OptionListStyle.line} />
+            <OptionCard title='מחיקת משתמש' image={IMAGES.reset_password} onPressActionIndex={ProfilePageActionIndex.OpenDeleteUserConfirmation} screenName='' isActive={true} />
+            <View style={OptionListStyle.line} />
         </View>
     );
 };  
