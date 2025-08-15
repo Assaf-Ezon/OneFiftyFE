@@ -36,7 +36,6 @@ const Title = () => {
                 </View>
                 <View style={TitleStyle.profileTitle}>
                     <Text style={TitleStyle.name} allowFontScaling={false}>{profile.name}</Text>
-                    <Text style={TitleStyle.email} allowFontScaling={false}>{profile.email}</Text>
                     <Text style={TitleStyle.expiration} allowFontScaling={false}>
                         תום תוקף משתמש: {profile.expirationDate.getDate()}/{profile.expirationDate.getMonth() + 1}/{profile.expirationDate.getFullYear()}
                     </Text>

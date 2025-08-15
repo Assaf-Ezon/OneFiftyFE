@@ -42,7 +42,6 @@ const SideBar = () => {
                     <View style={barStyle.userContent}>
                         <View style={barStyle.profileDetailsContainer}>
                             <Text style={barStyle.profileNameText} allowFontScaling={false}>{profile.name}</Text>
-                            <Text style={barStyle.profileEmailText} allowFontScaling={false}>{profile.email}</Text>
                         </View>
                         <Image style={barStyle.profileImage} source={profile.profileImage} />
                     </View>
