@@ -17,7 +17,6 @@ const ProfilePartHome: FC = () => {
             <View style={profilePartStyle.profileContainer}>
                 <View style={profilePartStyle.profileDetailsContainer}>
                     <Text style={profilePartStyle.profileNameText} allowFontScaling={false}>{profile.name}</Text>
-                    <Text style={profilePartStyle.profileEmailText} allowFontScaling={false}>{profile.email}</Text>
                 </View>
                 <Image style={profilePartStyle.profileImage} source={profile.profileImage} />
             </View>

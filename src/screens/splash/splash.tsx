@@ -105,7 +105,6 @@ const SplashScreen = ({ navigation }: {navigation: any}) => {
                 });
                 setProfile({
                     name: data.UserData.DisplayName,
-                    email: data.UserData.Email,
                     rank: getUserRankByName(leaderboardData.Scores, name),
                     score: data.UserData.Score,
                     dateJoined: new Date(data.UserData.DateJoined), 
