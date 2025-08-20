@@ -111,10 +111,12 @@ const StartScreen = ({ navigation }: {navigation: any}) => {
             // if version is correct
             if (data.Version != CONFIG.Version) {
                 setPopupIndex(AuthErrorType.IncorrectVersion);
+                setLoading(false);
             }  
             // the version is latest
             else if (!data.IsActive) {
                 setPopupIndex(AuthErrorType.Inactive);
+                setLoading(false);
             } 
             // the user is active
             else {
