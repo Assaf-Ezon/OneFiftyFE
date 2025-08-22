@@ -41,6 +41,105 @@ const PlansContainer = () => {
         return productIdToPlanMap.get(targetProductId) || null;
     };
 
+    // Check for existing purchases on the device
+    const checkExistingPurchases = async () => {
+        try {
+            const purchases = await IAP.getAvailablePurchases();
+            // Filter for active subscriptions only
+            const activePurchases = [];
+            
+            for (const purchase of purchases) {
+                // Check if it's an active subscription
+                const isActive = await isSubscriptionActive(purchase);
+                if (isActive) {
+                    activePurchases.push(purchase);
+                }
+            }
+            
+            return activePurchases;
+        } catch (error) {
+            console.log('Error checking existing purchases:', error);
+            return [];
+        }
+    };
+
+    // Check if a subscription is currently active
+    const isSubscriptionActive = async (purchase: any) => {
+        if (!purchase) return false;
+        
+        if (Platform.OS === 'android') {
+            // Android: check if purchase is valid and not expired
+            // purchaseStateAndroid: 0=UNSPECIFIED, 1=PURCHASED, 2=PENDING
+            const isPurchased = purchase.purchaseStateAndroid === 1;
+            const isAcknowledged = purchase.isAcknowledgedAndroid !== false;
+            
+            // For Android, also check if it's auto-renewing (active subscription)
+            const isAutoRenewing = purchase.autoRenewingAndroid === true;
+            
+            return isPurchased && isAcknowledged && isAutoRenewing;
+        } else {
+            // iOS: check if transaction receipt exists and is valid
+            if (!purchase.transactionReceipt) return false;
+            
+            // Parse the receipt to check expiry
+            try {
+                const receipt = typeof purchase.transactionReceipt === 'string' 
+                    ? JSON.parse(purchase.transactionReceipt) 
+                    : purchase.transactionReceipt;
+                console.log(receipt);
+                // Check if the receipt has a valid transaction
+                if (!receipt.transactionId) return false;
+                
+                // For iOS subscriptions, we need to check the expiry date
+                // If expirationDate exists and is in the future, it's active
+                if (receipt.expirationDate) {
+                    const expiryDate = new Date(receipt.expirationDate);
+                    const now = new Date();
+                    return expiryDate > now;
+                }
+                
+                // If no expiration date, assume it's a valid non-expiring purchase
+                return true;
+            } catch (error) {
+                console.log('Error parsing iOS receipt:', error);
+                return false;
+            }
+        }
+    };
+
+    // Handle conflict when user has existing subscription from another account
+    const handleExistingSubscriptionConflict = async (isFromSubscribeButton: boolean = false) => {
+        setLoading(false);
+        
+        Alert.alert(
+            'לא ניתן להשתמש במנוי',
+            'קיים מנוי פעיל במכשיר זה עבור חשבון אחר. כדי להשתמש בחשבון הנוכחי, יש לבטל תחילה את המנוי הקיים דרך חנות האפליקציות (App Store או Google Play).',
+            [
+                {
+                    text: 'התנתק',
+                    style: 'destructive',
+                    onPress: async () => {
+                        // Logout and return to auth screen
+                        await authInstance.logout();
+                        setStackIndexByName(StackNames.Auth);
+                    }
+                },
+                {
+                    text: 'הבנתי',
+                    style: 'cancel',
+                    onPress: () => {
+                        // If not from subscribe button, navigate away from payment screen
+                        if (!isFromSubscribeButton) {
+                            setStackIndexByName(StackNames.Auth);
+                        }
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    };
+
+
     // Fetch products on mount
     useEffect(() => {
         const fetchProducts = async () => {
@@ -71,6 +170,14 @@ const PlansContainer = () => {
                     throw new Error(`Products list is empty`);
                 }
                 setProducts(results);
+
+                // Check for existing subscriptions on page load
+                const existingPurchases = await checkExistingPurchases();
+                if (existingPurchases.length > 0) {
+                    console.log('Found existing subscription on page load');
+                    // Show alert immediately when page loads
+                    await handleExistingSubscriptionConflict(false);
+                }
             } catch (error) {
                 Alert.alert('Error fetching products from store.');
                 setIsIAPConnected(false); // Reset connection state on error
@@ -122,6 +229,14 @@ const PlansContainer = () => {
             if (!isIAPConnected) {
                 await IAP.initConnection();
                 setIsIAPConnected(true);
+            }
+
+            // Check for existing purchases first
+            const existingPurchases = await checkExistingPurchases();
+            if (existingPurchases.length > 0) {
+                // Handle existing subscription conflict
+                await handleExistingSubscriptionConflict(true);
+                return;
             }
 
             const isAndroid = Platform.OS === 'android';
