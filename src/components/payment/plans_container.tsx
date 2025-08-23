@@ -12,6 +12,7 @@ import { useStackManagerContext, StackNames } from '../../context/general_contex
 // @ts-ignore: Expo module may not have type declarations in some setups
 import * as IAP from 'expo-iap';
 import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscriptions_request_handler';
+import SubscriptionExpirationRequestHandler from '../../requests/requests_handlers/subscription_expiration_request_handler';
 
 
 const PlansContainer = () => {
@@ -24,7 +25,7 @@ const PlansContainer = () => {
     const [Loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<any[]>([]);
     const [isIAPConnected, setIsIAPConnected] = useState<boolean>(false);
-
+    const [isPostInit, setIsPostInit] = useState<boolean>(false);
 
     // Create once, reuse many times
     const createProductIdToPlanMap = () => {
@@ -63,47 +64,82 @@ const PlansContainer = () => {
         }
     };
 
-    // Check if a subscription is currently active
+    // Check if a subscription is currently active by validating with backend
     const isSubscriptionActive = async (purchase: any) => {
         if (!purchase) return false;
         
-        if (Platform.OS === 'android') {
-            // Android: check if purchase is valid and not expired
-            // purchaseStateAndroid: 0=UNSPECIFIED, 1=PURCHASED, 2=PENDING
-            const isPurchased = purchase.purchaseStateAndroid === 1;
-            const isAcknowledged = purchase.isAcknowledgedAndroid !== false;
-            
-            // For Android, also check if it's auto-renewing (active subscription)
-            const isAutoRenewing = purchase.autoRenewingAndroid === true;
-            
-            return isPurchased && isAcknowledged && isAutoRenewing;
-        } else {
-            // iOS: check if transaction receipt exists and is valid
-            if (!purchase.transactionReceipt) return false;
-            
-            // Parse the receipt to check expiry
-            try {
-                const receipt = typeof purchase.transactionReceipt === 'string' 
-                    ? JSON.parse(purchase.transactionReceipt) 
-                    : purchase.transactionReceipt;
-                console.log(receipt);
-                // Check if the receipt has a valid transaction
-                if (!receipt.transactionId) return false;
-                
-                // For iOS subscriptions, we need to check the expiry date
-                // If expirationDate exists and is in the future, it's active
-                if (receipt.expirationDate) {
-                    const expiryDate = new Date(receipt.expirationDate);
-                    const now = new Date();
-                    return expiryDate > now;
+        try {
+            let requestData: any = {
+                IAPType: Platform.OS === 'android' ? 'Google' : 'Apple',
+                AppleIAPData: null,
+                GoogleIAPData: null,
+                token: await authInstance.getAccessToken(),
+            };
+
+            if (Platform.OS === 'android') {
+                // Android: prepare Google IAP data
+                let purchaseToken = purchase.dataAndroid.purchaseToken;
+                if (typeof purchase.dataAndroid === "string"){
+                    purchaseToken = JSON.parse(purchase.dataAndroid).purchaseToken;
+                }
+                const productId = purchase.id;
+                // Get the package name safely for both classic and EAS Expo
+                const packageName = (Constants.expoConfig?.android?.package || (Constants.manifest as any)?.android?.package || 'com.onefifty.app');
+
+                if (!purchaseToken || !productId || !packageName) {
+                    console.log('Missing Android purchase data');
+                    return false;
+                }
+
+                requestData.GoogleIAPData = {
+                    purchaseToken: purchaseToken,
+                    productId: productId,
+                    packageName: packageName
+                };
+            } else {
+                // iOS: prepare Apple IAP data
+                if (!purchase.transactionReceipt) {
+                    console.log('Missing iOS transaction receipt');
+                    return false;
+                }
+
+                let receipt;
+                try {
+                    receipt = typeof purchase.transactionReceipt === 'string' 
+                        ? JSON.parse(purchase.transactionReceipt) 
+                        : purchase.transactionReceipt;
+                } catch (error) {
+                    console.log('Error parsing iOS receipt:', error);
+                    return false;
+                }
+
+                if (!receipt.transactionId || !receipt.originalTransactionId) {
+                    console.log('Missing iOS transaction data');
+                    return false;
                 }
                 
-                // If no expiration date, assume it's a valid non-expiring purchase
-                return true;
-            } catch (error) {
-                console.log('Error parsing iOS receipt:', error);
-                return false;
+                requestData.AppleIAPData = {
+                    transactionId: receipt.transactionId,
+                    originalTransactionId: receipt.originalTransactionId,
+                    productId: purchase.id
+                };
             }
+
+            // Call backend to check expiration
+            const response = await SubscriptionExpirationRequestHandler.getInstance().post(requestData);
+            
+            if (response && response.ExpirationDate) {
+                const expirationDate = new Date(response.ExpirationDate);
+                const now = new Date();
+                return expirationDate > now;
+            }
+
+            // If no expiration date in response, assume inactive
+            return false;
+        } catch (error) {
+            console.log('Error checking subscription expiration with backend:', error);
+            // In case of error, assume inactive to allow new purchase attempts
+            return false;
         }
     };
 
@@ -132,6 +168,25 @@ const PlansContainer = () => {
                         if (!isFromSubscribeButton) {
                             setStackIndexByName(StackNames.Auth);
                         }
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    };
+
+    const handleGeneralErrs = async (errorStr: string) => {
+        setLoading(false);
+        
+        Alert.alert(
+            "קרתה תקלה",
+            errorStr,
+            [
+                {
+                    text: 'הבנתי',
+                    style: 'cancel',
+                    onPress: () => {
+                        setStackIndexByName(StackNames.Auth);
                     }
                 }
             ],
@@ -182,6 +237,7 @@ const PlansContainer = () => {
                 Alert.alert('Error fetching products from store.');
                 setIsIAPConnected(false); // Reset connection state on error
             }
+            setIsPostInit(true);
             setLoading(false);
         };
         fetchProducts();
@@ -198,15 +254,18 @@ const PlansContainer = () => {
             } else {
                 isPurchased = !!(purchase && purchase.transactionReceipt);
             }
-
+            
+            while (!isPostInit){
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
 
             if (isPurchased) {
                 await IAP.finishTransaction({ purchase });
                 await handleReceipt(purchase, getPlanByProductId(purchase.id));
             } else if (isAndroid && (purchase as any)?.purchaseStateAndroid === 2) {
-                Alert.alert('רכישה בוטלה על ידי המשתמש.');
-            } else {
-                Alert.alert('שגיאה בתשלום, אנא נסה שוב.');
+                handleGeneralErrs('רכישה בוטלה על ידי המשתמש.');
+            } else{
+                handleGeneralErrs('שגיאה בתשלום, אנא נסה שוב.');
             }
 
             setLoading(false);
