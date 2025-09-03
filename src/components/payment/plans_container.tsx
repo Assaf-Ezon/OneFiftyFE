@@ -25,7 +25,6 @@ const PlansContainer = () => {
     const [Loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<any[]>([]);
     const [isIAPConnected, setIsIAPConnected] = useState<boolean>(false);
-    const [isPostInit, setIsPostInit] = useState<boolean>(false);
 
     // Create once, reuse many times
     const createProductIdToPlanMap = () => {
@@ -144,7 +143,7 @@ const PlansContainer = () => {
     };
 
     // Handle conflict when user has existing subscription from another account
-    const handleExistingSubscriptionConflict = async (isFromSubscribeButton: boolean = false) => {
+    const handleExistingSubscriptionConflict = async () => {
         setLoading(false);
         
         Alert.alert(
@@ -152,22 +151,12 @@ const PlansContainer = () => {
             'קיים מנוי פעיל במכשיר זה עבור חשבון אחר. כדי להשתמש בחשבון הנוכחי, יש לבטל תחילה את המנוי הקיים דרך חנות האפליקציות (App Store או Google Play).',
             [
                 {
-                    text: 'התנתק',
+                    text: 'הבנתי',
                     style: 'destructive',
                     onPress: async () => {
                         // Logout and return to auth screen
                         await authInstance.logout();
                         setStackIndexByName(StackNames.Auth);
-                    }
-                },
-                {
-                    text: 'הבנתי',
-                    style: 'cancel',
-                    onPress: () => {
-                        // If not from subscribe button, navigate away from payment screen
-                        if (!isFromSubscribeButton) {
-                            setStackIndexByName(StackNames.Auth);
-                        }
                     }
                 }
             ],
@@ -226,18 +215,18 @@ const PlansContainer = () => {
                 }
                 setProducts(results);
 
+                // TODO: Transfer it before the set products
                 // Check for existing subscriptions on page load
                 const existingPurchases = await checkExistingPurchases();
                 if (existingPurchases.length > 0) {
                     console.log('Found existing subscription on page load');
                     // Show alert immediately when page loads
-                    await handleExistingSubscriptionConflict(false);
+                    await handleExistingSubscriptionConflict();
                 }
             } catch (error) {
                 Alert.alert('Error fetching products from store.');
                 setIsIAPConnected(false); // Reset connection state on error
             }
-            setIsPostInit(true);
             setLoading(false);
         };
         fetchProducts();
@@ -245,6 +234,11 @@ const PlansContainer = () => {
 
     // Set up purchase listener
     useEffect(() => {
+        // TODO: If products.length == 0 don't set. change to only init when products var changes.
+        if(products.length == 0){
+            return;
+        }
+
         const purchaseUpdateSubscription = IAP.purchaseUpdatedListener(async (purchase) => {
             const isAndroid = Platform.OS === 'android';
             let isPurchased = false;
@@ -253,10 +247,6 @@ const PlansContainer = () => {
                 isPurchased = androidPurchase && androidPurchase.purchaseStateAndroid === 1 && !androidPurchase.isAcknowledgedAndroid;
             } else {
                 isPurchased = !!(purchase && purchase.transactionReceipt);
-            }
-            
-            while (!isPostInit){
-                await new Promise(resolve => setTimeout(resolve, 500));
             }
 
             if (isPurchased) {
@@ -278,7 +268,7 @@ const PlansContainer = () => {
                 console.log('Error ending IAP connection:', error);
             });
         };
-    }, []);
+    }, [products]);
 
     const Subscribe = async (productId: string) => {
         try {
@@ -294,7 +284,7 @@ const PlansContainer = () => {
             const existingPurchases = await checkExistingPurchases();
             if (existingPurchases.length > 0) {
                 // Handle existing subscription conflict
-                await handleExistingSubscriptionConflict(true);
+                await handleExistingSubscriptionConflict();
                 return;
             }
 
