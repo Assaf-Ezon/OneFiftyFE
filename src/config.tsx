@@ -12,6 +12,7 @@ export const CONFIG = {
         update_words: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/update/stats',
         terms_approval: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/terms/approved',
         subscriptions: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/activate/subscription',
+        expirationDate: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/subscriptions/expiration',
         delete_user: 'https://onefiftyapimgmt.azure-api.net/OneFiftyApp/v1/user/delete',
     },
     zIndexLevels: {
