@@ -77,10 +77,7 @@ const PlansContainer = () => {
 
             if (Platform.OS === 'android') {
                 // Android: prepare Google IAP data
-                let purchaseToken = purchase.dataAndroid.purchaseToken;
-                if (typeof purchase.dataAndroid === "string"){
-                    purchaseToken = JSON.parse(purchase.dataAndroid).purchaseToken;
-                }
+                let purchaseToken = purchase.purchaseTokenAndroid;
                 const productId = purchase.id;
                 // Get the package name safely for both classic and EAS Expo
                 const packageName = (Constants.expoConfig?.android?.package || (Constants.manifest as any)?.android?.package || 'com.onefifty.app');
@@ -195,6 +192,14 @@ const PlansContainer = () => {
                     setIsIAPConnected(true);
                 }
                 
+                // Check for existing subscriptions on page load
+                const existingPurchases = await checkExistingPurchases();
+                if (existingPurchases.length > 0) {
+                    console.log('Found existing subscription on page load');
+                    // Show alert immediately when page loads
+                    await handleExistingSubscriptionConflict();
+                }
+
                 const productIds = [
                     Plans.OneMonth.productId[0],
                     Plans.TwoMonths.productId[0],
@@ -204,7 +209,7 @@ const PlansContainer = () => {
                 
                 var results = [];
                 if (Platform.OS === 'android'){
-                    results = await IAP.getSubscriptions(productIds);
+                    results = await IAP.requestProducts({ skus: productIds, type: 'subs' });
                 }
                 else {
                     results = await IAP.requestProducts({ skus: productIds, type: "inapp" });                    
@@ -213,16 +218,7 @@ const PlansContainer = () => {
                 if (results.length == 0){
                     throw new Error(`Products list is empty`);
                 }
-                setProducts(results);
-
-                // TODO: Transfer it before the set products
-                // Check for existing subscriptions on page load
-                const existingPurchases = await checkExistingPurchases();
-                if (existingPurchases.length > 0) {
-                    console.log('Found existing subscription on page load');
-                    // Show alert immediately when page loads
-                    await handleExistingSubscriptionConflict();
-                }
+                setProducts(results);              
             } catch (error) {
                 Alert.alert('Error fetching products from store.');
                 setIsIAPConnected(false); // Reset connection state on error
