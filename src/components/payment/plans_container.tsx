@@ -13,6 +13,8 @@ import { useStackManagerContext, StackNames } from '../../context/general_contex
 import * as IAP from 'expo-iap';
 import SubscriptionsRequestHandler from '../../requests/requests_handlers/subscriptions_request_handler';
 import SubscriptionExpirationRequestHandler from '../../requests/requests_handlers/subscription_expiration_request_handler';
+import IAPHandler from './iap_handler';
+import { findPlanByName } from '../home/items/pay_now/find_payment_plans_by_name';
 
 
 const PlansContainer = () => {
@@ -22,9 +24,17 @@ const PlansContainer = () => {
     //auth instance
     const authInstance = AuthenticationHandler.getInstance();
 
+    // Page loading animation flag
     const [Loading, setLoading] = useState<boolean>(false);
+
+    // Page setup completion flag
+    const [setupComplete, setsetupComplete] = useState<boolean>(false);
+
+    // Store products
     const [products, setProducts] = useState<any[]>([]);
-    const [isIAPConnected, setIsIAPConnected] = useState<boolean>(false);
+
+    // IAP handler
+    const [iapHandler, setIAPHandler] = useState<IAPHandler>();
 
     // Create once, reuse many times
     const createProductIdToPlanMap = () => {
@@ -41,103 +51,39 @@ const PlansContainer = () => {
         return productIdToPlanMap.get(targetProductId) || null;
     };
 
-    // Check for existing purchases on the device
-    const checkExistingPurchases = async () => {
-        try {
-            const purchases = await IAP.getAvailablePurchases();
-            // Filter for active subscriptions only
-            const activePurchases = [];
-            
-            for (const purchase of purchases) {
-                // Check if it's an active subscription
-                const isActive = await isSubscriptionActive(purchase);
-                if (isActive) {
-                    activePurchases.push(purchase);
-                }
-            }
-            
-            return activePurchases;
-        } catch (error) {
-            console.log('Error checking existing purchases:', error);
-            return [];
-        }
-    };
+    // Page setup
+    useEffect(() => {
+        const setupPage = async () => {
+            setLoading(true);
+            try {
+                const productIds = [
+                    Plans.OneMonth.productId[0],
+                    Plans.TwoMonths.productId[0],
+                    Plans.ThreeMonths.productId[0],
+                    Plans.SixMonths.productId[0],
+                ];
+                var handler = IAPHandler.CreateIAPHandler(productIds);
+                setIAPHandler(handler);
+                await handler.initialize();
 
-    // Check if a subscription is currently active by validating with backend
-    const isSubscriptionActive = async (purchase: any) => {
-        if (!purchase) return false;
+                if (handler.conflictExists){
+                    handleExistingSubscriptionConflict();
+                }
+
+                if (handler.products.length == 0){
+                    Alert.alert("תקלה בחיפוש המנויים בחנות, אנא נסה שנית מאוחר יותר.")
+                    setStackIndexByName(StackNames.Auth);
+                }
+            } catch (error) {
+                Alert.alert("תקלה בחיפוש המנויים בחנות, אנא נסה שנית מאוחר יותר.")
+                setStackIndexByName(StackNames.Auth);
+            }
+
+            setLoading(false);
+        };
         
-        try {
-            let requestData: any = {
-                IAPType: Platform.OS === 'android' ? 'Google' : 'Apple',
-                AppleIAPData: null,
-                GoogleIAPData: null,
-                token: await authInstance.getAccessToken(),
-            };
-
-            if (Platform.OS === 'android') {
-                // Android: prepare Google IAP data
-                let purchaseToken = purchase.purchaseTokenAndroid;
-                const productId = purchase.id;
-                // Get the package name safely for both classic and EAS Expo
-                const packageName = (Constants.expoConfig?.android?.package || (Constants.manifest as any)?.android?.package || 'com.onefifty.app');
-
-                if (!purchaseToken || !productId || !packageName) {
-                    console.log('Missing Android purchase data');
-                    return false;
-                }
-
-                requestData.GoogleIAPData = {
-                    purchaseToken: purchaseToken,
-                    productId: productId,
-                    packageName: packageName
-                };
-            } else {
-                // iOS: prepare Apple IAP data
-                if (!purchase.transactionReceipt) {
-                    console.log('Missing iOS transaction receipt');
-                    return false;
-                }
-
-                let receipt;
-                try {
-                    receipt = typeof purchase.transactionReceipt === 'string' 
-                        ? JSON.parse(purchase.transactionReceipt) 
-                        : purchase.transactionReceipt;
-                } catch (error) {
-                    console.log('Error parsing iOS receipt:', error);
-                    return false;
-                }
-
-                if (!receipt.transactionId || !receipt.originalTransactionId) {
-                    console.log('Missing iOS transaction data');
-                    return false;
-                }
-                
-                requestData.AppleIAPData = {
-                    transactionId: receipt.transactionId,
-                    originalTransactionId: receipt.originalTransactionId,
-                    productId: purchase.id
-                };
-            }
-
-            // Call backend to check expiration
-            const response = await SubscriptionExpirationRequestHandler.getInstance().post(requestData);
-            
-            if (response && response.ExpirationDate) {
-                const expirationDate = new Date(response.ExpirationDate);
-                const now = new Date();
-                return expirationDate > now;
-            }
-
-            // If no expiration date in response, assume inactive
-            return false;
-        } catch (error) {
-            console.log('Error checking subscription expiration with backend:', error);
-            // In case of error, assume inactive to allow new purchase attempts
-            return false;
-        }
-    };
+        setupPage();
+    }, [])
 
     // Handle conflict when user has existing subscription from another account
     const handleExistingSubscriptionConflict = async () => {
@@ -180,77 +126,21 @@ const PlansContainer = () => {
         );
     };
 
-
-    // Fetch products on mount
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-            try {
-                // Initialize IAP connection before fetching products if not already connected
-                if (!isIAPConnected) {
-                    await IAP.initConnection();
-                    setIsIAPConnected(true);
-                }
-                
-                // Check for existing subscriptions on page load
-                const existingPurchases = await checkExistingPurchases();
-                if (existingPurchases.length > 0) {
-                    console.log('Found existing subscription on page load');
-                    // Show alert immediately when page loads
-                    await handleExistingSubscriptionConflict();
-                }
-
-                const productIds = [
-                    Plans.OneMonth.productId[0],
-                    Plans.TwoMonths.productId[0],
-                    Plans.ThreeMonths.productId[0],
-                    Plans.SixMonths.productId[0],
-                ];
-                
-                var results = [];
-                if (Platform.OS === 'android'){
-                    results = await IAP.requestProducts({ skus: productIds, type: 'subs' });
-                }
-                else {
-                    results = await IAP.requestProducts({ skus: productIds, type: "inapp" });                    
-                }
-
-                if (results.length == 0){
-                    throw new Error(`Products list is empty`);
-                }
-                setProducts(results);              
-            } catch (error) {
-                Alert.alert('Error fetching products from store.');
-                setIsIAPConnected(false); // Reset connection state on error
-            }
-            setLoading(false);
-        };
-        fetchProducts();
-    }, []);
-
     // Set up purchase listener
     useEffect(() => {
-        // TODO: If products.length == 0 don't set. change to only init when products var changes.
-        if(products.length == 0){
+        if(!setupComplete){
             return;
         }
 
         const purchaseUpdateSubscription = IAP.purchaseUpdatedListener(async (purchase) => {
-            const isAndroid = Platform.OS === 'android';
-            let isPurchased = false;
-            if (isAndroid) {
-                const androidPurchase = purchase as any;
-                isPurchased = androidPurchase && androidPurchase.purchaseStateAndroid === 1 && !androidPurchase.isAcknowledgedAndroid;
-            } else {
-                isPurchased = !!(purchase && purchase.transactionReceipt);
-            }
+            var isPurchaseHandled = iapHandler.handlePurchase(purchase, getPlanByProductId(purchase?.id))
 
-            if (isPurchased) {
-                await IAP.finishTransaction({ purchase });
-                await handleReceipt(purchase, getPlanByProductId(purchase.id));
-            } else if (isAndroid && (purchase as any)?.purchaseStateAndroid === 2) {
+            if (isPurchaseHandled) {
+                
+            } else if (Platform.OS === 'android' && (purchase as any)?.purchaseStateAndroid === 2) {
                 handleGeneralErrs('רכישה בוטלה על ידי המשתמש.');
-            } else{
+            } else {
+                console.log(purchase);
                 handleGeneralErrs('שגיאה בתשלום, אנא נסה שוב.');
             }
 
@@ -264,33 +154,20 @@ const PlansContainer = () => {
                 console.log('Error ending IAP connection:', error);
             });
         };
-    }, [products]);
+    }, [setupComplete]);
+
 
     const Subscribe = async (productId: string) => {
         try {
             setLoading(true);
             
             // Ensure IAP connection is established
-            if (!isIAPConnected) {
-                await IAP.initConnection();
-                setIsIAPConnected(true);
+            if (!iapHandler.isInitialized) {
+                Alert.alert("תקלה באיתחול הגישה לחנות האפליקציות")
+                setLoading(false);
             }
 
-            // Check for existing purchases first
-            const existingPurchases = await checkExistingPurchases();
-            if (existingPurchases.length > 0) {
-                // Handle existing subscription conflict
-                await handleExistingSubscriptionConflict();
-                return;
-            }
-
-            const isAndroid = Platform.OS === 'android';
-            if (isAndroid){
-                await SubscribeAndroid(productId);
-            }
-            else{
-                await SubscribeApple(productId);
-            }
+            iapHandler.Subscribe(productId);
         } catch (error) {
             // More specific error handling
             const errorMessage = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
@@ -309,35 +186,6 @@ const PlansContainer = () => {
             }
             setLoading(false);
         }
-    }
-
-    const SubscribeApple = async (productId: string) => {
-        const product = products.find(p => p.id === productId);
-        if (!product) {
-            throw new Error(`Product ${productId} not found in store`);
-        }
-
-        await IAP.requestPurchase({ request: { sku: productId } });
-        
-    }
-
-
-    const SubscribeAndroid = async (productId: string) => {
-        const product = products.find(p => p.id === productId);
-        if (!product) {
-            throw new Error(`Product ${productId} not found in store`);
-        }
-        
-        await IAP.requestPurchase({ 
-            request: {
-                skus: [product.id],
-                subscriptionOffers: [{
-                    sku: product.id,
-                    offerToken: product.subscriptionOfferDetails[0].offerToken,
-                }],
-            },
-            type: 'subs',
-        });
     }
 
     const handleReceipt = async (purchase: any, planName: string) => {
